@@ -1,0 +1,12 @@
+﻿CREATE VIEW [dbo].[ViewPanelUserRegistration]
+	AS SELECT [PanelUserRegistrationId]
+      ,[ClientRegistrationId]
+      ,[PanelUserAssignmentId]
+      ,[RegistrationStartDate]
+      ,[RegistrationCompletedDate]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+  FROM [dbo].[PanelUserRegistration]
+  WHERE DeletedFlag = 0

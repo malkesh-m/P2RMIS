@@ -1,0 +1,34 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+    <style type="text/css">
+        #UserClientSelection {
+            padding: 0px !important;
+        }
+        /*.ui-dialog-content {
+            padding: 15px 35px !important;
+        }*/
+    </style>
+<div class="ui-dialog-content">
+    @Html.ListBoxFor(m => Model.UserClientsSelected, Model.UserClientsToShow, new { id = "userClientsListBox", style = "height:400px;width:500px;" })
+
+    @if (Model.AvailableUserClients != null && Model.AvailableUserClients.Count > 0)
+    {
+        for (var iClient = 0; iClient < Model.AvailableUserClients.Count; iClient++)
+        {
+            <span>
+                @Html.HiddenFor(m => m.AvailableUserClients[iClient].ClientId, new { @class = "clientIdAvailable" })
+                @Html.HiddenFor(m => m.AvailableUserClients[iClient].ClientName, new { @class = "clientNameAvailable" })
+                @Html.HiddenFor(m => m.AvailableUserClients[iClient].ClientAbrv, new { @class = "clientAbrvAvailable" })
+            </span>
+        }
+    }
+    <div id="emptyClientListError" style="display: none;" class="validation-summary-errors">
+        At least one client must be selected.
+    </div>
+</div>
+<div class="modal-footer"></div>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelOkFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+</script>
+
+

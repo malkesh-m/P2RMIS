@@ -1,0 +1,193 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Bll
+@model Sra.P2rmis.Web.UI.Models.ExpertiseCoiViewModel
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+@{
+    string displayCoi = "";
+    displayCoi = (Model.AssignmentTypeId == LookupService.LookupAssignmentTypeIdCoi) ? "" : "disabled";
+    string reviewerHasWorkflowMessage = Sra.P2rmis.Web.Common.Message.ReviewerHasWorkflowMessage;
+    string assignReviewerToCoiMessage = Sra.P2rmis.Web.Common.Message.AssignSelfToCoiMessage;
+    string applicationTitle = (Model.ApplicationInfo.Title.Length <= 55) ? Model.ApplicationInfo.Title : Model.ApplicationInfo.Title.Substring(0, 50) + "...";
+}
+<div id="updateAssignment" tabindex="-1" class="row-fluid mw-coi-modal">
+    @Html.HiddenFor(x => x.PanelApplicationId, Model.PanelApplicationId)
+    @Html.HiddenFor(x => x.PanelUserAssignmentId, Model.PanelUserAssignmentId)
+    <label for="AssignmentList" class="sr-only"></label>
+    @Html.DropDownListFor(m => m.ClientAssignmentTypeId, new SelectList(@Model.ClientAssignmentTypeList, "ClientAssignmentTypeId", "ClientAssignmentTypeAbbreviation"), "UnAssign", new { @id = "AssignmentList", @class = "hide" })
+    <div id="failureMessage"></div>
+    <div class="mw-coi-modal_info-filters">
+        <div class="mw-coi-modal_info-filters_title">Assignment Information</div>
+        <table class="mw-coi-modal_table">
+            <tr>
+                <td class="mw-coi-modal_table_app-container"><div class="mw-coi-modal_table_app-container_panel-title">Panel:</div><div class="mw-coi-modal_table_app-container_result">@Model.ApplicationInfo.ProgramAbbreviation @Model.ApplicationInfo.FiscalYear @Model.ApplicationInfo.PanelAbbreviation</div></td>
+                <td class="mw-coi-modal_table_app-container"><div class="mw-coi-modal_table_app-container_award-title">Award:</div><div class="mw-coi-modal_table_app-container_result">@Model.ApplicationInfo.AwardMechanism</div></td>
+            </tr>
+            <tr>
+                <td class="mw-coi-modal_table_app-container" colspan="2"><div class="mw-coi-modal_table_app-container_app-title">Application Title:</div><div class="mw-coi-modal_table_app-container_app-result" title="@applicationTitle">@applicationTitle</div></td>
+            </tr>
+            <tr>
+                <td class="mw-coi-modal_table_app-container" colspan="2"><div class="mw-coi-modal_table_app-container_app-title">PI:</div><div class="mw-coi-modal_table_app-container_pi-result" title="@Model.ReviewerNameAndOrganization">@Model.ReviewerNameAndOrganization</div></td>
+            </tr>
+        </table>
+    </div>
+    <div class="mw-coi-modal_link-filters">
+        <div class="mw-coi-modal_link-filters_title">Files</div>
+        <table class="mw-coi-modal_table">
+            <tr>
+                <td class="mw-coi-modal_link-filters_table_files">
+                    <a href="@Url.Action("GetAbstractFile", "SummaryStatement", new {applicationId = Model.ApplicationInfo.ApplicationId, logNumber = Model.ApplicationInfo.LogNumber})" id="viewAbstract" target="_blank" style="display: inline-block;margin-left: 20px;font-size: 12px;font-weight: bold;color: #006dcc;">View Abstract</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="mw-coi-modal_form-filters">
+        <p class="mw-coi-modal_form-filters_info">Please check the information of Principal Investigator(s), collaborator(s), and their organizations to determine if you have a conflict of interest (COI) with this application. If you do, select COI Type  from the drop-down list and enter a brief explanation of the nature of the COI in the 'Comment' textbox.  If you don't have a COI, select 'I don't have any conflicts to report' checkbox.</p>
+        <p class="mw-coi-modal_form-filters_info" id="noConflictsBox">
+            <input type="checkbox" id="noConflictsCheckbox" />
+            <label for="noConflictsCheckbox" class="upm-profile-section-sub_field">I don't have any conflicts to report</label>
+        </p>
+        <div id="coiDiv">
+            <div class="mw-coi-modal_form-filters_coi-div">
+                <div class="mw-coi-modal_form-filters_coi-div_row">
+                    <div class="mw-coi-modal_form-filters_title" id="expertiseCOITitle">Expertise</div>@Html.DropDownListFor(m => m.ClientExpertiseRatingId, new SelectList(@Model.ClientExpertiseRatingList, "ClientExpertiseRatingId", "ClientExpertiseRatingAbbreviation"), "Select", new { @id = "ExpertiseList", title = "Expertise Level COI Declaration" })
+                </div>
+                <div class="mw-coi-modal_form-filters_coi-div_row">
+                    <div class="mw-coi-modal_form-filters_coi-div_required">*</div><div class="mw-coi-modal_form-filters_title">COI Type</div> @Html.DropDownListFor(m => m.ClientCoiTypeId, new SelectList(@Model.ClientCoiList, "ClientCoiTypeId", "CoiTypeDescription"), "Select", new { @class = "mw-coi-modal_form-filters_coi-div_select", title = "COI Type" })
+                </div>
+                <div class="mw-coi-modal_form-filters_coi-div_row-none">
+                    <div class="mw-coi-modal_form-filters_coi-div_required">*</div><div class="mw-coi-modal_form-filters_title">Comment</div> <div class="mw-coi-modal_form-filters_coi-div_row-none_max">(Max of 250 characters)</div>
+                </div>
+                @Html.TextAreaFor(m => m.Comment, new { @rows = "4", @class = "mw-coi-modal_form-filters_coi-div_textarea", maxlength = "250", title = "Comment" })
+            </div>
+        </div>
+    </div>
+    <div class="mw-coi-modal_grid">
+        <div class="mw-coi-modal_grid_title">Application Collaborators or COI Identified by the PI</div>
+        <div id="gridCOI"></div>
+    </div>
+</div>
+<input type="hidden" id="clientAssignmentTypeId" value="@Model.ClientAssignmentTypeId" />
+<input type="hidden" id="noCoiExpertiseId" value="50" />
+<input type="hidden" id="coiExpertiseRatingId" value="@Model.CurrSessionCoiExpertiseRatingId" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.modal-footer').empty();
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveCOIFooter);
+        // Remove margin from margin dialog that is being inherited from myWorkspace.css (this is a special case)
+        $(".modal-dialog").css("margin-bottom", "0px");
+        // Remove margin from margin-footer that is being inherited from myWorkspace.css (this is a special case)
+        $(".modal-footer").css("margin", "0px");
+
+        $("#gridCOI").kendoGrid({
+            pageable: false,
+            resizable: true,
+            navigatable: true,
+            batch: true,
+            toolbar: ["create"],
+            columns: [
+                { field: "Name", filterable: false, title: "Name", width: "160px", template: "<div>${LastName}, ${FirstName}</div>" },
+                { field: "Organization", filterable: false, title: "Organization", width: "300px" },
+                { field: "CoiType", filterable: false, title: "Role", width: "150px" },
+                { field: "CoiSource", filterable: false, title: "Source" },
+            ],
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "Starts with",
+                        eq: "Is equal to",
+                        neq: "Is not equal to"
+                    }
+                }
+            },
+            editable: false,
+            scrollable: true,
+            groupable: true,
+            sortable: true,
+            dataBound: function (e) {
+            },
+        });
+
+        // This is where we added the same toolbar thats on the bottom of the grid to the top
+
+        $('#grid th a:nth-child(1)').addClass('alignCenter');
+        $('#grid .k-grid-header th:nth-child(14) .k-icon').css('margin-top', '17px');
+    });
+</script>
+
+<script type="text/javascript">
+    var selectedBox = !$('#noConflictsCheckbox').is(':checked');
+    var selectedDropdown = $('#ClientCoiTypeId').val();
+    if (selectedBox && selectedDropdown == "") {
+        $('#saveCOIChanges').attr('disabled', 'disabled');
+    }
+    $(document).on('change', '#ClientCoiTypeId', function () {
+        var selectedField = $('#ClientCoiTypeId option:selected').text();
+        if (selectedField == 'Select') {
+            $('#noConflictsCheckbox').attr('disabled', false);
+            $('#ExpertiseList').val('50');
+            $('#ClientCoiTypeId').removeClass('greyBorder');
+            $("#AssignmentList").val("");
+            $("#AssignmentList").val(parseInt($("#clientAssignmentTypeId").val()));
+        } else {
+            $('#noConflictsCheckbox').attr('disabled', true);
+            $('#ExpertiseList').val('49');
+            $('#noConflicts').css('color', 'black');
+            $('#noConflicts').removeClass('redBorder');
+            $('select#ClientCoiTypeId').removeClass('redBorder');
+            $('#ClientCoiTypeId').addClass('greyBorder');
+            $("#AssignmentList").val("");
+            $("#AssignmentList option").filter(function () {
+                return this.text == coiText;
+            }).attr('selected', true);
+            $('#saveCOIChanges').attr('disabled', false);
+        }
+    });
+    var pageLoad = 1;
+    $(document).on('click', '#noConflictsCheckbox', function () {
+        var selectedBox = $('#noConflictsCheckbox').is(':checked');
+        if (selectedBox == true) {
+            $('#ClientCoiTypeId').attr('disabled', true);
+            $('#Comment').attr('disabled', true);
+            $('#Comment').text('');
+            $('#ClientCoiTypeId').addClass('greyborder').val('');
+            $('#Comment').addClass('greyborder').val('');
+            $('#noConflictsBox').css('color', 'black');
+            $('#ClientCoiTypeId').removeClass('redBorder');
+            $('#Comment').removeClass('redBorder');
+            $('#ExpertiseList').val('50');
+            $('#saveCOIChanges').attr('disabled', false);
+            $("#AssignmentList").val("");
+            $('#ClientCoiTypeId, #Comment').removeClass('input-validation-error');
+        } else {
+            $('#ClientCoiTypeId').attr('disabled', false);
+            $('#Comment').attr('disabled', false);
+            $('#ClientCoiTypeId').removeClass('greyborder');
+            $('#Comment').removeClass('greyborder');
+            $('#ClientCoiTypeId').addClass('redBorder');
+            $('#Comment').addClass('redBorder');
+            $('#saveCOIChanges').attr('disabled', false);
+        }
+    });
+    $(document).on('focusout', '#Comment', function () {
+        if ($('#Comment').hasClass('redBorder')) {
+            var commentText = $('#Comment').val();
+            if (commentText == "") {
+                $('#Comment').addClass('redBorder');
+            } else {
+                $('#Comment').removeClass('redBorder');
+            }
+        }
+    });
+</script>
+
+@*script for performing the save/cancel functionality*@
+<script type="text/javascript">
+    //functions for hiding/showing coi and presentation order content
+    var coiText = 'COI';
+    var readerText = 'RR';
+    //functions to perform on change of expertise dropdown selection
+</script>

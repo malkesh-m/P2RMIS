@@ -1,0 +1,38 @@
+﻿@using System.Web
+@model Sra.P2rmis.Web.UI.Models.CommunicationContentViewModel
+
+@{
+}
+
+
+<div class="ui-dialog-content modal-standard-font">
+    <div class="row-fluid">
+        <p>This email was sent on @Model.FormatDateTime()</p>
+
+        <p><b>To:</b> @Model.FormatTo()</p>
+
+        <p><b>CC:</b> @Model.FomatCc()</p>
+
+        <p><b>BCC:</b> @Model.Content.Bcc</p>
+
+        <p><b>From:</b> @Model.Content.From.UserEmailAddress</p>
+
+        <p><b>Subject:</b> @Model.Content.Subject</p>
+        
+        <p>
+            <div class="span12 bordered">
+                <span class="textHeaderNotBold">Message</span>
+                <div class="row-fluid" style="margin-bottom: 5px;">
+                    @Html.Raw(HttpUtility.HtmlDecode(Model.Content.Message))
+                </div>
+            </div>
+        </p>
+        <p>&nbsp;</p>
+        <p><b>Attachments:</b> @Model.FormatAttachments()</p>
+
+        <div class="row-fluid alignCenter marginTop20">
+            <button id="cancelViewEmail" class="btn btn-primary" type="button">Close</button>
+        </div>
+    </div>
+</div>
+     

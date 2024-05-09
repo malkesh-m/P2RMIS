@@ -1,0 +1,17 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SecurityPolicyHistoryLogViewModel
+
+@Html.Partial("_PolicyManagementHeader")
+
+<!-- Tabs -->
+<div class="sec-fieldSet">
+    <ul class="nav nav-tabs">
+        <li>@Html.ActionLink("Security Policy", "SecurityPolicy", "Security")</li>
+        <li class="active">@Html.ActionLink("Security Policy History Log", "SecurityPolicyHistoryLog", "Security")</li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" id="securityPolicy">
+        </div>
+        <div class="tab-pane active" id="securityPolicyHistoryLog">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model Sra.P2rmis.Web.UI.Models.AdminNoteViewModel
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Common
+
+<head>
+    <style>
+        .anHeader {
+            font-family: Arial;
+            font-size: 12px;
+        }
+
+        .anFieldset {
+            margin: 10px;
+            font-size: 12px;
+            height: 50px;
+        }
+
+        .anExpText {
+            font-weight: bold;
+            color: grey;
+            font-size: 12px;
+        }
+
+        .anFormFieldLabel {
+            font-weight: bold;
+            font-size: 10px;
+            padding: 0px 5px 0px 5px;
+        }
+
+        .anformTitle {
+            font-size: 20px;
+        }
+
+        .redBorder {
+            border-color: red;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+        }
+    </style>
+</head>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <span class="span12 anExpText">
+                    <input type="hidden" id="applicationId" value="@Model.ApplicationId" />
+                    <input type="hidden" id="applicationBudgetId" value="@Model.ApplicationBudgetId" />
+                    Last Updated <span id="anDateUpdated">@Model.ModifiedDate</span> by @Model.ModifiedByName<br />
+                    <span class="align-right" style="font-weight:normal">Max. 1200 char</span>
+                </span>
+                <div class="span12 align-center padding-top-20">
+                    <textarea maxlength="1200" id="adminNote">@Model.Note</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

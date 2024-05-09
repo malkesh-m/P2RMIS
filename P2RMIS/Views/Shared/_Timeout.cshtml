@@ -1,0 +1,46 @@
+﻿@using Sra.P2rmis.CrossCuttingServices.ConfigurationServices
+@{
+    var timeOut = ConfigManager.AutoLogoutAfter * 60;
+}
+<script src='~/Scripts/jtimeout/jTimeout.min.js'></script>
+<div id="sessionExpireDialog" class="hidden">
+    <div class="modal-body session-warning">
+        <p>Your session has expired. You will be redirected to the Login page.</p>
+    </div>
+</div>
+<script>
+    $(function () {
+        var timedOut = false;
+        $.jTimeout({
+            'extendOnMouseMove': false,
+            'logoutUrl': '/account/logoff',
+            timeoutAfter: @timeOut,
+            secondsPrior: 0,
+            onSessionExtended: function (jTimeout) {
+                //do nothing on extend
+            },
+            onTimeout: function (jTimeout) {
+                if (jTimeout.loggedOut === false) {
+                    var dialogTitle = "<span class='modalSmallCaption modalWarningCaption'>Session Expired</span>";
+                    $('.modal-footer').remove();
+                    p2rims.modalFramework.displayModalNoEvent($("#sessionExpireDialog").html(), p2rims.modalFramework.customModalSizes.medium, dialogTitle, null, null, false, false);
+                    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.okFooter);
+                }
+                $.get(jTimeout.options.logoutUrl);
+                timedOut = jTimeout.timedOut;
+            }           
+        });
+        $(document).ajaxStop(function () {
+            if(!timedOut)
+                $.jTimeout.reset(@timeOut);
+        });           
+    });
+
+    //***WARNING***: Do not delete this shell function as it is needed for timeout to work in IE and Edge
+    window.onstorage = function (e) {        
+    };
+    $('body').on('click', "button[id='okDialogBtn']", function (e) {
+        $('.ui-dialog-titlebar-close').click();
+        location.href = '/account/logonaftertimeout?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);        
+    });
+</script>

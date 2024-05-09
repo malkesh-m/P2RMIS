@@ -1,0 +1,53 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<div class="upm-profile-section_field">
+    <label for="GeneralInfo_AcademicRankId" class="upm-profile-section_field academic-rank">Academic Rank</label>
+    @Html.DropDownListFor(z => Model.GeneralInfo.AcademicRankId, new SelectList(Model.AcademicRankDropdown, "Index", "Value", Model.GeneralInfo.AcademicRankId), "Select", new { @class = "optionalSelect  upm-profile-section_field_input-short" })
+</div>
+
+<div class="upm-profile-section-academic">
+    <span class="upm-profile-section_header">Education/Degrees</span>
+    <label for="userDegreeAdd" class="sr-only">Add Education and Degrees</label>
+    <a href="#" id="userDegreeAdd" class="upm-profile-section-academic_link"><img id="addDegreeIcon" src="~/Content/img/plus.png" alt="Add Education and Degrees" /></a>
+    @Html.CheckBoxFor(m => m.GeneralInfo.DegreeNotApplicable, new { @id = "degreeCheckbox", @class = "upm-profile-section-academic_top-checkbox" })
+    <label for="degreeCheckbox" class="upm-profile-section_field upm-profile-section-academic_top-label">N/A</label>
+    <ul class="list-unstyled upm-profile-section-academic_ul" id="userDegrees">
+        @for (var i = 0; i < Model.UserDegrees.Count(); i++)
+        {
+            var degreeDisplayClass = "";
+            var degreeId = "UserDegrees_"+ i +"__DegreeId";
+            var majorId = "UserDegrees_" + i + "__Major";
+            if (Model.UserDegrees[i].IsDeletable)
+            {
+                degreeDisplayClass = "hidden";
+            }
+        <li class="upm-profile-section-academic_ul_li @degreeDisplayClass">
+            <div>
+                <label for="userDegreeDelete" class="sr-only">Delete Education and Degree</label>
+                <a href="#" class="userDegreeDelete upm-profile-section-academic_ul_li_delete-degree" id="userDegreeDelete"><img src="~/Content/img/cross.png" class="icon-cancel" alt="Delete Education and Degree" /></a>
+                @if (Model.GeneralInfo.DegreeNotApplicable)
+                {
+                    <label for="@degreeId" class="sr-only">Degree Abbreviation Type</label>
+                    @Html.DropDownListFor(m => m.UserDegrees[i].DegreeId, new SelectList(Model.DegreeDropdown, "Index", "Value", Model.UserDegrees[i].DegreeId), "Degree", new { @class = "degreeId pageColumnTwoSelect upm-profile-section_field_input-short", disabled = "disabled" })
+                    <label for="@majorId" class="sr-only">Major Type</label>
+                    @Html.TextBoxFor(m => m.UserDegrees[i].Major, new { maxLength = "75", @class = "degreeMajor upm-profile-section_field_input-long", placeholder = "Enter Your Major", disabled = "disabled" })
+                }
+                else
+                {
+                    <label for="@degreeId" class="sr-only">Degree Abbreviation Type</label>
+                    @Html.DropDownListFor(m => m.UserDegrees[i].DegreeId, new SelectList(Model.DegreeDropdown, "Index", "Value", Model.UserDegrees[i].DegreeId), "Degree", new { @class = "degreeId pageColumnTwoSelect upm-profile-section_field_input-short", style = "overflow-x:scroll" })
+                    <label for="@majorId" class="sr-only">Major Type</label>
+                    @Html.TextBoxFor(m => m.UserDegrees[i].Major, new { maxLength = "75", @class = "degreeMajor upm-profile-section_field_input-long", placeholder = "Enter Your Major" })
+                }
+                @Html.HiddenFor(m => m.UserDegrees[i].UserDegreeId)
+                @Html.HiddenFor(m => m.UserDegrees[i].IsDeletable, new { @class = "degreeIsDeletable" })
+            </div>
+        </li>
+    }
+    </ul>
+</div>
+<div id="EducationDeletionDialog" class="hidden">
+    <div class="modal-body">
+        <p style="text-align:center">This will remove this Education/Degree entry.<br />Click OK to proceed?</p>
+    </div>
+</div>

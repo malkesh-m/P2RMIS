@@ -1,0 +1,126 @@
+﻿/*form spec*/
+.explTextCat1 {
+    color: gray;
+    font-family: arial;
+    font-size: 10px;
+}
+
+.basicExplText {
+    color: #646464;
+    font-family: arial;
+    font-size: 12px;
+}
+
+.conditionallyRequired {
+    color: gray;
+    font-family: arial;
+    font-size: 10px;
+    font-style: italic;
+}
+
+.fieldSetLedgend {
+    color: gray;
+    font-family: arial;
+    font-size: 10px;
+}
+
+.formFieldLabel {
+    font-weight: bold;
+    float: right;
+    font-size: 12px;
+}
+
+.sectionHeaderLvl2 {
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 10px 0px 10px 0px;
+}
+
+/*modal spec*/
+.modalSharedStyling {
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px;
+}
+.modalHeader {
+}
+
+.modalFooter {
+    color: #F5F5F5;
+    height: 30px; 
+}
+.modalSmall {
+    max-width:350px;
+    padding: 5px 15px 5px 15px;
+}
+.modalMed {
+    max-width: 550px;
+    padding: 5px 20px 5px 20px;
+}
+.modalLarge {
+    max-width: 820px;
+    padding: 5px 20px 5px 20px;
+}
+.modalCaption {
+    font-family: Arial;
+    text-align: center;
+}
+
+.modalSmallCaption {
+    font-size: 14px;
+}
+
+.modalMedCaption {
+    font-size: 16px;
+}
+
+.modalLargeCaption {
+    font-size: 18px;
+}
+
+.modalWarningCaption {
+    color: black !important;
+    background: #FFFF21 !important;
+}
+
+/*.modalNotificationCaption {
+    color: white !important;
+    background-color: #6D89D9 !important;
+}*/
+.modalDivBasic {
+    margin:0px 0px 15px 0px;
+    border:1px solid lightgrey;
+    padding:5px;
+}
+.modalDivBasicNoBorder {
+    margin:0px 10px 15px 10px;
+    padding:5px
+}
+.close-dialog a.ui-dialog-titlebar-close {
+    display:none  /*hide modal close 'x'*/
+}
+/*.ui-dialog-titlebar { 
+    height: 40px; 
+    line-height:16px;
+}*/
+.modalFormFieldLabel {
+    font-weight: bold;
+    font-size: 12px;
+}
+.modalDivBasic table {
+    font-size: 10px !important
+}
+.modalLarge .modal-body,
+.modalMed .modal-body,
+.modalSmall .modal-body {
+    margin-bottom: 0px !important;    
+}
+.modalLarge textarea,
+.modalMed textarea,
+.modalSmall textarea {
+   resize: none;
+}
+.modal-footer a{
+    color: #5682DA;
+    padding-top: 3.5px;
+}

@@ -1,0 +1,89 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json;
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ProgressViewModel
+
+@{
+    ViewBag.PageTitle = "Overall Progress";
+    ViewBag.SubPageTitle = Sra.P2rmis.Web.UI.Models.SubTabbedMenuViewModel.SubTab1;
+    const string Assign = Sra.P2rmis.Web.Controllers.SummaryStatementController.CommandDraftConstants.Assign;
+    const string Generate = Sra.P2rmis.Web.Controllers.SummaryStatementController.CommandDraftConstants.Generate;
+    const string AwardSessionVar = SessionVariables.AwardTypeId;
+    int? awardId = (int?)Session[AwardSessionVar];
+    const string UserIdSessionVar = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.UserIdSession;
+    int? userId = (int?)Session[UserIdSessionVar];
+    const string ZeroSearchResults = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.ZeroSearchResults;
+    @Html.Partial("_KendoHeader2016");
+}
+<style type="text/css">
+    .k-grid-header .k-grid-filter {
+        padding-left: 0px;
+    }
+
+    .k-grid-header thead th:nth-child(1) {
+        padding: .4em .6em;
+        text-align: center;
+    }
+
+    #grid, #newButtons {
+        display: none;
+    }
+
+    .k-grid thead tr th:nth-child(6) .k-grid-filter, .k-grid thead tr th:nth-child(7) .k-grid-filter {
+        top: 33px;
+        padding-top: 0px;
+    }
+
+    .k-grid thead tr th:nth-child(6), .k-grid thead tr th:nth-child(7) {
+        position: relative;
+    }
+
+        .k-grid thead tr th:nth-child(6) .k-link, .k-grid thead tr th:nth-child(7) .k-link {
+            float: left;
+        }
+</style>
+<p class="formTitle">Summary Statements</p>
+<div id="successMessage"></div>
+<div class="row-fluid">
+    <div class="span12" id="mainContent" style="border:thin solid #ddd;padding:20px">
+        @Html.Partial("_TabMenu")
+        @Html.Partial("_SSFilterMenu")
+        @Html.Partial("_ShowHideInstructions")
+        <div id="instructions">
+            <p style="font-size: 10pt;">
+                <ul>
+                    <li>Use the search filters above to enter criteria for summary statement display</li>
+                    <li>
+                        To generate draft summary statements:
+                        <ul>
+                            <li>Click the box in front of the header row and then the 'Generate' button to generate zip files of all the summary statements selected.</li>
+                            <li>Click the check box in the first column for a specific summary statement record and then click the 'Generate' button to generate a zip file for the selected draft summary statement to prepare for delivery or to generate a file for the most recent version of the selected draft summary statement.</li>
+                        </ul>
+                    </li>
+                    <li>Click the boxes in the first column and then the 'Assign User' button to assign users to selected individual summary statements.</li>
+                    <li>The 'Notes' column displays an icon if there are any notes associated with this summary statement. Clicking the icon displays the notes.</li>
+                    <li>Click the link in the 'Current Phase' column to display a screen showing the summary statement progress history.</li>
+                </ul>
+            </p>
+        </div>
+        <div class="formNoResults" id="formNoResults">@ZeroSearchResults</div>
+        <p style="text-align: right;" id="newButtons">
+            <input type="submit" style="font-size: 12px;" id="assignBtn" value="@Assign" disabled="disabled" name="submitBtn" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" style="font-size: 12px;" id="generateBtn" value="@Generate" disabled="disabled" name="submitBtn" />
+        </p>
+        <table style="width: 100%">
+            <tr>
+                <td>Draft Summary Statements are available for checkout</td>
+                <td style="text-align:right" id="dataLoaded"></td>
+            </tr>
+        </table>
+        <div id="loading"></div>
+        <div id="grid"></div>
+    </div>
+</div>
+<input type="hidden" id="IsWebBased" value="@Model.IsWebBased.ToString()" />
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-document.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-Progress.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/adminNotes.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")

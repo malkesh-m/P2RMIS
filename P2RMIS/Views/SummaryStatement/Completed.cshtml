@@ -1,0 +1,52 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ProgressViewModel
+
+@{
+    ViewBag.PageTitle = "Deliverables";
+    ViewBag.SubPageTitle = Sra.P2rmis.Web.UI.Models.SubTabbedMenuViewModel.SubTab3;
+    const string AwardSessionVar = SessionVariables.AwardTypeId;
+    const string ZeroSearchResults = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.ZeroSearchResults;
+    int? awardId = (int?)Session[AwardSessionVar];
+    const string UserIdSessionVar = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.UserIdSession;
+    int? userId = (int?)Session[UserIdSessionVar];
+    @Html.Partial("_KendoHeader2016");
+}
+
+<p class="formTitle">Summary Statements</p>
+
+<style type="text/css">
+    .k-grid-header thead th:nth-child(1) {
+        padding: .4em .6em;
+        text-align: center;
+    }
+</style>
+<div class="row-fluid">
+    <div class="span12" id="mainContent">
+        @Html.Partial("_TabMenu")
+        @Html.Partial("_SSFilterMenu")
+        @Html.Partial("_ShowHideInstructions")
+
+        <div id="instructions">
+            <p style="font-size: 10pt;">&nbsp;</p>
+        </div>
+        <div class="formNoResults" id="formNoResults">@ZeroSearchResults</div>
+        <p style="text-align: right;">
+            <input type="submit" id="generateBtn" value="Generate" disabled="disabled" />
+        </p>
+        <div id="loading"></div>
+        <div id="statementContents">
+            <table style="width: 100%">
+                <tr>
+                    <td style="text-align:right" id="dataLoaded"></td>
+                </tr>
+            </table>
+            <div id="grid" style="width: 100%;"></div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsWebBased" value="@Model.IsWebBased.ToString()" />
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-document.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-completed.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")

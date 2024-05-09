@@ -1,0 +1,391 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel.Tab4;
+}
+
+@section HeaderExtension
+{
+    @Html.IncludeVersionedFiles("/Content/MyWorkspace.css")
+    @Html.Partial("_KendoHeader2020")
+}
+
+<div class="shared_mw_tabs">
+    @if (Model.LastPageUrl != "")
+    {
+        <span class="shared_mw_tabs_back-arrow">
+            <a id="backButton" href="@Model.LastPageUrl">
+                <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                     alt="Go Back to Previous Page" title="Back" />
+            </a>
+        </span>
+    }
+    <h1 class="shared_mw_tabs_h1">@Model.MenuTitle</h1>
+    <br />
+</div>
+    <style>
+        .ellipsisCell {
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    .k-pager-info.k-label {
+        color: black;
+    }
+
+    .k-pager-wrap.k-grid-pager .k-icon, .pagerTop .k-icon {
+        margin-top: 2px;
+        vertical-align: baseline;
+    }
+
+        .k-pager-wrap .k-icon.k-i-arrow-60-down, .pagerTop .k-icon.k-i-arrow-60-down {
+            margin-top: 10px;
+        }
+
+    </style>
+    <div class="row-fluid">
+        @Html.Partial("_PrivilegedTabMenu")
+        @Html.Partial("_SessionPanelList")
+        @if (Model.SessionPanels.Count() > 0 && Model.SessionPanelId > 0 && !Model.NotRegistered)
+            {
+                if (Model.IsClientChair)
+                {
+        @Html.Partial("_CPRITChair")
+        <input type="hidden" id="kendoGridApplicationsData" data-attr="gridChair" />
+                }
+                else if (Model.IsScoringStatus)
+                {
+        @Html.Partial("_ApplicationScoringGrid")
+                }
+                else if (Model.IsPostAssignedStatus)
+                {
+        @Html.Partial("_PostAssignmentGrid")
+        <input type="hidden" id="kendoGridApplicationsData" data-attr="postAssignmentGrid" />
+                }
+                else
+                {
+        @Html.Partial("_PreAssignmentGrid")
+        <input type="hidden" id="kendoGridApplicationsData" data-attr="preAssignmentGrid" />
+                }
+            }
+        @if (Model.NotRegistered)
+            {
+        <p style="text-align:center;color:red" id="notRegistered" role="alert" tabindex="-1">@Model.NotRegistratedForPanel</p>
+            }
+    </div>
+    <input type="hidden" id="applicationId" />
+    <input type="hidden" id="checkoutUserId" value=@Model.UserId />
+    <input type="hidden" id="clientIdLoaded" value="@Model.ClientId" />
+    <input type="hidden" id="isClientChairLoaded" value="@Model.IsClientChair" />
+    <input type="hidden" id="gridSessionPanelId" value="@Model.SessionPanelId" />
+
+
+    @Html.Partial("_ApplicationCommentModal")
+    @Html.IncludeVersionedFiles("/Scripts/Custom/MyWorkspace/ApplicationScoring.js")
+
+    <script type="text/javascript">
+    //var notRegistered = '#notRegistered';
+    //isVisibleFocus(notRegistered);
+
+    // Initialize
+    var gSetSessionPanelUrl = '@Url.Action(Routing.MyWorkspace.SetSessionPanel, Routing.P2rmisControllers.MyWorkspace)';
+    var gViewApplicationModalUrl = '@Url.Action(Routing.PanelManagement.PIInformation, Routing.P2rmisControllers.PanelManagement)';
+
+    $(document).ready(function () {
+        var setGridData = $('#kendoGridApplicationsData').val();
+    });
+
+    if($('#gridChair').is(':visible')) {
+        $('.critique-overdue').hide();
+    }
+    var postMeeting = $('#postAssignmentSection h5').text().indexOf('Meeting');
+    var appMeeting = $('#applicationScoringSection h5').text().indexOf('Meeting');
+    if (postMeeting > 0 || appMeeting > 0) {
+        $('#showAssignedChkBx').attr('checked', false);
+    }
+    var findGridId;
+    // Populate review assignment data to modal -- Post Assignment Grid
+    $('body').on('click', '.reviewer-assignment', function (e) {
+        e.preventDefault();
+
+        // Get the parameters to pass
+        var findGridId = $('#kendoGridApplicationsData').attr('data-attr');
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Expertise Level/Conflict of Interest (COI)</span>";
+        var panelApplicationId = $(this).attr("panel-app-id");
+        var panelUserAssignmentId = $(this).attr("participant-id");
+        var hasExpertise = $(this).attr("has-expertise");
+        var isGridVisible = $('#gridChair').is(':visible');
+        var thisText = $(this).text();
+
+        // Determines what grid to load
+        var isCprit = ($('#clientIdLoaded').val() == "9") ? true : false;
+        var isCpritChair = ($('#isClientChairLoaded').val()) ? true : false;
+
+        $.get('/MyWorkspace/GetReviewerAssignment', { panelApplicationId: panelApplicationId, panelUserAssignmentId: panelUserAssignmentId, isCprit: isCprit, isCpritChair: isCpritChair },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+
+                // Determines which grid to show
+                if (isCpritChair) {
+                    if ($('.modal-footer').is(':visible')) {
+                        $('.modal-footer').remove();
+                    }
+                    $('.ui-dialog').append('<div class="modal-footer"></div>');
+                    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveCOIFooter);
+                    $('.k-pager-wrap').show();
+
+                    // This is where we added the same toolbar thats on the bottom of the grid to the top
+                    if (isGridVisible) {
+                        $('#ExpertiseList, #expertiseCOITitle').hide();
+                    }
+                    if (thisText == 'Yes') {
+                        $('#viewAbstract').hide();
+                        $('#noConflictsCheckbox').attr('disabled', 'disabled');
+                    }
+                    if (thisText == 'No') {
+                        $('#noConflictsCheckbox').attr('disabled', false);
+                        $('#noConflictsCheckbox').attr('checked', 'checked');
+                        $('#ClientCoiTypeId').attr('disabled', 'disabled');
+                        $('#Comment').attr('disabled', 'disabled');
+                    }
+                    getCollaborators(panelApplicationId, panelUserAssignmentId);
+                    $('#gridCOI .k-grid-pager').hide();
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                } else if (findGridId == "preAssignmentGrid") {
+                    if ($('.modal-footer').is(':visible')) {
+                        $('.modal-footer').remove();
+                    }
+                    $('.ui-dialog').append('<div class="modal-footer"></div>');
+                    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveCOIFooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                    if (isGridVisible) {
+                        $('#coiDiv').find('span:first-of-type').hide();
+                        $('#ExpertiseList').hide();
+                    }
+                    getCollaborators(panelApplicationId, panelUserAssignmentId);
+                    $('#collaborators .k-grid-pager').hide();
+                } else if (findGridId == "postAssignmentGrid") {
+                    if (hasExpertise != 0) {
+                        $("#ExpertiseList").attr("disabled", true);
+                        $("#coiCheckBox").attr("disabled", true);                        
+                        $("#ClientCoiTypeId").attr("disabled", true);
+                        $("#Comment").attr("disabled", true);
+                        $("#saveDialogChanges").attr("disabled", true);
+                        if ($('.modal-footer').is(':visible')) {
+                            $('.modal-footer').remove();
+                        }
+                        $('.ui-dialog').append('<div class="modal-footer"></div>');
+                        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                    } else {
+                        if ($('.modal-footer').is(':visible')) {
+                            $('.modal-footer').remove();
+                        }
+                        $('.ui-dialog').append('<div class="modal-footer"></div>');
+                        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveCOIFooter);
+                        $('#collaborators .k-grid-pager').hide();
+                        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                    }
+                    getCollaborators(panelApplicationId, panelUserAssignmentId);
+                }
+            }
+        );
+    });
+
+    // COI Grid
+    function getCollaborators(panelApplicationId, panelUserAssignmentId) {
+        $.get('/MyWorkspace/GetCollaborators',
+            { panelApplicationId: panelApplicationId, panelUserAssignmentId: panelUserAssignmentId },
+            function (responseText, textStatus, XMLHttpRequest) {
+                //var isGridVis = $('#gridCOI').is(":visible");
+                //var isCOIVis = $('#viewApplicationCollaborators').is(':visible');
+                //if (isGridVis || isCOIVis) {
+                    if (responseText.length != '0') {
+                        var ds = populateSsDataSource(JSON.parse(responseText));
+                        var grid = $("#gridCOI").data("kendoGrid");
+                        ds.read();
+                        grid.dataSource.data(ds.data());
+                    } else {
+                        $('#gridCOI').hide();
+                    }
+                //}
+
+            }
+        );
+        function populateSsDataSource(dataJson) {
+            var dataSource = new kendo.data.DataSource({
+                type: "json",
+                data: dataJson,
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    model: {
+                        fields: {
+                            LastName: { type: "string" },
+                            FirstName: { type: "string" },
+                            Organization: { type: "string" },
+                            CoiType: { type: "string" },
+                            CoiSource: { type: "string" },
+                        }
+                    }
+                }
+            });
+            return dataSource;
+        }
+    }
+    // Set award grid data
+    function setPreAssignmentGrid(id) {
+        var sessionPanelId = $('#gridSessionPanelId').val();
+        $.ajax({
+            url: '/MyWorkSpace/GetPreAssignmentApplications',
+            data: {
+                sessionPanelId: sessionPanelId
+            }
+        }).done(function (results) {
+            if (results != "") {
+                results = (id == "preAssignmentGrid") ? results.PreAssignmentApplications : results.ChairApplications;
+                // Grid data source
+                var mainDataSource = new kendo.data.DataSource({
+                    type: "json",
+                    data: JSON.parse(results),
+                    batch: true,
+                    pageSize: 20,
+                });
+
+                var grid = $("#" + id).data("kendoGrid");
+                mainDataSource.read();
+                grid.dataSource.data(mainDataSource.data());
+                grid.setDataSource(grid.dataSource);
+                grid.refresh();
+            }
+        });
+    }
+    //function to perform save operation
+    $(document).on('click', '#saveCOIChanges', function (e) {
+        e.preventDefault();
+            var clientExpertiseRatingId = $("#ExpertiseList").val();
+            var clientCoiTypeId = $("#ClientCoiTypeId").val();
+            var isCoi = $("#AssignmentList option:selected").text() === "COI";
+            var clientAssignmentTypeId = $("#AssignmentList option:selected").val();
+            var panelApplicationId = $("#PanelApplicationId").val();
+            var panelUserAssignmentId = $("#PanelUserAssignmentId").val();
+            var comment = $("#Comment").val();
+            var reviewerHasWorkflowMessage = "Workflow was started & reviewer could not be unassigned. To proceed, the associated workflow/critiques data will be deleted.";
+            var updatingCoiMessage = "You have declared yourself as a Conflict of Interest.";
+            var confirmMessageSuffix = "\nAre you sure you want to proceed?";
+
+            if (isCoi) {
+                    clientExpertiseRatingId = $("#coiExpertiseRatingId").val();
+                    clientExpertiseText = 'COI';
+            } else {
+               $("#ClientCoiTypeId option").eq(0).prop('selected', true);
+               clientCoiTypeId = $("#ClientCoiTypeId").val();
+               $("#Comment").val("");
+               comment = "";      // clear comment
+            }
+
+            // Save changes
+            var postData = {
+                "clientExpertiseRatingId": clientExpertiseRatingId, "clientCoiTypeId": clientCoiTypeId,
+                "clientAssignmentTypeId": clientAssignmentTypeId, "panelApplicationId": panelApplicationId,
+                "panelUserAssignmentId": panelUserAssignmentId, "comment": comment, "forceUnAssignAction": false
+            };
+
+            // Define save assignment function
+            var selectedExpertise = $('#ExpertiseList option:selected').text();
+            var isChairGridVis = $('#gridChair').is(':visible');
+
+            // Checks the Expertise Selection
+            if (isChairGridVis) {
+                var checkedBox = $('#noConflictsCheckbox').is(':checked');
+                if (!checkedBox) {
+                    var coiType = $('#ClientCoiTypeId').val();
+                    var commentSection = $('#Comment').val();
+                    if (coiType == "" || commentSection == "") {
+                        (coiType == "") ? $('#ClientCoiTypeId').addClass('input-validation-error') : $('#ClientCoiTypeId').removeClass('input-validation-error');
+                        (commentSection == "") ? $('#Comment').addClass('input-validation-error') : $('#Comment').removeClass('input-validation-error');
+                        return false;
+                    }
+                }
+            } else {
+                if (selectedExpertise == "Select" && !isCoi) {
+                    $('#ExpertiseList').addClass('input-validation-error');
+                    $('#failureMessage').text('Please complete all required fields.');
+                    return false;
+                } else if (isCoi) {      
+                    $('#ExpertiseList').removeClass('input-validation-error');
+                    var getClientId = $('#ClientCoiTypeId').val();
+                    var getTextArea = $.trim($('#Comment').val());
+                    if (getClientId != "" && getTextArea != "") {
+                        $('#ExpertiseList').removeClass('input-validation-error');
+                        $('#failureMessage').text('');
+                    } else {
+                        $('#failureMessage').text('Please complete all required fields.');
+                        (getClientId == "") ? $('#ClientCoiTypeId').addClass('input-validation-error') : $('#ClientCoiTypeId').removeClass('input-validation-error');
+                        (getTextArea == "") ? $('#Comment').addClass('input-validation-error') : $('#Comment').removeClass('input-validation-error');
+                        return false;
+                    }
+                } else {
+                    $('#ExpertiseList').removeClass('input-validation-error');
+                    $('#failureMessage').text('');
+                }
+            }
+
+
+            var fnSaveAssignment = function (data) {
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '/MyWorkspace/SaveAssignment',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                }).done(function (result) {
+                    if (result && typeof result === "boolean") {
+                        var id = $('#kendoGridApplicationsData').attr('data-attr');
+                        $('.ui-dialog-titlebar-close').click();
+
+                        $.get('/MyWorkspace/GetPreAssignmentApplications', {
+                            sessionPanelId: $('#gridSessionPanelId').val() },
+                            function (responseText, textStatus, XMLHttpRequest) {
+                                var getGrid = $('#kendoGridApplicationsData').attr('data-attr');
+                                var data = JSON.parse(responseText);
+                                data = (getGrid == 'preAssignmentGrid') ? data.PreAssignmentApplications : (getGrid == 'postAssignmentGrid') ? data.PostAssignmentApplications : data.ChairApplications;
+                                var mainDataSource = new kendo.data.DataSource({
+                                    type: "json",
+                                    data: data,
+                                    batch: true,
+                                    pageSize: 20,
+                                });
+                                var getScroll = parseInt($('.k-grid-content').scrollTop());
+                                var grid = $("#" + id).data("kendoGrid");
+                                mainDataSource.read();
+                                grid.dataSource.data(mainDataSource.data());
+                                grid.refresh();
+                                if (getGrid == 'gridChair') {
+                                    setTimeout(function () {
+                                        $('.k-grid-content').animate({
+                                            scrollTop: getScroll
+                                        }, 0);
+                                    }, 300);
+                                }
+                            });
+                    } else {
+                        if (result != $("<div/>").html(reviewerHasWorkflowMessage).text()) {
+                            alert(result);
+                        }
+                    }
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert($.defaultFailureMessage);
+                });
+            };
+            if ((isCoi && confirm(updatingCoiMessage)) || !isCoi) {
+                fnSaveAssignment(postData);
+            }
+    });
+    </script>
+
+

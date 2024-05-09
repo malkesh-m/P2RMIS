@@ -1,0 +1,2 @@
+﻿CREATE USER [web-p2rmis] WITHOUT LOGIN;
+

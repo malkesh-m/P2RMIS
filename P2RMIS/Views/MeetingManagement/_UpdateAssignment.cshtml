@@ -1,0 +1,94 @@
+﻿@using Newtonsoft.Json;
+
+<style type="text/css">
+    .k-widget.k-datepicker.k-header, .k-widget.k-timepicker.k-header {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .ms2side__header, .ms2side__div select {
+        width: 182px;
+    }
+
+    .ms2side__header {
+        color: black;
+        background: white;
+        font-weight: bold;
+    }
+
+    .ms2side__div {
+        margin-top: 15px;
+    }
+</style>
+
+<section class="p2FilterContainer" id="assignmentDetails">
+    <div class="p2FilterContainer_full" style="position: relative;">
+        <h6 class="p2FilterContainer_title">Assignment Details</h6>
+        <input type="hidden" id="ReviewerUserId" />
+        <div class="p2FilterContainer_contents">
+            <div class="displayInline">
+                <label class="displayInline fontSize12"><strong>Attendee:</strong></label>
+                <div id="attendeeName" class="displayInline"></div>
+                <div><strong>All fields are required.</strong></div>
+            </div>
+            <ul class="p2FilterContainer_modal-details" style="width: 350px;">
+                <li class="p2FilterContainer_modal-details_margin">
+                    <label for="per-managementmodal-fy" class="p2FilterContainer_modal-details_label">Fiscal Year</label>
+                    <select class="p2FilterContainer_selects_select" id="per-managementmodal-fy"></select>
+                </li>
+                <li class="p2FilterContainer_modal-details_margin per-managementmodal-program">
+                    <label for="program-dropdown" class="p2FilterContainer_modal-details_label">Program</label>
+                    <select class="p2FilterContainer_selects_select" id="program-dropdown">
+                        <option>Select Program</option>
+                    </select>
+                </li>
+                <li class="p2FilterContainer_modal-details_margin" id="meetingLabel">
+                    <label for="meeting-dropdown" class="p2FilterContainer_modal-details_label">Meeting</label>
+                    <select class="p2FilterContainer_selects_select" id="meeting-dropdown"><option selected>Select Meeting</option></select>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <select id="unassignedSessions" name="unassignedSessions"></select>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+@Html.Hidden("sessionCountLeft", "")
+@Html.Hidden("sessionCountRight", "")
+<script src="~/Scripts/Custom/MeetingManagement/nonReviewerAssignment.js"></script>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveAssignmentFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+    $("#nonRevAssignmentSave").attr("disabled", true);
+    $("button[id='nonRevAssignmentSave']").click(function () {
+        var thisMeeting = $("#meeting-dropdown").val();
+        var userId = $("#ReviewerUserId").val();
+        AssignedValues = [];
+        $("#unassignedSessionsms2side__dx option").each(function () {
+            AssignedValues.push(parseInt($(this).val()))
+        });
+        UnassignedValues = [];
+        $("#unassignedSessionsms2side__sx option").each(function () {
+            UnassignedValues.push(parseInt($(this).val()))
+        });
+
+        $.ajax({
+            url: '/MeetingManagement/SaveNonReviewerSessionAssignments',
+            data: { clientMeetingId: thisMeeting, userId: userId, assignedValues: AssignedValues, unassignedValues: UnassignedValues },
+            traditional: true
+        }).done(function (results) {
+            if (results.success) {
+                $("#successMessage").html("Assignments saved successfully!").show();
+                $("#failureMessage").html("").hide();
+            } else {
+                $("#successMessage").html("").hide();
+                $("#failureMessage").html("Unable to save assignment.").show();
+            }
+            $('.ui-dialog-titlebar-close').click();
+        });
+
+    });
+
+</script>

@@ -1,0 +1,9 @@
+﻿@using Sra.P2rmis.CrossCuttingServices;
+@{
+    ViewBag.Title = "File Not Found";
+}
+
+    <h3>The file requested is unavailable.</h3>
+    <p>If you believe you should have access, please contact <a href="mailto:@ViewHelpers.HelpDeskEmail">@ViewHelpers.HelpDeskEmail</a></p>
+    <input type="button" name="ReturnButton" value="Return to Previous Page" class="normal" onclick="history.go(-1)" />
+

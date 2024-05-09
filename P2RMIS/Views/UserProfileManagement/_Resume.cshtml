@@ -1,0 +1,35 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+@using Sra.P2rmis.Web.Common
+
+<section class="upm-profile-section-academic" id="userClientsSection" role="region" aria-labelledby="resume-section">
+    <span class="upm-profile-section_header" id="resume-section">CV</span>
+    @if (Model.CanUploadCv)
+    {
+        <label for="userCVAdd" class="sr-only">Add CV</label>
+        <a href="#" id="userCVAdd" class="upm-profile-section-academic_cv-link"><img src="~/Content/img/plus.png" alt="Add CV" /></a>
+    }
+    else
+    {
+        <label for="userCVAdd" class="sr-only">Add CV</label>
+        <a href="#" id="userCVAdd" class="upm-profile-section-academic_cv-link"><img src="~/Content/img/plus_disabled.png" alt="Add CV" /></a>
+    }
+    <div>
+        Files must be in PDF format. The upload will not ADD, but instead REPLACE the existing CV. As it is not required, please ensure that your Social Security Number (SSN) is not included on your CV.
+    </div>
+    <ul class="list-unstyled" id="userCVs">
+        @if (Model.UserResume != null && Model.UserResume.ResumeDisplayName != null)
+        {
+            var filePath = string.Format("ViewResumeFile?resumeId={0}&fileName={1}", Model.UserResume.ResumeId, Model.UserResume.ResumeDisplayName);
+            <li class="alignLeft userCV">
+                FILENAME <a href="@filePath" target="@PdfViewer.WindowName" class="userCVLink">@Model.UserResume.ResumeDisplayName</a>
+            </li>
+        }
+        else
+        {
+            <li class="alignLeft userCV hide">
+                FILENAME <a href="#" class="userCVLink" target="_blank"></a>
+            </li>
+        }
+    </ul>
+</section>
+

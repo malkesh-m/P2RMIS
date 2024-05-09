@@ -1,0 +1,276 @@
+﻿@using Sra.P2rmis.Bll
+@model Sra.P2rmis.Web.UI.Models.ReviewerAssignmentViewModel
+<style type="text/css">
+    #ClientCoiTypeId {
+        width: 99%;
+    }
+</style>
+@{
+    string displayCoi = "";
+    string displayOrder = "";
+    displayCoi = (Model.AssignmentTypeId == LookupService.LookupAssignmentTypeIdCoi) ? "display: inline;" : "display: none;";
+    displayOrder = ((Model.AssignmentTypeId == LookupService.LookupAssignmentTypeIdReader) || (Model.AssignmentTypeId == LookupService.LookupAssignmentTypeIdCoi)) ? "display: none;" : "display: inline;";
+    string reviewerHasWorkflowMessage = Sra.P2rmis.Web.Common.Message.ReviewerHasWorkflowMessage;
+    string assignReviewerToCoiMessage = Sra.P2rmis.Web.Common.Message.AssignReviewerToCoiMessage;
+
+    string clientUnassignmentTypeId = Sra.P2rmis.Web.UI.Models.ReviewerAssignmentViewModel.ClientUnAssignmentTypeId.ToString();
+    <input type="hidden" id="clientUnassignmentTypeId" value="@clientUnassignmentTypeId" />
+
+    int? originalClientAssignmentTypeId = Model.ClientAssignmentTypeId;
+    int? originalPresentationOrder = Model.PresentationOrder;
+    int? originalExpertiseRatingId = Model.ClientExpertiseRatingId;
+    // used to compute change only
+    <input type="hidden" id="originalClientAssignmentTypeId" value="@originalClientAssignmentTypeId" />
+    <input type="hidden" id="originalPresentationOrder" value="@originalPresentationOrder" />
+    <input type="hidden" id="originalExpertiseRating" value="@originalExpertiseRatingId" />
+    <input type="hidden" id="coiExpertiseRatingId" value="@Model.CurrSessionCoiExpertiseRatingId" />
+
+}
+<div id="updateAssignment" tabindex="-1" role="dialog">
+    <div id="resultMessage" style="display:none; color:red;"></div>
+    <p>To make assignments, please select assignment type and presenting order for <span id="reviewerName">@Model.ReviewerName</span> on @Model.LogNumber.</p>
+    @Html.HiddenFor(x => x.PanelApplicationId, Model.PanelApplicationId)
+    @Html.HiddenFor(x => x.PanelUserAssignmentId, Model.PanelUserAssignmentId)
+    <p>To remove application assignment, please select "UnAssign" as the assignment type.</p>
+    <p>
+        @Html.DropDownListFor(m => m.ClientAssignmentTypeId, new SelectList(@Model.ClientAssignmentTypeList, "ClientAssignmentTypeId", "ClientAssignmentTypeAbbreviation"), new { @id = "AssignmentList" })
+        @Html.DropDownListFor(m => m.PresentationOrder, new SelectList(@Model.PresentationOrderList), new { @id = "OrderList", @style = @displayOrder })
+    </p>
+    <p>To update reviewer @Model.ReviewerName's expertise on @Model.LogNumber, please select expertise from drop down box.</p>
+    <p>
+        Expertise: @Html.DropDownListFor(m => m.ClientExpertiseRatingId, new SelectList(@Model.ClientExpertiseRatingList, "ClientExpertiseRatingId", "ClientExpertiseRatingAbbreviation"), "Select expertise level", new { @id = "ExpertiseList" })<br />
+        <div id="coiDiv" style="@displayCoi">
+            <div class="required">* Denotes required</div>
+            <span class="required">*</span> COI Type: @Html.DropDownListFor(m => m.ClientCoiTypeId, new SelectList(@Model.ClientCoiList, "ClientCoiTypeId", "CoiTypeDescription"), "Select a COI type")<br />
+            <div style="@displayCoi"></div>
+            <span class="required">*</span> Comments: <br />
+            @Html.TextAreaFor(m => m.Comment, new { style = "width: 99%; padding: 0px; margin: 0px; height:60px;" })
+        </div>
+    </p>
+</div>
+@*script for performing the save/cancel functionality*@
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+ 
+    $('#submitForm').on('click', function () {
+        $("#assignmentForm").submit();
+    });
+
+    //functions for hiding/showing coi and presentation order content
+    var coiText = 'COI';
+    var readerText = 'RR';
+    //functions to perform on change of assignment dropdown selection
+    $('#AssignmentList').change(function () {
+        // if the assignment is COI
+       if ($("#AssignmentList option:selected").text() == coiText) {
+            //set the presentation order to unassign and hide it
+            $('#OrderList').hide();
+            //set expertise dropdown to select placeholder
+            $("#ExpertiseList option").filter(function () {
+                    return this.text == "Select expertise level";
+            }).attr('selected', true);
+            $("#ExpertiseList").attr('disabled', true);
+            // show coi type and comments
+            $('#coiDiv').show();
+        }
+        // if the assignment is reader
+        else if ($("#AssignmentList option:selected").text() == readerText)
+        {
+            //hide coi type and comments and presentation order
+            $('#OrderList').hide();
+            fnHideAndClearCoiDiv();
+            //if the expertise dropdown is set to coi
+            if ($("#ExpertiseList option:selected").text() == coiText) {
+                //set expertise dropdown to have a selected value of null
+                $("#ExpertiseList").val(0);
+            }
+        }
+        else {
+            // hide coi type and comments and clear the input values
+            fnHideAndClearCoiDiv();
+            // show the presentation order
+            $('#OrderList').show();
+            $("#ExpertiseList").removeAttr('disabled');
+            //set expertise dropdown to have a selected original value
+            $("#ExpertiseList").val($("#originalExpertiseRating").val());
+        }
+
+        //if the assignment list selected value is null
+        if ($("#AssignmentList").val() == $("#clientUnassignmentTypeId").val())
+        {
+            //the presentation order list selected value is set to null and disabled
+         //   $('#OrderList').val(0);
+            $('#OrderList').attr('disabled', 'disabled');
+        }
+        else {
+            //the presentation order list is enabled
+            $('#OrderList').removeAttr('disabled');
+        }
+    });
+    //functions to perform on change of expertise dropdown selection
+    $('#ExpertiseList').change(function () {
+        //if expertise selected value is COI
+        if ($("#ExpertiseList option:selected").text() == coiText) {
+            //set order list selected value to null and hide it
+            $('#OrderList').hide();
+            //set assignment list selected value to COI
+            $("#AssignmentList option").filter(function () {
+                return this.text == coiText;
+            }).attr('selected', true);
+            //show coi type dropdown and comments
+            $('#coiDiv').show();
+        }
+        else {
+            // hide coi type dropdown and comments
+            fnHideAndClearCoiDiv();
+            //show the presentation order dropdown list
+            if ($('#AssignmentList option:selected').text() != readerText) {
+                $('#OrderList').show();
+            }
+            //if assignment list option selected is COI
+            if ($("#AssignmentList option:selected").text() == coiText) {
+                //set assignment list selected value to the original value
+                $("#AssignmentList").val($("#originalClientAssignmentTypeId").val());
+            }
+        }
+    });
+    //on page load if the assignment list is null disable the presentation order list
+    $(document).ready(function () {
+        if ($("#AssignmentList").val() == $("#clientUnassignmentTypeId").val()) {
+            $('#OrderList').attr('disabled', 'disabled');
+        }
+        if ($("#AssignmentList option:selected").text() == coiText) {
+           //disable expertise dropdown
+            $("#ExpertiseList").attr('disabled', true);
+        }
+               
+    });
+    //function to perform save operation
+    $("#saveDialogChanges").click(function (e) {
+        e.preventDefault();
+        var clientExpertiseRatingId = $("#ExpertiseList").val(),
+            clientExpertiseText = $("#ExpertiseList option:selected").text(),
+            clientCoiTypeId = $("#ClientCoiTypeId").val(),
+            presentationOrder = $("#OrderList").val(),
+            isCoi = $("#AssignmentList option:selected").text() === "COI",
+            clientAssignmentTypeId = $("#AssignmentList").val(),
+            panelApplicationId = $("#PanelApplicationId").val(),
+            panelUserAssignmentId = $("#PanelUserAssignmentId").val(),
+            comment = $("#Comment").val(),
+            clientAssignmentChanged = $("#originalClientAssignmentTypeId").val() != clientAssignmentTypeId || $("#originalPresentationOrder").val() != presentationOrder,
+            failureMessage = "Sorry, there was a problem processing your request.",
+            assignmentList = $('#AssignmentList option:selected').text(),
+            assignmentListText = assignmentList.concat(presentationOrder);
+            reviewerHasWorkflowMessage = "@reviewerHasWorkflowMessage",
+            updatingCoiMessage = "@assignReviewerToCoiMessage",
+            newAppId = sessionStorage.getItem('raLogNumber');
+
+        if (isCoi) {
+            clientExpertiseRatingId = $("#coiExpertiseRatingId").val();
+            presentationOrder = null;
+            clientExpertiseText = 'COI';
+        }
+
+        var postData = {
+            "clientExpertiseRatingId": clientExpertiseRatingId, "clientCoiTypeId": clientCoiTypeId, "presentationOrder": presentationOrder,
+            "clientAssignmentTypeId": clientAssignmentTypeId, "panelApplicationId": panelApplicationId,
+            "panelUserAssignmentId": panelUserAssignmentId, "comment": comment, "forceUnAssignAction": false, "clientAssignmentChanged": clientAssignmentChanged
+        };
+
+
+         // This is for the array for rebuilding original grid
+        var expertiseColor = (clientExpertiseText == 'None') ? 'expertiseNoSelection' : (clientExpertiseText == 'High') ? 'expertiseHigh' : (clientExpertiseText == 'Med') ? 'expertiseMed' : (clientExpertiseText == 'Low') ? 'expertiseLow' : (clientExpertiseText == 'COI') ? 'expertiseCOI' : 'expertiseNone';
+        var assignmentListTextNew = (clientAssignmentTypeId == 0) ? '' : (isCoi) ? 'COI' : assignmentListText;
+        sessionStorage.setItem('expertiseColor', expertiseColor);
+
+        savedData.push({ newAppId: newAppId, cellNumber: cellNumber, assignmentListText: assignmentListTextNew, expertiseColor: expertiseColor });
+
+        var newCount = 0;
+        var OrderList = $('#OrderList').val()
+        var setType = $("#AssignmentList").val();
+
+        if (clientCoiTypeId == "" && isCoi) {
+            $('#ClientCoiTypeId').addClass('input-validation-error');
+            newCount += 1;
+        } else {
+            $('#ClientCoiTypeId').removeClass('input-validation-error');
+        }
+
+        if (comment == "" && isCoi) {
+            $('#Comment').addClass('input-validation-error');
+            newCount += 1;
+        } else {
+            $('#Comment').removeClass('input-validation-error');
+        }
+
+        if (setType != '0') {
+            if (OrderList == null && !isCoi) {
+                $('#OrderList').addClass('input-validation-error');
+                newCount += 1;
+            } else {
+                $('#OrderList').removeClass('input-validation-error');
+            }
+        }
+
+        if (newCount != 0) {
+            return false;
+        }
+
+        // Define save assignment function
+        var fnSaveAssignment = function (data) {
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '/PanelManagement/SaveAssignment',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                dataType: 'json',
+            }).done(function (result) {
+                if (result && typeof result === "boolean") {
+                    if ($.isFunction(UpdateAssignmentToGrid)) {
+                        var clientAssignmentType = $("#AssignmentList option:selected").text(),
+                            //clientExpertiseRating = $("#ExpertiseList option:selected").text(),
+                            clientExpertiseRating = clientExpertiseText,
+                            cellNumber = parseInt(sessionStorage.getItem('newCellNumber')) + 1,
+                            cellHeader = $('#expertiseTable th.block-stat:nth-child(' + cellNumber + ')'),
+                            eachCell = $('#expertiseTable tbody tr td:nth-child(' + cellNumber + ')'),
+                            firstAssignmentCount = 0,
+                            secondAssignmentCount = 0;
+
+                        UpdateAssignmentToGrid(clientAssignmentType, presentationOrder, clientExpertiseRating, panelApplicationId, panelUserAssignmentId);
+                        $('#ModalDialog').dialog('close');
+
+                        // Find out each cell's numbers to update the Assigned row at the top of the Expertise Grid
+                        $(eachCell).each(function (i, value) {
+                            var cellText = $.trim($(this).text()),
+                                trimmedText = cellText.match(/\d+/);
+                            if (trimmedText != null) {
+                                var number = trimmedText[0];
+                                (number == 1) ? firstAssignmentCount++ : secondAssignmentCount++;
+                            }
+                        })
+                        $('.sticky-thead tr:nth-child(1) th.block-stat:nth-child(' + cellNumber + ')').text('' + firstAssignmentCount + '/' + secondAssignmentCount + '');
+                        onNewRow(this);
+                    }
+                } else {
+                    postData["forceUnAssignAction"] = true;
+                    fnSaveAssignment(postData);
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert(thrownError);
+            });
+        };
+        fnSaveAssignment(postData);
+    });
+    //
+    // Hides the coiDiv and clears all input fields
+    // within the div
+    //
+    function fnHideAndClearCoiDiv() {
+        $('#coiDiv').hide();
+        $('#coiDiv :input').each(function () {
+            return this.value = "";
+        });
+    }
+</script>

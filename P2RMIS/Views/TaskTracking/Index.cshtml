@@ -1,0 +1,117 @@
+﻿@model Sra.P2rmis.Web.UI.Models.TaskTrackingViewModel
+@using Sra.P2rmis.Web.Controllers.TaskTracking
+
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        <div class="row-fluid">
+            <div class="span12"><h3>Add New P2RMIS Feature/Enhancement/Task Request</h3></div>
+        </div>
+        @if (TempData[TaskTrackingBaseController.TicketResultTempDataKey] != null && TempData[TaskTrackingBaseController.TicketResultTempDataKey].ToString().Length == 0)
+        {
+            <div class="row-fluid">
+                <div class="span12"><p class="ui-state-error">There was an issue submitting your request. Please try again or forward your request to the P2RMIS IT Team.</p></div>
+            </div>
+        }
+        else if (TempData[TaskTrackingBaseController.TicketResultTempDataKey] != null)
+        {
+            <div class="row-fluid">
+                <div class="span12  alignLeft saveSuccessful">
+                    Your ticket has been successfully created. Please retain this ticket number for future reference: @TempData[TaskTrackingBaseController.TicketResultTempDataKey]
+                </div>
+            </div>
+        }
+                
+        <div class="row-fluid">
+            <div class="span12"><p class="alert-info">Please allow 2 business days for the completion of your data deliverable tasks.</p></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">Add the Information in the space provided, then click the "Submit" button.</div>
+        </div>
+        
+        @using (Html.BeginForm("Index", "TaskTracking", FormMethod.Post, new {@name = "submitRequest", @id = "submitRequest", enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "Please fix the errors below:")
+            <fieldset>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.RequestorName, "Requestor Name:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextBoxFor(x => x.RequestorName) @Html.ValidationMessageFor(x => x.RequestorName)</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.RequestorEmail, "Requestor Email:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextBoxFor(x => x.RequestorEmail) @Html.ValidationMessageFor(x => x.RequestorEmail)</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.SelectedClient, "Primary Client:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.DropDownListFor(x => x.SelectedClient, new SelectList(Model.ClientList, "USAMRMC/CDMRP"))</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.Subject, "Subject:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextBoxFor(x => x.Subject) @Html.ValidationMessageFor(x => x.Subject)</div>
+                </div>
+                <div class="row-fluid hidden">
+                    <div class="span2">@Html.LabelFor(x => x.RequestType, "Type:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.DropDownListFor(x => x.RequestType, new SelectList(Model.RequestTypeList, "Task"), new { @id = "requesttype"})</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.DueDate, "Due Date:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextBoxFor(x => x.DueDate, Model.DateTimeNow, new {@class = "date-picker"})</div>
+                </div>
+                <div class="row-fluid hidden">
+                    <div class="span2">@Html.LabelFor(x => x.Component, "Component:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.DropDownListFor(x => x.Component, new SelectList(Model.ComponentList, "Item1", "Item2", "Please Select"), new { disabled = "disabled", @id = "component" })</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.TaskType, "Task Type:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.DropDownListFor(x => x.TaskType, new SelectList(Model.TaskTypeList, "Item1", "Item2", "Please Select"), new { @id = "tasktype"})</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.RequestDescription, "Request Description:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.ValidationMessageFor(x => x.RequestDescription)@Html.TextAreaFor(x => x.RequestDescription, new { style = "display:block; width:60%; height:125px;" })</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.ProjectJustification, "Project Justification:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextAreaFor(x => x.ProjectJustification, new {style = "display:block; width:60%; height:125px;"})</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.DocumentLink, "Document Link:", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextBoxFor(x => x.DocumentLink)</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2">@Html.LabelFor(x => x.Attachments, "Add attachment(s):", new { @class = "boldWeight" })</div>
+                    <div class="span10">@Html.TextBoxFor(x => x.Attachments, new { type = "file", @multiple = "multiple" })@Html.ValidationMessageFor(x => x.Attachments)</div>
+                </div>
+            </fieldset>
+            <div class="row-fluid">
+                <div class="span12 align-center"><input type="submit" value="Submit" class="btn btn-primary" /></div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Code to wire up your DatePicker -->
+<script type="text/javascript">
+    $(function() {
+        // This will make every element with the class "date-picker" into a DatePicker element
+        $('.date-picker').datepicker();
+    })
+</script>
+
+@* Show/hide component vs task type*@
+<script type="text/javascript">
+    $(document).on('change', '#requesttype', function () {
+        if ($('#requesttype option:selected').text() === "Task") {
+            $('#component').parent().parent().removeClass('hidden').addClass('hidden');
+            $('#component').prop('disabled', true);
+            $('#tasktype').parent().parent().removeClass('hidden');
+            $('#tasktype').removeAttr('disabled');
+        } else {
+            $('#tasktype').parent().parent().removeClass('hidden').addClass('hidden');
+            $('#tasktype').prop('disabled', true);
+            $('#component').parent().parent().removeClass('hidden');
+            $('#component').removeAttr('disabled');
+        }
+    });
+    $(function () {
+        $("#requesttype").change();
+    });
+</script>

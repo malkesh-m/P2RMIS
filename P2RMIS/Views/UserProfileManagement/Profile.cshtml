@@ -1,0 +1,165 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader")
+    @Html.IncludeVersionedFiles("/scripts/jquery.maskedinput.min.js")
+}
+@{
+
+    ViewBag.PageTitle = Model.PageTitle;
+}
+<style type="text/css">
+    .marginTop60 {
+        margin-top: 60px;
+    }
+
+    .span8.alignLeft.pageColumnOne {
+        padding-bottom: 10px;
+    }
+
+    #recruitmentBox {
+        display: none;
+    }
+
+    .formTitle_vendorName {
+        font-weight: bold;
+        font-size: 14px;
+        padding-left: 10px;
+    }
+</style>
+<div class="shared_mw_tabs">
+    @if (Model.LastPageUrl != "")
+    {
+        <span class="shared_mw_tabs_back-arrow">
+            <a id="backButton" href="@Model.LastPageUrl">
+                <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                     alt="Go Back to Previous Page" title="Back" />
+            </a>
+        </span>
+    }
+    <h1 class="shared_mw_tabs_h1">@Model.MenuTitle -</h1><span class="formTitle_vendorName" id="formTitle_vendorName">@Model.GeneralInfo.FirstName @Model.GeneralInfo.LastName</span>
+    <br />
+</div>
+
+@using (Html.BeginForm(Model.SaveProfileAction, "UserProfileManagement", FormMethod.Post, new { @id = "saveProfile", @name = "saveProfile" }))
+{
+    <div class="container-fluid" style="padding:0px;margin:0px">
+        <div class="row-fluid">
+            @Html.Partial("_PrivilegedTabMenu")
+            @if (Model.IsUserProfileVerified)
+            {
+                <div class="save-cancel">
+                    <span style="display: inline-block;">
+                        <a href="#saveSection">Skip to Save/Cancel</a>
+                    </span>
+                </div>
+            }
+            <div id="mainContent" class="span12">
+                <div class="row-fluid">
+                    @Html.Partial("_Notification")
+                    <div role="alert" id="verify-message" tabindex="-1">
+                        @if (!Model.IsUserProfileVerified)
+                        {
+                            <div><strong>Our records indicate that you may need to verify your profile information. Please review your information, update as needed and click 'Save' when done.</strong></div>
+                        }
+                        else if (Model.IsMyProfile)
+                        {
+                            <div><strong>Please review your information, update as needed and click 'Save' when done.</strong></div>
+                        }
+                        else
+                        {
+                            <div><strong>Please review the information, update as needed and click 'Save' when done.</strong></div>
+                        }
+                    </div>
+
+                    <div class="span8  alignLeft pageColumnOne" role="alert" aria-atomic="true">
+                        @Html.ValidationSummary(false, "Please correct the errors below.")
+                    </div>
+
+                    <div class="span8 pageColumnOne">
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            @Html.Partial("_TypeRole")
+                            @Html.Partial("_ManageAccount")
+                        </div>
+                        @Html.Partial("_GeneralInfo")
+                        @Html.Partial("_EmailAddresses")
+                        @Html.Partial("_PhoneNumbers")
+                        @Html.Partial("_AlternateContacts")
+                        @Html.Partial("_ProfessionalAffiliation")
+                        @Html.Partial("_Addresses")
+                        @Html.Partial("_VendorManagement")
+                    </div>
+
+                    <div class="span4 alignLeft pageColumnTwo">
+                        @Html.Partial("_RecruitmentStatus")
+                        @Html.Partial("_Clients")
+                        @Html.Partial("_AcademicEducation")
+                        @Html.Partial("_Resume")
+                        @Html.Partial("_Military")
+                        @Html.Partial("_Expertise")
+                    </div>
+
+                    <div id="saveSection" class="span12 alignCenter">
+                        @{if (!Model.IsUserProfileVerified)
+                            {
+                                <input type="submit" value="Save" class="btn btn-primary" id="verifyButton" />
+                            }
+                            else
+                            {
+                                <label for="saveProfileButton" class="sr-only">Save profile page</label>
+                                <input type="submit" value="Save" class="btn btn-primary" id="saveProfileButton" />
+                                <input type="button" value="Cancel" class="scorecardButton" onclick="refreshProfilePage();return false;" title="Cancel changes and restart profile page" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <input type="hidden" value="@Model.ClientsBlocked" id="hiddenValues" />
+    @Html.HiddenFor(m => m.IsSroValue)
+    @Html.HiddenFor(m => m.IsVerify)
+    @Html.HiddenFor(m => m.IsUserProfileVerified)
+    @Html.HiddenFor(m => m.IsUpdateUser)
+    @Html.HiddenFor(m => m.CanManagePassword)
+    @Html.HiddenFor(m => m.AreRolesDisplayed)
+    @Html.HiddenFor(m => m.GeneralInfo.UserId, new { @id = "UserId" })
+    @Html.HiddenFor(m => m.GeneralInfo.UserInfoId, new { @id = "UserInfoId" })
+    @Html.Hidden("IsMyProfile", Model.IsMyProfile)
+    @Html.Hidden("PreferredText", Model.PreferredText)
+    @Html.Hidden("SecondaryText", Model.SecondaryText)
+    @Html.Hidden("OrganizationAddressTypeId", Model.OrganizationAddressTypeIdValue)
+    @Html.Hidden("UsCountryValue", Model.UsCountryValue)
+    @Html.Hidden("IsReviewer", Model.IsReviewer)
+    @Html.Hidden("CanViewVendorManagement", Model.CanViewVendorManagement)
+}
+@*Script to check dirty form data and warn user before exiting*@
+@Html.IncludeVersionedFiles("/Scripts/Custom/dirtycheck.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/notification.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/type-role.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/manage-account.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/general-info.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/email-addresses.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/phone-numbers.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/alternate-contacts.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/addresses.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/clients.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/academic-education.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/resume.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/military.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/Profile.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/recruitmentStatus.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/vendor-management.js")
+
+<script>
+    if ($('.validation-summary-errors ul li').text() == "") {
+        $('.validation-summary-errors').hide();
+    } else {
+        $('.validation-summary-errors').show();
+    }
+    var vendorName = $('#formTitle_vendorName').text();
+    sessionStorage.setItem('formTitle_vendorName', vendorName);
+</script>
+

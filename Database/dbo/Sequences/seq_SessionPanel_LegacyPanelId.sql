@@ -1,0 +1,1 @@
+﻿create sequence seq_SessionPanel_LegacyPanelId as int start with 11000 increment by 1;

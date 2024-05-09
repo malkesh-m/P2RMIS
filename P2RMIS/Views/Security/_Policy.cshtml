@@ -1,0 +1,685 @@
+﻿@model Sra.P2rmis.Web.UI.Models.PolicyViewModel
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@using Sra.P2rmis.CrossCuttingServices.ConfigurationServices
+@using Sra.P2rmis.Bll.Security
+@using Sra.P2rmis.WebModels.Security
+@{
+
+    var PolicyWeekDays = Model.Policy != null && Model.Policy.PolicyWeekDays != null ? Model.Policy.PolicyWeekDays.ToList() : new List<PolicyWeekDayWebModel>();
+    var networkrange = new List<string>();
+    if (Model.Policy != null && Model.Policy.PolicyNetworkRanges != null)
+    {
+        foreach (var item in Model.Policy.PolicyNetworkRanges)
+        {
+            networkrange.Add(item.StartAddress + " ," + item.EndAddress);
+        }
+    }
+    var startDate = Model.Policy != null && Model.Policy.StartDateTime != null ? @Model.Policy.StartDateTime.ToString("MM") + "/" + @Model.Policy.StartDateTime.ToString("dd") + "/" + @Model.Policy.StartDateTime.ToString("yyyy") : "";
+    var startTime = Model.Policy != null && Model.Policy.StartDateTime != null ? @Model.Policy.StartDateTime.ToString("hh:mm tt") : "";
+    var endDate = Model.Policy != null && Model.Policy.EndDateTime != null ? @Model.Policy.EndDateTime.Value.ToString("MM") + "/" + @Model.Policy.EndDateTime.Value.ToString("dd") + "/" + @Model.Policy.EndDateTime.Value.ToString("yyyy") : "";
+    var endTime = Model.Policy != null && Model.Policy.EndDateTime != null ? @Model.Policy.EndDateTime.Value.ToString("hh:mm tt") : "";
+    var restrectFromTime = Model.Policy != null && Model.Policy.RestrictionStartTimeSpan != null ? new DateTime(Model.Policy.RestrictionStartTimeSpan.Value.Ticks).ToString("hh:mm tt") : "";
+    var restrectToTime = Model.Policy != null && Model.Policy.RestrictionEndTimeSpan != null ? new DateTime(Model.Policy.RestrictionEndTimeSpan.Value.Ticks).ToString("hh:mm tt") : "";
+    var restrectionType = Model.Policy != null && Model.Policy.RestrictionTypeId != null ? Model.Policy.RestrictionTypeId : 0;
+    var restrectionTypeDesc = Model.Policy != null && Model.Policy.RestrictionType != null ? Model.Policy.RestrictionType : "";
+
+
+}
+<div class="row-fluid">
+    <div id="validationSummary" class="security-add-policy-value" style="color:red">
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12 form-inline">
+        <label class="security-add-policy-label" for="clientName"><span class="required" />Client</label>
+        @Html.DropDownList("clientName",
+                         new SelectList(Model.ClientList, "Key", "Value"), new { @class = "security-add-policy-value" })
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyType"><span class="required" />Policy Type</label>
+        @if (Model.Policy != null && Model.Policy.Id > 0)
+        {
+            @Html.DropDownListFor(m => m.Policy.PolicyTypeId, new SelectList(Model.PolicyTypeList, "Key", "Value", Model.Policy.PolicyTypeId), "Select", new { style = "margin: 5px 0px 0px 0px", @id = "policyType", @class = "security-add-policy-value", @readonly = true  })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.Policy.PolicyTypeId, new SelectList(Model.PolicyTypeList, "Key", "Value", 0), "Select", new { style = "margin: 5px 0px 0px 0px", @id = "policyType", @class = "security-add-policy-value" })
+        }
+
+
+    </div>
+    <div class="span6 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyName"><span class="required" />Policy Name</label>
+        @if (Model.Policy != null && Model.Policy.Id > 0)
+        {
+            @Html.TextBoxFor(m => m.Policy.Name, new { @placeholder = "Policy Name", @id = "policyName", @class = "security-add-policy-value", @maxlength = "40", @readonly = true })
+        }
+        else
+        {
+            @Html.TextBoxFor(m => m.Policy.Name, new { @placeholder = "Policy Name", @id = "policyName", @class = "security-add-policy-value", @maxlength = "40" })
+        }
+
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyDetails">Policy Details</label>
+        @Html.TextAreaFor(m => m.Policy.Details, new { @placeholder = "Policy Details", style = "width:75%", @id = "policyDetails", @class = "security-add-policy-value", @maxlength = "256", @rows = "2", @cols = "50" })
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyStartDate"><span class="required" />Policy Start Date</label>
+        @Html.TextBoxFor(m => m.Policy.StartDateTime, new { @id = "policyStartDate", @class = "security-add-policy-value" })
+    </div>
+    <div class="span6 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyStartTime"><span class="required" />Policy Start Time</label>
+        @Html.TextBoxFor(m => m.Policy.StartDateTime, new { @id = "policyStartTime", @class = "security-add-policy-value" })
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyEndDate">Policy End Date</label>
+        @Html.TextBoxFor(m => m.Policy.EndDateTime, new { @id = "policyEndDate", @class = "security-add-policy-value" })
+    </div>
+    <div class="span6 form-inline add-policy-div-padding">
+        <label class="security-add-policy-label" for="policyEndTime">Policy End Time</label>
+        @Html.TextBoxFor(m => m.Policy.EndDateTime, new { @id = "policyEndTime", @class = "security-add-policy-value" })
+    </div>
+</div>
+<div id="networkTypeFields">
+    <div class="row-fluid div-top-border">
+        <div class="span12 form-inline">
+            <label class="security-add-policy-header">
+                <span class="required" />Select Source Network Ranges
+                <img id="networkRangesInfo" title="Use the Network address and Mask Bits fields to generate a Source Network range. The four network address fields each must be a number between 0 and 255. Selecting Mask Bits will generate a range with 1 being the broadest range and 32 being the narrowest range. Selecting a Mask Bits will generate the range and display the range in the Network Address Range field. Select the 'Apply Range to Policy' to apply the range and automatically display the range in an available field under Approved Source Network Ranges."
+                     src="~/Content/img/info.png"
+                     class="info-image">
+            </label>
+        </div>
+    </div>
+    <form id="networkTypeForm">
+        <div class="row-fluid">
+            <div class="span7 form-inline add-policy-div-padding">
+                <label class="security-add-policy-label" for="octet1">Network Address</label>
+                <input type="text" class="octetInput" id="octet1" name="octet1" maxlength="3">.
+                <input type="text" class="octetInput" id="octet2" name="octet2" maxlength="3">.
+                <input type="text" class="octetInput" id="octet3" name="octet3" maxlength="3">.
+                <input type="text" class="octetInput" id="octet4" name="octet4" maxlength="3">
+            </div>
+            <div class="span5 form-inline add-policy-div-padding">
+                <label class="security-add-policy-label" for="maskBits">Mask Bits</label>
+                <select id="maskBits" name="maskBits">
+                    <option value="">--Select--</option>
+                    @for (var i = 1; i <= ConfigManager.MaxMaskBits; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 form-inline add-policy-div-padding">
+                <label class="security-add-policy-label" for="networkAddressRange">Network Address Range</label>
+                <input type="text" id="networkAddressRange" name="networkAddressRange" maxlength="100" readonly>
+            </div>
+        </div>
+    </form>
+    <div class="row-fluid">
+        <div class="span12 form-inline add-policy-div-padding">
+            <input type="button" id="btnApplyRange" value="Apply Range to Policy" class="btn-xs btn-primary pull-right" />
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12 form-inline add-policy-div-padding">
+            <label class="security-add-policy-header">
+                <span class="required" />Approved Source Network Ranges
+                <img id="approvedRangesInfo" title="Users will only be able to access the P2RMIS application from networks that are added to the Approved Source Network Ranges section when at least one Network Security Policy is applied and active. All other source Networks will be denied according to the time period set in the Security Policy."
+                     src="~/Content/img/info.png"
+                     class="info-image">
+            </label>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 add-policy-div-padding">
+            @if (networkrange.Count > 0 && @networkrange[0] != null)
+            {
+                <input type="text" class="networkRangeInput" id="networkRange1" placeholder="Network Range 1" maxlength="40" value="@networkrange[0]" readonly>
+            }
+            else
+            {
+                <input type="text" class="networkRangeInput" id="networkRange1" placeholder="Network Range 1" maxlength="40" readonly>
+            }
+            <a href="javascript:void(0)" class="networkRangeDelete"><img src="~/Content/img/cross.png" class="icon-cancel" alt="Delete Range" /></a>
+        </div>
+        <div class="span6 add-policy-div-padding">
+            @if (networkrange.Count > 1 && @networkrange[1] != null)
+            {
+                <input type="text" class="networkRangeInput" id="networkRange2" placeholder="Network Range 2" maxlength="40" value="@networkrange[1]" readonly>
+            }
+            else
+            {
+                <input type="text" class="networkRangeInput" id="networkRange2" placeholder="Network Range 2" maxlength="40" readonly>
+            }
+
+            <a href="javascript:void(0)" class="networkRangeDelete"><img src="~/Content/img/cross.png" class="icon-cancel" alt="Delete Range" /></a>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 add-policy-div-padding">
+            @if (networkrange.Count > 2 && @networkrange[2] != null)
+            {
+
+                <input type="text" class="networkRangeInput" id="networkRange3" placeholder="Network Range 3" maxlength="40" value="@networkrange[2]" readonly>
+            }
+            else
+            {
+                <input type="text" class="networkRangeInput" id="networkRange3" placeholder="Network Range 3" maxlength="40" readonly>
+            }
+
+
+            <a href="javascript:void(0)" class="networkRangeDelete"><img src="~/Content/img/cross.png" class="icon-cancel" alt="Delete Range" /></a>
+        </div>
+        <div class="span6 add-policy-div-padding">
+            @if (networkrange.Count > 3 && @networkrange[3] != null)
+            {
+                <input type="text" class="networkRangeInput" id="networkRange4" placeholder="Network Range 4" maxlength="40" value="@networkrange[3]" readonly>
+
+            }
+            else
+            {
+                <input type="text" class="networkRangeInput" id="networkRange4" placeholder="Network Range 4" maxlength="40" readonly>
+
+            }
+            <a href="javascript:void(0)" class="networkRangeDelete"><img src="~/Content/img/cross.png" class="icon-cancel" alt="Delete Range" /></a>
+        </div>
+    </div>
+</div>
+<div id="accessTypeFields">
+<div class="row-fluid div-top-border">
+    <div class="span12">
+        <label class="security-add-policy-header">
+            <span class="required" /> Hours of the day to Apply Restriction
+            <img id="restrictionInfo" title="The 'From' and 'Until' Time fields manage the time period that the Security Policy is enabled. If the 'Until' time is chronologically before the 'From' time, the system will assume that this time period runs overnight to the next day."
+                 src="~/Content/img/info.png"
+                 class="info-image"
+                 data-placement='top'>
+        </label>
+    </div>
+</div>
+<form id="accessTypeForm">
+
+<div class="row-fluid div-btn-list">
+    <div class="span12">
+        @if (Model.Policy != null && Model.Policy.RestrictionTypeId != null)
+        {
+            foreach (var item in Model.PolicyRestrictionTypeList)
+            {
+                <label for="restrictionType @item.Key" class="security-add-policy-label radio inline"><input type="radio" checked='@item.Key.Equals(Model.Policy.RestrictionTypeId)' id="restrictionType @item.Key" value="@item.Key" name="restrictionType" /> @item.Value</label>
+            }
+        }
+        else
+        {
+            foreach (var item in Model.PolicyRestrictionTypeList)
+            {
+                <label for="restrictionType @item.Key" class="security-add-policy-label radio inline"><input type="radio" checked='@item.Value.Equals("Time")' id="restrictionType @item.Key" value="@item.Key" name="restrictionType" /> @item.Value</label>
+            }
+        }
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6 form-inline add-policy-div-xtra-padding">
+        <label class="security-add-policy-label" for="restrictionTypeFrom">From</label>
+        <input type="text" class="security-add-policy-value" id="restrictionTypeFrom" />
+    </div>
+    <div class="span6 form-inline add-policy-div-xtra-padding">
+        <label class="security-add-policy-label" for="restrictionTypeUntil">Until</label>
+        <input type="text" class="security-add-policy-value" id="restrictionTypeUntil" />
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <label class="security-Note">Note: Security Policies with 'From' times in the past will take effect immediately</label>
+    </div>
+</div>
+<div class="row-fluid  div-top-border">
+    <div class="span12">
+        <label class="security-add-policy-header">
+            <span class="required" />Days of the week to Apply Restriction
+            <img id="weekDaysInfo" title="Days of the Week to Apply Restriction manages the days that the Security Policy is active. If the 'Until' time is chronologically before the 'From' time, the system will apply the 'from' time to the day(s) of the week selected. That policy would end on the next day at the 'Until' time."
+                 src="~/Content/img/info.png"
+                 class="info-image"
+                 data-placement="top">
+        </label>
+    </div>
+</div>
+<div class="row-fluid div-btn-list">
+    <div class="span12" id="tdWeekdays">
+        @foreach (var item in Model.WeekDayList)
+        {
+            <label class="checkbox inline security-add-policy-value">
+                <input id="chk@(item.Key)"
+                       type="checkbox"
+                       name="weekDayName"
+                       checked='@PolicyWeekDays.Find(i=>i.WeekDayId==@item.Key)'
+                       value="@item.Key" />
+                @item.Value
+            </label>
+        }
+    </div>
+</div>
+<div class="row-fluid sel-all-days">
+    <div class="span12 add-policy-div-padding" style="text-align:right">
+        <input type="button" id="btnSelectAllDays" value="Select All" class="btn-xs btn-primary" />
+        <input type="button" id="btnClearAllDays" value="Clear All" class="btn-xs btn-primary" />
+    </div>
+</div>
+</form>
+</div>
+@Html.HiddenFor(m => m.Policy.Id)
+
+<script type="text/javascript">
+    var networkRanges = JSON.parse('@Html.Raw(Json.Encode(networkrange))');
+    var resTimeFrom, resTimeTo;
+    var policyRestrictionTypeAll = '2';
+    $(function ()
+    {
+        if ('@startDate' != '')
+        {
+            $('#policyStartDate').kendoDatePicker({
+                format: "MM/dd/yyyy",
+                parseFormats: ["MM/dd/yyyy"],
+                value: '@startDate'
+            });
+            $("#policyStartTime").kendoTimePicker({
+                value: '@startTime'
+            });
+        }
+        else {
+            $('#policyStartDate').kendoDatePicker({
+                format: "MM/dd/yyyy",
+                parseFormats: ["MM/dd/yyyy"]
+            });
+            $("#policyStartTime").kendoTimePicker({
+            });
+        }
+        if ('@endDate' != '')
+        {
+            $('#policyEndDate').kendoDatePicker({
+                format: "MM/dd/yyyy",
+                parseFormats: ["MM/dd/yyyy"],
+                value: '@endDate'
+            });
+             $("#policyEndTime").kendoTimePicker({
+                value: '@endTime'
+            });
+        }
+        else {
+            $('#policyEndDate').kendoDatePicker({
+                format: "MM/dd/yyyy",
+                parseFormats: ["MM/dd/yyyy"]
+            });
+            $("#policyEndTime").kendoTimePicker({
+            });
+        }
+        if ('@restrectFromTime' != '')
+        {
+            $("#restrictionTypeFrom").kendoTimePicker({
+                  value: '@restrectFromTime'
+            }).data("kendoTimePicker");
+        }
+        else {
+            $("#restrictionTypeFrom").kendoTimePicker({
+            }).data("kendoTimePicker");
+        }
+
+        if ('@restrectToTime' != '')
+        {
+            $("#restrictionTypeUntil").kendoTimePicker({
+                  value: '@restrectToTime'
+        }).data("kendoTimePicker");
+        }
+        else {
+             $("#restrictionTypeUntil").kendoTimePicker({
+
+            }).data("kendoTimePicker");
+        }
+        if ('@restrectionTypeDesc' == '@PolicyRestrictionType.AllDay') {
+            var timepicker = $("#restrictionTypeFrom").data("kendoTimePicker");
+            timepicker.enable(false);
+            timepicker.value("");
+            timepicker = $("#restrictionTypeUntil").data("kendoTimePicker");
+            timepicker.enable(false);
+            timepicker.value("");
+            $(".k-timepicker").css('cursor', 'not-allowed');
+            $('#restrictionTypeFrom').removeClass('input-validation-error');
+            $('#restrictionTypeUntil').removeClass('input-validation-error');
+        }
+
+        $("#btnSelectAllDays").click(function () {
+            $("input[name='weekDayName']").prop('checked', true);
+        });
+        $("#btnClearAllDays").click(function () {
+            $("input[name='weekDayName']").prop('checked', false);
+        });
+
+        togglePolicyType();
+        $("#policyType").on("change", function () {
+            togglePolicyType();
+        });
+
+        $("a.networkRangeDelete").on("click", function () {
+            var rangeToDelete = $(this).prev("input.networkRangeInput").val();
+            networkRanges = networkRanges.filter(function (r) {
+                return r !== rangeToDelete;
+            });
+            fillInNetworkRanges();
+        });
+
+        $(".octetInput").on("keydown", function (e) {
+            //Restrict input to valid octet chars
+            //Allow backspace, delete, tab, escape, and enter keys
+            var key = e.keyCode || e.which;
+            var validKey = (key == 46 || key == 8 || key == 9 || key == 27 || key == 13 || key == 110 || key == 190);
+            var numberKey = (key >= 48 && key <= 57);
+            var numberPadKey = (key >= 96 && key <= 105);
+            var number = numberKey || numberPadKey;
+            if (validKey || number) {
+                if (number) {
+                    var offset = numberKey ? 48 : 96;
+                    var input = (key - offset).toString();
+                    var newValue = parseInt($(this).val() + input);
+                    if (newValue < 0 || newValue > 255) {
+                        e.preventDefault();
+                    }
+                }
+            } else {
+                e.preventDefault();
+            }
+        });
+
+        $("#maskBits").change(function () {
+            var maskBits = $(this).find("option:selected").val();
+            if (maskBits != "") {
+                $.get("/Security/GetPolicyNetworkRange?" + $("#networkTypeForm").serialize())
+                    .success(function (range) {
+                        $("#networkAddressRange").val(range);
+                    })
+                    .fail(function (failure) {
+                        alert(failure.statusText);
+                    });
+            }
+        });
+
+        $("#btnApplyRange").on("click", function () {
+            var range = $("#networkAddressRange").val();
+            if (!networkRanges.includes(range) && networkRanges.length < 4) {
+                networkRanges.push(range);
+            }
+            fillInNetworkRanges();
+        });
+    });
+    function fillInNetworkRanges() {
+        $("input.networkRangeInput").each(function (index) {
+            $(this).val(networkRanges[index]);
+        });
+        $('#networkRange1').removeClass('input-validation-error');
+        $("#networkTypeForm")[0].reset();
+    }
+    function togglePolicyType() {
+        var policyType = $("#policyType option:selected").text();
+        switch (policyType) {
+            case "Access":
+                $("#networkTypeFields").hide();
+                $("#accessTypeFields").show();
+                $("#networkTypeForm")[0].reset();
+                break;
+            case "Network":
+                $("#networkTypeFields").show();
+                $("#accessTypeFields").hide();
+                $("#accessTypeForm")[0].reset();
+                break;
+            default:
+                $("#accessTypeFields, #networkTypeFields").hide();
+                $("#networkTypeForm,#accessTypeForm")[0].reset();
+        }
+        initializeAddPolicyErrorMessages();
+    }
+    function submitPolicy() {
+        //get all the selected weekdays
+        var weekDaysIDs = $("input[name='weekDayName']:checkbox:checked").map(function () {
+            return $(this).val();
+        }).get();
+        var networkRanges = $("input.networkRangeInput").map(function () {
+            return $(this).val();
+        }).get();
+        if (validatePolicyForm(weekDaysIDs)) {
+            var data = {
+                policyId: $('#Policy_Id').val(),
+                clientId: $('#clientName').val(),
+                type: $('#policyType').val(),
+                name: $('#policyName').val(),
+                details: $('#policyDetails').val(),
+                startDate: kendo.toString($('#policyStartDate').data("kendoDatePicker").value(),'yyyy-MM-dd'),
+                startTime: $('#policyStartTime').val(),
+                endDate: kendo.toString($('#policyEndDate').data("kendoDatePicker").value(), 'yyyy-MM-dd'),
+                endTime: $('#policyEndTime').val(),
+                networkRanges: JSON.stringify(networkRanges),
+                restrictionType: $('input[name="restrictionType"]:checked').val(),
+                restrictionStartTime: $('#restrictionTypeFrom').val(),
+                restrictionEndTime: $('#restrictionTypeUntil').val(),
+                weekDays: JSON.stringify(weekDaysIDs)
+            };
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                url: "/Security/AddPolicy",
+                data: data,
+                success: function (data) {
+                    if (!data.flag) {
+                        var validationSummary = initializeAddPolicyErrorMessages();
+                        for (var i = 0; i < data.messages.length; i++) {
+                            validationSummary.append('<li>' + data.messages[i] + '</li>');
+                            setPolicyFormControlBackground(data.messages[i]);
+                        }
+                    } else {
+                        $("#securityPolicyGrid").data("kendoGrid").dataSource.read();
+                        $('.ui-dialog-titlebar-close').click();
+    if($('#Policy_PolicyId').val()!="0")
+    {
+                        $("#successMessage").html("Policy " + $('#policyName').val() + " updated successfully!").show();
+    }
+    else
+    {
+                        $("#successMessage").html("Policy " + $('#policyName').val() + " added successfully!").show();
+    }
+
+                        $("#securityPolicyGrid").data("kendoGrid").dataSource.read();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#validationSummary").html("Failed to save policy.");
+                },
+                complete: function (data) {
+                    $('#saveDialogChanges').prop("disabled", false);
+                }
+            });
+        }
+    }
+
+    function validatePolicyForm(weekDaysIDs) {
+        var validationSummary = initializeAddPolicyErrorMessages();
+
+        //Policy type and name validations
+        if ($.trim($("#policyType").val()) == "") {
+            validationSummary.append('<li>' + '@MessageService.PolicyTypeRequired' + '</li>');
+            $('#policyType').addClass('input-validation-error');
+        }
+        if ($.trim($("#policyName").val()) == "") {
+            validationSummary.append('<li>' + '@MessageService.PolicyNameRequired' + '</li>');
+            $('#policyName').addClass('input-validation-error');
+        }
+
+        //Date Validations
+        var hasStartDate = true;
+        var testDate = new Date().toLocaleDateString()
+        var startDate = $.trim($("#policyStartDate").val());
+        var startTime = $.trim($("#policyStartTime").val());
+        if (startDate == "") {
+            hasStartDate = false;
+            validationSummary.append('<li>' + '@MessageService.PolicyStartDateRequired' + '</li>');
+            $('#policyStartDate').addClass('input-validation-error');
+        } else if (kendo.parseDate(startDate) == null) {
+            hasStartDate = false;
+            validationSummary.append('<li>' + '@MessageService.PolicyStartDateInvalid' + '</li>');
+            $('#policyStartDate').addClass('input-validation-error');
+        }
+        if (startTime == "") {
+            validationSummary.append('<li>' + '@MessageService.PolicyStartTimeRequired' + '</li>');
+            $('#policyStartTime').addClass('input-validation-error');
+        } else {
+            var testDateTime = kendo.toString(new Date(testDate + " " + startTime), "F");
+            if (kendo.parseDate(testDateTime) == null) {
+                validationSummary.append('<li>' + '@MessageService.PolicyIncorrectTime' + '</li>');
+                $('#policyStartTime').addClass('input-validation-error');
+            }
+        }
+
+        var endDate = $.trim($("#policyEndDate").val());
+        var endTime = $.trim($("#policyEndTime").val());
+        if (endDate != "") {
+            if (kendo.parseDate(endDate) == null) {
+                validationSummary.append('<li>' + '@MessageService.PolicyEndDateInvalid' + '</li>');
+                $('#policyEndDate').addClass('input-validation-error');
+            }
+            if (endTime == "") {
+                validationSummary.append('<li>' + '@MessageService.PolicyEndTimeRequired' + '</li>');
+                $('#policyEndTime').addClass('input-validation-error');
+            }
+            var testDateTime = kendo.toString(new Date(testDate + " " + endTime), "F");
+            if (endTime != "" && kendo.parseDate(testDateTime) == null) {
+                validationSummary.append('<li>' + '@MessageService.PolicyIncorrectTime' + '</li>');
+                $('#policyEndTime').addClass('input-validation-error');
+            }
+        }
+
+        if (hasStartDate && endDate != "" && endTime !== "") {
+            var startDateTime = new Date(startDate + " " + startTime);
+            var endDateTime = new Date(endDate + " " + endTime);
+            if (startDateTime >= endDateTime) {
+                validationSummary.append('<li>' + '@MessageService.PolicyStartDateGreaterThenEndDate' + '</li>');
+                $('#policyStartDate').addClass('input-validation-error');
+                $('#policyStartTime').addClass('input-validation-error');
+            }
+        }
+
+        var policyType = $("#policyType option:selected").text();
+        switch (policyType) {
+            case "Access":
+                //Restriction Type Validations
+                if ($.trim($('input[name="restrictionType"]:checked').parent('label').text().toLowerCase()) == "time") {
+                    var hoursMessageAdded = false;
+                    var restrictionTypeFrom = $.trim($("#restrictionTypeFrom").val());
+                    if (restrictionTypeFrom == "") {
+                        validationSummary.append('<li>' + '@MessageService.RestrictionHoursRequired' + '</li>');
+                        hoursMessageAdded = true;
+                        $('#restrictionTypeFrom').addClass('input-validation-error');
+                    } else {
+                        var testDateTime = kendo.toString(new Date(testDate + " " + restrictionTypeFrom), "F");
+                        if (kendo.parseDate(testDateTime) == null) {
+                            validationSummary.append('<li>' + '@MessageService.PolicyIncorrectTime' + '</li>');
+                            $('#restrictionTypeFrom').addClass('input-validation-error');
+                        }
+                    }
+                    var restrictionTypeUntil = $.trim($("#restrictionTypeUntil").val());
+                    if (restrictionTypeUntil == "") {
+                        if (!hoursMessageAdded) {
+                            validationSummary.append('<li>' + '@MessageService.RestrictionHoursRequired' + '</li>');
+                        }
+                        $('#restrictionTypeUntil').addClass('input-validation-error');
+                        hoursMessageAdded = true;
+                    } else {
+                        var testDateTime = kendo.toString(new Date(testDate + " " + restrictionTypeUntil), "F");
+                        if (kendo.parseDate(testDateTime) == null) {
+                            validationSummary.append('<li>' + '@MessageService.PolicyIncorrectTime' + '</li>');
+                            $('#restrictionTypeUntil').addClass('input-validation-error');
+                        }
+                    }
+                }
+                //Weekdays validations
+                if (weekDaysIDs.length == 0) {
+                    validationSummary.append('<li>' + '@MessageService.PolicyDaysRequired' + '</li>');
+                    $("#tdWeekdays").addClass('input-validation-error');
+
+                }
+                break;
+            case "Network":
+                //Network Type Validations
+                var networkType = $("#policyType option:selected").text() == "Network";
+                var networkRangeOmmitted = $.trim($("#networkRange1").val()) == "" && $.trim($("#networkRange2").val()) == "" && $.trim($("#networkRange3").val()) == "" && $.trim($("#networkRange4").val()) == "";
+                if (networkType && networkRangeOmmitted) {
+                    validationSummary.append('<li>' + '@MessageService.PolicyNetworkRangeRequired' + '</li>');
+                    $('#networkRange1').addClass('input-validation-error');
+                }
+                break;
+
+        }
+       
+        return ($('#validationSummary ul.validation-summary-errors li').length == 0);
+    }
+
+    function initializeAddPolicyErrorMessages() {
+        $("#validationSummary").text("");
+        $('#policyType').removeClass('input-validation-error');
+        $('#policyName').removeClass('input-validation-error');
+        $('#policyStartDate').removeClass('input-validation-error');
+        $('#policyStartTime').removeClass('input-validation-error');
+        $('#policyEndDate').removeClass('input-validation-error');
+        $('#policyEndTime').removeClass('input-validation-error');
+        $('#networkRange1').removeClass('input-validation-error');
+        $('#restrictionTypeFrom').removeClass('input-validation-error');
+        $('#restrictionTypeUntil').removeClass('input-validation-error');
+        $("#tdWeekdays").removeClass('input-validation-error');
+        var validationSummary = $('#validationSummary ul.validation-summary-errors');
+        if (validationSummary.length == 0) {
+            $('#validationSummary').append('<ul class="validation-summary-errors"></ul>');
+            validationSummary = $('#validationSummary ul.validation-summary-errors');
+        }
+        return validationSummary;
+    }
+
+    function setPolicyFormControlBackground(message) {
+        switch (message) {
+            case '@MessageService.PolicyNameDuplicate'.replace('{0}', $('#policyName').val()):
+                $('#policyName').addClass('input-validation-error');
+                break;
+            default:
+                //do nothing
+        }
+    }
+
+    $("input[name='restrictionType']").click(function () {
+        if ($.trim($('input[name="restrictionType"]:checked').parent('label').text().toLowerCase()) == "24 hour") {
+            var timepicker = $("#restrictionTypeFrom").data("kendoTimePicker");
+            timepicker.enable(false);
+            timepicker.value("");
+            timepicker = $("#restrictionTypeUntil").data("kendoTimePicker");
+            timepicker.enable(false);
+            timepicker.value("");
+            $(".k-timepicker").css('cursor', 'not-allowed');
+            $('#restrictionTypeFrom').removeClass('input-validation-error');
+            $('#restrictionTypeUntil').removeClass('input-validation-error');
+        }
+        else {
+            var timepicker = $("#restrictionTypeFrom").data("kendoTimePicker");
+            timepicker.enable(true);
+            timepicker = $("#restrictionTypeUntil").data("kendoTimePicker");
+            timepicker.enable(true);
+            $(".k-timepicker").css('cursor', '');
+        }
+    });
+
+</script>

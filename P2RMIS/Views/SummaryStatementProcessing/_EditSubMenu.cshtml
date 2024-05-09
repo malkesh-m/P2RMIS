@@ -1,0 +1,19 @@
+﻿@model Sra.P2rmis.Web.UI.Models.EditSummaryStatementViewModel
+
+<input type="hidden" id="WorkflowId" value="@Model.ApplicationDetails.WorkflowId" />
+<input type="hidden" id="ApplicationId" value="@Model.ApplicationDetails.LogNumber" />
+<div id="workflowStepMenu">
+    <div class="workflowHistory">
+        <table align="center">
+            <tr>
+                @{string workflowStepClass = "";}
+                @foreach (var item in Model.TheWorkflow)
+                {
+                    if (item.ApplicationWorkflowStepId == Model.ActiveWorkflowStep) { workflowStepClass = "activeWorkflowStep"; }
+                    <td class="@workflowStepClass">@item.StepName</td>
+                    workflowStepClass = "";
+                }
+            </tr>
+        </table>
+    </div>
+</div>

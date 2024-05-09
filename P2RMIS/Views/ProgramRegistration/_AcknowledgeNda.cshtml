@@ -1,0 +1,117 @@
+﻿@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+
+@Html.Partial("_FormHeader")
+@{
+    string contentClass = string.Empty;
+    string warningMessage = string.Empty;
+    bool disabledFlag = Model.Form.DocumentSigned != null && (bool)Model.Form.DocumentSigned;
+    string disabledText = (disabledFlag) ? "disabled='disabled'" : "";
+}
+<input type="hidden" id="document-signed" value="@disabledFlag.ToString()">
+<section id="documentFormContent" class="upm-rw-container" role="region">
+    <div role="alert" class="hidden-text" id="read-important-text" tabindex="0"></div>
+    <div class="upm-rw-container_section">
+        <div class="upm-rw-container_section_header">Select</div>
+        <div>
+            Please indicate your eligibility to receive a consultant fee and click the 'Save' button. Note:
+            <i>
+                U.S. Federal Government employees, Active Duty Military, or other U.S. Department of Defense
+                employees may not be eligible to receive a consultant fee if this work is performed as part of your
+                regular duty assignments. <u>If you have any questions about your eligibility, 
+                please consult with your employer, ethics office, or commanding officer, as appropriate.</u>
+            </i>
+        </div>
+        @{
+            contentClass = (Model.Form[Model.Form.ConsultantFeeAccepted].IsRequired) ? "form-content-required" : "form-content";
+            warningMessage = Model.Form[Model.Form.ConsultantFeeAccepted].WarningMessage;
+        }
+        <div class="upm-rw-container_section_radio alignLeft">
+            @if (disabledFlag)
+            {
+                @Html.RadioButtonFor(m => m.Form[Model.Form.ConsultantFeeAccepted].ItemValue, "Paid", new { @id = "acceptPayments", @class="alignLeft margin-right10", disabled = disabledFlag })
+            }
+            else
+            {
+                @Html.RadioButtonFor(m => m.Form[Model.Form.ConsultantFeeAccepted].ItemValue, "Paid", new { @id = "acceptPayments", @class = "" + contentClass + " alignLeft margin-right10", data_warning_message = warningMessage })
+            }
+            <label for="acceptPayments" class="span7 margin-right10 alignLeft">I accept and am eligible to receive a consultant fee/honorarium and reimbursement of travel expenses.</label>
+        </div>
+        <div class="upm-rw-container_section_radio alignLeft">
+            @if (disabledFlag)
+            {
+                @Html.RadioButtonFor(m => m.Form[Model.Form.ConsultantFeeAccepted].ItemValue, "Unpaid", new { @id = "declinePayments", @class= "alignLeft margin-right10", disabled = disabledFlag })
+           }
+            else
+            {
+                @Html.RadioButtonFor(m => m.Form[Model.Form.ConsultantFeeAccepted].ItemValue, "Unpaid", new { @id = "declinePayments", @class = "" + contentClass + " alignLeft margin-right10", data_warning_message = warningMessage })
+            }
+            <label for="declinePayments" class="span7 margin-right10 alignLeft">I decline or am NOT eligible to receive a consultant fee/honorarium or reimbursement of travel expenses.</label>
+        </div>
+        <div class="upm-rw-container_section_radio alignLeft">
+            @if (disabledFlag)
+            {
+                @Html.RadioButtonFor(m => m.Form[Model.Form.ConsultantFeeAccepted].ItemValue, "Unpaid w/t", new { @id = "declinePaymentsWithTravel", @class= "alignLeft margin-right10", disabled = disabledFlag })
+           }
+            else
+            {
+                    @Html.RadioButtonFor(m => m.Form[Model.Form.ConsultantFeeAccepted].ItemValue, "Unpaid w/t", new { @id = "declinePaymentsWithTravel", @class = "" + contentClass + " alignLeft margin-right10", data_warning_message = warningMessage })
+            }
+            <label for="declinePaymentsWithTravel" class="span7 margin-right10 alignLeft">I decline or am NOT eligible to receive a consultant fee/honorarium, however I am eligible for reimbursement of travel expenses.</label>
+        </div>
+    </div>
+    <p class="upm-rw-container_p-float">
+        SRA International, Inc., a GDIT Company, classifies all individual peer reviewers (accepting a consultant fee) as
+        small business consultants. As an individual small business consultant performing this work,
+        please confirm the business size classification most appropriate for yourself.
+    </p>
+    <div class="upm-rw-container_p">
+        <label for="businessCategory"><strong>Business Category</strong></label>
+        @{
+            contentClass = (Model.Form[Model.Form.BusinessCategory].IsRequired) ? "form-content-required" : "form-content";
+            warningMessage = Model.Form[Model.Form.BusinessCategory].WarningMessage;
+
+        }
+        <select id="businessCategory" class="@contentClass" data-warning-message="@warningMessage" @disabledText>
+            @foreach (var group in Model.BusinessCategoryLookup.CategoryGroups)
+            {
+                var defaultValue = "Small Business";
+                foreach (var category in group.Categories)
+                {
+                    if (category.Key == Model.Form[Model.Form.BusinessCategory].ItemValue)
+                    {
+                        defaultValue = category.Key;
+                    }
+                }
+                <optgroup label="@group.GroupName">
+                    @foreach (var category in group.Categories)
+                    {
+                        var selected = "";
+                        if (category.Key == defaultValue)
+                        {
+                            selected = "selected";
+                        }
+                        <option value="@category.Key" @selected>@category.Value</option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </div>
+</section>
+<script type="text/javascript">
+// Get form data
+function fnGetFormData() {
+    var formData = [];
+    var paid = $('#acceptPayments:checked').val();
+    var unpaid = $('#declinePayments:checked').val();
+    var unpaidWt = $('#declinePaymentsWithTravel:checked').val();
+    var feeAccepted = paid ? paid : (unpaid ? unpaid : (unpaidWt ? unpaidWt : ""));
+    if ($("#document-signed").val().toLowerCase() !== "true") {
+        formData = [{ Key: @Model.Form.ConsultantFeeAccepted, Value: feeAccepted  },
+            { Key: @Model.Form.BusinessCategory, Value: $("#businessCategory").val() }];
+    }
+    return formData;
+}
+setTimeout(function () {
+    $('#read-important-text').append('<span>If you have any questions about your eligibility, please consult with your employer, ethics office, or commanding officer, as appropriate.</span>');
+}, 50);
+</script>

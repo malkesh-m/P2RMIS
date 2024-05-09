@@ -1,0 +1,54 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SecurityPolicyViewModel
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@{
+    var isSecurityAdmin = SecurityHelpers.CheckValidPermissionFromSession(Session, Permissions.SecurityManagement.PolicyManagement);
+}
+@Html.Partial("_PolicyManagementHeader")
+
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Security/SecurityPolicy.js")
+<link href="@Url.Content("~/Content/LESS/Security/security-main.min.css")" rel="stylesheet/less" type="text/css" />
+<script type="text/javascript" src="@Url.Content("~/Content/LESS/less.js")"></script>
+<!-- Tabs -->
+<div class="sec-fieldSet">
+    <ul class="nav nav-tabs">
+        <li class="active">@Html.ActionLink("Security Policy", "SecurityPolicy", "Security")</li>
+        <li>@Html.ActionLink("Security Policy History Log", "SecurityPolicyHistoryLog", "Security")</li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="securityPolicy">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h4 style="display:inline">Security Policy</h4>
+                    <img class="upm-profile-section_field_img" src="/Content/img/info_20px_enabled.png" alt="Security policy description"
+                         title="The Security Policy Table displays the details of each Security Policy. A security policy is a configurable date and time period during which identified users will be unable to access P2RMIS unless they are on a white-listed network defined in the policy.">
+                    <h6 class="pull-right" id="btnExport"><a href="#" class="ss-gridHeader_exportButton__link"><img src="/Content/img/icon_export_excel_labeled.png" /></a></h6>
+                    @if (isSecurityAdmin)
+                    {
+                        <input type="button" id="btnAddSecurityPolicy" class="btn btn-primary pull-right margin-top10" value="Create New Security Policy" />
+                    }
+                    <div id="ajxLoader" class="pull-right ajaxLoading">
+                        <img src="/Content/img/loading-icon.gif">
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <small class="pull-right"><span id="dataLoadedTimestampSpan">&nbsp;</span></small>
+                </div>
+            </div>
+            <div id="securityPolicyGrid"></div>
+        </div>
+        <div class="tab-pane" id="securityPolicyHistoryLog">
+        </div>
+    </div>
+</div>
+<div class="modal-dialog hidden" id="securityPolicyDialog">
+    <div class="modal-content">
+        <div id="securityPolicyWarning"></div>
+
+    </div>
+</div>
+<input type="hidden" value="@isSecurityAdmin" id="isSecurityAdmin" />

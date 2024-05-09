@@ -1,0 +1,67 @@
+﻿@using Sra.P2rmis.CrossCuttingServices;
+@model Sra.P2rmis.Web.UI.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Welcome to the P2RMIS Online Scoring Module";
+    ViewBag.ReferrerMessage1 = TempData["SuccessMessage1"];
+    ViewBag.ReferrerMessage2 = TempData["SuccessMessage2"];
+    string invalidUserNamePasswordMessage = Sra.P2rmis.CrossCuttingServices.MessageServices.MessageService.InvalidUserNamePassword;
+}
+<div class="row-fluid">
+<div class="span3"></div>
+    <div class="span6">
+        <div class="login">
+            <div class="loginBox">
+                <br/>
+                @using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { id = "LogOnForm", name = "LogOnForm" }))
+                {                    
+                    @Html.ValidationSummary(true, @invalidUserNamePasswordMessage)
+                    if (!String.IsNullOrEmpty(ViewBag.ReferrerMessage1))
+                    {
+                        <div class="success" role="alert" tabindex="-1">
+                            <h4>
+                                <span class="required">@ViewBag.ReferrerMessage1</span><br />
+                                @if (!String.IsNullOrEmpty(ViewBag.ReferrerMessage2))
+                                {
+                                <span class="required">@ViewBag.ReferrerMessage2</span><br />
+                                }
+                            </h4><br />
+                        </div>
+                    }
+                    <div class="loginInfo">                            
+                        <div>
+                            <label for="UserName" class="hidden">Username <span class="hidden-text">is required</span></label>
+                            @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User Name", id = "UserName" })
+                        </div>
+                            
+                        <div>
+                            <label for="Password" class="hidden">Password <span class="hidden-text">is required</span></label>
+                            @Html.PasswordFor(m => m.Password, new { @placeholder = "Password", id = "Password" })
+                        </div>
+                        <div style="padding:10px 0px 10px 0px">
+                            <input type="submit" value="Login" title="LogOn" class="focus" id="btnLogOn" />
+                        </div>
+                        <div>
+                            <div class="image"></div>
+                            <input type="hidden" name="returnUrl" id="returnUrl" value="@ViewBag.ReturnURL" />
+                        </div>
+                        <div style="margin-top: 5px;">@Html.ActionLink("Forgot Password?", "Reset", "Account")</div>
+                    </div>
+                } 
+            </div>
+         </div>
+    </div>
+    <div class="span3"></div>
+  </div>
+  <script type="text/javascript">   
+      if (self !== top) {
+          // This page needs to be at the top level
+          top.location = self.location;
+      }
+      sessionStorage.clear();
+
+      // If there is an alert, it will focus here to read it
+      if ($('.success').is(':visible')) {
+          $('.success').focus();
+      }
+  </script>

@@ -1,0 +1,48 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.CritiquePanelViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View Critique Panel</title>
+    @Html.IncludeVersionedFiles("/Content/Site.css")
+    @*Twitter Bootstrap Includes*@
+    @Html.IncludeVersionedFiles("/Content/bootstrap.min.css")
+    @Html.IncludeVersionedFiles("/Content/bootstrap-responsive.min.css")
+    <link href="@Url.Content("~/Content/LESS/P2RMIS/global.min.css")" rel="stylesheet/less" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Content/LESS/less.js")"></script>
+
+    <style>
+        .critique-main-section {
+            display: inline-block;
+            border: 1px solid #D4D4D4;
+            padding: 10px;
+            width: 782px;
+        }
+
+        .reviewer-critique-section {
+            height: 500px;
+            overflow-y: auto;
+        }
+
+            .reviewer-critique-section .critique-main-section {
+                width: 760px;
+                position: relative;
+                margin: 180px 10px 10px 10px !important;
+            }
+    </style>
+</head>
+<body>
+    <div class="row-fluid">
+        @Html.Partial("_ApplicationInformation", Model.ApplicationInformation)
+        <div class="reviewer-critique-section">
+            @Html.Partial("_ReviewerCritiques", Model.ReviewerCritiques)
+        </div>
+    </div>
+</body>
+</html>

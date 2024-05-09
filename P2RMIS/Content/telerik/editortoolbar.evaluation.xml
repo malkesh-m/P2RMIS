@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <tools>
+    <tool name="Bold" />
+    <tool name="Italic" />
+    <tool name="Underline" />
+  </tools>
+  <tools>
+    <tool name="InsertOrderedList" />
+    <tool name="InsertUnorderedList"/>
+  </tools>
+  <tools>
+    <tool name="JustifyLeft" />
+    <tool name="JustifyCenter" />
+    <tool name="JustifyRight" />
+  </tools>
+  <tools>
+    <tool name="Undo" />
+    <tool name="Redo" />
+    <tool name="AjaxSpellCheck" Text="Spellchecker" />
+  </tools>
+</root>
+

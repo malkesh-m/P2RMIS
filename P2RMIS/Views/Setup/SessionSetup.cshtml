@@ -1,0 +1,78 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.SessionSetupViewModel
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Session Setup</span>
+</div>
+
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<!-- Select Filters -->
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox">
+        <div class="ss-filterBox_title">Select Filters</div>
+        <span class="ss-filterBox_activeText">
+            All fields are required<br />
+            <input id="activeProgramCheckbox" class="ss-filterBox_activeText__checkbox" type="checkbox" checked />&nbsp;Meetings for Active Programs Only
+            <input id="activeMeetingCheckbox" class="ss-filterBox_activeText__checkbox" type="checkbox" checked />&nbsp;Do not show meetings whose end date has passed
+        </span>
+        <table class="ss-filterBox_ss-table">
+            <tr>
+                <td class="ss-filterBox_ss-table_clientSelect"><select class="ss-filterBox_ss-table_clientSelect_select" id="clientSelection"><option value="">Select Client</option></select></td>
+                <td class="ss-filterBox_ss-table_meetingSelect" id="meetingId"><select class="ss-filterBox_ss-table_meetingSelect_select" id="meetingSelection"><option value="" selected>Select Meeting</option></select></td>
+                <td class="ss-filterBox_ss-table_buttonShell" style="vertical-align: baseline; padding: 0px 5px;"><button class="ss-filterBox_ss-table_buttonShell_buttonPrimary">Find</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-appliedBox">
+        <div class="ss-appliedBox_title">Applied Filters</div>
+        <table class="ss-appliedBox_table">
+            <tr>
+                <td class="ss-appliedBox_ss-table_client">Client:<span id="sessionClient" class="ss-appliedBox_ss-table_client_result"></span></td>
+                <td class="ss-appliedBox_ss-table_meeting">Mtg:<span id="sessionMtg" class="ss-appliedBox_ss-table_meeting_result"></span></td>
+            </tr>
+            <tr>
+                <td class="ss-appliedBox_ss-table_mtg-type">Mtg Type:<span id="sessionMtgType" class="ss-appliedBox_ss-table_mtg-type_result"></span></td>
+                <td class="ss-appliedBox_ss-table_start">Start/End:<span id="sessionDate" class="ss-appliedBox_ss-table_start_result"></span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<p class="ss-gridHeader_instruction">Please select a client and meeting</p>
+<p class='ss-gridHeader_no-records'>No sessions were found. Click <a href="#" class="ss-gridHeader_addSessionButton">Add Session</a> to add a new session.</p>
+
+<!-- Grid Header -->
+<div class="ss-gridHeader">
+    <h4 class="ss-gridHeader_title">Sessions</h4><div id="totalCount" class="ss-gridHeader_totalCount">( <strong>Total Records:</strong> <span></span> )</div><a href="#" class="ss-gridHeader_addSessionButton"><i>(add session)</i></a>
+    <h6 class="ss-gridHeader_exportButton" id="btnExport"></h6><a href="#" class="ss-gridHeader_exportButton__link"></a><span>Note: To edit, re-assign or remove a panel, click on the panel name</span>
+</div>
+<!-- Grid -->
+<div id="session-grid" class="ss-grid-sessionSetup"></div>
+<input type="hidden" id="meetingId" value="@Model.MeetingId" />
+
+<script id="panelsTemplate" type="text/x-kendo-template">
+    <div>
+        # console.log(panels); #
+        # for(var i=0;i<=panels.length-1;i++) { #
+        <a href="\\#" data-session-panel-id="#= panels[i].Key #" class="panelsSelection">#= panels[i].Value #</a>
+        # if (i < panels.length - 1) { #
+        ,
+        # } #
+        # } #
+    </div>
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/sessionSetup.js")

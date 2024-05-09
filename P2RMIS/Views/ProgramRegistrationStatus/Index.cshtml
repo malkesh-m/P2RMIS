@@ -1,0 +1,212 @@
+﻿@*@using CsQuery.ExtensionMethods.Internal*@
+@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ProgramRegistrationStatusViewModel
+@{
+    string successMessage = (string)TempData["success"] ?? string.Empty;
+    string failureMessage = (string)TempData["failure"] ?? string.Empty;
+}
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+<link rel="stylesheet" type="text/css" href="/Scripts/jquery-ui-multiselect/css/jquery.multiselect.css" />
+@Html.IncludeVersionedFiles("/Content/RegistrationStatus.css")
+
+<p class="formTitle">Registration Status</p>
+
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        @*Display message if coming from a successful save*@
+        <div id="successMessage"></div>
+        <div id="failureMessage"></div>
+        <div class="row-fluid">
+            <div id="statusFilters" class="clearfix span7">
+                @using (Html.BeginForm("Index", "ProgramRegistrationStatus", FormMethod.Post, new { id = "registrationStatusSearchForm" }))
+                {
+                    <input type="hidden" id="successMessageText" value="@successMessage" />
+                    <input type="hidden" id="failureMessageText" value="@failureMessage" />
+                    <input type="hidden" id="dialogTitleText" value="@PdfViewer.WarningModalTitle" />
+                    <input type="hidden" id="hasCustomizeContractPermissions" value="@Model.HasCustomizeContractPermissions.ToString()" />
+                    <fieldset class="filter-border">
+                        <legend class="filter-border">Filters</legend>
+                        <div>
+                            <span>All fields are required. Selecting more than one panel may result in extended delays in displaying results.</span>
+                        </div>
+                        <div id="filterTableOpts">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Program
+                                        </th>
+                                        <th>
+                                            Fiscal Yr
+                                        </th>
+                                        <th>
+                                            Panel
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*Dropdowns are conditionally enabled on document.ready if values exist in session could be refactored to a helper as this is a common problem*@
+                                    <tr>
+                                        <td>
+                                            @Html.DropDownListFor(m => m.SelectedClientProgram, new SelectList(Model.ClientPrograms, "ClientProgramId", "ProgramAbbreviation"), string.Empty, new { @id = "programSelect" })
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(m => m.SelectedProgramYear, new SelectList(Model.ProgramYears, "ProgramYearId", "Year"), string.Empty, new { @id = "programYearSelect", @disabled = "disabled" })
+                                        </td>
+                                        <td>
+                                            @Html.ListBoxFor(m => m.SelectedSessionPanels, new MultiSelectList(Model.SessionPanels, "SessionPanelId", "PanelAbbreviation"), new { @id = "panelSelect", @disabled = "disabled", @style="display:none" })
+                                        </td>
+                                        <td>
+                                            <input type="button" class="btn btn-primary" id="submitFilteredRegistrationStatusSearch" value="Find" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+            <div class="span5">
+                &nbsp;
+            </div>
+        </div>
+
+        <div class="statusInstructions row-fluid">
+            <span class="statusTitle span2">Panelists</span>
+            <span class="span2"><img alt="Export into Excel" src="/Content/img/excel.gif" /><a id="btnExport" onclick="javascript:void(0)">Export into Excel</a></span>
+            <span class="span3"><img alt="Quick Reference Guide" src="~/Content/img/book_icon_20x20_enabled.png" /><a href="javascript:;" id="btnQRG" onclick="openQuickReferenceGuideModal()">Quick Reference Guide</a></span>
+            <span class="span5 align-right">
+                @if (Model.HasCustomizeContractPermissions)
+                {
+                    <input type="submit" style="font-size: 12px;" id="submitBtn" value="Customize Contract" disabled="disabled" name="submitBtn" onclick="openCustomizedContactModal()" />
+                }
+            </span>
+        </div>
+        <div id="statusContents" class="padding-top-20" style="max-width:none">
+            <div class="wrapper">
+                <div id="loading"></div>
+                <div id="viewStatusInformation"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Templates*@
+<script id="checkbox-template" type="text/html">
+    <input type="checkbox"
+           class="checkone"
+           data-name="#= LastName #, #= FirstName #"
+           data-panelassignmentid="#= PanelUserAssignmentId #"
+           data-documentid="#= ContractPanelUserRegistrationDocumentId #"
+           data-canAddAddendum="#= CanAddAddendum #"
+           data-feeAmount="#= FeeAmount #" />
+</script>
+<script id="panelist-template" type="text/html">
+    #= LastName #, #= FirstName #
+    <a href="/PanelManagement/SendStatusCommunication?panelUserAssignmentId=#= PanelUserAssignmentId # &sessionPanelId=#= SessionPanelId # &selectedProgramYear=#= ProgramYearId #">
+        <img tabindex="10" src="/Content/img/email-icon-16x16.gif" />
+    </a>
+</script>
+<script id="part-type-template" type="text/html">
+    #= ClientParticipationType # / #= RestrictedAssignedFlag ? "Partial" : "Full" #
+</script>
+<script id="verified-date-template" type="text/html">
+    # if (VerifiedDate) { #
+    #= kendo.toString(kendo.parseDate(VerifiedDate, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+    # } #
+</script>
+<script id="ack-nda-template" type="text/html">
+    <a tabindex="14" href="/ProgramRegistration/GetDocumentPdf?panelRegistrationDocumentId=#= AcknowledgeNdaPanelUserRegistrationDocumentId #" target="_blank">
+        # if (AckNdaDateSigned) { #
+        #= kendo.toString(kendo.parseDate(AckNdaDateSigned, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+        # } #
+    </a>
+</script>
+<script id="bias-coi-template" type="text/html">
+    <a tabindex="15" href="/ProgramRegistration/GetDocumentPdf?panelRegistrationDocumentId=#= BiasCoidPanelUserRegistrationDocumentId #" target="_blank">
+        # if (BiasCoiDateSigned) { #
+        #= kendo.toString(kendo.parseDate(AckNdaDateSigned, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+        # } #
+    </a>
+</script>
+<script id="contract-template" type="text/html">
+    # if (ContractDateSigned == null) { #
+    # if (isContractRegenerated || isContractOriginal) { #
+    <p tabindex="17" style="margin-bottom: 1px"></p>
+    # } else { #
+    <a class="pendingContract"
+       data-panelassignmentid="#=PanelUserAssignmentId#"
+       href="/ProgramRegistration/GetDocumentPdf?panelRegistrationDocumentId=#=ContractPanelUserRegistrationDocumentId#"
+       target="_blank" tabindex="17">Pending</a>
+    # } #
+    # } else { #
+    # if (isContractBypassed) { #
+    <p tabindex="17" style="margin-bottom: 1px">N/A</p>
+    # } else { #
+    <a tabindex="17"
+       href="/ProgramRegistration/GetDocumentPdf?panelRegistrationDocumentId=#=ContractPanelUserRegistrationDocumentId#"
+       target="_blank">
+        #= kendo.toString(kendo.parseDate(ContractDateSigned, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+    </a>
+    # } #
+    # } #
+</script>
+<script id="cv-template" type="text/html">
+    # if (CvReceivedDate != null) { #
+    #= kendo.toString(kendo.parseDate(CvReceivedDate, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+    # } #
+</script>
+<script id="w9-status-template" type="text/html">
+    # if (W9ReceivedDate != null) { #
+    #= kendo.toString(kendo.parseDate(W9ReceivedDate, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+    # } #
+    #= W9Status #
+</script>
+<script id="status-date-template" type="text/html">
+    # if (W9StatusDate != null) { #
+    <a class="w9Info" tabindex="20" href="javascript: void(0);">
+        #= kendo.toString(kendo.parseDate(W9StatusDate, 'MM/dd/yyyy'), 'MM/dd/yyyy') #
+    </a>
+    # } #
+    <div class="w9InfoDialog hidden" title="W9 Information">
+        <p>
+            #= VendorName #<br />
+            # if(W9Address) { #
+            #= W9Address # <br />
+            # } #
+            # if(Address2) { #
+            #= Address2 # <br />
+            # } #
+            # if(Address3) { #
+            #= Address3 # <br />
+            # } #
+            # if(Address4) { #
+            #= Address4 # <br />
+            # } #
+            # if(City) { #
+            #= City #,
+            # } #
+            # if(W9State) { #
+            #= W9State #
+            # } #
+            # if(W9Zip) { #
+            #= W9Zip #
+            # } #
+            <br />
+            #= CountryFullName #
+        </p>
+    </div>
+</script>
+
+@Html.IncludeVersionedFiles("/Scripts/jquery-ui-multiselect/js/jquery.multiselect.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/programRegistrationStatus.js")

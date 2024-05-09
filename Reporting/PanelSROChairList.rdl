@@ -1,0 +1,1165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
+  <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="P2RMISDS">
+      <DataSourceReference>P2RMISDS</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>dbfb7d69-a587-4a97-bba9-12d98f4352a2</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="SROs">
+      <Query>
+        <DataSourceName>P2RMISDS</DataSourceName>
+        <CommandText>(SELECT DISTINCT t1.PanelAbbreviation , t1.SessionPanelId,t1.MilitaryRankName, t1.Year, t1.ClientProgramId,
+STUFF ((SELECT DISTINCT '' + ', ' + t2.FullName
+                                FROM         (SELECT  ViewSessionPanel.SessionPanelId
+, ViewUserInfo.FirstName + ' '+ ViewUserInfo.LastName  AS FullName
+FROM        ClientParticipantType INNER JOIN
+                      ViewUserInfo INNER JOIN
+                      PanelUserAssignment ON ViewUserInfo.UserID = PanelUserAssignment.UserId ON 
+                      ClientParticipantType.ClientParticipantTypeId = PanelUserAssignment.ClientParticipantTypeId INNER JOIN
+                      ViewSessionPanel ON PanelUserAssignment.SessionPanelId = ViewSessionPanel.SessionPanelId INNER JOIN
+                      ViewProgramPanel ON ViewSessionPanel.SessionPanelId = ViewProgramPanel.SessionPanelId INNER JOIN
+                      ViewProgramYear ON ViewProgramPanel.ProgramYearId = ViewProgramYear.ProgramYearId INNER JOIN
+                      ClientProgram ON ViewProgramYear.ClientProgramId = ClientProgram.ClientProgramId LEFT OUTER JOIN
+                      MilitaryRank ON ViewUserInfo.MilitaryRankId = MilitaryRank.MilitaryRankId
+WHERE     ((ClientParticipantType.LegacyPartTypeId = 'SRA'))) t2
+                                WHERE     t1.SessionPanelId = t2.SessionPanelId
+ FOR XML PATH(''), TYPE ).value('.','NVARCHAR(MAX)'), 1, 1,'') SROName,STUFF
+                            ((SELECT DISTINCT '' +', ' + t2.RankName
+                                FROM (SELECT  ViewSessionPanel.SessionPanelId
+, CASE WHEN MilitaryRank.MilitaryRankName IS NOT NULL 
+                      THEN MilitaryRank.MilitaryRankName +' '+ ViewUserInfo.FirstName +' '+ ViewUserInfo.LastName ELSE ViewUserInfo.FirstName + ' ' + ViewUserInfo.LastName END AS
+                       RankName
+FROM        ClientParticipantType INNER JOIN
+                      ViewUserInfo INNER JOIN
+                      PanelUserAssignment ON ViewUserInfo.UserID = PanelUserAssignment.UserId ON 
+                      ClientParticipantType.ClientParticipantTypeId = PanelUserAssignment.ClientParticipantTypeId INNER JOIN
+                      ViewSessionPanel ON PanelUserAssignment.SessionPanelId = ViewSessionPanel.SessionPanelId INNER JOIN
+                      ViewProgramPanel ON ViewSessionPanel.SessionPanelId = ViewProgramPanel.SessionPanelId INNER JOIN
+                      ViewProgramYear ON ViewProgramPanel.ProgramYearId = ViewProgramYear.ProgramYearId INNER JOIN
+                      ClientProgram ON ViewProgramYear.ClientProgramId = ClientProgram.ClientProgramId LEFT OUTER JOIN
+                      MilitaryRank ON ViewUserInfo.MilitaryRankId = MilitaryRank.MilitaryRankId
+
+WHERE     ((ClientParticipantType.LegacyPartTypeId = 'SRA'))) t2
+                                WHERE     t1.SessionPanelId = t2.SessionPanelId
+ FOR XML PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '') RankName
+ FROM         (SELECT ViewSessionPanel.PanelAbbreviation,ViewSessionPanel.SessionPanelId, ViewUserInfo.FirstName +' '+ ViewUserInfo.LastName AS FullName,MilitaryRank.MilitaryRankName, ViewProgramYear.Year, ClientProgram.ClientProgramId
+FROM         ClientParticipantType INNER JOIN
+                      ViewUserInfo INNER JOIN
+                      PanelUserAssignment ON ViewUserInfo.UserID = PanelUserAssignment.UserId ON 
+                      ClientParticipantType.ClientParticipantTypeId = PanelUserAssignment.ClientParticipantTypeId INNER JOIN
+                      ViewSessionPanel ON PanelUserAssignment.SessionPanelId = ViewSessionPanel.SessionPanelId INNER JOIN
+                      ViewProgramPanel ON ViewSessionPanel.SessionPanelId = ViewProgramPanel.SessionPanelId INNER JOIN
+                      ViewProgramYear ON ViewProgramPanel.ProgramYearId = ViewProgramYear.ProgramYearId INNER JOIN
+                      ClientProgram ON ViewProgramYear.ClientProgramId = ClientProgram.ClientProgramId LEFT OUTER JOIN
+                      MilitaryRank ON ViewUserInfo.MilitaryRankId = MilitaryRank.MilitaryRankId
+
+WHERE     ((ClientParticipantType.LegacyPartTypeId = 'SRA')  )) t1)</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="PanelAbbreviation">
+          <DataField>PanelAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SessionPanelId">
+          <DataField>SessionPanelId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MilitaryRankName">
+          <DataField>MilitaryRankName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Year">
+          <DataField>Year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ClientProgramId">
+          <DataField>ClientProgramId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="SROName">
+          <DataField>SROName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="RankName">
+          <DataField>RankName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Chairs">
+      <Query>
+        <DataSourceName>P2RMISDS</DataSourceName>
+        <CommandText>(SELECT DISTINCT t1.PanelAbbreviation , t1.SessionPanelId,t1.MilitaryRankName, t1.Year, t1.ClientProgramId,
+STUFF
+                            ((SELECT DISTINCT '' + ', ' + t2.FullName
+                                FROM         (SELECT  ViewSessionPanel.SessionPanelId
+, ViewUserInfo.FirstName + ' ' + ViewUserInfo.LastName + ', ' + ViewUserInfo.Institution  AS FullName
+FROM        ClientParticipantType INNER JOIN
+                      ViewUserInfo INNER JOIN
+                      PanelUserAssignment ON ViewUserInfo.UserID = PanelUserAssignment.UserId ON 
+                      ClientParticipantType.ClientParticipantTypeId = PanelUserAssignment.ClientParticipantTypeId INNER JOIN
+                      ViewSessionPanel ON PanelUserAssignment.SessionPanelId = ViewSessionPanel.SessionPanelId INNER JOIN
+                      ViewProgramPanel ON ViewSessionPanel.SessionPanelId = ViewProgramPanel.SessionPanelId INNER JOIN
+                      ViewProgramYear ON ViewProgramPanel.ProgramYearId = ViewProgramYear.ProgramYearId INNER JOIN
+                      ClientProgram ON ViewProgramYear.ClientProgramId = ClientProgram.ClientProgramId LEFT OUTER JOIN
+                      MilitaryRank ON ViewUserInfo.MilitaryRankId = MilitaryRank.MilitaryRankId
+
+WHERE     ((ClientParticipantType.ChairpersonFlag = 1))) t2
+                                WHERE     t1.SessionPanelId = t2.SessionPanelId
+ FOR XML PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '') CHName,STUFF
+                            ((SELECT DISTINCT '' + ', ' + t2.RankName
+                                FROM         (SELECT  ViewSessionPanel.SessionPanelId
+, CASE WHEN MilitaryRank.MilitaryRankName IS NOT NULL 
+                      THEN MilitaryRank.MilitaryRankName + ' ' + ViewUserInfo.FirstName +' '+ ViewUserInfo.LastName + ', ' + ViewUserInfo.Institution ELSE ViewUserInfo.FirstName + ' ' + ViewUserInfo.LastName + ', ' + ViewUserInfo.Institution END AS
+                       RankName
+FROM        ClientParticipantType INNER JOIN
+                      ViewUserInfo INNER JOIN
+                      PanelUserAssignment ON ViewUserInfo.UserID = PanelUserAssignment.UserId ON 
+                      ClientParticipantType.ClientParticipantTypeId = PanelUserAssignment.ClientParticipantTypeId INNER JOIN
+                      ViewSessionPanel ON PanelUserAssignment.SessionPanelId = ViewSessionPanel.SessionPanelId INNER JOIN
+                      ViewProgramPanel ON ViewSessionPanel.SessionPanelId = ViewProgramPanel.SessionPanelId INNER JOIN
+                      ViewProgramYear ON ViewProgramPanel.ProgramYearId = ViewProgramYear.ProgramYearId INNER JOIN
+                      ClientProgram ON ViewProgramYear.ClientProgramId = ClientProgram.ClientProgramId LEFT OUTER JOIN
+                      MilitaryRank ON ViewUserInfo.MilitaryRankId = MilitaryRank.MilitaryRankId
+
+WHERE     ((ClientParticipantType.ChairpersonFlag = 1))) t2
+                                WHERE     t1.SessionPanelId = t2.SessionPanelId
+ FOR XML PATH(''), TYPE ).value('.','NVARCHAR(MAX)'), 1, 1,'') RankName
+ FROM         (SELECT     ViewSessionPanel.PanelAbbreviation,ViewSessionPanel.SessionPanelId
+, ViewUserInfo.FirstName +' '+ ViewUserInfo.LastName AS FullName,MilitaryRank.MilitaryRankName, ViewProgramYear.Year, ClientProgram.ClientProgramId
+FROM         ClientParticipantType INNER JOIN
+                      ViewUserInfo INNER JOIN
+                      PanelUserAssignment ON ViewUserInfo.UserID = PanelUserAssignment.UserId ON 
+                      ClientParticipantType.ClientParticipantTypeId = PanelUserAssignment.ClientParticipantTypeId INNER JOIN
+                      ViewSessionPanel ON PanelUserAssignment.SessionPanelId = ViewSessionPanel.SessionPanelId INNER JOIN
+                      ViewProgramPanel ON ViewSessionPanel.SessionPanelId = ViewProgramPanel.SessionPanelId INNER JOIN
+                      ViewProgramYear ON ViewProgramPanel.ProgramYearId = ViewProgramYear.ProgramYearId INNER JOIN
+                      ClientProgram ON ViewProgramYear.ClientProgramId = ClientProgram.ClientProgramId LEFT OUTER JOIN
+                      MilitaryRank ON ViewUserInfo.MilitaryRankId = MilitaryRank.MilitaryRankId
+
+WHERE     ((ClientParticipantType.ChairpersonFlag = 1)  )) t1)</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="PanelAbbreviation">
+          <DataField>PanelAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SessionPanelId">
+          <DataField>SessionPanelId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MilitaryRankName">
+          <DataField>MilitaryRankName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Year">
+          <DataField>Year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ClientProgramId">
+          <DataField>ClientProgramId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CHName">
+          <DataField>CHName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="RankName">
+          <DataField>RankName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet2">
+      <Query>
+        <DataSourceName>P2RMISDS</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ProgramList">
+            <Value>=Parameters!ProgramList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@FiscalYearList">
+            <Value>=Parameters!FiscalYearList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@PanelList">
+            <Value>=Parameters!PanelList.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspReportSROChairList</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ClientProgramId">
+          <DataField>ClientProgramId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="year">
+          <DataField>year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SessionPanelId">
+          <DataField>SessionPanelId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PanelAbbreviation">
+          <DataField>PanelAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PanelName">
+          <DataField>PanelName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StartDate">
+          <DataField>StartDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="EndDate">
+          <DataField>EndDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="MilitaryRankAbbreviation">
+          <DataField>MilitaryRankAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="count">
+          <DataField>count</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>1.25019in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.25837in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.57597in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.10358in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.73973in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.95645in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.44792in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox30">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Panel Abbreviation</Value>
+                                  <Style>
+                                    <FontFamily>calibri</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox22</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox47">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Panel Name</Value>
+                                  <Style>
+                                    <FontFamily>calibri</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox43</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox20">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>SRO</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox20</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox23">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Chair</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox23</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Preliminary Application Referral</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox32">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Peer Review Dates</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox32</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox44">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>SectionPanelId</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox44</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="PanelAbbreviation1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!PanelAbbreviation.Value</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>PanelAbbreviation1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="PanelName1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!PanelName.Value</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>PanelName1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox21">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Parameters!MiltaryRank.Value= false,LTRIM(lookup(Fields!SessionPanelId.Value,Fields!SessionPanelId.Value,Fields!SROName.Value, "SROs")),
+LTRIM(lookup(Fields!SessionPanelId.Value,Fields!SessionPanelId.Value,Fields!RankName.Value,"SROs")))</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox21</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox29">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF (Parameters!MiltaryRank.Value= false, LTRIM(lookup(Fields!SessionPanelId.Value,Fields!SessionPanelId.Value,Fields!CHName.Value, "Chairs")),
+LTRIM(lookup(Fields!SessionPanelId.Value,Fields!SessionPanelId.Value, Fields!RankName.Value, "Chairs")))</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox29</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="count">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!count.Value</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>count</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="StartDate1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(isNothing(Fields!PanelAbbreviation.Value) or Fields!PanelAbbreviation.Value = "",
+    "",
+	FormatDateTime(Fields!StartDate.Value, DateFormat.ShortDate) + " - " + FormatDateTime(Fields!EndDate.Value, DateFormat.ShortDate))</Value>
+                                  <Style>
+                                    <FontFamily>Calibri</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>StartDate1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="SessionPanelId1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!SessionPanelId.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>SessionPanelId1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember>
+                  <Visibility>
+                    <Hidden>true</Hidden>
+                  </Visibility>
+                </TablixMember>
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember>
+                  <Group Name="ClientProgramId">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!ClientProgramId.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!ClientProgramId.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixMembers>
+                    <TablixMember>
+                      <Group Name="year">
+                        <GroupExpressions>
+                          <GroupExpression>=Fields!year.Value</GroupExpression>
+                        </GroupExpressions>
+                      </Group>
+                      <SortExpressions>
+                        <SortExpression>
+                          <Value>=Fields!year.Value</Value>
+                        </SortExpression>
+                      </SortExpressions>
+                      <TablixMembers>
+                        <TablixMember>
+                          <Group Name="PanelAbbreviation1">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!PanelAbbreviation.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!PanelAbbreviation.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <TablixMembers>
+                            <TablixMember>
+                              <Group Name="SessionPanelId">
+                                <GroupExpressions>
+                                  <GroupExpression>=Fields!SessionPanelId.Value</GroupExpression>
+                                </GroupExpressions>
+                              </Group>
+                              <SortExpressions>
+                                <SortExpression>
+                                  <Value>=Fields!SessionPanelId.Value</Value>
+                                </SortExpression>
+                              </SortExpressions>
+                              <TablixMembers>
+                                <TablixMember>
+                                  <Group Name="Details1" />
+                                </TablixMember>
+                              </TablixMembers>
+                            </TablixMember>
+                          </TablixMembers>
+                        </TablixMember>
+                      </TablixMembers>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet2</DataSetName>
+            <Top>0.05208in</Top>
+            <Left>0.01388in</Left>
+            <Height>0.5in</Height>
+            <Width>10.33221in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>0.64583in</Height>
+        <Style />
+      </Body>
+      <Width>10.46072in</Width>
+      <Page>
+        <PageHeader>
+          <Height>0.63417in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox6">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Panel / SRO / Chair List</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value />
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Times New Roman</FontFamily>
+                        <FontSize>14pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox6</rd:DefaultName>
+              <Top>0.14458in</Top>
+              <Left>0.01388in</Left>
+              <Height>0.38542in</Height>
+              <Width>10.33221in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageHeader>
+        <PageFooter>
+          <Height>0.61103in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox3">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Globals!ExecutionTime, "Eastern Standard Time")</Value>
+                      <Style>
+                        <FontFamily>Calibri</FontFamily>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox3</rd:DefaultName>
+              <Top>0.18056in</Top>
+              <Left>0.01388in</Left>
+              <Height>0.37493in</Height>
+              <Width>1.59445in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox8">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Procurement Sensitive Document</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Do not copy or circulate without written permission</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox8</rd:DefaultName>
+              <Top>0.19444in</Top>
+              <Left>1.65in</Left>
+              <Height>0.36105in</Height>
+              <Width>6.85581in</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox4">
+              <CanGrow>true</CanGrow>
+              <CanShrink>true</CanShrink>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Page </Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Globals!PageNumber</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> of </Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Globals!TotalPages</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox3</rd:DefaultName>
+              <Top>0.19444in</Top>
+              <Left>8.50581in</Left>
+              <Height>0.36105in</Height>
+              <Width>1.84028in</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>8.5in</PageHeight>
+        <PageWidth>11in</PageWidth>
+        <LeftMargin>0.5in</LeftMargin>
+        <RightMargin>0.5in</RightMargin>
+        <TopMargin>0.5in</TopMargin>
+        <BottomMargin>0.5in</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="ProgramList">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>93</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Program List</Prompt>
+      <Hidden>true</Hidden>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="FiscalYearList">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>2018</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Fiscal Year List</Prompt>
+      <Hidden>true</Hidden>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="MiltaryRank">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>False</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Show  Miltary Rank?</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>True</Value>
+            <Label>Yes</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>False</Value>
+            <Label>No</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="PanelList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Panel List</Prompt>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+  </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ProgramList</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>FiscalYearList</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>MiltaryRank</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>PanelList</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <Language>en-US</Language>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>b5736b1d-db79-4eae-85ea-e29004527d81</rd:ReportID>
+</Report>

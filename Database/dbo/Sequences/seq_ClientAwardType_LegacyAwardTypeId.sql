@@ -1,0 +1,1 @@
+﻿create sequence seq_ClientAwardType_LegacyAwardTypeId as int start with 1500 increment by 1;

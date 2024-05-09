@@ -1,0 +1,5 @@
+﻿UPDATE ProgramMechanismSummaryStatement SET ClientSummaryTemplateId = ClientSummaryTemplate.ClientSummaryTemplateId
+FROM ProgramMechanismSummaryStatement
+INNER JOIN ViewProgramMechanism ON ProgramMechanismSummaryStatement.ProgramMechanismId = ViewProgramMechanism.ProgramMechanismId
+INNER JOIN ClientAwardType ON ViewProgramMechanism.ClientAwardTypeId = ClientAwardType.ClientAwardTypeId
+INNER JOIN ClientSummaryTemplate ON ClientAwardType.ClientId = ClientSummaryTemplate.ClientId AND ProgramMechanismSummaryStatement.TemplateLocation = ClientSummaryTemplate.TemplateFileName;

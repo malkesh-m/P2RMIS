@@ -1,0 +1,1 @@
+﻿create sequence seq_MechanismTemplateElement_LegacyEcmId as int start with 70000 increment by 1;

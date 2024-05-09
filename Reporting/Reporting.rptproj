@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <FullPath>Debug</FullPath>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008R2</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>Local</TargetReportFolder>
+    <TargetDatasetFolder>Local</TargetDatasetFolder>
+    <TargetDatasourceFolder>Local</TargetDatasourceFolder>
+    <TargetReportPartFolder>Local</TargetReportPartFolder>
+    <TargetServerURL>http://localhost/ReportServer_SQLEXPRESS</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLocal' ">
+    <FullPath>DebugLocal</FullPath>
+    <OutputPath>bin\DebugLocal</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008R2</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>Reporting</TargetReportFolder>
+    <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Test-Cloud' ">
+    <FullPath>Test-Cloud</FullPath>
+    <OutputPath>bin\DebugLocal</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>Test</TargetReportFolder>
+    <TargetDatasetFolder>Test</TargetDatasetFolder>
+    <TargetDatasourceFolder>Test</TargetDatasourceFolder>
+    <TargetReportPartFolder>Test</TargetReportPartFolder>
+    <TargetServerURL>https://dvp2rmisdb01.prsmhosting.com/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'UA-Cloud' ">
+    <FullPath>UA-Cloud</FullPath>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008R2</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>UA</TargetReportFolder>
+    <TargetDatasetFolder>UA</TargetDatasetFolder>
+    <TargetDatasourceFolder>UA</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>https://dvp2rmisdb01.prsmhosting.com/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Staging-Cloud' ">
+    <FullPath>Staging-Cloud</FullPath>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>Staging</TargetReportFolder>
+    <TargetDatasetFolder>Staging</TargetDatasetFolder>
+    <TargetDatasourceFolder>Staging</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>https://dvp2rmisdb01.prsmhosting.com/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Prod-Cloud' ">
+    <FullPath>Prod-Cloud</FullPath>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>Prod</TargetReportFolder>
+    <TargetDatasetFolder>Prod</TargetDatasetFolder>
+    <TargetDatasourceFolder>Prod</TargetDatasourceFolder>
+    <TargetReportPartFolder>Prod</TargetReportPartFolder>
+    <TargetServerURL>https://pdp2rmisdb01.prsmhosting.com/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Dev-Cloud' ">
+    <FullPath>Dev-Cloud</FullPath>
+    <OutputPath>bin\DebugLocal</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008R2</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>Dev</TargetReportFolder>
+    <TargetDatasetFolder>Dev</TargetDatasetFolder>
+    <TargetDatasourceFolder>Dev</TargetDatasourceFolder>
+    <TargetReportPartFolder>Dev</TargetReportPartFolder>
+    <TargetServerURL>https://dvp2rmisdb01.prsmhosting.com/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Test2-Cloud' ">
+    <FullPath>Test2-Cloud</FullPath>
+    <OutputPath>bin\DebugLocal</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>Test2</TargetReportFolder>
+    <TargetDatasetFolder>Test2</TargetDatasetFolder>
+    <TargetDatasourceFolder>Test2</TargetDatasourceFolder>
+    <TargetReportPartFolder>Test2</TargetReportPartFolder>
+    <TargetServerURL>https://dvp2rmisdb01.prsmhosting.com/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup>
+    <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkZGwzMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAiIHhtbG5zOmRkbDMwMF8zMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAvMzAwIiB4bWxuczpkZGw0MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAiIHhtbG5zOmRkbDQwMF80MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAvNDAwIiB4bWxuczpkZGw1MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAiIHhtbG5zOmRkbDUwMF81MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAvNTAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD5mYWxzZTwvRW5hYmxlZD4NCiAgPFByb2plY3ROYW1lPjwvUHJvamVjdE5hbWU+DQogIDxBdXhQYXRoPjwvQXV4UGF0aD4NCiAgPExvY2FsUGF0aD48L0xvY2FsUGF0aD4NCiAgPFByb3ZpZGVyPjwvUHJvdmlkZXI+DQo8L1NvdXJjZUNvbnRyb2xJbmZvPg==</State>
+    <DataSources>@(DataSource)</DataSources>
+    <DataSets>@(DataSet)</DataSets>
+    <Reports>@(Report)</Reports>
+  </PropertyGroup>
+  <ItemGroup>
+    <DataSource Include="P2RMISDS.rds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Report Include="AdminNotes.rdl" />
+    <Report Include="ApplicationCounts.rdl" />
+    <Report Include="ApplicationDataQC.rdl" />
+    <Report Include="ApplicationPanelAssignmentQC.rdl" />
+    <Report Include="ApplicationPanelAssignmentQCNew.rdl" />
+    <Report Include="ArrivalDeparture.rdl" />
+    <Report Include="CCOISignOutSheet.rdl" />
+    <Report Include="CDMRP_Contract.rdl" />
+    <Report Include="ChairCOI.rdl" />
+    <Report Include="COISignOut.rdl" />
+    <Report Include="ConsumerContactParticipation.rdl" />
+    <Report Include="ConsumerEthnicityCount.rdl" />
+    <Report Include="CPRIT_Contract.rdl" />
+    <Report Include="CritiquePastDueNotice.rdl" />
+    <Report Include="Critiques.rdl" />
+    <Report Include="CritiqueSection.rdl" />
+    <Report Include="CritiquesSubmissionCounts.rdl" />
+    <Report Include="Disparate Overall Scores.rdl" />
+    <Report Include="DistributionOfScoresAward.rdl" />
+    <Report Include="DistributionOfScoresPanel.rdl" />
+    <Report Include="EditorProductivity.rdl" />
+    <Report Include="ExpeditedReviewData.rdl" />
+    <Report Include="FinalScoredel.rdl" />
+    <Report Include="IndividualScores.rdl" />
+    <Report Include="MasterHotelAndTravelData.rdl" />
+    <Report Include="MeetingPlanningSummary.rdl" />
+    <Report Include="MeetingPlanningSummaryChairSRORTA.rdl" />
+    <Report Include="MultipleSubmission.rdl" />
+    <Report Include="MultipleSubmission_New.rdl" />
+    <Report Include="NominatorInformation.rdl" />
+    <Report Include="OrderOfDiscussion.rdl" />
+    <Report Include="OrderOfReview.rdl" />
+    <Report Include="PanelBadges.rdl" />
+    <Report Include="PanelParticipantCount.rdl" />
+    <Report Include="PanelSROChairList.rdl" />
+    <Report Include="PanelSummaryProposalCount.rdl" />
+    <Report Include="PanelTents.rdl" />
+    <Report Include="Pedigree.rdl" />
+    <Report Include="Reimbursement.rdl" />
+    <Report Include="RequiredDocumentChecklist.rdl" />
+    <Report Include="RereviewApplications.rdl" />
+    <Report Include="Reviewer Demographics.rdl" />
+    <Report Include="Reviewer Information.rdl" />
+    <Report Include="ReviewerAssignments.rdl" />
+    <Report Include="ReviewerExpertisePrePost.rdl" />
+    <Report Include="ReviewerExpertisePrePostAssignmentWithSummary.rdl" />
+    <Report Include="ReviewerList.rdl" />
+    <Report Include="ReviewerPotentialInstitutionalCOI.rdl" />
+    <Report Include="ReviewerPotentialPersonnelCOI.rdl" />
+    <Report Include="ReviewerVsPanelComparison.rdl" />
+    <Report Include="ReviewerVsPanelComparisonGraph.rdl" />
+    <Report Include="Roster.rdl" />
+    <Report Include="ScoreAlignment.rdl" />
+    <Report Include="ScoreComparison.rdl" />
+    <Report Include="ScoreSummary.rdl" />
+    <Report Include="ScoringSetupQC.rdl" />
+    <Report Include="SRObyProgram.rdl" />
+    <Report Include="SROChairApplRefer.rdl" />
+    <Report Include="SRORTAbyProgram.rdl" />
+    <Report Include="SSCdmrpRegular.rdl" />
+    <Report Include="SSCdmrpTriage.rdl" />
+    <Report Include="SSCprit.rdl" />
+    <Report Include="SSCpritDueDeligence.rdl" />
+    <Report Include="SSCpritPRV.rdl" />
+    <Report Include="SummaryPhaseTracking.rdl" />
+    <Report Include="SummaryPhaseTrackingHistory.rdl" />
+    <Report Include="SummaryStatementQc.rdl" />
+    <Report Include="ThankYouLetterData.rdl" />
+    <Report Include="W9Address.rdl" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
+</Project>

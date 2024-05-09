@@ -1,0 +1,1 @@
+﻿ALTER TABLE [$(P2RMIS)].dbo.PPL_People ALTER COLUMN Institution NVARCHAR(125)

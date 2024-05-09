@@ -1,0 +1,162 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ScoreboardViewModelNew
+@{
+    Layout = null;
+    const string ActiveApp = Sra.P2rmis.Web.UI.Models.ScoreboardViewModelNew.Constants.ActiveApp;
+    const string ScoringApp = Sra.P2rmis.Web.UI.Models.ScoreboardViewModelNew.Constants.ScoringApp;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>P2RMIS</title>
+
+    @*Twitter Bootstrap Includes*@
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+    @Html.IncludeVersionedFiles("/Scripts/bootstrap.min.js")
+
+    @*JQuery*@
+    <link href="@Url.Content("/Content/themes/base/jquery-ui-1.11.4.smoothness.min.css")" rel="stylesheet" type="text/css" />
+    @Html.IncludeVersionedFiles("/Scripts/jquery/jquery-1.12.1.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.validate.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.validate.unobtrusive.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery-ui/jquery-ui-1.11.4.min.js")
+    <link rel="stylesheet" href="@Url.Content("~/Content/jquery.tablesorter/theme.default.css")" type="text/css" />
+    @Html.IncludeVersionedFiles("/Scripts/jquery.tablesorter.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.tablesorter.widgets.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.widget-scroller.js")
+    <link href="~/Content/LESS/P2RMIS/global.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        // disable the return key on the entire page
+        function stopRKey(evt) {
+            var evt = (evt) ? evt : ((event) ? event : null);
+            var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+            if ((evt.keyCode == 13)) { return false; }
+        }
+
+        document.onkeypress = stopRKey;
+
+    </script>
+</head>
+<body class="scoreboard mas-scoreboard">
+    <div class="row-fluid">
+        <div class="span12 mas-scoreboard_fieldSet">
+            @if (Model.DisplayContent == ActiveApp || Model.DisplayContent == ScoringApp)
+            {
+                var activeClass = (Model.DisplayContent == ActiveApp) ? "" : "hide";
+                var scoringClass = (Model.DisplayContent == ScoringApp) ? "" : "hide";
+            <div class="@activeClass mas-scoreboard_fieldSet_coi-section" id="coiSection">
+                <div class="mas-scoreboard_fieldSet_coi-section_header">Conflicts of Interest (COIs) for @Model.AppLogNumber</div>
+                <div class="cois mas-scoreboard_fieldSet_coi-section_pi">
+                    <div>
+                        PI: @Model.PiName<br />
+                        Award Mechanism: @Model.ApplicationInformation.AwardMechanism<br />
+                        Title: @Model.ApplicationInformation.Title
+                    </div>
+                </div>
+                @if (Model.CoiList.Count() == 0)
+                {
+                <div class="mas-scoreboard_fieldSet_coi-section_result">
+                    <div class="mas-scoreboard_fieldSet_coi-section_no-cois"><input type="checkbox" id="coi-left-room" class="mas-scoreboard_fieldSet_coi-section_no-cois_input" /></div>
+                    <div class="mas-scoreboard_fieldSet_coi-section_no-cois">There are no COIs for this application.  You may continue with the discussion at any time.</div>
+                </div>
+                }
+                else
+                {
+                    foreach (var coi in Model.CoiList)
+                    {
+                    <div class="mas-scoreboard_fieldSet_coi-section_names"> @ViewHelpers.ConstructNameWithComma(coi.FirstName, coi.LastName) </div>
+                    }
+                    }
+                    <div class="mas-scoreboard_fieldSet_coi-section_footer">
+                        @if (Model.CoiList.Count() != 0)
+                        {
+                            <div class="mas-scoreboard_fieldSet_coi-section_no-cois"><input type="checkbox" id="coi-left-room" class="mas-scoreboard_fieldSet_coi-section_no-cois_input" />The reviewer(s) identified as COI has(have) left the room.</div>
+
+                        }
+                        <button type="button" id="continueToDisplayScores" class="mas-scoreboard_fieldSet_coi-section_footer_button" disabled>Proceed</button>
+                    </div>
+                </div>
+                <div class="@scoringClass mas-scoreboard_fieldSet_scoring" id="scoreSection">
+                    @using (Html.BeginForm(Routing.MyWorkspace.EndScoring, Routing.P2rmisControllers.ManageApplicationScoring, FormMethod.Post, new { @name = "endScoring", @id = "endScoring" }))
+                    {
+                        <div class="mas-scoreboard_fieldSet_scoring_header">Scoreboard for @Model.ApplicationInformation.PanelAbbreviation @Model.ApplicationInformation.LogNumber</div>
+                        <input type="hidden" name="panelId" id="panelId" value="@Model.PanelId" />
+                        <input type="hidden" name="panelAppId" id="panelAppId" value="@Model.PanelAppId" />
+                        @Html.Partial("_Scoreboard")
+                        <div class="@activeClass mas-scoreboard_fieldSet_scoring_footer">
+                            <div class="mas-scoreboard_fieldSet_scoring_footer_text">
+                                <label for="enableCheckbox"><input type="checkbox" id="enableCheckbox" name="enableCheckbox" class="mas-scoreboard_fieldSet_scoring_footer_text_input" />  The discussion has concluded.</label>
+                            </div>
+                            <button type="button" id="continueToScoring" class="mas-scoreboard_fieldSet_scoring_footer_button" disabled>Proceed</button>
+                        </div>
+                        <div class="scoreboardConfirmationFooter @scoringClass" style="text-align: center;">
+                            <button id="continueToScoreboard" class="mas-scoreboard_fieldSet_scoring_footer_button-continue" onclick="form.submit()">End Scoring</button>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="mas-scoreboard_fieldSet_scoring">
+                    <div class="mas-scoreboard_fieldSet_scoring_header">Scoreboard</div>
+                    <div class="mas-scoreboard_table">
+                        <div class="mas-scoreboard_fieldSet_coi-section_pi">A new application has not been activated. <br />
+                        Please activate a new application and <br />
+                        <a href="/ManageApplicationScoring/Scoreboard/?panelId=@Model.PanelId"><b>refresh</b></a> your screen.
+                        </div>                        
+                    </div>
+                    <div class="mas-scoreboard_fieldSet_scoring_footer">
+                        <button id="closeScoreboard" class="mas-scoreboard_fieldSet_coi-section_footer_button" onclick="self.close()">Close</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('#coi-left-room').change(function () {
+            var getChecked = $(this).is(':checked');
+            (getChecked) ? $('#continueToDisplayScores').attr('disabled', false) : $('#continueToDisplayScores').attr('disabled', 'disabled');
+        });
+        // Check box change event handler
+        $('#enableCheckbox').change(function (e) {
+            e.preventDefault();
+            if ($('#enableCheckbox').prop('checked')) {
+                $('#continueToScoring').prop("disabled", false);
+            }
+            else {
+                $('#continueToScoring').prop("disabled", true);
+            }
+        });
+        // Continue to display pre-meeting scores
+        $("#continueToDisplayScores").on("click", function (e) {
+            e.preventDefault();
+            $("#coiSection").addClass("hide");
+            $("#scoreSection").removeClass("hide");
+        });
+        // Change status to scoring
+        $("#continueToScoring").on("click", function (e) {
+            e.preventDefault();
+            var panelAppId = $("#panelAppId").val();
+            $.get('@Url.Action(Routing.MyWorkspace.ProceedToScoring, Routing.P2rmisControllers.ManageApplicationScoring)',
+                { panelAppId: panelAppId },
+                function (responseText, textStatus, XMLHttpRequest) {
+                    if (responseText) {
+                        $(".scoreboardFooter").addClass("hide");
+                        $(".scoreboardConfirmationFooter").removeClass("hide");
+                        $('#continueToScoring').hide();
+                        $('.mas-scoreboard_fieldSet_scoring_footer').hide();
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+</html>
+

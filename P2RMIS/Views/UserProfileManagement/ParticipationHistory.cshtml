@@ -1,0 +1,284 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json;
+@model Sra.P2rmis.Web.UI.Models.ParticipationHistoryViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PasswordManagementViewModel.Tab3;
+}
+@section HeaderExtension
+{
+    <link rel="stylesheet" href="@Url.Content("~/Content/telerik/custom/wizard.css")" type="text/css" />
+    @Html.Partial("_KendoHeader2016")
+}
+<style type="text/css">
+    .formTitle_vendorName {
+        font-weight: bold;
+        font-size: 14px;
+        padding-left: 10px;
+    }
+</style>
+
+<div class="padding-bottom10">
+    <span>
+        @if (Model.LastPageUrl != "")
+        {
+            <span class="inline-block valign-top">
+                <a id="backButton" href="@Model.LastPageUrl">
+                    <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                         alt="Go Back to Previous Page" title="Back" />
+                </a>
+            </span>
+        }
+        <span class="formTitle">@Model.MenuTitle -</span><span class="formTitle_vendorName"></span>
+        <br />
+    </span>
+</div>
+
+<div class="row-fluid">
+    @Html.Partial("_PrivilegedTabMenu")
+    <div id="mainContent" class="span12">
+        <div class="pageColumnTwo alignRight" style="width: 100%;">
+            <label for="activeProgramFilter" class="upm-profile-section-sub_field">Active Programs</label>
+            <input type="checkbox" id="activeProgramFilter" class="padding-left-5 margin-bottom-5" />
+            <span id="lastUpdated" class="alignRight"><small>Last Updated: @Model.ParticipationLastUpdateDate</small></span>
+        </div>
+        <div class="main-header_title margin-bottom-20 font-size-20">Panel Assignments</div>
+        <div id="programParticipationGrid"></div>        
+    </div>
+</div>
+<!-- Participation Grid -->
+<div class="hidden" id="participation-history">
+    @Html.Raw(JsonConvert.SerializeObject(Model.ParticipationHistory))
+</div>
+<input type="hidden" value="@Model.IsMyProfile" id="isMyProfile" />
+<script id="pp-template" type="text/x-kendo-template">
+    <div>
+        # if (RegistrationStartDate == null && RegistrationCompletedDate == null && RegistrationId != 0) { #
+        <a class="continue-registration" data-participationid="#= ParticipationId #" data-starttab="@Model.DefaultTabIndex" data-sessionpanelid="#= SessionPanelId #" href="\\#">Start</a>
+        # } else if (RegistrationStartDate != null && RegistrationCompletedDate == null) { #
+        <a class="continue-registration" data-participationid="#= ParticipationId #" data-starttab="@Model.DefaultTabIndex" data-sessionpanelid="#= SessionPanelId #" href="\\#">Continue</a>
+        # } else if (ContractSignedDate == null && RegistrationCompletedDate != null) { #
+        <a class="continue-registration" data-participationid="#= ParticipationId #" data-starttab="@Model.ContractualTabIndex" data-sessionpanelid="#= SessionPanelId #" href="\\#">Review &amp; Sign</a>
+        # } else if (RegistrationCompletedDate != null) { #
+        <a class="continue-registration" data-participationid="#= ParticipationId #" data-starttab="@Model.DefaultTabIndex" data-sessionpanelid="#= SessionPanelId #" href="\\#">Completed</a>
+        # } else { #
+        <text>&nbsp;</text>
+        # } #
+    </div>
+</script>
+<script type="text/javascript">
+    var vendorName = sessionStorage.getItem('formTitle_vendorName');
+    (vendorName == null) ? $('.formTitle_vendorName').text($.trim($('#user-name-my-account').val())) : $('.formTitle_vendorName').text(vendorName);
+
+    // Populate program data source
+    function populateParticipationGrid(dataJson) {
+        var dataSource = new kendo.data.DataSource({
+            type: "json",
+            data: dataJson,
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "programParticipationGrid",
+                    fields: {
+                        Index: { type: "number" },
+                        ProgramAbrv: { type: "string" },
+                        FiscalYear: { type: "string" },
+                        ClientAbrv: { type: "string" },
+                        PanelAbrv: { type: "string" },
+                        ParticipantType: { type: "string" },
+                        ParticipantRole: { type: "string" },
+                        PanelEndDate: { type: "date" },
+                        RegistrationId: { type: "number" },
+                        Scope: { type: "string" },
+                        SessionPanelId: { type: "number" },
+                        IsProgramActive: { type: "boolean" },
+                        RegistrationCompletedDate: { type: "date" },
+                        RegistrationStartDate: { type: "date" },
+                        ContractSignedDate: {type:"date"},
+                        action: { type: "command" }
+                    }
+                },
+                parse: function (response) {
+                    return response;
+                },
+            },
+            noRecords: {
+                template: "No program assignments were found."
+            }
+        });
+        return dataSource;
+    }
+
+    // Program grid
+    $(function () {
+        $("#programParticipationGrid").kendoGrid({
+            resizable: true,
+            columns: [
+                { field: "Index", filterable: false, title: "Row", width: "60px" },
+                { field: "ProgramAbrv", filterable: false, title: "Program" },
+                { field: "FiscalYear", filterable: false, title: "FY", width: "75px" },
+                { field: "ClientAbrv", filterable: false, title: "Client" },
+                { field: "PanelAbrv", filterable: false, title: "Panel" },
+                { field: "ParticipantType", filterable: false, title: "Participant Type" },
+                { field: "ParticipantRole", filterable: false, title: "Role" },
+                { field: "PanelEndDate", filterable: false, title: "Panel End", format: "{0:MM/dd/yyyy}", parseFormats: ["MM-dd-yyyy"], filterable: { ui: datepicker }, },
+                { field: "Registration", filterable: false, title: "Registration", template: $("#pp-template").html() },
+                { field: "IsProgramActive", hidden: true },
+                { field: "RegistrationStartDate", hidden: true },
+                { field: "RegistrationCompletedDate", hidden: true },
+                { field: "ContractSignedDate", hidden: true },
+                ],
+            editable: false,
+            scrollable: true,
+            groupable: true,
+            sortable: true,
+            filterable: false,
+            pageable: false
+        });
+        var isChecked = $('#activeProgramFilter').is(':checked');
+        setUpGrid(isChecked);
+    });
+
+    // Formated Datepicker for Filter
+    function datepicker(element) {
+        var form = element.closest("form");
+        var startsWith = form.find('select option:nth-child(1)').html('');
+        var isNot = form.find('select option:nth-child(3)').html('');
+        $(startsWith).remove();
+        $(isNot).remove();
+        element.kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM-dd-yyyy"],
+        })
+    }
+
+    $('#activeProgramFilter').on('change', function () {
+        var isChecked = $(this).is(':checked');
+        setUpGrid(isChecked);
+    });
+
+    function setUpGrid(isChecked) {
+        var grid = $("#programParticipationGrid").data("kendoGrid");
+        var dataSaved = [];
+        var oldData = JSON.parse($('#participation-history').text());
+        var count = 0;
+        if (isChecked) {
+            $(oldData).each(function (i, value) {
+                var isActive = value.IsProgramActive;
+                if (isActive) {
+                    value.Index = count + 1;
+                    dataSaved.push(value);
+                    count++;
+                }
+            });
+        } else {
+            $(oldData).each(function (i, value) {
+                value.Index = count + 1;
+                dataSaved.push(value);
+                count++;
+            });
+        }
+        
+        var ds = populateParticipationGrid(dataSaved);
+        ds.read();
+        grid.dataSource.data(ds.data());
+        grid.setDataSource(grid.dataSource);
+        var isMyProfile = !$('#isMyProfile').val();
+        if (isMyProfile) {
+            grid.hideColumn(8);
+        }
+    }
+   
+    // Auto launch modal handler
+    $(function () {
+        var sessionPanelId = $.getUrlParameter("sessionPanelId");
+        if (sessionPanelId != undefined) {
+            $(".continue-registration[data-sessionpanelid='" + sessionPanelId + "']").click();
+        }
+    });
+    // Registration click event handler
+    $(document).on("click", ".continue-registration", function (e) {
+        e.preventDefault();
+        var participationId = $(this).attr("data-participationid");
+        var startTab = $(this).attr("data-starttab");
+        var title = 'Registration Wizard';
+
+        // load the data via ajax
+        $.get('/ProgramRegistration/RegistrationWizard',
+            { participationId: participationId, startTab: startTab },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, title);
+                $('.innerModalContainer').scrollTop(0);
+                $('#backDialog').hide();
+                $('#backDialog').on('click', function () {
+                    fnSelectBack();
+                });
+                $('#nextDialog').on('click', function () {
+                    var selected = $.trim($('.rwzSelected .rwzText').text());
+                    var signedDoc = sessionStorage.getItem('signedDocument');
+                    if (selected === 'Confidentiality/COI' && signedDoc == "False") {
+                        if (fnValidateBiasCoi()) {
+                            fnSelectNext();
+                            return;
+                        }
+                    }
+                    if (selected == 'Emergency Contact' && signedDoc == "False") {
+                        if (fnValidateEmContact()) {
+                            var FirstName = $('#emergencyFirstName').val(),
+                                LastName = $('#emergencyLastName').val(),
+                                PhoneNumber = $('#emergencyPrimaryPhone').val(),
+                                PhoneNumberType = $('.primarySelect option:selected').val(),
+                                PhoneNumberCheckbox = $('#emergencyPrimaryCheckBox').is(':checked'),
+                                AlternatePhoneNumber = $('#emergencyAlternatePhone').val(),
+                                AlternatePhoneNumberType = $('.alternateSelect option:selected').val(),
+                                AlternatePhoneNumberCheckbox = $('#emergencyAlternateCheckBox').is(':checked'),
+                                UserAlternateContactId = $('#UserAlternateContactId').val(),
+                                UserAlternateContactTypeId = 4;
+
+                            var data = {
+                                FirstName: FirstName, LastName: LastName, PhoneNumber: PhoneNumber, PhoneNumberType: PhoneNumberType,
+                                PhoneNumberCheckbox: PhoneNumberCheckbox, AlternatePhoneNumber: AlternatePhoneNumber,
+                                AlternatePhoneNumberType: AlternatePhoneNumberType, AlternatePhoneNumberCheckbox: AlternatePhoneNumberCheckbox,
+                                UserAlternateContactId: UserAlternateContactId, UserAlternateContactTypeId: UserAlternateContactTypeId
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/ProgramRegistration/SaveEmergencyContactPage",
+                                data: data
+                            }).done(function (results) {
+                                fnSelectNext();
+                            });
+                        }
+                    } else {
+                        fnSelectNext();
+                    }
+                });
+                $(".rwzLink").on("click", function () {
+                    var selectedTab = $(this).parents(".rwzLI");
+                    var newIdx = selectedTab.index();
+                    var newSortOrder = selectedTab.data("sortorder");
+                    fnLoadTab(newIdx, newSortOrder);
+                });
+            })
+
+    });
+    // Update registration status from start to continue
+    function fnContinueRegistration(participationId) {
+        var registrationStatus = $(".applicationRow[data-participationid='" + participationId + "']").find(".continue-registration");
+        if (registrationStatus.html() === "@Invariables.Labels.StartRegistration") {
+            registrationStatus.html("@Invariables.Labels.ContinueRegistration");
+        }
+    }
+    // Update registration status from continue to complete
+    function fnCompleteRegistration(participationId) {
+        var registrationStatus = $(".applicationRow[data-participationid='" + participationId + "']").find(".continue-registration");
+        registrationStatus.html("@Invariables.Labels.CompleteRegistration");
+    }
+    $(document).on('mouseenter', '.masking', function () {
+        $(this).unmask();
+    })
+    $(document).on('focusout', '.masking', function () {
+        $(this).mask("?(999) 999-9999");
+    })
+</script>

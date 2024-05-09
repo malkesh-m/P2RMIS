@@ -1,0 +1,163 @@
+﻿/* Standard Grid */
+
+.k-grid-content {
+    border: 1px solid #e6e6e6;
+    max-height: 400px;
+}
+.k-grid-content {
+    border: 1px solid #e6e6e6;
+}
+
+.k-button.k-button-icontext.k-grid-edit, .k-button.k-button-icontext.k-grid-delete {
+    box-shadow: none;
+    background: none;
+    border: none;
+    max-width: 70px;
+    margin: 0px auto;
+    padding: 0px;
+}
+
+.k-grid-header .k-header, .k-grid-header .k-header .k-link, .k-grid-header .k-link, .k-grid-header .k-link:link, .k-pager-info, .k-scheduler-agendaview .k-scheduler-datecolumn, .k-scheduler-header {
+    color: black;
+}
+
+.k-grid-header th.k-header > .k-link, .k-grid-header th.k-header, .k-input {
+    font-weight: bold;
+}
+
+.k-grid-toolbar, .k-upload-status.k-upload-status-total, .k-upload-pct, .k-grouping-header {
+    display: none;
+}
+
+.k-file-success .k-progress {
+    background-color: #03A9F4 !important;
+    margin-left: 475px;
+}
+
+.k-grid-pager .k-link, .k-grid-pager .k-link:link, .k-dropdown-wrap .k-select {
+    display: list-item;
+    list-style: none;
+}
+
+
+.k-pager-wrap a, #grid .k-grid-content tr:nth-child(odd), #gridArchive .k-grid-content tr:nth-child(even), #viewStatusInformation .k-grid-content tr:nth-child(odd), #gridStaffResults .k-grid-content tr:nth-child(odd), #viewSearchResultsGrid .k-grid-content tr:nth-child(odd), #viewSearchResultsGrid .k-grid-content-locked tr:nth-child(odd) {
+    background-color: white;
+}
+
+#grid .k-grid-content tr:nth-child(even), #gridArchive .k-grid-content tr:nth-child(even),  #viewStatusInformation .k-grid-content tr:nth-child(even), #gridStaffResults .k-grid-content tr:nth-child(even), #viewSearchResultsGrid .k-grid-content tr:nth-child(even), #viewSearchResultsGrid .k-grid-content-locked tr:nth-child(even) {
+    background-color: #E2E2E2;
+}
+
+.k-grid-header .k-grid-filter {
+    padding: .714em 0px;
+}
+
+.k-grid-header th.k-header {
+    padding-left: 10px;
+}
+
+.k-grid-header .k-grid-filter {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.k-reset input[type="checkbox"] {
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button {
+    min-width: 0px;
+}
+
+.k-grid-Destroy, .k-grid-editable, .k-grid-assign, .k-grid-Remove {
+    padding: 0px;
+    margin: 0px;
+    box-shadow: none;
+    background: none;
+    border: none;
+}
+
+.k-grid td {
+    padding: .4em .6em;
+}
+
+a.k-button:hover {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+.k-pager-wrap.k-grid-pager .k-icon, .pagerTop .k-icon {
+    margin-top: 10px;
+    vertical-align: baseline;
+}
+
+.k-datepicker .k-icon.k-i-calendar, .k-picker-wrap .k-icon, .k-datetimepicker .k-icon.k-i-calendar, .k-picker-wrap .k-icon, .k-datetimepicker .k-icon.k-i-clock {
+    margin-top: 8px;
+}
+
+.k-widget.k-dropdown.k-header .k-icon.k-i-arrow-s {
+    margin-top: 10px;
+}
+
+.k-numerictextbox .k-select .k-link span.k-i-arrow-n, .k-numerictextbox .k-select .k-link span.k-i-arrow-s {
+    margin-top: 3px;
+}
+#ModalDialog p {
+    word-wrap: break-word;
+}
+.k-animation-container .k-i-arrow-w, .k-animation-container .k-i-arrow-e {
+    margin-top: 8px;
+}
+
+.k-button.k-upload-button {
+    text-transform: unset;
+    font-size: 12px;
+    width: 80px !important;
+}
+
+.k-dropzone .k-upload-status-total {
+    top: 50%;
+}
+
+.k-upload-status {
+    right: -10px;
+}
+
+/* kendo upload */
+table .k-upload-files {
+    width: 900px;
+    display: inline-block;
+    margin-left: 30px;
+}
+
+table .k-dropzone {
+    width: 140px;
+    display: inline-block;
+}
+
+table .k-progress {
+    height: 10px;
+    margin-top: 15px;
+    width: 400px !important;
+}
+
+table .k-filename {
+    max-width: unset;
+    width: 400px;
+    text-align: right;
+}
+
+table .k-upload-status .k-button {
+    width: 30px !important;
+    margin-top: 12px;
+}
+
+table .k-file.k-file-success, table .k-upload-files.k-reset {
+    border: none !important;
+}
+
+table .k-icon.k-i-html, table .k-icon.k-i-zip, table .k-icon.k-i-xlsx, table .k-icon.k-i-xls, table .k-icon.k-i-docx, table .k-icon.k-i-doc, table .k-dropzone em {
+    display: none;
+}

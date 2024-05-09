@@ -1,0 +1,12 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<section class="upm-profile-section-academic" role="region" aria-labelledby="expertise-section">
+    <span class="upm-profile-section_header" id="expertise-section">Expertise</span>
+    <div>
+        Enter your areas of expertise. "Separate each entry &#10;using a comma. Do not enter extra spaces or special &#10;characters. Example: Biology, Statistical Modeling, &#10;Fluid Mechanics"
+    </div>
+
+    <span class="gray align-right block">max 500 characters</span>
+    <label for="GeneralInfo_Expertise" class="sr-only">Expertise Description</label>
+    @Html.TextAreaFor(x => Model.GeneralInfo.Expertise, new { @class = "profile-expertise", maxlength = 500 })
+</section>

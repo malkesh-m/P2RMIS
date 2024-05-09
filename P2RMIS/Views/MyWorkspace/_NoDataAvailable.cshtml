@@ -1,0 +1,30 @@
+﻿<!-- Stylesheet for the custom Modal -->
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<div id="smallModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content modalSmall">
+            <div class="modal-body">
+                <p>Ratings and critiques for this application are not currently available for viewing.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Javascript to include the cancel save footer -->
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#smallModal .modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+    });
+</script>*@
+
+<!-- Custom JavaScript -->
+<script type="text/javascript">
+    //function to perform close operation
+    $('#smallModal div.modal-footer :button').on('click', function (e) {
+        e.preventDefault();
+        if ($(this).attr('id') == 'closeDialogBtn') {
+            $(this).closest(".ui-dialog .ui-dialog-content").dialog("close");
+        }
+    });
+</script>

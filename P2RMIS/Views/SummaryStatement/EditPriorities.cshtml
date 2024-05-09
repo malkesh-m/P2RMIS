@@ -1,0 +1,114 @@
+﻿@using Sra.P2rmis.Web.Common
+@using System.Web
+@model Sra.P2rmis.Web.UI.Models.EditPrioritiesViewModel
+@{
+    int rowCounter = 1;
+    int index = 0;
+    string successMessage = TempData["SuccessMessage"] != null ? TempData["SuccessMessage"].ToString() : string.Empty;
+    string failureMessage = TempData["FailureMessage"] != null ? TempData["FailureMessage"].ToString() : string.Empty;
+}
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link" href="/SummaryStatementReview/RequestReview">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Edit Priorities</span>&nbsp;&nbsp;@Html.ActionLink("(Back to Set Review Priorities)", "RequestReview", "SummaryStatementReview")
+</div>
+<!-- Page Content-->
+<div class="row-fluid">
+    <div id="successMessage"></div>
+    <div id="failureMessage"></div>
+    <p>Set Priority 1 and/or Priority 2 for the applications below by selecting a value from the drop down and clicking 'Update' button.</p>
+    <div id="searchForm" class="bordered alignLeft row-fluid" style="margin-left:-10px;">
+        @using (Html.BeginForm("SavePriorityChanges", "SummaryStatement", FormMethod.Post, new { @id = "editPriorities" }))
+        {
+            <div class="row-fluid">
+                <br />
+                <div class="row" style="padding-left:30px;">
+                    <div class="span8">
+                        @Html.LabelFor(x => x.PriorityOneSelection, "Set Priority 1", new { @class = "dropDownLabelInline" })
+                        @Html.DropDownListFor(x => x.PriorityOneSelection, Utility.YesNoDropdown.Items as List<SelectListItem>, "Select", new { @id = "priorityOneSelection" })
+                        <br />
+                        @Html.LabelFor(x => x.PriorityTwoSelection, "Set Priority 2", new { @class = "dropDownLabelInline" })
+                        @Html.DropDownListFor(x => x.PriorityTwoSelection, Utility.YesNoDropdown.Items as List<SelectListItem>, "Select", new { @id = "priorityTwoSelection" })
+                    </div>
+                    <div class="span4">
+                        <span style="text-align: center;">
+                            <input type="button" class="mm-filterBox_buttons_save" value="Update" disabled="disabled" id="prioritySave" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="button" class="mm-filterBox_buttons_cancel" onclick="window.location.reload()" value="Cancel" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>@Invariables.Labels.AppId</th>
+                        <th>@Invariables.Labels.Cycle</th>
+                        <th>@Invariables.Labels.PanelName</th>
+                        <th>@Invariables.Labels.Award</th>
+                        <th>@Invariables.Labels.PriorityOneName</th>
+                        <th>@Invariables.Labels.PriorityTwoName</th>
+                        <th>@Invariables.Labels.Score</th>
+                        <th>@Invariables.Labels.TopicArea</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SummaryApplications)
+                    {
+                    <tr>
+                        <td>@rowCounter</td>
+                        <td>
+                            @item.LogNumber
+                            @Html.HiddenFor(x => x.SummaryApplications[index].PanelApplicationId)
+                            @Html.HiddenFor(x => x.SummaryApplications[index].ApplicationWorkflowId)
+                            @Html.HiddenFor(x => x.SummaryApplications[index].LogNumber)
+                            @Html.HiddenFor(x => x.SummaryApplications[index].Priority1)
+                            @Html.HiddenFor(x => x.SummaryApplications[index].Priority2)
+                        </td>
+                        <td>@item.Cycle</td>
+                        <td>@item.Panel</td>
+                        <td>@item.AwardMechanismAbbreviation</td>
+                        <td>@item.Priority1</td>
+                        <td>@item.Priority2</td>
+                        <td>@item.OverallScore</td>
+                        <td>@item.ResearchTopicArea</td>
+                    </tr>
+                        rowCounter++;
+                        index++;
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    //enable/disable save button
+    $("#priorityOneSelection, #priorityTwoSelection").on("change", function () {
+        if ($("#priorityOneSelection").val() != "" || $("#priorityTwoSelection").val() != "")
+            $("#prioritySave").prop("disabled", false);
+        else
+            $("#prioritySave").prop("disabled", true);
+    });
+    //save button submission
+    $("#prioritySave").on("click", function () {
+        $("#editPriorities").submit();
+    });
+    //success failure display
+    $(document).ready(function () {
+        if ('@successMessage' != '') {
+            $('#successMessage').html('@successMessage').show().delay(20000).fadeOut();
+        }
+        else
+            $('#successMessage').html('').hide();
+        if ('@failureMessage' != '')
+            $('#failureMessage').html('@failureMessage').show();
+        else
+            $('#failureMessage').html('').hide();
+    });
+</script>

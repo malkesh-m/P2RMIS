@@ -1,0 +1,12 @@
+﻿UPDATE MechanismTemplateElementScoring
+SET ClientScoringId = 146
+FROM MechanismTemplateElementScoring INNER JOIN
+MechanismTemplateElement ON MechanismTemplateElementScoring.MechanismTemplateElementId = MechanismTemplateElement.MechanismTemplateElementId
+WHERE ClientScoringId = 147 AND MechanismTemplateElement.OverallFlag = 1
+
+UPDATE ApplicationWorkflowStepElement
+SET ClientScoringId = 146
+FROM ApplicationWorkflowStepElement INNER JOIN
+ApplicationTemplateElement ON ApplicationWorkflowStepElement.ApplicationTemplateElementId = ApplicationTemplateElement.ApplicationTemplateElementId INNER JOIN
+MechanismTemplateElement ON ApplicationTemplateElement.MechanismTemplateElementId = MechanismTemplateElement.MechanismTemplateElementId
+WHERE ApplicationWorkflowStepElement.ClientScoringId = 147 AND MechanismTemplateElement.OverallFlag = 1 AND ApplicationWorkflowStepElement.DeletedFlag = 0

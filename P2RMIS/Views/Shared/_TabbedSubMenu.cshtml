@@ -1,0 +1,24 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SubTabbedMenuViewModel
+
+    <p>
+
+        @{ bool active = false; }
+        @foreach (var item in Model.SubTabs)
+        {
+            if (ViewBag.SubPageTitle == item.TabName) { active = true; }
+            if (item.TabOrder != 1)
+            {
+                <span>&nbsp;|&nbsp;</span>
+            }
+            if (!active)
+            {
+                <a href="@item.TabLink">@item.TabName</a>
+            }
+            else
+            {
+                @item.TabName
+            }
+            
+            active = false;
+        }
+    <p>

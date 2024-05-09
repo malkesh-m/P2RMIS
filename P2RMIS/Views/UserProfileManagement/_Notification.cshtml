@@ -1,0 +1,24 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@using Sra.P2rmis.CrossCuttingServices
+
+@if (TempData.ContainsKey(ViewHelpers.Constants.SuccessMessageKey))
+{
+    <div class="span12  alignLeft saveSuccessful" id="saveSuccessMessages" role="alert" tabindex="-1">
+        @TempData[ViewHelpers.Constants.SuccessMessageKey]
+    </div>
+}
+<div id="notificationDialog" class="hidden">
+    <div class="modal-body">
+        This user has not been sent login credentials. To send them now, click YES. To send later, click NO. You may send them at a later time using the "Send Credentials" button in the Manage Account modal.
+    </div>
+</div>
+@Html.Hidden("ShowSendCredentialsModal", Model.AccountDetails.ShowSendCredentialsModal)
+<div class="span12">
+    <span id="lastUpdated" class="alignRight"><small>Last Updated: @Model.ProfileDate</small></span>
+    @Html.HiddenFor(m => m.GeneralInfo.ModifiedDate)
+    @if (Model.ShowCreateLink)
+    {
+        <text><br />  Incorrect Profile? <a href="ViewNewUser">Create New User</a></text>
+    }
+</div>

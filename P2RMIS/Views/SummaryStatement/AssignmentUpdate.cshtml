@@ -1,0 +1,233 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.UI.Models
+@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.Web.UI.Models.AssignmentUpdateViewModel
+
+@{
+    const string searchImg = "../../Content/themes/base/images/View.png";
+    int itemCounter = 1;
+    const string assignAction = "Assign";
+    const string unassignAction = "Unassign";
+
+    string assignUserNameId = "userName";
+    string assignUserHiddenId = "userId";
+}
+<!-- Header -->
+    <div class="main-header">
+        <span class="main-header_back-button">
+            <a id="backArrow" class="main-header_back-button_link" href="/SummaryStatement/Progress">
+                <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                     alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+            </a>
+        </span>
+        <span class="main-header_title">Assign Summary Statements</span>&nbsp;&nbsp;@Html.ActionLink("(Back to Overall Progress)", "Progress", "SummaryStatement")
+    </div>
+<!-- Page Content-->
+    <div class="row-fluid">
+        <div id="successMessage"></div>
+        <div id="failureMessage"></div>
+        <p>Please select a user name and/or phase and click the 'Update' button.</p>
+        <p>To unassign a user, select 'Unassign' from the first dropdown and click 'Update'.</p>
+        <p></p>
+        <div id="searchForm" class="bordered alignLeft row-fluid" style="margin-left:-10px;">
+            <div class="textHeader alignLeft select-filter-title summaryMargin">Update Assignment</div>
+            @using (Html.BeginForm("AssignAppsToUsers", "SummaryStatement", FormMethod.Post, new { @id = "assignUsers" }))
+            {
+                <div class="row-fluid">
+                    <br />
+                    <div class="row" style="padding-left:30px;">
+                        <div class="span8">
+                            <select id="form-action" name="formAction">
+                                <option value="@assignAction" selected="selected">Assign</option>
+                                <option value="@unassignAction">Unassign</option>
+                            </select>&nbsp;
+                            <select id="selectPhase" name="SelectedPhase" style="margin-left:18px;">
+                                <option value="">Select Phase</option>
+                                @foreach (var phase in Model.AvailableWorkflowPhases)
+                                {
+                                    <option value="@phase.StepName">@phase.StepName</option>
+                                }
+                            </select>&nbsp;
+                            <input type="text" id="@assignUserNameId" name="userNameSelection" class="searchForm" autocomplete="off" placeholder="User's name" style="margin-left:18px;" />
+                            <input type="hidden" id="@assignUserHiddenId" name="@AssignmentUpdateViewModel.Labels.FormNewAssignee" />
+                        </div>
+                        <div class="span4">
+                            <span style="text-align: center;">
+                                <input type="button" class="mm-filterBox_buttons_save" value="Update" disabled="disabled" id="assignmentSave" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="button" class="mm-filterBox_buttons_cancel" onclick="window.location.reload()" value="Cancel" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <table class="table table-bordered table-striped" style="width: 700px;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>@Invariables.Labels.ApplicationIdName</th>
+                            <th>@Invariables.Labels.CurrentUserName</th>
+                            <th>@Invariables.Labels.PhaseName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Assignments)
+                        {
+                            <tr>
+                                <td>@itemCounter</td>
+                                <td>
+                                    @item.LogNumber
+                                    <input type="hidden" id="@AssignmentUpdateViewModel.Labels.FormWorkflowIds-@item.ApplicationId" name="@AssignmentUpdateViewModel.Labels.FormWorkflowIds" value="@item.ApplicationWorkflowId" />
+                                    <input type="hidden" id="@AssignmentUpdateViewModel.Labels.FormApplicationIds-@item.ApplicationId" name="@AssignmentUpdateViewModel.Labels.FormApplicationIds" value="@item.ApplicationId" />
+                                    <input type="hidden" id="@AssignmentUpdateViewModel.Labels.FormPanelApplicationIds-@item.ApplicationId" name="@AssignmentUpdateViewModel.Labels.FormPanelApplicationIds" value="@item.PanelApplicationId" />
+                                    <input type="hidden" id="@AssignmentUpdateViewModel.Labels.FormCurrentWorkflowStepIds-@item.ApplicationId" name="@AssignmentUpdateViewModel.Labels.FormCurrentWorkflowStepIds" value="@item.Steps.FirstOrDefault(x => x.IsCurrentStep).ApplicationWorkflowStepId" />
+                                    <input type="hidden" id="@AssignmentUpdateViewModel.Labels.FormUserIds-@item.ApplicationId" name="@AssignmentUpdateViewModel.Labels.FormUserIds" value="@item.UserId" />
+                                    <select id="SelectPhase_@item.ApplicationId" name="@AssignmentUpdateViewModel.Labels.FormTargetWorkflowStepIds" class="hidden">
+                                        @foreach (var phase in item.Steps)
+                                        {
+                                            if (phase.IsCurrentStep)
+                                            {
+                                                <option value="@phase.ApplicationWorkflowStepId" selected="@(phase.IsCurrentStep ? "selected" : String.Empty)">@phase.StepName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@phase.ApplicationWorkflowStepId">@phase.StepName</option>
+
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                @if (item.LastName == null)
+                                {
+                                    <td>Not Assigned</td>
+                                }
+                                else
+                                {
+                                    <td>@item.FirstName @item.LastName</td>
+                                }
+                                <td>@item.Steps.FirstOrDefault(x => x.IsCurrentStep).StepName</td>
+                            </tr>
+                            itemCounter++;
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $('#assignmentSave').on('click', function () {
+        $('#message').text('');
+        //
+        // First we get the data we need to validate
+        //
+        var assignToUsers = $('#@assignUserNameId');
+        var theirUserIds = $('#@assignUserHiddenId');
+        var isError = false;
+
+        for (i = 0; i < assignToUsers.length; i++) {
+            //
+            // Remove any error notice
+            //
+            assignToUsers.eq(i).removeAttr('style');
+            //
+            // if we have a user name then we must have a user id for that user.
+            // Otherwise we have an error.
+            //
+            if ((assignToUsers.eq(i).val() != "") && (theirUserIds.eq(i).val() == "")) {
+                assignToUsers.eq(i).css("border-color", "red");
+                isError = true;
+            } else if ((assignToUsers.eq(i).val() == "") && (theirUserIds.eq(i).val() != "")) {
+                //
+                // this is really a correction of an issue with the type ahead.  If the name field
+                // is cleared the UserId remains.  If there is a user Id without a name, clear it.
+                //
+                theirUserIds.eq(i).val('');
+            }
+        }
+        //
+        // If there was an error put up an error message.  Otherwise we can submit the form.
+        //
+        if (isError) {
+            $('#message').text('One or more errors were detected and are highlighted below.');
+        }
+        else {
+            $("#assignUsers").submit();
+        }
+    });
+    // Hide textbox if unassigned
+    $("#form-action, #selectPhase, #@assignUserNameId").on("change", function () {
+        if ($(this).val() === '@unassignAction') {
+            // Hide textbox if unassigned
+            $('#@assignUserNameId').hide();
+        }
+        else if ($('#form-action').val() === '@assignAction')
+            // Show textbox if assigned
+            $('#@assignUserNameId').show();
+        if ($('#form-action').val() === '@assignAction' && $('#@assignUserNameId').val() == "" && $('#selectPhase').val() == "")
+            $('#assignmentSave').prop('disabled',true);
+        else
+            $('#assignmentSave').prop('disabled',false);
+
+    });
+    // Sync hidden form field to match ID values
+    $('select#selectPhase').on("change", function () {
+        var match = $(this).val();
+        if (match != "") {
+            var selector = "select[id^='SelectPhase_'] option:contains('" + $(this).val() + "')";
+            $("select[id^='SelectPhase_']").prop('disabled', false);
+            $(selector).filter(function (i, e) { return e.text == match })
+                .prop('selected', true);
+        }
+        else {
+            $("select[id^='SelectPhase_']").prop('disabled', true);
+        }
+    })
+</script>
+@{ 
+    string userName = "#" + assignUserNameId;
+    string userId = "#" + assignUserHiddenId;
+    @*This script populates the typeahead for the reviewer name field.*@
+    <script>
+    jQuery.ajaxSettings.traditional = true;
+    $(document).ready(function () {
+        $('@userName').typeahead({
+            minLength: 2,
+            items: 8,
+            source: function (query, process) {
+                var users = [];
+                map = {};
+                var input = $('@userName').val();
+
+                // This is going to make an HTTP post request to the controller
+                return $.post('/SummaryStatement/GetUserListSsAssignments', { query: query, substring: input }, function (data) {
+
+                    // Loop through and push to the array
+                    $.each(data, function (i, user) {
+                        map[user.UserFullNameFormatted] = user;
+                        users.push(user.UserFullNameFormatted);
+                    });
+
+                    // Process the details
+                    process(users);
+                });
+            },
+            updater: function (item) {
+                var selectedId = map[item].UserId;
+
+                // Set the hidden variable to our selected id
+                $('@userId').val(selectedId);
+                return item;
+            }
+        });
+        //show/hide error and success messages if present
+        $('#successMessage, #failureMessage').html('').hide();
+        @if (!string.IsNullOrWhiteSpace(ViewBag.SuccessMessage)) {
+            <text>$('#successMessage').html('@ViewBag.SuccessMessage').show().delay(20000).fadeOut();</text>
+        }
+        else if (!string.IsNullOrWhiteSpace(ViewBag.FailureMessage)) {
+            <text>$('#failureMessage').html('@ViewBag.FailureMessage').show();</text>
+        }
+    });
+    </script>
+}
+

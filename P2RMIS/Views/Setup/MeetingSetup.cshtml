@@ -1,0 +1,59 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.MeetingSetupViewModel
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Meeting Setup</span>
+</div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox">
+        <div class="ss-filterBox_title">Select Filters</div>
+        <div class="ss-filterBox_required"><span class="asterisk">*</span>Indicates required fields</div>
+        <span class="ss-filterBox_activeText"><input id="activeProgramCheckbox" class="ss-filterBox_activeText__checkbox" type="checkbox" />&nbsp;Active Programs Only</span>
+        <span class="ss-filterBox_activeText"><input id="activeMeetingCheckbox" class="ss-filterBox_activeText__checkbox" type="checkbox" />&nbsp;Do not show meetings whose end date has passed</span>
+        <table class="ss-filterBox_meeting-table">
+            <tr>
+                <td class="ss-filterBox_table_client-select">
+                    <span class="asterisk" style="vertical-align:top;padding-right:5px;">*</span><select class="ss-filterBox_meeting-table_clientSelect__select" id="clientSelection"><option value="">Select Client</option></select>
+                </td>
+                <td class="ss-filterBox_table_yearSelect"><select class="ss-filterBox_meeting-table_yearSelect__select"><option value="">Select Year</option></select></td>
+                <td class="ss-filterBox_table_programSelect"><select class="ss-filterBox_meeting-table_programSelect__select"><option value="">Select Program</option></select></td>
+                <td class="ss-filterBox_meeting-table_buttonShell"><button id="btn-find-meetings" class="ss-filterBox_meeting-table_buttonShell_buttonPrimary">Find</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-appliedBox">
+        <div class="ss-appliedBox_title">Applied Filters</div>
+        <table class="ss-appliedBox_meeting-table">
+            <tr>
+                <td class="ss-appliedBox_table_client">Client:<span id="selectedClient" class="ss-appliedBox_table_client_result"></span></td>
+                <td class="ss-appliedBox_table_program">Program:<span id="selectedProgram" class="ss-appliedBox_table_program_result"></span></td>
+                <td class="ss-appliedBox_table_active">Active:<span id="selectedActive" class="ss-appliedBox_table_active_result"></span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="meetingSetupInstructions">Please select a client.</div>
+<div id="noActiveMeeting" class="ss-meeting-text">No active meetings were found. Click <a href="#" class="ss-gridHeader_addMeetingButton"><i>add meeting</i></a> to add a meeting or uncheck the active meeting checkbox to view inactive meetings.</div>
+<div id="noMeeting" class="ss-meeting-text">No meetings were found. Click <a href="#" class="ss-gridHeader_addMeetingButton"><i>add meeting</i></a> to add a meeting.</div>
+
+<!-- Grid Header -->
+<div class="ss-gridHeader">
+    <h4 class="ss-gridHeader_title">Meetings</h4><div id="totalCount" class="ss-gridHeader_totalCount">( <strong>Total Records:</strong> <span></span> )</div><a href="#" class="ss-gridHeader_addMeetingButton"><i>(add meeting)</i></a>
+</div>
+<!-- Grid -->
+<div id="grid" class="ss-grid-meeting"></div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/meetingSetup.js")

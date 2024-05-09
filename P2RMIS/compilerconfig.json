@@ -1,0 +1,66 @@
+﻿[
+  {
+    "outputFile": "Content/LESS/sticky-header.css",
+    "inputFile": "Content/LESS/sticky-header.less"
+  },
+  {
+    "outputFile": "Content/LESS/SystemSetup/Partials/ss-awardModals.css",
+    "inputFile": "Content/LESS/SystemSetup/Partials/ss-awardModals.less"
+  },
+  {
+    "outputFile": "Content/LESS/SystemSetup/ss-main.css",
+    "inputFile": "Content/LESS/SystemSetup/ss-main.less"
+  },
+  {
+    "outputFile": "Content/LESS/kendo-fixes.css",
+    "inputFile": "Content/LESS/kendo-fixes.less"
+  },
+  {
+    "outputFile": "Content/LESS/kendo-fixes2020.css",
+    "inputFile": "Content/LESS/kendo-fixes2020.less"
+  },
+  {
+    "outputFile": "Content/LESS/MeetingManagment/Partials/mm-partials.css",
+    "inputFile": "Content/LESS/MeetingManagment/Partials/mm-partials.less"
+  },
+  {
+    "outputFile": "Content/LESS/MeetingManagment/mm-main.css",
+    "inputFile": "Content/LESS/MeetingManagment/mm-main.less"
+  },
+  {
+    "outputFile": "Content/LESS/PanelManagement/Partials/pm-partials.css",
+    "inputFile": "Content/LESS/PanelManagement/Partials/pm-partials.less"
+  },
+  {
+    "outputFile": "Content/LESS/PanelManagement/pm-main.css",
+    "inputFile": "Content/LESS/PanelManagement/pm-main.less"
+  },
+  {
+    "outputFile": "Content/LESS/P2RMIS/global.css",
+    "inputFile": "Content/LESS/P2RMIS/global.less"
+  },
+  {
+    "outputFile": "Content/LESS/P2RMIS/variables.css",
+    "inputFile": "Content/LESS/P2RMIS/variables.less"
+  },
+  {
+    "outputFile": "Content/LESS/MyWorkspace/mw-main.css",
+    "inputFile": "Content/LESS/MyWorkspace/mw-main.less"
+  },
+  {
+    "outputFile": "Content/LESS/MyWorkspace/Partials/mw-partials.css",
+    "inputFile": "Content/LESS/MyWorkspace/Partials/mw-partials.less"
+  },
+  {
+    "outputFile": "Content/LESS/ManageApplicationScoring/mas-main.css",
+    "inputFile": "Content/LESS/ManageApplicationScoring/mas-main.less"
+  },
+  {
+    "outputFile": "Content/LESS/UserProfileManagement/upm-main.css",
+    "inputFile": "Content/LESS/UserProfileManagement/upm-main.less"
+  },
+  {
+    "outputFile": "Content/LESS/Security/security-main.css",
+    "inputFile": "Content/LESS/Security/security-main.less"
+  }
+]

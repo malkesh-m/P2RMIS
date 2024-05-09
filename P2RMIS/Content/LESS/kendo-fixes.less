@@ -1,0 +1,446 @@
+﻿@import 'P2RMIS/variables.less';
+
+// Fix for now until all grid classes are updated
+#grid{
+    float: left;
+    margin-bottom: 10px;
+}
+// Main Grid
+.k-grid-content {
+    border: @solidBorder @kendoBorderColor;
+    max-height: 400px;
+    min-height: 400px;
+
+    tr:nth-child(odd) {
+        background-color: @whiteColor;
+    }
+
+    tr:nth-child(even) {
+        background-color: @lightGrey;
+    }
+}
+
+.k-grid-content-locked {
+    tr:nth-child(odd) {
+        background-color: @whiteColor;
+    }
+
+    tr:nth-child(even) {
+        background-color: @lightGrey;
+    }
+}
+
+// Grid Header
+.k-grid-header {
+    .k-grid-filter {
+        padding: .714em 0px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .k-link {
+        &:extend(.k-pager-info);
+
+        &:link {
+            &:extend(.k-pager-info);
+        }
+    }
+
+    .k-header {
+        &:extend(.k-pager-info);
+
+        .k-link {
+            &:extend(.k-pager-info);
+        }
+    }
+
+    th {
+        .k-header {
+            padding-left: 10px;
+        }
+    }
+
+    th.k-header {
+        &:extend(.k-input);
+
+        > .k-link {
+            &:extend(.k-input);
+        }
+    }
+}
+
+.k-input {
+    font-weight: bold;
+}
+
+.k-pager-info {
+    color: @blackColor;
+}
+
+.k-scheduler-agendaview .k-scheduler-datecolumn, .k-scheduler-header {
+    &:extend(.k-pager-info);
+}
+
+
+.k-button.k-button-icontext.k-grid-edit, .k-button.k-button-icontext.k-grid-delete {
+    box-shadow: none;
+    background: none;
+    border: none;
+    max-width: 70px;
+    margin: 0px auto;
+    padding: 0px;
+}
+
+.k-grid-toolbar {
+    display: none;
+}
+
+.k-upload-status.k-upload-status-total, .k-grouping-header, .k-upload-pct {
+    &:extend(.k-grid-toolbar);
+}
+
+.k-file-success .k-progress {
+    background-color: @lightBlue !important;
+    margin-left: 475px;
+}
+
+.k-grid-pager .k-link, .k-grid-pager .k-link:link, .k-dropdown-wrap .k-select {
+    display: list-item;
+    list-style: none;
+}
+
+.k-reset input[type="checkbox"] {
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button {
+    min-width: 0px;
+}
+
+.k-grid-Destroy, .k-grid-editable, .k-grid-assign, .k-grid-Remove, .k-grid-view {
+    padding: 0px;
+    margin: 0px;
+    box-shadow: none;
+    background: none;
+    border: none;
+}
+
+.k-grid td {
+    padding: .4em .6em;
+}
+
+a.k-button:hover {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+a.k-button:hover {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+.k-pager-wrap.k-grid-pager .k-icon, .pagerTop .k-icon {
+    margin-top: 10px;
+    vertical-align: baseline;
+}
+
+.k-datepicker .k-icon.k-i-calendar, .k-picker-wrap .k-icon {
+    margin-top: 8px;
+}
+
+.k-datetimepicker {
+    .k-icon.k-i-calendar {
+        &:extend(.k-picker-wrap .k-icon);
+    }
+
+    .k-icon.k-i-clock {
+        &:extend(.k-picker-wrap .k-icon);
+    }
+}
+
+.k-widget.k-dropdown.k-header .k-icon.k-i-arrow-s {
+    margin-top: 10px;
+}
+
+.k-widget.k-dropdown .k-select .k-icon.k-i-arrow-60-down {
+    margin-top: 10px;
+}
+
+.k-numerictextbox .k-select .k-link span.k-i-arrow-n, .k-numerictextbox .k-select .k-link span.k-i-arrow-s {
+    margin-top: 3px;
+}
+
+#ModalDialog p {
+    word-wrap: break-word;
+}
+
+.k-animation-container .k-i-arrow-w, .k-animation-container .k-i-arrow-e {
+    &:extend(.k-picker-wrap .k-icon);
+}
+
+.k-button.k-upload-button {
+    text-transform: unset;
+    font-size: 12px;
+    width: 80px !important;
+}
+
+.k-dropzone .k-upload-status-total {
+    top: 50%;
+}
+
+.k-upload-status {
+    right: -10px;
+}
+
+.k-widget.k-datepicker.k-header {
+    width: 14.7em;
+}
+
+/* kendo upload */
+table {
+    .k-upload-files {
+        width: 900px;
+        display: inline-block;
+        margin-left: 30px;
+    }
+
+    .k-dropzone {
+        width: 140px;
+        display: inline-block;
+    }
+
+    .k-progress {
+        height: 10px;
+        margin-top: 15px;
+        width: 400px !important;
+    }
+
+    .k-filename {
+        max-width: unset;
+        width: 400px;
+        text-align: right;
+    }
+
+    .k-upload-status .k-button {
+        width: 30px !important;
+        margin-top: 12px;
+    }
+
+    .k-file.k-file-success, .k-upload-files.k-reset {
+        border: none !important;
+    }
+
+    .k-icon.k-i-html, .k-icon.k-i-zip, .k-icon.k-i-xlsx, .k-icon.k-i-xls, .k-icon.k-i-docx, .k-icon.k-i-doc, .k-dropzone em {
+        display: none;
+    }
+}
+
+.kendoModalUpload {
+    width: 100%;
+
+    .k-delete, .k-cancel, .k-progress {
+        display: none;
+    }
+
+    &_text {
+        font-size: 12px;
+    }
+
+    &_error {
+        color: red;
+    }
+
+    &_link {
+        color: #08c;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &_filterBox {
+        margin-top: 20px;
+        width: 96%;
+        border: @solidBorder @lightGrey;
+        float: left;
+        margin: 10px 0px;
+        padding: 10px 8px;
+
+        &_title {
+            padding: 0px 5px;
+            background-color: @whiteColor;
+            margin-top: -20px;
+            position: absolute;
+            font-size: @fontSize12;
+            font-weight: bold;
+        }
+    }
+
+    .k-upload-files {
+        width: 275px;
+        display: inline-block;
+        margin-left: 30px;
+    }
+
+    .k-dropzone {
+        width: 140px;
+        display: inline-block;
+    }
+
+    .k-progress {
+        height: 10px;
+        margin-top: 15px;
+        width: 400px !important;
+    }
+
+    .k-filename {
+        max-width: unset;
+        width: 400px;
+        text-align: right;
+    }
+
+    .k-upload-status .k-button {
+        width: 30px !important;
+        margin-top: 12px;
+    }
+
+    .k-file.k-file-success, .k-upload-files.k-reset {
+        border: none !important;
+    }
+
+    .k-icon.k-i-html, .k-icon.k-i-zip, .k-icon.k-i-xlsx, .k-icon.k-i-xls, .k-icon.k-i-docx, .k-icon.k-i-doc, .k-dropzone em, .k-button.k-upload-selected {
+        display: none;
+    }
+
+    .k-button.k-upload-button {
+        text-transform: unset;
+        font-size: 12px;
+        width: 80px !important;
+        padding: 8px 12px;
+    }
+
+    .k-button:focus, .k-button:active, .k-button.k-state-focused {
+        border: none;
+        background-color: @buttonColor;
+        color: white;
+    }
+
+    .k-progress {
+        top: 3px;
+        width: 150px !important;
+        display: block !important;
+        background: #03A9F4 !important;
+    }
+
+    .ui-widget-content a {
+        color: #08c;
+    }
+    // Program Setup Grid
+    .ss-program-grid .gridOptions .k-combobox {
+        width: 70%;
+    }
+
+    .ss-program-grid .gridOptions .programAbbr {
+        width: 90px;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        font-family: Verdana,Arial,sans-serif;
+        background: #eee !important;
+    }
+
+    .ss-program-grid .kendoGridTable tr:nth-child(3) td {
+        margin-top: 10px;
+    }
+}
+
+.ss-grid-dm {
+    .descriptionEllipsis {
+        max-height: 150px;
+        position: relative;
+        line-height: 22px;
+    }
+
+    .descriptionEllipsis::after {
+        letter-spacing: .10em;
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 0 10px 5px 45px;
+        background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(white), color-stop(45%, white));
+        background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), white 45%, white);
+        background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), white 45%, white);
+        background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), white 45%, white);
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), white 45%, white);
+    }
+
+    .k-grid-header th.k-header {
+        text-align: center;
+    }
+
+    .k-grid-Remove, .k-grid-Unarchive {
+        padding: 0px;
+        margin: 0px;
+        box-shadow: none;
+        background: none;
+        border: none;
+    }
+}
+// Multi-select checkboxes
+.ui-multiselect-checkboxes {
+    height: auto !important;
+}
+
+.ui-multiselect-checkboxes label {
+    padding: 0px;
+    margin: 0px;
+    background: white;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.ui-multiselect-checkboxes label:hover {
+    background: #1e90ff;
+    border: none;
+    color: white;
+}
+
+.ui-multiselect-checkboxes li:active, .ui-multiselect-checkboxes li:focus {
+    background: white !important;
+}
+
+button.ui-multiselect {
+    -webkit-appearance: menulist;
+}
+
+.ui-widget-content {
+    background: none;
+    border: none;
+}
+.ui-state-default, .ui-state-hover {
+    background: #fff !important;
+    color: #000 !important;
+}
+.k-widget.k-combobox.k-header.unselectable {
+    padding-left: 0px;
+    border-radius: 4px;
+    padding: 6px 10px 2px 10px;
+    overflow: hidden;
+    height: 20px !important;
+    background: #eee !important;
+    color: #555;
+    font-size: 12px;
+    border: 1px solid #ccc;
+}
+
+#gridCOI .k-grid-header th.k-header{
+    padding-left: unset;    
+    font-size: 14px;
+}
+
+#gridCOI .k-grid-content table{
+    font-size: 14px;    
+}

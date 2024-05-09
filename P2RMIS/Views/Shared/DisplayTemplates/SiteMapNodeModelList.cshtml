@@ -1,0 +1,40 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapNodeModelList
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+
+    @{
+    bool isNothingHighlighted = true; // we need to tell if no submenu items will be highlighted--if not, highlight first one.
+    foreach (var node in Model)
+    {
+        if (node.IsInCurrentPath && (!node.IsRootNode || node.IsCurrentNode))
+        { /* using same IF statement from below, that checks to see if item is current item. For some reason, this never works for the first item.*/
+            isNothingHighlighted = false;
+        }
+    }
+    }
+
+    @foreach (var node in Model)
+    {
+        var isDefaultSelection = false;
+        foreach (var item in node.RouteValues)
+        {
+            if (item.Key == "isDefaultSelection" && item.Value.Equals("true"))
+            {
+                isDefaultSelection = true;
+            }
+        }
+        
+        var showsub = (node.IsInCurrentPath && (!node.IsRootNode || node.IsCurrentNode)) || (isNothingHighlighted && isDefaultSelection);
+        //var showsub = Request["URL"] == node.Url.Substring(0, node.Url.IndexOf('?')); /* <== this URL check is another potential method to solve this problem (i.e. not being able to highlight the first item) BUT it doesn't work in "My Task List" because the URL of the first item doesn't match. Leaving it here commented out in case we ever want to go this route */
+        var subcls = showsub ? "active" : "";    
+         
+                if (node.Title != "") {
+                @*<li class="@subcls">*@<li role="none" >@Html.DisplayFor(m => node) 
+                    @if (node.Children.Any()) {
+                        @Html.DisplayFor(m => node.Children)
+                    }
+                </li>
+                 }
+                           
+    }

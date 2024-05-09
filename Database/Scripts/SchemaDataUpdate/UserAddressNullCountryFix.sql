@@ -1,0 +1,1 @@
+﻿UPDATE UserAddress SET CountryId = 223 WHERE DeletedFlag = 0 AND CountryId IS NULL AND StateId IS NOT NULL

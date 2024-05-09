@@ -1,0 +1,91 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers.PanelManagement
+@using Sra.P2rmis.Web.UI.Models
+@model Sra.P2rmis.Web.UI.Models.ApplicationCritiquesOverviewViewModel
+
+<tr>
+    <td class="border-none normal-alignment">
+        <div><b>PI:</b> @Model.ApplicationCritiques.PiLastName<br /><b>Institution: </b>@Model.ApplicationCritiques.PiInstitution<br /> <b>Mechanism: </b>@Model.ApplicationCritiques.AwardAbbreviation</div>
+    </td>
+    @{ int stepLength = 0; }
+    <td class="border-none normal-alignment">
+        @if (Model.ApplicationCritiques.ReviewerCritiques != null) {
+            foreach(var item in Model.ApplicationCritiques.ReviewerCritiques) 
+            {
+                <div class="manage-critique-cell">
+                    <input type="hidden" class="user-name" value="@item.ReviewerFirstName @item.ReviewerLastName" />
+                    <input type="hidden" class="user-id" value="@item.ReviewerId" />
+                    <input type="hidden" class="assignment-abbreviation" value="@item.AssignmentAbbreviation" />
+                   @item.ReviewerLastName, @item.ReviewerFirstName<br />
+                    @item.AssignmentDescription @item.AssignmentOrder
+                </div>
+                if (item.CritiquePhases.Count() > stepLength)
+                {
+                    stepLength = item.CritiquePhases.Count();
+                }
+            }
+        }
+    </td>    
+    @for (var iStep = 0; iStep < stepLength; iStep++)
+    {
+        <td class="border-none normal-alignment trow" id="@ManageCritiquesViewModel.HtmlAttributeValue(iStep+1)" name="@ManageCritiquesViewModel.HtmlAttributeValue(iStep+1)">
+            @for (var i = 0; i < Model.ApplicationCritiques.ReviewerCritiques.Count(); i++)
+            {
+                var item = Model.ApplicationCritiques.ReviewerCritiques.ToList()[i];
+                if (item.CritiquePhases != null && item.CritiquePhases.Count() > iStep)
+                {
+                    var subitem = item.CritiquePhases.ToList()[iStep];
+                    <div class="manage-critique-cell">
+                        <input type="hidden" class="application-workflow-id" value="@subitem.ApplicationWorkflowId" />
+                        <input type="hidden" class="application-workflow-step-id" value="@subitem.ApplicationWorkflowStepId" />
+                        @if (item.IsCoi || item.IsReader)
+                        {
+                           <!--If the assignment is a COI nothing should be shown-->
+                        }
+                        else 
+                        {
+                            if (!string.IsNullOrEmpty(subitem.FormattedScore))
+                            {
+                                <text>Rating: </text>@subitem.FormattedScore<br />
+                            }
+                            <text>Status: </text>@Model.FormatCritiqueStatus(subitem);
+                        }
+                        @if (subitem.DateSubmitted != null)
+                        {
+                            <text>(@ViewHelpers.FormatDate(subitem.DateSubmitted))</text>
+                        } &nbsp; 
+                        @foreach (var action in Model.DetermineCritiqueActions(subitem))
+                        {
+                            if (item.IsCoi || item.IsReader)
+                            {
+                                <!--If the assignment is a COI nothing should be shown-->
+                            }
+                            else if (action == Invariables.Labels.PanelManagement.Critiques.View)
+                            {
+                               <a  href="@Url.Action(Routing.MyWorkspace.ViewUsersCritiqueAction, Routing.P2rmisControllers.MyWorkspace, new { panelApplicationId = Model.PanelApplicationId, sessionPanelId = Model.SessionPanelId, userId = item.ReviewerId, applicationWorkflowStepId = subitem.ApplicationWorkflowStepId, targetController = Routing.P2rmisControllers.PanelManagement, targetAction = Routing.PanelManagement.ManageCritiques })">@action</a>
+                            }
+                            else if (action == Invariables.Labels.PanelManagement.Critiques.Edit)
+                            {
+                               <a  href="@Url.Action(Routing.MyWorkspace.ViewUsersCritiqueAction, Routing.P2rmisControllers.MyWorkspace, new { panelApplicationId = Model.PanelApplicationId, sessionPanelId = Model.SessionPanelId, userId = item.ReviewerId, applicationWorkflowStepId = subitem.ApplicationWorkflowStepId, targetController = Routing.P2rmisControllers.PanelManagement, targetAction = Routing.PanelManagement.ManageCritiques })">@action</a>
+                            }
+                            if (action == Invariables.Labels.PanelManagement.Critiques.ResetToEdit)
+                            {
+                                <a  href="#" class="reset-to-edit" data-toggle="modal" data-target="#confirm-reset-to-edit">@action</a>
+                            }
+                            if (action == Invariables.Labels.PanelManagement.Critiques.Submit)
+                            {
+                                <a  href='@Url.Action(PanelManagementController.PrmisAction.SubmitCritiqueAction, PanelManagementController.ControllerName, new { applicationWorkflowId = subitem.ApplicationWorkflowId })'>@action</a>
+                            }
+                        }
+                        
+                    </div>
+                }
+                else
+                {
+                    <div class="manage-critique-cell">&nbsp;</div>
+                }
+            }
+        </td>
+    }
+</tr>

@@ -1,0 +1,63 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ViewCritiqueViewModel
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab3;
+}
+
+
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        @using (Html.BeginForm("ManageCritiques", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+        {
+            @Html.Partial("_PanelSelection")
+        }
+        @Html.Partial("_PrivilegedTabMenu")
+        <a class="alignLeft" href="/PanelManagement/ManageCritiques">&lt;&lt; Go back to Overview</a>
+
+        <div class="padding">
+            <h3 class="alignCenter">@Model.CritiqueDetails.MeetingDescription</h3>
+            <h4 class="alignCenter">@Model.CritiqueDetails.ProgramYear @Model.CritiqueDetails.AwardTitle</h4>
+        </div>
+
+        <div class="bordered">
+            <span class="textHeader">Critique Details</span>
+            <p>
+                Reviewer: @Model.CritiqueDetails.ReviewerFirstName @Model.CritiqueDetails.ReviewerLastName<br />
+                Application ID and PI last name: @Model.CritiqueDetails.ApplicationLogNumber, @Model.CritiqueDetails.PiLastName<br />
+                Title: @Model.CritiqueDetails.ApplicationTitle
+            </p>
+        </div>
+
+        <h4 class="padding">
+            Overall Evaluation<br />
+            Score: @Model.CritiqueDetails.FormattedScore
+        </h4>
+        @foreach (var critique in Model.CritiqueDetails.ReviewerCritiques)
+        {
+            string accordionCollapse = "#collapse" + critique.Title.Replace(" ", string.Empty);
+            string accordionContent = "collapse" + critique.Title.Replace(" ", string.Empty);
+            <p class="padding"><b>@critique.Title</b></p>
+            if (critique.ScoreFlag)
+            {
+                <p class="padding">@Invariables.Labels.PanelManagement.Critiques.CriteriaScoreLabel @Model.FormatCriteriaScore(Model.CritiqueDetails, critique)</p>
+            }
+            <div class="accordion" id="critiqueInstructions">
+                <fieldset>
+                    <div class="accordion-group" style="margin-bottom: -20px;">
+                        <div class="accordion-heading" style="margin-top:-10px;">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="subAccordion" href="@accordionCollapse"><strong>Comment should address the following points:</strong></a>
+                        </div>
+                        <div id="@accordionContent" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <div>@Html.Raw(critique.Instructions)</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <p class="padding">@Model.FormatCritiqueComments(Model.CritiqueDetails, critique)</p>
+        }
+    </div>
+</div>
+

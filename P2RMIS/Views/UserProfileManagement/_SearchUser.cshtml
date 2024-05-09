@@ -1,0 +1,143 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SearchUserViewModel
+<style type="text/css">
+    #closeModal {
+        background-color: #f5f5f5 !important;
+        font-weight: normal;
+        box-shadow: unset;
+    }
+</style>
+
+@using (Html.BeginForm("SearchResults", "UserProfileManagement", FormMethod.Get, new { @Name = "SearchUserForm", @id = "SearchUserForm", @class = "margin-none" }))
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p>To avoid duplication of user accounts, please perform a search. You must enter at least 1 field.</p>
+            <br />
+            <div>
+                <span class="w150 float-left padding-right5">First Name</span>
+                <span>@Html.TextBoxFor(model => model.FirstName, new { id = "searchUserFirstName", size = 15, maxlength = 25, style = "font:12px arial;width:15ch;", @class = "autoSearch" })</span>
+            </div>
+            <div>
+                <span class="w150 float-left padding-right5">Last Name</span>
+                <span>@Html.TextBoxFor(model => model.LastName, new { id = "searchUserLastName", size = 25, maxlength = 35, style = "font:12px arial;width:25ch;", @class = "autoSearch" })</span>
+            </div>
+            <div>
+                <span class="w150 float-left padding-right5">Email</span>
+                <span>@Html.TextBoxFor(model => model.Email, new { id = "searchUserEmail", size = 50, maxlength = 200, style = "font:12px arial;", @class = "autoSearch" })</span>
+            </div>
+            @if (Model.IsUpdateUserSearch)
+            {
+                <div>
+                    <span class="w150 float-left padding-right5">Username</span>
+                    <span>@Html.TextBoxFor(model => model.UserName, new { id = "searchUserUserName", size = 50, maxlength = 200, style = "font:12px arial;", @class = "autoSearch" })</span>
+                </div>
+                <div>
+                    <span class="w150 float-left padding-right5">User ID</span>
+                    <span>@Html.TextBoxFor(model => model.UserId, new { id = "searchUserUserId", size = 10, maxlength = 10, style = "font:12px arial;", @class = "autoSearch integer-only", data_provide = "typeahead" })</span>
+                </div>
+                <div>
+                    <span class="w150 float-left padding-right5">Vendor ID</span>
+                    <span>@Html.TextBoxFor(model => model.VendorId, new { id = "searchUserVendorId", size = 10, maxlength = 10, style = "font:12px arial;", @class = "autoSearch", data_provide = "typeahead" })</span>
+                </div>
+            }
+            @Html.HiddenFor(model => model.IsUpdateUserSearch, new { id = "searchUserIsUpdateUserSearch" })
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSearchUserFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+        $(".integer-only").numeric({ decimal: false, negative: false });
+
+        var firstSearchVal = $.trim(sessionStorage.getItem('firstSearch'));
+        var lastSearchVal = $.trim(sessionStorage.getItem('lastSearch'));
+        var emailSearchVal = $.trim(sessionStorage.getItem('emailSearch'));
+        var usernameSearchVal = $.trim(sessionStorage.getItem('usernameSearch'));
+        var userIdSearchVal = $.trim(sessionStorage.getItem('userIdSearch'));
+        var vendorIdSearchVal = $.trim(sessionStorage.getItem('vendorIdSearch'));
+
+        $('#searchUserFirstName').val(firstSearchVal);
+        $('#searchUserLastName').val(lastSearchVal);
+        $('#searchUserEmail').val(emailSearchVal);
+        $('#searchUserUserName').val(usernameSearchVal);
+        $('#searchUserUserId').val(userIdSearchVal);
+        $('#searchUserVendorId').val(vendorIdSearchVal);
+
+        $(document).on('click', '#searchSubmit', function () {
+            var isUpdateUserSearch = $('#searchUserIsUpdateUserSearch').val() == "True";
+            var firstName = $.trim($('#searchUserFirstName').val());
+            var lastName = $.trim($('#searchUserLastName').val());
+            var emailSearch = $.trim($('#searchUserEmail').val());
+            var username = $.trim($('#searchUserUserName').val());
+            var userId = $.trim($('#searchUserUserId').val());
+            var vendorId = $.trim($('#searchUserVendorId').val());
+
+            if (isUpdateUserSearch != null) {
+                sessionStorage.setItem('isUpdateUserSearch', isUpdateUserSearch);
+            }
+            if (firstName != "") {
+                sessionStorage.setItem('firstSearch', firstName);
+            }
+            if (lastName != "") {
+                sessionStorage.setItem('lastSearch', lastName);
+            }
+            if (emailSearch != null) {
+                sessionStorage.setItem('emailSearch', emailSearch);
+            }
+            if (username != "") {
+                sessionStorage.setItem('usernameSearch', username);
+            }
+            if (userId != "") {
+                sessionStorage.setItem('userIdSearch', userId);
+            }
+            if (vendorId != "") {
+                sessionStorage.setItem('vendorIdSearch', vendorId);
+            }
+
+            //
+            // The create form has the three fields: first name; last name & email address.  One of these has to be supplied for
+            // the query to be submitted.
+            //
+            var create = ($('#searchUserFirstName').val() != "") || ($('#searchUserLastName').val() != "") || ($('#searchUserEmail').val() != "");
+            //
+            // In addition update has user name, UserId
+            //
+            var update = create || ($('#searchUserUserName').val() != "") || ($('#searchUserUserId').val() != "") || ($('#searchUserVendorId').val() != "");
+            //
+            // If we have some search parameters then submit the form.
+            //
+            if (((isUpdateUserSearch) && (update)) || ((!isUpdateUserSearch) && create)) {
+                $('#SearchUserForm input').each(function (i, value) {
+                    $(this).val($.trim($(this).val()));
+                })
+                $("#SearchUserForm").submit();
+            }
+        });
+        $('.autoSearch').on('keypress', function (e) {
+            var key = e.which;
+            if (key == 13) { // the enter key
+                $('#searchSubmit').click();
+                return false;
+            }
+        });
+        $("#searchUserUserId").on("keyup blur", function () {
+            toggleDisableFormFields("#searchUserUserId", $(this).val());
+        });
+
+        $("#searchUserVendorId").on("keyup blur", function () {
+            toggleDisableFormFields("#searchUserVendorId", $(this).val());
+        });
+    });
+    function toggleDisableFormFields(selectorToExclude, value) {
+        var otherFormFields = $("#SearchUserForm").find(":input[type='text']").not(selectorToExclude);
+        if ($.trim(value)) {
+            otherFormFields.attr("disabled", "disabled");
+        }
+        else {
+            otherFormFields.removeAttr("disabled");
+        }
+    }
+</script>

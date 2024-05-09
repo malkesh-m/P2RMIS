@@ -1,0 +1,17 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+<!-- Gender -->
+<div class="upm-profile-section_container">
+    <div class="upm-profile-section_field">
+        <span class="sr-only">Middle Iniital</span>
+        <label for="GeneralInfo_GenderId" class="upm-profile-section_field">Gender</label>
+        @Html.DropDownListFor(m => m.GeneralInfo.GenderId, new SelectList(Model.GenderDropdown, "Index", "Value", Model.GeneralInfo.GenderId), "Select", new { @class = "upm-profile-section_field_input_long" })
+    </div>
+</div>
+<!-- Ethnicity -->
+<div class="upm-profile-section_container">
+    <div class="upm-profile-section_field">
+        <span class="sr-only">Middle Iniital</span>
+        <label for="ethnicityDropDown" class="upm-profile-section_field">Ethnicity</label>
+        @Html.DropDownListFor(m => m.GeneralInfo.EthinicityId, new SelectList(Model.EthnicityDropdown, "Index", "Value", Model.GeneralInfo.EthinicityId), "Select", new { id = "ethnicityDropDown", @class = "upm-profile-section_field_input_long" })
+    </div>
+</div>

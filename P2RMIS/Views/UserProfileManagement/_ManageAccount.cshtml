@@ -1,0 +1,220 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+<style type="text/css">
+    #ManageAccountDialog {
+        padding: 0px;
+        margin: 0px;
+    }
+</style>
+<div id="ManageAccount" style="display:none;">
+    <div class="saveSuccessful">
+        <span id="saveMsg"></span>
+    </div>
+
+    <div class="ui-dialog-content modal-standard-font">
+        <span class="inlineBlock">@TempData[ViewHelpers.Constants.AccountSuccessMessageKey]</span>
+        <div class="row-fluid">
+            <div class="span4 marginLeft15">
+                <b>Username: </b>@Model.AccountDetails.Username
+            </div>
+            <div class="span3 marginLeft15">
+                <b>Role: </b>@Model.AccountDetails.RoleName
+            </div>
+            <div class="span5 marginRight15">
+                <b>Last Login: </b>@Model.AccountDetails.LastLogin
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6 bordered marginRight15">
+                @*Column1 Top*@
+                <span class="textHeaderNotBold">Account</span>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>UserID:</b>
+                    </div>
+                    <div class="span8">
+                        @Model.AccountDetails.UserId
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Status: </b>
+                    </div>
+                    <div id="accountStatus" class="span8">
+                        @Model.AccountStatus
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Status Date: </b>
+                    </div>
+                    <div id="accountStatusDate" class="span8">
+                        @ViewHelpers.FormatLastUpdateDateTime(Model.AccountDetails.StatusDate)
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Updated: </b>
+                    </div>
+                    <div id="accountStatusUpdatedDate" class="span8">
+                        @ViewHelpers.FormatLastUpdateDateTime(Model.AccountDetails.AccountUpdated)
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Updated By: </b>
+                    </div>
+                    <div id="updatedByName" class="span8">
+                        @ViewHelpers.ConstructShortName(Model.AccountDetails.AccountUpdatedByFirstName, Model.AccountDetails.AccountUpdatedByLastName)
+                    </div>
+                </div>
+            </div>
+            <div class="span6 bordered">
+                @* Column 2 Top*@
+                <span class="textHeaderNotBold">Profile</span>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Created:</b>
+                    </div>
+                    <div class="span8">
+                        @Model.AccountDetails.Created
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Created By: </b>
+                    </div>
+                    <div class="span8">
+                        @ViewHelpers.ConstructShortName(Model.AccountDetails.CreatedByFirstName, Model.AccountDetails.CreatedByLastName)
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Updated: </b>
+                    </div>
+                    <div class="span8">
+                        @Model.AccountDetails.ProfileUpdated
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Updated By: </b>
+                    </div>
+                    <div class="span8">
+                        @ViewHelpers.ConstructShortName(Model.AccountDetails.ProfileUpdatedByFirstName, Model.AccountDetails.ProfileUpdatedByLastName)
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Pref Email: </b>
+                    </div>
+                    <div class="span8">
+                        @Model.AccountDetails.PrefEmail
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6 bordered marginRight15 marginTop20" style="height: 180px">
+                @*Column1 Bottom*@
+                <span class="textHeaderNotBold">Send Credentials</span>
+                <div class="row-fluid" style="margin-bottom: 5px;">
+                    <span class="modal-small-font">An email will be sent with a temporary PWD.</span>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Sent:</b>
+                    </div>
+                    <div class="span8">
+                        <span id="sentDate">@ViewHelpers.FormatLastUpdateDateTime(Model.AccountDetails.Sent)</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Sent By: </b>
+                    </div>
+                    <div class="span8">
+                        <span id="sentBy">@Model.SentBy</span>
+                    </div>
+                    <div class="span8">
+                        <!-- Not an ideal way to position this but it will position the Send Credentials button on the same vertical offset as the Unlock button-->
+                        <b></b>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12 alignCenter">
+                        @{
+                    string DisableSendCredentials = Model.AccountDetails.ShowSendCredentialButton ? "" : "disabled";
+                        }
+                        <button id="sendCredentials" class="btn btn-info alignCenter" type="button" @DisableSendCredentials>Send Credentials</button>
+                    </div>
+                </div>
+            </div>
+            <div class="span6 bordered marginTop20" style="height: 180px;">
+                @* Column 2 Bottom*@
+                <span class="textHeaderNotBold">Lockout</span>
+                <div class="row-fluid" style="margin-bottom: 5px;">
+                    <span class="modal-small-font">To send credentials, please select the Send Credentials button.</span>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Locked: </b>
+                    </div>
+                    <div class="span8">
+                        <span id="lockedDate">@Model.AccountDetails.LockedDate</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Unlocked: </b>
+                    </div>
+                    <div class="span8">
+                        <span id="unLockedDate">@ViewHelpers.FormatLastUpdateDateTime(Model.AccountDetails.UnLockedDate)</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4 alignRight paddingRight5">
+                        <b>Unlocked By: </b>
+                    </div>
+                    <div class="span8">
+                        <span id="unlockedBy">@Model.UnLockedBy</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12 alignCenter">
+                        <button id="unLockUser" class="btn btn-info alignCenter" data-locked="@Model.AccountDetails.IsLocked.ToString().ToLower()" type="button">Unlock</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid marginTop20">
+            <div class="span12 bordered">
+                <span class="textHeaderNotBold">De-activate Account</span>
+                <div class="row-fluid">
+                    <span class="modal-small-font">
+                        To notify user of account activation, please use Send Credentials.
+                    </span>
+                </div>
+                <div class="row-fluid">
+                    @*This needs a hidden label for 508 compliance*@
+                    <div class="span4">
+                        @Html.DropDownListFor(m => m.AccountDetails.DeactivatedReason, new SelectList(Model.AccountStatusDropdown, "Index", "Value"), "Select", new { @id = "deactivateDropdownList" })
+                    </div>
+                    @*first row is profile type*@
+                    @*users active status & what status is active*@
+                    @**@
+                    <div class="span8 alignLeft" id="deActivateButtons" data-profiletype="@Model.GeneralInfo.ProfileTypeId" data-invalidprofiletypes="@Model.MisconductType"
+                            data-accountstatus="@Model.AccountDetails.StatusId" data-activestatusis='3'
+                            data-accountstatusreason="@Model.AccountDetails.StatusReasonId" data-accountstatusreasonreason="@Model.AccountDetails.InactiveReasonIdentifers" data-inactivstatusis="@Model.AccountDetails.InactiveStatusIdentifer"
+                            data-accountstatusreasonineligible="@Model.AccountStatusReasonIneligibleId">
+                        <button id="reActivateUser" class="btn btn-default" type="button">Re-Activate</button>
+                        <button id="deActivateUser" class="btn btn-default" type="button">De-Activate</button>
+                        <button id="activateUser" class="btn btn-default" type="button" disabled>Activate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="profileTypeId" value="@Model.GeneralInfo.ProfileTypeId"/>

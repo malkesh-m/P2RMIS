@@ -1,0 +1,87 @@
+﻿@model Sra.P2rmis.WebModels.PanelManagement.IPanelFilterMenuModel
+
+@{
+    string disablePanelDropdown = @Model.SelectedProgramYear <= 0 ? "disable" : "";
+}
+
+    <div class="input-append">
+    <p>
+        @if (Model.HasSelectProgramPanelPermission)
+        {
+            if (@Model.SelectedProgramYear > 0)
+            {
+                @Html.DropDownListFor(m => m.SelectedProgramYear, new SelectList(Model.ProgramYears, "ProgramYearId", "DisplayText", Model), "Please select a Program/Year to start", new { @id = "selectedProgramYear" })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.SelectedProgramYear, new SelectList(Model.ProgramYears, "ProgramYearId", "DisplayText"), "Please select a Program/Year to start", new { @id = "selectedProgramYear" })
+            }
+
+            if ((@Model.SelectedProgramYear > 0) && (Session[Sra.P2rmis.Web.Common.SessionVariables.PanelId] != null))
+            {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.Panels, "PanelId", "DisplayText", (int)Session[Sra.P2rmis.Web.Common.SessionVariables.PanelId]), "Please select a Panel to start", new { @id = "selectedPanel" })
+            }
+            else if (@Model.SelectedProgramYear > 0)
+            {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.Panels, "PanelId", "DisplayText"), "Please select a Panel to start", new { @id = "selectedPanel" })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.Panels, "PanelId", "DisplayText"), "Please select a Panel to start", new { @id = "selectedPanel", @disabled = "@disablePanelDropdown" })
+            }
+        }
+        else
+        {
+            if (@Model.SelectedPanel > 0)
+            {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.Panels, "PanelId", "DisplayText", Model.SelectedPanel), "Please select a Panel to start", new { @id = "selectedPanel" })
+        }
+        else
+        {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.Panels, "PanelId", "DisplayText"), "Please select a Panel to start", new { @id = "selectedPanel" })
+            }
+        }
+		<button id="SelectPanel" type="submit" disabled="disabled" class="btn btn-default">Select</button>
+    </p>
+    </div>
+@*script for ajax calls to populate panel options after selecting a Program/Year from menu*@
+<script type="text/javascript">
+    $(function () {
+        $('#selectedProgramYear').change(function () {
+            $('#selectedPanel > option:gt(0)').remove();
+            if ($(this).val() !== "") {
+                $('#selectedPanel').removeAttr('disabled');
+                var selectedProgramYear = $(this).val();
+                $.getJSON('@Url.Action("GetPanelsJson", "PanelManagement")', { selectedProgramYear: selectedProgramYear }, function (data) {
+                    var selectedPanel = $('#selectedPanel');
+                    $.each(data, function (index, panel) {
+                        selectedPanel.append(
+                            $('<option/>').attr('value', panel.PanelId).text(panel.PanelAbbreviation)
+                        );
+                    });
+                });
+            }
+            else {
+                $('#selectedPanel').attr('disabled', 'disabled');
+                $('#SelectPanel').attr('disabled', 'disabled');
+            }
+        });
+    });
+    $(function () {
+        $('#selectedPanel').change(function () {
+            if ($(this).val() !== "") {
+                $('#SelectPanel').removeAttr('disabled');
+                var completeCycles = $('#selectedCycle').children().clone();
+                sessionStorage.setItem('completeCycles', completeCycles);
+            }
+            else {
+                $('#selectPanel').attr('disabled', 'disabled');
+            }
+        });
+    });
+</script>
+
+@*script for enabling/disabling Select after selecting a panel from menu*@
+<script type="text/javascript">
+
+</script>

@@ -1,0 +1,2 @@
+﻿UPDATE UserAccountStatus SET AccountStatusId = 13, AccountStatusReasonId = 1, ModifiedBy = 10, ModifiedDate = dbo.GetP2rmisDateTime()
+WHERE DeletedFlag = 0 AND AccountStatusId = 3 AND AccountStatusReasonId = 9;

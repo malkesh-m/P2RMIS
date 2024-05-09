@@ -1,0 +1,67 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+@using Sra.P2rmis.CrossCuttingServices.ConfigurationServices;
+
+@{
+    var displayNodes = new List<SiteMapNodeModel>();
+    var hiddenNodes = new List<SiteMapNodeModel>();
+    for (var i = 0; i < Model.Nodes.Count; i++)
+    {
+        var node = Model.Nodes[i];
+        if (i < ConfigManager.NavMenuItemsMaxDisplay)
+        {
+            displayNodes.Add(node);
+        }
+        else
+        {
+            hiddenNodes.Add(node);
+        }
+    }
+}
+<div>
+    <ul class="nav" role="menubar">
+        @foreach (var node in displayNodes)
+        {
+            if (node.Children.Any())
+            {
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" tabindex="0" aria-expanded="false" aria-haspopup="true">
+                        @node.Title
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu ariaAttribute" role="menu">
+                        @Html.DisplayFor(m => node.Children)
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>
+                    @Html.DisplayFor(m => node)
+                </li>
+            }
+        }
+        @if (hiddenNodes.Any())
+        {
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" tabindex="0" aria-expanded="false" aria-haspopup="true">
+                    <img src="~/Content/img/More_Icon.png" id="moreIcon" alt="More Menu Options" title="More Menu Options" />
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    @foreach (var node in hiddenNodes)
+                    {
+                        <li class="dropdown-submenu">
+                            <a href="#" tabindex="0" class="dropdown-submenu-toggle">
+                                @node.Title
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                @Html.DisplayFor(m => node.Children)
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</div>

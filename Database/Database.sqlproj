@@ -1,0 +1,1043 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{e4fd582a-73b5-45b8-ac0c-8b0d8f26a897}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Database</RootNamespace>
+    <AssemblyName>Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <ValidateCasingOnIdentifiers>False</ValidateCasingOnIdentifiers>
+    <Recovery>BULK_LOGGED</Recovery>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test-Cloud|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UA-Cloud|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging-Cloud|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Prod-Cloud|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Dev-Cloud|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test2-Cloud|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Storage\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\ETL" />
+    <Folder Include="Scripts\TestData" />
+    <Folder Include="Scripts\PermissionsData" />
+    <Folder Include="Scripts\SchemaDataUpdate" />
+    <Folder Include="Scripts\Miscellaneous" />
+    <Folder Include="dbo\Views\TableViews" />
+    <Folder Include="dbo\Views\LegacyViews" />
+    <Folder Include="Scripts\CgmDataTransfer" />
+    <Folder Include="dbo\Stored Procedures\Reports" />
+    <Folder Include="Scripts\LookupData" />
+    <Folder Include="dbo\Stored Procedures\SummaryStatement" />
+    <Folder Include="dbo\Stored Procedures\DataManagement" />
+    <Folder Include="Scripts\DataManagement" />
+    <Folder Include="Scripts\TestDataSetup" />
+    <Folder Include="dbo\Stored Procedures\Legacy" />
+    <Folder Include="Scripts\Deployment" />
+    <Folder Include="Scripts\Deployment\Staging" />
+    <Folder Include="dbo\Sequences\" />
+    <Folder Include="Server Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Client.sql" />
+    <Build Include="dbo\Tables\FileStore.sql" />
+    <Build Include="dbo\Tables\FileStoreMain.sql" />
+    <Build Include="dbo\Tables\LookupTemplateCategory.sql" />
+    <Build Include="dbo\Tables\UserApplicationComment.sql" />
+    <Build Include="dbo\Tables\LookupTemplateStage.sql" />
+    <Build Include="dbo\Tables\LookupTemplateType.sql" />
+    <Build Include="dbo\Tables\UserApplicationCommentHistory.sql" />
+    <Build Include="dbo\Tables\CommentType.sql" />
+    <Build Include="dbo\Tables\SystemTemplate.sql" />
+    <Build Include="dbo\Tables\SystemTemplateVersion.sql" />
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\UserAddress.sql" />
+    <Build Include="dbo\Tables\UserClient.sql" />
+    <Build Include="dbo\Tables\UserEmail.sql" />
+    <Build Include="dbo\Tables\UserInfo.sql" />
+    <Build Include="dbo\Tables\UserPhone.sql" />
+    <Build Include="dbo\Tables\UserSystemRole.sql" />
+    <Build Include="Security\NetSqlAzMan_Readers.sql" />
+    <Build Include="Security\NetSqlAzMan_Users.sql" />
+    <Build Include="Security\NetSqlAzMan_Managers.sql" />
+    <Build Include="Security\NetSqlAzMan_Administrators.sql" />
+    <Build Include="Security\web-p2rmis.sql" />
+    <Build Include="dbo\Stored Procedures\ReviewerInfo.sql" />
+    <Build Include="dbo\Stored Procedures\uspViewPanelDetails.sql" />
+    <Build Include="Security\NetSqlAzMan_Administrators_1.sql" />
+    <Build Include="Security\NetSqlAzMan_Managers_1.sql" />
+    <Build Include="Security\NetSqlAzMan_Readers_1.sql" />
+    <Build Include="Security\NetSqlAzMan_Users_1.sql" />
+    <Build Include="Security\Permissions.sql" />
+    <Build Include="dbo\Tables\Report.sql" />
+    <Build Include="dbo\Tables\LookupReportGroup.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="dbo\Tables\ReportPermission.sql" />
+    <Build Include="dbo\Tables\ReportParameter.sql" />
+    <Build Include="dbo\Tables\LookupReportParameter.sql" />
+    <Build Include="dbo\Tables\PersonPhoto.sql" />
+    <Build Include="dbo\Functions\SplitReportParameterString.sql" />
+    <Build Include="dbo\Functions\SplitReportParameterInt.sql" />
+    <Build Include="dbo\Tables\Workflow.sql" />
+    <Build Include="dbo\Tables\WorkflowStep.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflow.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStep.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStepAssignment.sql" />
+    <Build Include="dbo\Tables\Application.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStepWorkLog.sql" />
+    <Build Include="dbo\Tables\ApplicationReviewStatus.sql" />
+    <Build Include="dbo\Tables\ReviewStatus.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStepElement.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStepElementContent.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStepElementContentHistory.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowStepElementComment.sql" />
+    <Build Include="dbo\Tables\ApplicationTemplate.sql" />
+    <Build Include="dbo\Tables\ApplicationTemplateElement.sql" />
+    <Build Include="dbo\Tables\MechanismTemplateElement.sql" />
+    <Build Include="dbo\Tables\MechanismTemplate.sql" />
+    <Build Include="dbo\Tables\ClientElement.sql" />
+    <Build Include="dbo\Tables\ClientScoringScale.sql" />
+    <Build Include="dbo\Tables\ClientScoringScaleAdjectival.sql" />
+    <Build Include="dbo\Tables\AccessLevel.sql" />
+    <Build Include="dbo\Tables\ReviewStatusType.sql" />
+    <Build Include="dbo\Tables\StepType.sql" />
+    <Build Include="dbo\Tables\ElementType.sql" />
+    <Build Include="dbo\Stored Procedures\uspBeginApplicationSummaryWorkflow.sql" />
+    <Build Include="dbo\Stored Procedures\uspPreviewApplicationSummaryWorkflow.sql" />
+    <Build Include="dbo\Stored Procedures\uspChangeNomineeType.sql" />
+    <Build Include="dbo\Tables\ApplicationDefaultWorkflow.sql" />
+    <Build Include="dbo\Functions\udfLastUpdatedCritiquePhase.sql" />
+    <Build Include="dbo\Tables\WorkflowMechanism.sql" />
+    <Build Include="dbo\Tables\ClientDefaultWorkflow.sql" />
+    <Build Include="dbo\Tables\ApplicationSummaryLog.sql" />
+    <Build Include="dbo\Tables\UserAccountRecovery.sql" />
+    <Build Include="dbo\Tables\RecoveryQuestion.sql" />
+    <Build Include="dbo\Tables\Prefix.sql" />
+    <Build Include="dbo\Tables\AddressType.sql" />
+    <Build Include="dbo\Tables\Ethnicity.sql" />
+    <Build Include="dbo\Tables\Gender.sql" />
+    <Build Include="dbo\Tables\UserResume.sql" />
+    <Build Include="dbo\Tables\PhoneType.sql" />
+    <Build Include="dbo\Tables\Degree.sql" />
+    <Build Include="dbo\Tables\UserDegree.sql" />
+    <Build Include="dbo\Tables\MilitaryRank.sql" />
+    <Build Include="dbo\Tables\Country.sql" />
+    <Build Include="dbo\Tables\State.sql" />
+    <Build Include="dbo\Tables\AccountStatus.sql" />
+    <Build Include="dbo\Tables\ClientProgram.sql" />
+    <Build Include="dbo\Tables\ProgramYear.sql" />
+    <Build Include="dbo\Tables\MeetingType.sql" />
+    <Build Include="dbo\Tables\MeetingSession.sql" />
+    <Build Include="dbo\Tables\ClientMeeting.sql" />
+    <Build Include="dbo\Tables\SessionPanel.sql" />
+    <Build Include="dbo\Tables\ProgramPanel.sql" />
+    <Build Include="dbo\Tables\ProgramMechanism.sql" />
+    <Build Include="dbo\Tables\PanelApplication.sql" />
+    <Build Include="dbo\Tables\ClientParticipantType.sql" />
+    <Build Include="dbo\Tables\ClientRole.sql" />
+    <Build Include="dbo\Tables\PanelUserAssignment.sql" />
+    <Build Include="dbo\Tables\ProgramUserAssignment.sql" />
+    <Build Include="dbo\Tables\ClientAward.sql" />
+    <Build Include="dbo\Tables\ApplicationBudget.sql" />
+    <Build Include="dbo\Tables\ApplicationPersonnel.sql" />
+    <Build Include="dbo\Tables\ClientApplicationPersonnelType.sql" />
+    <Build Include="dbo\Tables\ApplicationResearchCategory.sql" />
+    <Build Include="dbo\Tables\ApplicationInfo.sql" />
+    <Build Include="dbo\Tables\ClientApplicationInfoType.sql" />
+    <Build Include="dbo\Tables\ApplicationText.sql" />
+    <Build Include="dbo\Tables\ClientApplicationTextType.sql" />
+    <Build Include="dbo\Tables\ResearchCategoryType.sql" />
+    <None Include="Scripts\ETL\UserInfo.sql" />
+    <None Include="Scripts\ETL\UserAddress.sql" />
+    <Build Include="dbo\Tables\ClientCoiType.sql" />
+    <Build Include="dbo\Tables\ClientExpertiseRating.sql" />
+    <Build Include="dbo\Tables\PanelApplicationReviewerCoiDetail.sql" />
+    <Build Include="dbo\Tables\PanelApplicationReviewerExpertise.sql" />
+    <None Include="Scripts\ETL\UserDegree.sql" />
+    <None Include="Scripts\ETL\UserEmail.sql" />
+    <Build Include="dbo\Tables\ApplicationStage.sql" />
+    <Build Include="dbo\Tables\AssignmentType.sql" />
+    <Build Include="dbo\Tables\PanelApplicationReviewerAssignment.sql" />
+    <Build Include="dbo\Tables\PanelStage.sql" />
+    <Build Include="dbo\Tables\PanelStageStep.sql" />
+    <Build Include="dbo\Tables\ReviewStage.sql" />
+    <None Include="Scripts\ETL\ClientAwardType.sql" />
+    <None Include="Scripts\ETL\ClientParticipantType.sql" />
+    <None Include="Scripts\ETL\ClientProgram.sql" />
+    <None Include="Scripts\ETL\ClientRole.sql" />
+    <None Include="Scripts\ETL\ProgramYear.sql" />
+    <Build Include="dbo\Tables\ClientAssignmentType.sql" />
+    <None Include="Scripts\ETL\ClientMeeting.sql" />
+    <None Include="Scripts\ETL\MeetingSession.sql" />
+    <None Include="Scripts\ETL\PanelApplication.sql" />
+    <None Include="Scripts\ETL\PanelUserAssignment.sql" />
+    <None Include="Scripts\ETL\ProgramMechanism.sql" />
+    <None Include="Scripts\ETL\ProgramPanel.sql" />
+    <None Include="Scripts\ETL\ProgramUserAssignment.sql" />
+    <None Include="Scripts\ETL\SessionPanel.sql" />
+    <Build Include="dbo\Tables\ActionLog.sql" />
+    <Build Include="dbo\Tables\ActionLogReason.sql" />
+    <Build Include="dbo\Tables\ClientReviewerEvaluationGroup.sql" />
+    <Build Include="dbo\Tables\ReviewerEvaluation.sql" />
+    <Build Include="dbo\Tables\ReviewerEvaluationRatingGroupGuidance.sql" />
+    <Build Include="dbo\Tables\TransferReason.sql" />
+    <Build Include="dbo\Tables\MechanismTemplateElementScoring.sql" />
+    <Build Include="dbo\Stored Procedures\uspBeginReviewerWorkflow.sql" />
+    <Build Include="dbo\Tables\CommunicationLog.sql" />
+    <Build Include="dbo\Tables\CommunicationLogAttachment.sql" />
+    <Build Include="dbo\Tables\CommunicationLogRecipient.sql" />
+    <Build Include="dbo\Tables\CommunicationLogRecipientType.sql" />
+    <Build Include="dbo\Stored Procedures\uspAddOtherSummaryMechanismTemplate.sql" />
+    <Build Include="dbo\Stored Procedures\uspSubmitApplicationWorkflowStep.sql" />
+    <Build Include="dbo\Stored Procedures\uspResetApplicationWorkflowStep.sql" />
+    <Build Include="dbo\Tables\UserProfile.sql" />
+    <Build Include="dbo\Tables\ProfileType.sql" />
+    <Build Include="dbo\Tables\UserWebsite.sql" />
+    <Build Include="dbo\Tables\WebsiteType.sql" />
+    <Build Include="dbo\Tables\AlternateContactType.sql" />
+    <Build Include="dbo\Tables\UserAlternateContact.sql" />
+    <Build Include="dbo\Tables\UserAlternateContactPhone.sql" />
+    <Build Include="dbo\Tables\EmailAddressType.sql" />
+    <Build Include="dbo\Tables\MilitaryStatusType.sql" />
+    <Build Include="dbo\Functions\udfFuzzyMatch.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetUsersByName.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetUsersByUserLogin.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetUsersByEmail.sql" />
+    <Build Include="dbo\Tables\UserInfoChangeType.sql" />
+    <Build Include="dbo\Tables\UserAccountStatus.sql" />
+    <Build Include="dbo\Tables\AccountStatusReason.sql" />
+    <Build Include="dbo\Tables\UserAccountStatusChangeLog.sql" />
+    <Build Include="dbo\Tables\SystemRole.sql" />
+    <Build Include="dbo\Tables\ProfileTypeRole.sql" />
+    <Build Include="dbo\Tables\PanelApplicationSummary.sql" />
+    <Build Include="dbo\Tables\SummaryReviewerDescription.sql" />
+    <Build Include="dbo\Tables\SummaryDocument.sql" />
+    <Build Include="dbo\Functions\udfApplicationWorkflowActiveStep.sql" />
+    <Build Include="dbo\Functions\udfApplicationWorkflowLastStep.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AdminPersonnelUpdates.sql" />
+    <Build Include="dbo\Tables\ClientScoringScaleLegendItem.sql" />
+    <Build Include="dbo\Tables\ClientScoringScaleLegend.sql" />
+    <Build Include="dbo\Stored Procedures\uspBeginScoringWorkflow.sql" />
+    <Build Include="dbo\Views\TableViews\ViewWorkflowStep.sql" />
+    <Build Include="dbo\Views\TableViews\ViewWorkflow.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserWebsite.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserSystemRole.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserResume.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserProfile.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserPhone.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserInfo.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserEmail.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserDegree.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserClient.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserApplicationComment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserAlternateContactPhone.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserAlternateContact.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserAddress.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserAccountStatusChangeLog.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserAccountStatus.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserAccountRecovery.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUser.sql" />
+    <Build Include="dbo\Views\TableViews\ViewSessionPanel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewReviewerEvaluation.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramYear.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramUserAssignment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramPanel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramMechanism.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelUserAssignment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelStageStep.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelStage.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelApplicationSummary.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelApplicationReviewerExpertise.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelApplicationReviewerCoiDetail.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelApplicationReviewerAssignment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelApplication.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingSession.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMechanismTemplateElementScoring.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMechanismTemplateElement.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMechanismTemplate.sql" />
+    <Build Include="dbo\Views\TableViews\ViewCommunicationLogRecipient.sql" />
+    <Build Include="dbo\Views\TableViews\ViewCommunicationLogAttachment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewCommunicationLog.sql" />
+    <Build Include="dbo\Views\TableViews\ViewClientMeeting.sql" />
+    <Build Include="dbo\Views\TableViews\ViewClientElement.sql" />
+    <Build Include="dbo\Views\TableViews\ViewClientAwardType.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationWorkflowStepWorkLog.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationWorkflowStepElementContent.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationWorkflowStepElement.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationWorkflowStepAssignment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationWorkflowStep.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationWorkflow.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationText.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationTemplateElement.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationTemplate.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationSummaryLog.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationStage.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationReviewStatus.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationResearchCategory.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationPersonnel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationInfo.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationBudget.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplication.sql" />
+    <Build Include="dbo\Tables\ClientRegistration.sql" />
+    <Build Include="dbo\Tables\ClientRegistrationDocument.sql" />
+    <Build Include="dbo\Tables\RegistrationDocumentItem.sql" />
+    <Build Include="dbo\Tables\PanelUserRegistration.sql" />
+    <Build Include="dbo\Tables\PanelUserRegistrationDocument.sql" />
+    <Build Include="dbo\Tables\PanelUserRegistrationDocumentItem.sql" />
+    <Build Include="dbo\Functions\udfPanelStageLastStep.sql" />
+    <Build Include="dbo\Tables\AcademicRank.sql" />
+    <Build Include="dbo\Tables\ProfessionalAffiliation.sql" />
+    <Build Include="dbo\Stored Procedures\uspCreatePanelUserRegistration.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelUserRegistration.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelUserRegistrationDocument.sql" />
+    <Build Include="dbo\Tables\ClientRegistrationDocumentItem.sql" />
+    <Build Include="dbo\Tables\ProgramPayRate.sql" />
+    <Build Include="dbo\Tables\SessionPayRate.sql" />
+    <Build Include="dbo\Tables\RegistrationDocumentType.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportContract.sql" />
+    <Build Include="dbo\Tables\TriggerErrorLog.sql" />
+    <Build Include="dbo\Tables\TrainingCategory.sql" />
+    <Build Include="dbo\Tables\RoleTask.sql" />
+    <Build Include="dbo\Tables\TaskOperation.sql" />
+    <Build Include="dbo\Tables\SystemTask.sql" />
+    <Build Include="dbo\Tables\SystemOperation.sql" />
+    <Build Include="dbo\Tables\UserInfoChangeLog.sql" />
+    <None Include="Scripts\LookupData\AcademicRank.sql" />
+    <None Include="Scripts\LookupData\AccessLevel.sql" />
+    <None Include="Scripts\LookupData\AccountStatus.sql" />
+    <None Include="Scripts\LookupData\AccountStatusReason.sql" />
+    <None Include="Scripts\LookupData\ActionLogReason.sql" />
+    <None Include="Scripts\LookupData\AddressType.sql" />
+    <None Include="Scripts\LookupData\AlternateContactType.sql" />
+    <None Include="Scripts\LookupData\AssignmentType.sql" />
+    <None Include="Scripts\LookupData\Client.sql" />
+    <None Include="Scripts\LookupData\ClientApplicationInfoType.sql" />
+    <None Include="Scripts\LookupData\ClientApplicationPersonnelType.sql" />
+    <None Include="Scripts\LookupData\ClientApplicationTextType.sql" />
+    <None Include="Scripts\LookupData\ClientAssignmentType.sql" />
+    <None Include="Scripts\LookupData\ClientCoiType.sql" />
+    <None Include="Scripts\LookupData\ClientDefaultWorkflow.sql" />
+    <None Include="Scripts\LookupData\ClientExpertiseRating.sql" />
+    <None Include="Scripts\LookupData\ClientRegistration.sql" />
+    <None Include="Scripts\LookupData\ClientRegistrationDocument.sql" />
+    <None Include="Scripts\LookupData\ClientRegistrationDocumentItem.sql" />
+    <None Include="Scripts\LookupData\ClientReviewerEvaluationGroup.sql" />
+    <None Include="Scripts\LookupData\ClientScoringScaleLegend.sql" />
+    <None Include="Scripts\LookupData\ClientScoringScaleLegendItem.sql" />
+    <None Include="Scripts\LookupData\CommentType.sql" />
+    <None Include="Scripts\LookupData\CommunicationLogRecipientType.sql" />
+    <None Include="Scripts\LookupData\Country.sql" />
+    <None Include="Scripts\LookupData\Degree.sql" />
+    <None Include="Scripts\LookupData\ElementType.sql" />
+    <None Include="Scripts\LookupData\EmailAddressType.sql" />
+    <None Include="Scripts\LookupData\Ethnicity.sql" />
+    <None Include="Scripts\LookupData\Gender.sql" />
+    <None Include="Scripts\LookupData\LookupEthnicity.sql" />
+    <None Include="Scripts\LookupData\LookupReportGroup.sql" />
+    <None Include="Scripts\LookupData\LookupReportParameter.sql" />
+    <None Include="Scripts\LookupData\LookupTemplateCategory.sql" />
+    <None Include="Scripts\LookupData\LookupTemplateStage.sql" />
+    <None Include="Scripts\LookupData\LookupTemplateType.sql" />
+    <None Include="Scripts\LookupData\LookupUSState.sql" />
+    <None Include="Scripts\LookupData\MeetingType.sql" />
+    <None Include="Scripts\LookupData\MilitaryRank.sql" />
+    <None Include="Scripts\LookupData\MilitaryStatusType.sql" />
+    <None Include="Scripts\LookupData\PhoneType.sql" />
+    <None Include="Scripts\LookupData\Prefix.sql" />
+    <None Include="Scripts\LookupData\ProfessionalAffiliation.sql" />
+    <None Include="Scripts\LookupData\ProfileType.sql" />
+    <None Include="Scripts\LookupData\ProfileTypeRole.sql" />
+    <None Include="Scripts\LookupData\RecoveryQuestion.sql" />
+    <None Include="Scripts\LookupData\RegistrationDocumentItem.sql" />
+    <None Include="Scripts\LookupData\RegistrationDocumentType.sql" />
+    <None Include="Scripts\LookupData\Report.sql" />
+    <None Include="Scripts\LookupData\ReportParameter.sql" />
+    <None Include="Scripts\LookupData\ReportPermission.sql" />
+    <None Include="Scripts\LookupData\ResearchCategoryType.sql" />
+    <None Include="Scripts\LookupData\ReviewerEvaluationGroupGuidance.sql" />
+    <None Include="Scripts\LookupData\ReviewStage.sql" />
+    <None Include="Scripts\LookupData\ReviewStatus.sql" />
+    <None Include="Scripts\LookupData\ReviewStatusType.sql" />
+    <None Include="Scripts\LookupData\State.sql" />
+    <None Include="Scripts\LookupData\StepType.sql" />
+    <None Include="Scripts\LookupData\Suffix.sql" />
+    <None Include="Scripts\LookupData\SummaryDocument.sql" />
+    <None Include="Scripts\LookupData\SummaryReviewerDescription.sql" />
+    <None Include="Scripts\LookupData\SystemRole.sql" />
+    <None Include="Scripts\LookupData\SystemTemplate.sql" />
+    <None Include="Scripts\LookupData\SystemTemplateVersion.sql" />
+    <None Include="Scripts\LookupData\TrainingCategory.sql" />
+    <None Include="Scripts\LookupData\TransferReason.sql" />
+    <None Include="Scripts\LookupData\UserInfoChangeType.sql" />
+    <None Include="Scripts\LookupData\WebsiteType.sql" />
+    <Build Include="dbo\Tables\PanelUserPotentialAssignment.sql" />
+    <Build Include="dbo\Tables\ParticipationMethod.sql" />
+    <Build Include="dbo\Tables\UserEvaluationLog.sql" />
+    <Build Include="Storage\UserResume.FT.sql" />
+    <Build Include="dbo\Tables\UserCommunicationLog.sql" />
+    <Build Include="dbo\Tables\CommunicationMethod.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPhaseComparisonDel.sql" />
+    <Build Include="dbo\Functions\udfLastUpdatedCritiquePhaseAverage.sql" />
+    <Build Include="dbo\Functions\udfLastUpdatedCritiquePhaseAverageOverall.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportApplicationCountDel.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportCOISignOutDel.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReimbursement.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportSummaryProposalCountByPanel.sql" />
+    <Build Include="dbo\Tables\ApplicationCompliance.sql" />
+    <Build Include="dbo\Tables\ComplianceStatus.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationReVStdev.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportDistributionOfScores.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportAdminNotes.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportDistributionofScoresAwardDel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramPayRate.sql" />
+    <Build Include="dbo\Views\TableViews\ViewSessionPayRate.sql" />
+    <Build Include="dbo\Views\TableViews\ViewPanelUserRegistrationDocumentItem.sql" />
+    <Build Include="dbo\Tables\ApplicationStageStep.sql" />
+    <Build Include="dbo\Tables\ApplicationStageStepDiscussion.sql" />
+    <Build Include="dbo\Tables\ApplicationStageStepDiscussionComment.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowStepNameModUpdate.sql" />
+    <None Include="Scripts\Miscellaneous\UserW9VerifyCleanup.sql" />
+    <Build Include="dbo\Tables\MeetingRegistration.sql" />
+    <Build Include="dbo\Tables\MeetingRegistrationAttendance.sql" />
+    <Build Include="dbo\Tables\TravelMode.sql" />
+    <Build Include="dbo\Tables\MeetingRegistrationHotel.sql" />
+    <Build Include="dbo\Tables\MeetingRegistrationTravel.sql" />
+    <Build Include="dbo\Tables\Hotel.sql" />
+    <Build Include="dbo\Functions\udfLegacyToNewParticipantTypeMap.sql" />
+    <Build Include="dbo\Functions\udfNewToLegacyParticipantTypeMap.sql" />
+    <Build Include="dbo\Functions\udfApplicationPartnerData.sql" />
+    <Build Include="dbo\Functions\udfGetNewUserName.sql" />
+    <Build Include="dbo\Functions\udfConcatString.sql" />
+    <Build Include="dbo\Functions\udfGetSummaryReviewerDescription.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportRevPanelCompareRaw.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportOrderOfDiscussion.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportCritiquesSubmissionCount.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportCritiquePastDue.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportRoster.sql" />
+    <Build Include="dbo\Functions\udfPanelSrosDelimited.sql" />
+    <Build Include="dbo\Functions\udfPanelRtasDelimited.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportRequiredDocumentChecklist.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportSummaryPhaseTracking.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportEditorProductivity.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportEditorProductivityParameter.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterCycle.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterSession.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterMeeting.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterProgram.sql" />
+    <Build Include="dbo\Functions\udfFinalCritiquePhaseAverageOverall.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportRereviewApplications.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportDisparateOverallScores.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportScoresSummary.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportFinalScores.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\UspReportPedigree.sql" />
+    <Build Include="dbo\Functions\udfFinalCritiquePhaseAverage.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportSROChairList.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportSRORTAList.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportW9Address.sql" />
+    <Build Include="dbo\Tables\StepTypeOperation.sql" />
+    <None Include="Scripts\SchemaDataUpdate\SraStaffRoleRemovalUpdates.sql" />
+    <Build Include="dbo\Tables\SystemConfiguration.sql" />
+    <Build Include="dbo\Tables\ClientConfiguration.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspAddUserToRole.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspAddTaskToRole.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspAddPhaseToPanel.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspCreateNewClient.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspChangeApplicationMechanism.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspMergeUserAccount.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspRemovePhaseFromPanel.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspRemoveTaskFromRole.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspRemoveUserFromRole.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspRemoveNotDiscussedConsumerScores.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspSetOverviewParagraph.sql" />
+    <Build Include="dbo\Tables\ProgramMeeting.sql" />
+    <Build Include="dbo\Tables\MechanismRelationshipType.sql" />
+    <Build Include="dbo\Tables\ScoringTemplate.sql" />
+    <Build Include="dbo\Tables\ScoringTemplatePhase.sql" />
+    <Build Include="dbo\Tables\MechanismScoringTemplate.sql" />
+    <Build Include="dbo\Tables\SessionPhase.sql" />
+    <Build Include="dbo\Tables\SummaryStatementMode.sql" />
+    <Build Include="dbo\Tables\ApplicationWorkflowSummaryStatement.sql" />
+    <Build Include="dbo\Tables\ProgramMechanismSummaryStatement.sql" />
+    <Build Include="dbo\Stored Procedures\SummaryStatement\uspSSData.sql" />
+    <Build Include="dbo\Stored Procedures\uspPreviewSummaryStatement.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspResetPanelToNotStarted.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspTransferApplicationToNewPanelWithData.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspAddNoteTestDataByLogNumber.sql" />
+    <Build Include="dbo\Functions\udfLastUpdatedCritiquePhaseAverageWoCRs.sql" />
+    <Build Include="dbo\Tables\Notification.sql" />
+    <None Include="Scripts\Miscellaneous\AddNotificationTestData.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspAddOverviewBoilerplateByMechanism.sql" />
+    <Build Include="dbo\Stored Procedures\uspRemovePanelApplication.sql" />
+    <Build Include="dbo\Stored Procedures\uspRemoveApplicationWorkflow.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationStageStep.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationStageStepDiscussion.sql" />
+    <Build Include="dbo\Stored Procedures\SummaryStatement\uspSummaryDefault.sql" />
+    <Build Include="dbo\Stored Procedures\SummaryStatement\uspSummaryDefaultCPRIT.sql" />
+    <Build Include="dbo\Stored Procedures\uspRemovePanelUserAssignment.sql" />
+    <Build Include="dbo\Tables\RoleParticipantType.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CpritChair.sql" />
+    <Build Include="dbo\Tables\ClientTransferType.sql" />
+    <Build Include="dbo\Tables\ClientDataDeliverable.sql" />
+    <Build Include="dbo\Tables\ClientServiceAccount.sql" />
+    <Build Include="dbo\Tables\ServiceLog.sql" />
+    <Build Include="dbo\Tables\ProgramCycleDeliverable.sql" />
+    <Build Include="dbo\Stored Procedures\SummaryStatement\uspSSDataNoCrAverage.sql" />
+    <None Include="Scripts\DataManagement\SoftDeleteSummaryDataByPanel.sql" />
+    <None Include="Scripts\DataManagement\SoftDeleteSummaryDataByPanelApplication.sql" />
+    <Build Include="dbo\Tables\PeerReviewDocument.sql" />
+    <Build Include="dbo\Tables\PeerReviewDocumentAccess.sql" />
+    <Build Include="dbo\Tables\PeerReviewDocumentType.sql" />
+    <Build Include="dbo\Tables\PeerReviewContentType.sql" />
+    <Build Include="dbo\Tables\UserPeerReviewDocument.sql" />
+    <None Include="Scripts\LookupData\PeerReviewContentType.sql" />
+    <None Include="Scripts\LookupData\PeerReviewDocumentType.sql" />
+    <Build Include="dbo\Tables\UserClientBlock.sql" />
+    <Build Include="dbo\Tables\UserBlockLog.sql" />
+    <Build Include="dbo\Tables\UserBlockLogClient.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportCoiSignout.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetScoreDeliverableData.sql" />
+    <Build Include="dbo\Functions\udfReviewCriteriaPivot.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportProgramMechanismCriteria.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportCritiqueConcat.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportStepTypeName.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkFlowUpdate.sql" />
+    <Build Include="dbo\Tables\VendorIdAssigned.sql" />
+    <Build Include="dbo\Tables\UserVendor.sql" />
+    <Build Include="dbo\Tables\VendorType.sql" />
+    <Build Include="dbo\Views\TableViews\ViewUserVendor.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspResetApplicationScoringActivation.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelTents.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelBadges.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelParticipants.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReceiptCycle.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelAssignmentQC.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelBadgesMeeting.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportMeetingPlanningSummaryChairSRORTA.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportMeetingPlanningSummary.sql" />
+    <None Include="Scripts\DataManagement\MrmcDataCombined.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspResetSummaryStatement.sql" />
+    <Build Include="dbo\Functions\udfApplicationTotalBudget.sql" />
+    <Build Include="dbo\Tables\ImportLog.sql" />
+    <Build Include="dbo\Tables\ProgramMechanismImportLog.sql" />
+    <Build Include="dbo\Tables\ImportLogItem.sql" />
+    <Build Include="dbo\Tables\AssignmentTypeThreshold.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportMultipleSubmission_New.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportTravel.sql" />
+    <Build Include="dbo\Tables\MeetingRegistrationComment.sql" />
+    <Build Include="dbo\Tables\MeetingRegistrationTravelFlight.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportTravel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingRegistrationComment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingRegistrationTravelFlight.sql" />
+    <None Include="Scripts\Miscellaneous\DT23623_03-21-2018.sql" />
+    <None Include="Scripts\DataManagement\TransferPanelData.sql" />
+    <None Include="Scripts\Miscellaneous\DT23948_05-09-2018.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerList.sql" />
+    <Build Include="dbo\Tables\TempTriageTool.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-23978_PrepareForUniqueIndex.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingRegistration.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingRegistrationAttendance.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingRegistrationHotel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewMeetingRegistrationTravel.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterPanel.sql" />
+    <Build Include="dbo\Views\TableViews\ViewApplicationPersonnelPrimary.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerPotentialInstitutionalCOI.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerPotentialPersonnelCOI.sql" />
+    <Build Include="dbo\Tables\ReferralMapping.sql" />
+    <Build Include="dbo\Tables\ReferralMappingData.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelAssignmentQCNew.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportAdminNotesPanelParam.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelParticipantCount.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPanelParticipantCountPanelParams.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportSROChairListApplRefer.sql" />
+    <Build Include="dbo\Stored Procedures\uspBeginReviewerWorkflowPanel.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspGetPeerReviewData.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportAllReviewsParam_ReviewerList.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportDefaultReviewerParam_ReviewerList.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportMultipleSubmission_ReceiptCycle.sql" />
+    <Build Include="dbo\Tables\EmploymentCategory.sql" />
+    <None Include="Scripts\Miscellaneous\DT25040_FixDuplicateUserLogin.sql" />
+    <None Include="Scripts\LookupData\EmploymentCategory.sql" />
+    <None Include="Scripts\SchemaDataUpdate\FixEmploymentCategoryData.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportMultipleSubmission_LowestReceiptCycle.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterProgram.sql" />
+    <Build Include="dbo\Tables\Airport.sql" />
+    <None Include="Scripts\ETL\Airport.sql" />
+    <None Include="Scripts\ETL\ApplicationTopicCodes.sql" />
+    <Build Include="dbo\Tables\Carrier.sql" />
+    <Build Include="dbo\Tables\SessionUserAssignment.sql" />
+    <Build Include="dbo\Views\TableViews\ViewSessionUserAssignment.sql" />
+    <None Include="Scripts\SchemaDataUpdate\HotelTravelNonReviewerLegacyImport.sql" />
+    <Build Include="dbo\Tables\ApplicationStageCalculatedScore.sql" />
+    <Build Include="dbo\Tables\ParticipantInfoTracking.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportApplicationDataQC.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerExpertise.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerExpertisePostAssignment.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerExpertisePreAssignment.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerExpertisePostAssignmentSummary.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportConsummerContactParticipation.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportScoringSetupQC.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportConsumerEthnicityCnt.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportNominatorInformation.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerAssignments.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportInParameterSession.sql" />
+    <None Include="Scripts\ETL\ClientFileConfiguration.sql" />
+    <Build Include="dbo\Tables\ClientFileConfiguration.sql" />
+    <None Include="Scripts\SchemaDataUpdate\Disable1-0_Users_Except_Deliverables.sql" />
+    <Build Include="dbo\Sequences\seq_SessionPanel_LegacyPanelId.sql" />
+    <Build Include="dbo\Sequences\seq_ClientAwardType_LegacyAwardTypeId.sql" />
+    <Build Include="dbo\Sequences\seq_MechanismTemplateElement_LegacyEcmId.sql" />
+    <Build Include="dbo\Sequences\seq_ProgramMechanism_LegacyAtmId.sql" />
+    <Build Include="dbo\Sequences\seq_ProgramYear_LegacyProgramId.sql" />
+    <Build Include="dbo\Tables\NomineeAffected.sql" />
+    <Build Include="dbo\Tables\NomineeType.sql" />
+    <Build Include="dbo\Tables\Nominee.sql" />
+    <Build Include="dbo\Tables\NomineePhone.sql" />
+    <Build Include="dbo\Tables\NomineeProgram.sql" />
+    <Build Include="dbo\Tables\NomineeSponsor.sql" />
+    <Build Include="dbo\Tables\NomineeSponsorPhone.sql" />
+    <Build Include="dbo\Tables\ApplicationTopicCodes.sql" />
+    <None Include="Scripts\ETL\Nominee.sql" />
+    <Build Include="dbo\Stored Procedures\uspAddNominee.sql" />
+    <None Include="Scripts\SchemaDataUpdate\MigrateOldParticipationHistory.sql" />
+    <Build Include="dbo\Functions\GetP2rmisDateTime.sql" />
+    <None Include="Server Objects\LinkedServers.sql" />
+    <Build Include="dbo\Stored Procedures\uspResumeFullTextSearch.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspCpritFullReviewDataTransfer.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspRestoreReviewerCritiques.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspUpdateMechanismCriteria.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspChangePanelSession.sql" />
+    <Build Include="dbo\Views\ViewRolePermissions.sql" />
+    <Build Include="dbo\Stored Procedures\DataManagement\uspRestorePanelApplicationRemovedFromPanel.sql" />
+    <Build Include="dbo\Functions\udfLastUpdatedCritiquePhaseAverageOverallWoCRs.sql" />
+    <Build Include="dbo\Tables\ClientSummaryTemplate.sql" />
+    <None Include="Scripts\DataManagement\ApplicationBudgetCommentUpdate.sql" />
+    <Build Include="dbo\Views\TableViews\ViewSummaryReviewerDescription.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramMechanismSummaryStatement.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowUpdate_SOCOM.sql" />
+    <Build Include="dbo\Tables\NominatingOrganization.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportCPRITChairCOI.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportScoreAlignment.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportPhasesbyPanels.sql" />
+    <Build Include="dbo\Tables\ProgramSessionPayRate.sql" />
+    <Build Include="dbo\Views\TableViews\ViewProgramSessionPayRate.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportSummaryPhaseTrackingHistory.sql" />
+    <Build Include="dbo\Tables\PanelUserRegistrationDocumentContract.sql" />
+    <Build Include="dbo\Tables\ContractStatus.sql" />
+    <Build Include="dbo\Tables\UserPassword.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportExpeditedReviewData.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportParameterAward.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowUpdate_CDMRP.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowUpdate_Online_CDMRP.sql" />
+    <Build Include="dbo\Tables\Policy.sql" />
+    <Build Include="dbo\Tables\WeekDay.sql" />
+    <Build Include="dbo\Tables\PolicyWeekDay.sql" />
+    <Build Include="dbo\Tables\PolicyNetworkRange.sql" />
+    <Build Include="dbo\Tables\UserPolicy.sql" />
+    <Build Include="dbo\Tables\PolicyHistory.sql" />
+    <Build Include="dbo\Tables\PolicyRestrictionType.sql" />
+    <Build Include="dbo\Tables\PolicyType.sql" />
+    <Build Include="dbo\Tables\PolicyNetworkRangeHistory.sql" />
+    <Build Include="dbo\Tables\PolicyWeekDayHistory.sql" />
+    <Build Include="dbo\Tables\UserPolicyHistory.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VagrantDatabase.publish.xml" />
+    <None Include="Scripts\ETL\User.sql" />
+    <None Include="CraigDatabase.publish.xml" />
+    <None Include="Scripts\ETL\UserPhone.sql" />
+    <None Include="Scripts\ETL\UserResume.sql" />
+    <None Include="Scripts\ETL\Application.sql" />
+    <None Include="Scripts\ETL\ApplicationBudget.sql" />
+    <None Include="Scripts\ETL\ApplicationText.sql" />
+    <None Include="Scripts\ETL\ApplicationInfo.sql" />
+    <None Include="Scripts\ETL\ApplicationPersonnel.sql" />
+    <None Include="Scripts\ETL\ApplicationReviewStatus.sql" />
+    <None Include="Scripts\ETL\PanelApplicationReviewerAssignment.sql" />
+    <None Include="Scripts\ETL\PanelApplicationReviewerExpertise.sql" />
+    <None Include="Scripts\ETL\PanelApplicationReviewerCoiDetail.sql" />
+    <None Include="Scripts\TestData\User.sql" />
+    <None Include="Scripts\TestData\UserInfo.sql" />
+    <None Include="Scripts\TestData\UserAddress.sql" />
+    <None Include="Scripts\TestData\UserEmail.sql" />
+    <None Include="Scripts\TestData\UserSystemRole.sql" />
+    <None Include="Scripts\TestData\ClientElement.sql" />
+    <None Include="Scripts\TestData\MechanismTemplate.sql" />
+    <None Include="Scripts\TestData\MechanismTemplateElement.sql" />
+    <None Include="Scripts\TestData\UserClient.sql" />
+    <None Include="Scripts\TestData\UserPhone.sql" />
+    <None Include="Scripts\TestData\Workflow.sql" />
+    <None Include="Scripts\TestData\WorkflowStep.sql" />
+    <None Include="Scripts\TestData\ClientDefaultWorkflow.sql" />
+    <None Include="Scripts\TestData\WorkflowMechanism.sql" />
+    <None Include="Scripts\TestData\ClientScoringScale.sql" />
+    <None Include="Scripts\TestData\ClientScoringScaleAdjectival.sql" />
+    <None Include="Scripts\ETL\PanelStage.sql" />
+    <None Include="Scripts\ETL\PanelStageStep.sql" />
+    <None Include="Scripts\ETL\MechanismTemplate.sql" />
+    <None Include="Scripts\ETL\ClientElement.sql" />
+    <None Include="Scripts\ETL\MechanismTemplateElement.sql" />
+    <None Include="Scripts\ETL\ApplicationTemplate.sql" />
+    <None Include="Scripts\ETL\ApplicationTemplateElement.sql" />
+    <None Include="Scripts\ETL\ApplicationStage.sql" />
+    <None Include="Scripts\ETL\ApplicationWorkflow.sql" />
+    <None Include="Scripts\ETL\ApplicationWorkflowStep.sql" />
+    <None Include="Scripts\ETL\ApplicationWorkflowStepAssignment.sql" />
+    <None Include="Scripts\ETL\ApplicationWorkflowStepWorkLog.sql" />
+    <None Include="Scripts\ETL\ApplicationWorkflowStepElement.sql" />
+    <None Include="Scripts\ETL\ApplicationWorkflowStepElementContent.sql" />
+    <None Include="Scripts\SchemaDataUpdate\PanelStageWorkflowIdUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationWorkflowUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationWorkflowStepUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\StepTypeIdUpdates.sql" />
+    <None Include="Scripts\ETL\MechanismTemplateElementScoring.sql" />
+    <None Include="Scripts\SchemaDataUpdate\MechanismTemplateUpdates.sql" />
+    <None Include="Scripts\Miscellaneous\CleanOldSummaryData.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AssignmentVisibilityUpdate.sql" />
+    <None Include="Scripts\Miscellaneous\LegacyStprPermissions.sql" />
+    <None Include="Scripts\ETL\UserWebsite.sql" />
+    <None Include="Scripts\ETL\UserProfile.sql" />
+    <None Include="Scripts\ETL\UserAlternateContact.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserInfoAccountStatusMilitaryStatusId.sql" />
+    <None Include="Scripts\ETL\UserPosition.sql" />
+    <None Include="Scripts\ETL\UserAlternateContactPhone.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserPhoneUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserNameUpdates.sql" />
+    <None Include="Scripts\ETL\UserAccountStatus.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserChangeLogDeleteTable.sql" />
+    <None Include="Scripts\ETL\UserSystemRole.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserProfileUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\SummaryDocumentIdUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ContentTextNoMarkupUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserApplicationCommentDataUpdate.sql" />
+    <None Include="Scripts\CgmDataTransfer\AssignmentType.sql" />
+    <None Include="Scripts\CgmDataTransfer\Program.sql" />
+    <None Include="Scripts\CgmDataTransfer\ProgramYear.sql" />
+    <None Include="Scripts\CgmDataTransfer\AwardType.sql" />
+    <None Include="Scripts\CgmDataTransfer\ProgramMechanism.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserSystemRoleInserts.sql" />
+    <None Include="Scripts\TestData\SessionPayRate.sql" />
+    <None Include="Scripts\TestData\ProgramPayRate.sql" />
+    <None Include="Scripts\Miscellaneous\PayRateUpdates.sql" />
+    <None Include="Scripts\Miscellaneous\AddPanelUserAssignment.sql" />
+    <None Include="Scripts\SchemaDataUpdate\BlindedFlagDataUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\RestrictedAssignedFlagUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\TrainingCategoryLegacyDataUpdate.sql" />
+    <None Include="Scripts\PermissionsData\SystemTask.sql" />
+    <None Include="Scripts\PermissionsData\RoleTask.sql" />
+    <None Include="Scripts\PermissionsData\SystemOperation.sql" />
+    <None Include="Scripts\PermissionsData\TaskOperation.sql" />
+    <None Include="Scripts\TestData\UserInfoChangeLog.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserInfoExpertiseUpdate.sql" />
+    <None Include="Scripts\LookupData\ParticipationMethod.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ParticipantTypeUpdates.sql" />
+    <None Include="Scripts\ETL\UserEvaluationLog.sql" />
+    <None Include="Scripts\ETL\ReviewerEvaluation.sql" />
+    <None Include="Scripts\LookupData\CommunicationMethod.sql" />
+    <None Include="Scripts\TestData\UserResume.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AcademicRankImportUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserAddressTypeNullUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowStepTypeUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserAccountLegacyLoginUpdates.sql" />
+    <None Include="PushpaDatabase.publish.xml" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationBudgetUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationComplianceUpdates.sql" />
+    <None Include="Scripts\LookupData\ComplianceStatus.sql" />
+    <None Include="Scripts\SchemaDataUpdate\VendorNameImportUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserOrgAndAddressUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserSecurityQuestionLegacyImport.sql" />
+    <None Include="Scripts\ETL\ApplicationStageStep.sql" />
+    <None Include="Scripts\ETL\ApplicationStageStepDiscussion.sql" />
+    <None Include="Scripts\ETL\ApplicationStageStepDiscussionComment.sql" />
+    <None Include="Scripts\LookupData\TravelMode.sql" />
+    <None Include="Scripts\ETL\MeetingRegistration.sql" />
+    <None Include="Scripts\ETL\MeetingRegistrationAttendance.sql" />
+    <None Include="Scripts\ETL\MeetingRegistrationHotel.sql" />
+    <None Include="Scripts\ETL\MeetingRegistrationTravel.sql" />
+    <None Include="Scripts\ETL\Hotel.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserInfoDupCleanup.sql" />
+    <None Include="Scripts\SchemaDataUpdate\EmailTemplateUrlUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\SpecialistAbbreviationUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\PayRateParticipantUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CpritWorkflowUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\MeetingHotelIdUpdates.sql" />
+    <None Include="Scripts\Miscellaneous\ListAllTablesByDependency.sql" />
+    <None Include="Scripts\SchemaDataUpdate\VendorIdImports.sql" />
+    <None Include="Scripts\SchemaDataUpdate\HotelAndTravelCancelUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ClientParticipantType.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserDegreeUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\W9CountryUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserSecurityQuestionLegacyCleanup.sql" />
+    <None Include="Scripts\Miscellaneous\DeploymentOnly.sql" />
+    <None Include="Scripts\SchemaDataUpdate\SetupMrmcClient.sql" />
+    <None Include="Scripts\Miscellaneous\PayRateUpdates2.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ShowAbbreviationOnScoreboardUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportThankYouLetter.sql" />
+    <None Include="Scripts\LookupData\StepTypeOperation.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowStandardizationUpdates.sql" />
+    <None Include="Scripts\LookupData\SystemConfiguration.sql" />
+    <None Include="Scripts\ETL\ClientSystemConfiguration.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CpritOverallScoringScaleUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationPersonnelStateAbrvUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\PayRateMeetingTypeUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AddCpritUnassignedCommentElement.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserAddressNullCountryFix.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UsernameLegacySync.sql" />
+    <None Include="Scripts\ETL\ProgramMeeting.sql" />
+    <None Include="Scripts\LookupData\MechanismRelationshipType.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ProgramMechanismSetupUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ProgramMechanismPartneringPiAllowed.sql" />
+    <None Include="Scripts\SchemaDataUpdate\MechanismTemplateElementSSUpdates.sql" />
+    <None Include="Scripts\ETL\SessionPhase.sql" />
+    <None Include="Scripts\LookupData\ScoringTemplate.sql" />
+    <None Include="Scripts\LookupData\ScoringTemplatePhase.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ClientAwardTypePreAppUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CpritClientRoleUpdate.sql" />
+    <None Include="Scripts\ETL\MechanismScoringTemplate.sql" />
+    <None Include="Scripts\Miscellaneous\sp_generate_merge.sql" />
+    <None Include="Scripts\LookupData\SummaryStatementMode.sql" />
+    <None Include="Scripts\TestData\ProgramMechanismSummaryStatement.sql" />
+    <None Include="Scripts\SchemaDataUpdate\RemoveDuplicateExpertise.sql" />
+    <None Include="Scripts\TestDataSetup\SanitizeData.sql" />
+    <None Include="Scripts\TestDataSetup\ExecutionOrder.sql" />
+    <None Include="Scripts\TestDataSetup\SetupTestData.sql" />
+    <None Include="Scripts\TestDataSetup\CleanupData.sql" />
+    <None Include="Scripts\SchemaDataUpdate\LegacyEmploymentCategoryOptionUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CleanupOrphanedPanelAssignments.sql" />
+    <None Include="Scripts\Miscellaneous\stpr_Rev_Assignments_Delete.sql" />
+    <None Include="Scripts\ETL\RoleParticipantType.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CPRIT_CH_Deactivate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\SetElevatedChairpersonFlag.sql" />
+    <None Include="Scripts\LookupData\ClientDataDeliverable.sql" />
+    <None Include="Scripts\LookupData\ClientTransferType.sql" />
+    <None Include="Scripts\TestData\PeerReviewDocument.sql" />
+    <None Include="Scripts\TestData\PeerReviewDocumentAccess.sql" />
+    <None Include="Scripts\ETL\UserClientBlock.sql" />
+    <None Include="Scripts\ETL\UserBlockLog.sql" />
+    <None Include="Scripts\ETL\UserBlockLogClient.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserBlockLogCreatedDate.sql" />
+    <None Include="Scripts\ETL\VendorIdAssigned.sql" />
+    <None Include="Scripts\ETL\UserVendor.sql" />
+    <None Include="Scripts\LookupData\VendorType.sql" />
+    <None Include="Scripts\SchemaDataUpdate\VendorIdAssignedUpdates.sql" />
+    <None Include="Scripts\DataManagement\SanitizeData.sql" />
+    <None Include="Scripts\SchemaDataUpdate\InstitutionalVendorUpdates.sql" />
+    <None Include="Scripts\Miscellaneous\ApplicationWorkflowStepWorkLog.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ExternalPersonnelTypeIdUpdate.sql" />
+    <None Include="Scripts\Miscellaneous\ApplicationWorkflowStepWorkLog.sql" />
+    <None Include="Scripts\Miscellaneous\MeetingRegistrationHotelUpdates.sql" />
+    <None Include="Scripts\Miscellaneous\TemporaryDeleteCascade.sql" />
+    <None Include="Scripts\Miscellaneous\DT23680_03-30-2018.sql" />
+    <None Include="Scripts\Miscellaneous\DT23976_05-10-2018.sql" />
+    <Build Include="dbo\Stored Procedures\uspLoadTriageToolExcel.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-23904-FixPeerReviewDocuments.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CpritSsFinalStepTypeIdUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\Reports\uspReportReviewerDemographics.sql" />
+    <None Include="Scripts\Miscellaneous\LegacyInstitutionUpdate.sql" />
+    <None Include="Scripts\Miscellaneous\View_AssignmentReleaseCheck.sql" />
+    <None Include="Scripts\Deployment\Staging\Review-Staging_Full_Deployment_Publish.bat" />
+    <None Include="Scripts\Deployment\Staging\Sanitization.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-25235_MissingBudgetFix.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ProgramMechanismFundingOppUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ClientApplicationPersonnelTypeMissingUpdates.sql" />
+    <None Include="Scripts\Miscellaneous\AppPersonnelPiRestoration.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-25778_ResetRegistrationSignature.sql" />
+    <None Include="Scripts\ETL\Carrier.sql" />
+    <None Include="Scripts\SchemaDataUpdate\HotelTravelDataUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\PopulateLegacyCalculatedScores.sql" />
+    <None Include="Scripts\SchemaDataUpdate\DeactivateLegacyHotelTravel.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationStageAssignmentReleaseUpdates.sql" />
+    <None Include="Scripts\ETL\ParticipantInfoTracking.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AirportUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AirportCodeMissingUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CarrierNameUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ClientParticipantTypeSRORTAFlagUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\AddApplicationTopicCodesData.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-25410_StagingScriptsforDBRestore.sql" />
+    <None Include="Scripts\SchemaDataUpdate\Disable-1-0_Modules_Except_Deliverables.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UpdateUserAccountStatusLegacyCredentials.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-26269-Legacy-Session-modals-doesn%27t-pull in-existing-phase -dates.sql" />
+    <None Include="Scripts\LookupData\NomineeAffected.sql" />
+    <None Include="Scripts\LookupData\NomineeType.sql" />
+    <None Include="Scripts\ETL\NomineeProgram.sql" />
+    <None Include="Scripts\ETL\NomineeSponsor.sql" />
+    <None Include="Scripts\ETL\NomineePhone.sql" />
+    <None Include="Scripts\ETL\NomineeSponsorPhone.sql" />
+    <None Include="Scripts\SchemaDataUpdate\FixMechanismTemplateSystemSetup.sql" />
+    <None Include="Scripts\SchemaDataUpdate\TransferMissingPanelUserAssignments.sql" />
+    <None Include="Scripts\SchemaDataUpdate\TransferMissingPanelApplications.sql" />
+    <None Include="Scripts\SchemaDataUpdate\FixDuplicateReviewerArienne.sql" />
+    <None Include="UA-Cloud.publish.xml" />
+    <None Include="Test-Cloud.publish.xml" />
+    <None Include="CloudPublishReadMe.txt" />
+    <None Include="Scripts\ETL\UserResumeLinkedServer.sql" />
+    <None Include="Scripts\Miscellaneous\UserResumeLinkedServerTrigger.sql" />
+    <None Include="Scripts\Miscellaneous\FullTextSearchRemoteObjects.sql" />
+    <None Include="Scripts\SchemaDataUpdate\TransferMissingApplicationData.sql" />
+    <None Include="Scripts\Miscellaneous\PRMIS-23845-revert.sql" />
+    <None Include="Staging-Cloud.publish.xml" />
+    <None Include="Prod-Cloud.publish.xml" />
+    <None Include="Scripts\SchemaDataUpdate\NormalizeFileSuffix.sql" />
+    <None Include="Dev-Cloud.publish.xml" />
+    <None Include="Scripts\SchemaDataUpdate\FixOnlinePanelStages.sql" />
+    <None Include="Scripts\SchemaDataUpdate\MapFpaParentToComponentApps.sql" />
+    <None Include="Scripts\SchemaDataUpdate\ApplicationPersonnelCoiFixes.sql" />
+    <None Include="Scripts\SchemaDataUpdate\HotelNotRequiredDataFix.sql" />
+    <None Include="Scripts\SchemaDataUpdate\CpritChairNoCoiExpertiseFix.sql" />
+    <None Include="Scripts\ETL\NominatingOrganization.sql" />
+    <None Include="Scripts\ETL\ClientSummaryTemplate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\PopulateClientSummaryTemplateIdFk.sql" />
+    <None Include="Scripts\DataManagement\NomineeSponsorOrgIdUpdate.sql" />
+    <None Include="Scripts\SchemaDataUpdate\SMRStepTypeFixes.sql" />
+    <None Include="Scripts\ETL\ProgramSessionPayRate.sql" />
+    <None Include="Scripts\LookupData\ContractStatus.sql" />
+    <None Include="Test2-Cloud.publish.xml" />
+    <None Include="Scripts\SchemaDataUpdate\PopulateCurrentPayRates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\UserApplicationCommentApplicationIdRemoval.sql" />
+    <None Include="Scripts\LookupData\PolicyType.sql" />
+    <None Include="Scripts\LookupData\PolicyRestrictionType.sql" />
+    <None Include="Scripts\LookupData\WeekDay.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
+    <None Include="Scripts\Miscellaneous\ClientRoleUpdates.sql" />
+    <None Include="Scripts\SchemaDataUpdate\WorkflowStepUpdates.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="LinkedServerName">
+      <DefaultValue>loopback</DefaultValue>
+      <Value>$(SqlCmdVar__2)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="P2RMIS">
+      <DefaultValue>P2RMIS</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+  </ItemGroup>
+</Project>

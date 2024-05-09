@@ -1,0 +1,128 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.Web.ViewModels.SummaryStatement.CommentsViewModel
+
+<style type="text/css">
+    .general, .discussion, .admin, .unassigned {
+        position: relative;
+    }
+    .tablecell {
+        font-size: 12px;
+        font-weight: bold;
+        font-family: Verdana,Arial,sans-serif;
+    }
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    .table table td {
+        border: none !important;
+        line-height:unset;
+        vertical-align:unset !important;
+        padding: 0px;
+        text-align: left;
+    }
+    .normalWeight {
+        font-weight: normal;
+        overflow: hidden;
+        width: 500px;
+    }
+    #searchForm {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    .bordered.alignLeft.row-fluid div:nth-child(2) {
+        padding-top: 10px;
+    }   
+    .flex {
+        display: flex;
+    }
+    .select-filter-title{
+        margin: -20px 0px 0px 10px;
+    }
+    .firstCellWidth {
+        width: 40%;
+    }
+</style>
+
+<div class="table">
+    <div id="searchForm" class="bordered alignLeft tableGen">
+        <table>
+            @foreach (var comment in Model.Comments)
+            {
+                if (comment.CommentLkpDescription == "General Note")
+                {
+                    <tr class="tablecell general flex">
+                        <td class="tablecell firstCellWidth">@comment.UserFullName @comment.ModifiedDate</td>
+                        <td class="normalWeight">&nbsp;-&nbsp;@comment.Comments</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div id="searchForm" class="bordered alignLeft tableDis">
+        <table>
+            @foreach (var comment in Model.Comments)
+            {
+                if (comment.CommentLkpDescription == "Discussion Note")
+                {
+                    <tr class="tablecell discussion flex">
+                        <td class="tablecell firstCellWidth">@comment.UserFullName @comment.ModifiedDate</td>
+                        <td class="normalWeight">&nbsp;-&nbsp;@comment.Comments</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div id="searchForm" class="bordered alignLeft tableUn">
+        <table>
+            @foreach (var comment in Model.Comments)
+            {
+                if (comment.CommentLkpDescription == "Reviewer Note")
+                {
+                    <tr class="tablecell unassigned flex">
+                        <td class="tablecell firstCellWidth">@comment.UserFullName @comment.ModifiedDate</td>
+                        <td class="normalWeight">&nbsp;-&nbsp;@comment.Comments</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div id="searchForm" class="bordered alignLeft tableAd">
+        <table>
+            @foreach (var comment in Model.Comments)
+            {
+                if (comment.CommentLkpDescription == "Admin Note")
+                {
+                    <tr class="tablecell admin flex">
+                        <td class="tablecell firstCellWidth">@comment.UserFullName @comment.ModifiedDate</td>
+                        <td class="normalWeight">&nbsp;-&nbsp;@comment.Comments</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>
+<script type = "text/javascript" >
+    $('<div class="textHeaderNotBold alignLeft select-filter-title summaryMargin">General Notes</div>').insertBefore('.table .general:nth-child(1)');
+    $('<div class="textHeaderNotBold alignLeft select-filter-title summaryMargin">Discussion Notes</div>').insertBefore('.table .discussion:nth-child(1)');
+    $('<div class="textHeaderNotBold alignLeft select-filter-title summaryMargin">Unassigned Reviewer Comments</div>').insertBefore('.table .unassigned:nth-child(1)');
+    $('<div class="textHeaderNotBold alignLeft select-filter-title summaryMargin">Admin Notes</div>').insertBefore('.table .admin:nth-child(1)');
+
+    var searchTextGen = $('.innerModalContainer .table .tableGen tr td').text();
+    var searchTextDis = $('.innerModalContainer .table .tableDis tr td').text();
+    var searchTextUn = $('.innerModalContainer .table .tableUn tr td').text();
+    var searchTextAd = $('.innerModalContainer .table .tableAd tr td').text();
+
+    if (searchTextGen == '') {
+        $('.innerModalContainer .table .tableGen').hide();
+    }
+    if (searchTextDis == '') {
+        $('.innerModalContainer .table .tableDis').hide();
+    }
+    if (searchTextUn == '') {
+        $('.innerModalContainer .table .tableUn').hide();
+    }
+    if (searchTextAd == '') {
+        $('.innerModalContainer .table .tableAd').hide();
+    }
+</script>

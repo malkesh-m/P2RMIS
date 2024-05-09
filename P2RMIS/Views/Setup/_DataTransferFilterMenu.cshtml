@@ -1,0 +1,90 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.DataTransferFilterMenuViewModel
+
+@{
+    const string ProgramSessionVar = SessionVariables.ClientProgramId;
+    const string FySessionVar = SessionVariables.ProgramYearId;
+    const string CycleSessionVar = SessionVariables.Cycle;
+}
+<style>
+    #searchForm {
+        margin-bottom: 10px;
+    }
+
+        #searchForm select, input[type='submit'] {
+            font-size: 12px;
+            height: 28px;
+        }
+
+        #searchForm label {
+            font-size: 12px;
+            display: inline;
+            font-weight: bold;
+            vertical-align: super;
+        }
+
+        #searchForm .summaryMargin {
+            margin: -20px 0px 0px 10px;
+            color: black !important;
+        }
+
+    .validInstruction {
+        font-size: 12px;
+        color: black;
+    }
+
+    .bordered {
+        padding: 10px 0px;
+    }
+
+    #Search {
+        font-size: 12px;
+    }
+
+
+    #programList, #fyList, #cycleList, #panelList, #awardList {
+        margin-right: 10px;
+    }
+</style>
+<div id="searchForm" class="bordered alignLeft row-fluid">
+    <div class="textHeaderNotBold alignLeft select-filter-title summaryMargin">Select Filters</div>
+    <span class="span12" style="padding: 0px 10px;"><span class="required">*</span><span class="validInstruction"> Indicates a required field.</span></span>
+    <span id="transferDropdownSection" style="padding-left: 10px; float: left;">
+        <input id="transferType" type="hidden" value="1" />
+    </span>
+
+    <span style="padding-left: 10px; float: left;">
+        <span class="required">*</span>
+        @Html.DropDownListFor(m => m.SelectedProgram, new SelectList(Model.Programs, "ClientProgramId", "ProgramAbbreviation", Model.SelectedProgram), "Select Program", new { @id = "programList" })
+        <span class="required">*</span>
+        @if (!(Model.SelectedProgram > 0))
+        {
+            @Html.DropDownListFor(m => m.SelectedFy, new SelectList(Enumerable.Empty<SelectListItem>()), "Select FY", new { @id = "fyList", @disabled = "disabled" })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.SelectedFy, new SelectList(Model.FiscalYears, "ProgramYearId", "Year", Model.SelectedFy), "Select FY", new { @id = "fyList" })
+        }
+    </span>
+    <span style="padding-left: 10px; float: left;">
+        <span class="required">*</span>
+        @if (!(Model.SelectedFy > 0))
+        {
+            @Html.DropDownListFor(m => m.SelectedCycle, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Cycle", new { @id = "cycleList", @disabled = "disabled" })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.SelectedCycle, new SelectList(Model.Cycles, Model.SelectedCycle), "Select Cycle", new { @id = "cycleList" })
+        }
+    </span>
+    <span style="margin-left: 10px !important; vertical-align: top; display: -webkit-inline-box;">
+        <input type="button" value="Find" name="Search" id="Search" class="btn btn-primary filterButton" />
+    </span>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/transfer-filter.js")
+
+
+
+
+

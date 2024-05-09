@@ -1,0 +1,410 @@
+﻿@import '../../P2RMIS/variables.less';
+@import '../../P2RMIS/global.less';
+
+// Registration Wizard Emergency Contact
+.mw-emergency-contact {
+    padding-bottom: 10px;
+    font-size: 12px;
+    display: block;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_explanatory-text {
+        float: left;
+        vertical-align: super;
+    }
+
+    &_table {
+        background: @secondaryMain;
+        width: 100%;
+        float: left;
+
+        &_primary {
+            display: inline-block;
+            margin-top: 10px;
+
+            &_checkbox {
+                float: left;
+                margin: 10px 0px 0px 10px !important;
+            }
+        }
+
+        &_small {
+            width: 150px;
+            text-align: right;
+            padding: 5px 5px 10px 0px;
+
+            &_text {
+                display: inline-block;
+            }
+        }
+
+        &_large {
+            width: 80%;
+
+            &_input {
+                vertical-align: baseline;
+            }
+
+            &_text {
+                vertical-align: text-bottom;
+
+                &_alt {
+                    padding-left: 5px;
+                }
+            }
+        }
+
+        &_largeFirst {
+            width: 80%;
+            padding-top: 10px;
+        }
+
+        &_label {
+            display: inline-block;
+            float: left;
+            width: 145px;
+            text-align: right;
+            padding-right: 5px;
+            margin-top: 15px;
+
+            &::before {
+                color: red;
+                content: "*";
+                padding-right: 5px;
+            }
+        }
+
+        &_label-alt-nr {
+            display: inline-block;
+            float: left;
+            width: 145px;
+            text-align: right;
+            padding-right: 5px;
+            margin-top: 15px;
+        }
+
+        &_label-nr {
+            display: inline-block;
+            float: left;
+            width: 145px;
+            text-align: left;
+            padding-right: 5px;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+
+        &_label-confirm {
+            display: inline-block;
+            float: left;
+            width: 90%;
+            text-align: left;
+            padding-right: 5px;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+    }
+
+    &_input {
+        width: 250px;
+        margin-top: 10px;
+    }
+}
+
+.margin-left40{
+    margin-left: 40px;    
+}
+
+.mw-editcritique{
+    &_header{
+        padding: 10px 10px 0px 10px;
+
+        label{
+            display: inline-block;
+            font-weight: bold;
+        }
+    }
+
+    &_alert{
+        padding: 10px 0px 0px 10px;    
+    }
+
+    &_text{
+        padding: 20px 0px 0px 10px;    
+    }
+}
+
+// COI Modal / Index Page
+.mw-coi-modal {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+    &_info-filters {
+        border: @solidBorder @lightGrey;
+        margin: 0px 10px 0px 0px;
+        padding: 5px 8px;
+        width: 490px;
+        display: inline-block;
+        position: relative;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+
+        &_text {
+            padding: 5px;
+        }
+    }
+
+    &_link-filters {
+        border: @solidBorder @lightGrey;
+        margin: 0px;
+        padding: 5px 0px 5px 0px;
+        display: inline-block;
+        position: relative;
+
+        &_table {
+            &_files {
+                padding: 20px 88px 20px 0px;
+
+                a:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+
+        &_text {
+            padding: 5px;
+        }
+    }
+
+    &_table {
+        border-collapse: separate;
+        padding: 10px;
+        width: 100%;
+
+        &_app-container {
+            font-weight: bold;
+            font-size: 12px;
+            padding: 0px;
+
+            &_panel-title {
+                display: inline-block;
+            }
+
+            &_award-title {
+                display: inline-block;
+            }
+
+            &_app-title {
+                display: inline-block;
+            }
+
+            &_result {
+                text-align: left;
+                font-weight: normal;
+                padding: 0px 0px 0px 10px;
+                display: inline-block;
+                margin-right: 10px;
+            }
+
+            &_app-result {
+                text-align: left;
+                font-weight: normal;
+                padding: 0px 0px 0px 10px;
+                display: inline-block;
+                width: 360px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                vertical-align: bottom;
+            }
+
+            &_pi-result {
+                text-align: left;
+                font-weight: normal;
+                padding: 0px 0px 0px 10px;
+                display: inline-block;
+                width: 405px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                vertical-align: bottom;
+            }
+        }
+    }
+
+    &_form-filters {
+        border: @solidBorder @lightGrey;
+        margin: 0px;
+        padding: 5px 8px;
+        display: inline-block;
+        margin-top: 10px;
+
+        &_info {
+            margin: 0px 0px 10px 0px;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        &_coi-div {
+            &_row {
+                margin-bottom: 10px;
+            }
+
+            &_row-none {
+                &_max {
+                    color: gray;
+                    font-size: 12px;
+                    display: inline-block;
+                }
+            }
+
+            &_required {
+                color: #FF0000;
+                font-size: 16px;
+                display: inline-block;
+                padding-right: 5px;
+            }
+
+            &_select {
+                margin-bottom: 0px;
+                margin-left: 10px;
+            }
+
+            &_textarea {
+                width: 97%;
+                height: 40px;
+                padding-bottom: 0px;
+                margin-bottom: 0px;
+            }
+        }
+
+        &_title {
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+        }
+    }
+
+    &_grid {
+        margin-top: 15px;
+
+        &_title {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: @fontSize14;
+        }
+    }
+
+    &_pre-post-filters {
+        border: @solidBorder @lightGrey;
+        padding: 5px 8px;
+        display: inline-block;
+        margin: 10px 5px 0px 0px;
+        width: 400px;
+        float: left;
+
+        &_info {
+            margin: 0px 0px 10px 0px;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        &_coi-div {
+            &_row {
+                margin-bottom: 10px;
+            }
+
+            &_row-none {
+                &_max {
+                    color: gray;
+                    font-size: 12px;
+                    display: inline-block;
+                }
+            }
+
+            &_required {
+                color: #FF0000;
+                font-size: 16px;
+                display: inline-block;
+                padding-right: 5px;
+            }
+
+            &_select {
+                margin-bottom: 0px;
+                margin-left: 10px;
+            }
+
+            &_textarea {
+                width: 365px;
+                height: 40px;
+                padding-bottom: 0px;
+                margin: 0px 10px;
+            }
+        }
+
+        &_title {
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+        }
+    }
+
+    &_instructions {
+        border: @solidBorder @lightGrey;
+        margin: 10px 0px 0px 10px;
+        padding: 5px 8px;
+        width: 280px;
+        display: inline-block;
+        position: relative;
+
+        &_container {
+            height: 208px;
+            overflow: auto;
+
+            &_text{
+                color: #646464;  
+                font-size: 12px;
+            }
+        }
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+
+            &_inner {
+                display: inline-block;
+                font-size: @fontSize12;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+        }
+
+        &_text {
+            padding: 5px;
+        }
+    }
+}

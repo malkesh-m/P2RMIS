@@ -1,0 +1,11 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<section class="upm-profile-section-academic" role="region" aria-labelledby="military-section">
+    <span class="upm-profile-section_header" id="military-section">Military</span>
+    <label for="MilitaryServiceId" class="sr-only">Military Branch Selection</label>
+    @Html.DropDownListFor(z => Model.MilitaryServiceId, new SelectList(Model.MilitaryServiceDropdown, "Index", "Value", Model.MilitaryServiceId), "Branch", new { @class = "pageColumnMilitarySelect upm-profile-section_field_input-long" })
+    <label for="MilitaryServiceAndRank_MilitaryRankId" class="sr-only">Military Branch Selection</label>
+    @Html.DropDownListFor(z => Model.MilitaryServiceAndRank.MilitaryRankId, new SelectList(Model.MilitaryRankDropdown, "Index", "Value", Model.MilitaryServiceAndRank.MilitaryRankId), "Rank", new { @class = "pageColumnMilitarySelect upm-profile-section_field_input-long" })
+    <label for="MilitaryStatus_MilitaryStatusTypeId" class="sr-only">Military Branch Selection</label>
+    @Html.DropDownListFor(z => Model.MilitaryStatus.MilitaryStatusTypeId, new SelectList(Model.MilitaryStatusDropdown, "Index", "Value", Model.MilitaryStatus.MilitaryStatusTypeId), "Status", new { @class = "pageColumnMilitarySelect upm-profile-section_field_input-short-military" })
+</section>

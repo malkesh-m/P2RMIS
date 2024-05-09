@@ -1,0 +1,101 @@
+﻿@model Sra.P2rmis.Web.UI.Models.UnassignProgramsViewModel
+@using Newtonsoft.Json;
+
+<div class="row-fluid ss-assignModal">
+    <div id="unassignProgramsAlert" class="redColor"></div>
+    <div class="ss-assignModal_info-filters">
+        <div class="ss-assignModal_info-filters_title">Details</div>
+        <table class="ss-assignModal_table">
+            <tr>
+                <td class="ss-assignModal_table_title">Client:<span id="clientName" class="ss-assignModal_table_result">@Model.ClientAbbr</span></td>
+                <td class="ss-assignModal_table_title">Mtg:<span id="mtgName" class="ss-assignModal_table_result">@Model.MeetingName</span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-assignModal_info-filters" style="max-height:160px;overflow-y:auto;overflow-x:hidden;">
+        <div class="ss-assignModal_info-filters_title">Assigned Programs</div>
+        @if (Model.AssignedPrograms != null && Model.AssignedPrograms.Count > 0)
+        {
+            <div class="ss-assignModal_info-filters_text">Click to de-associate program from meeting</div>
+            <table class="ss-assignModal_table" id="panelTable">
+                @for (var i = 0; i < Model.AssignedPrograms.Count; i++)
+                {
+                    var disabledText = Model.AssignedPrograms[i].Item3 ? " disabled" : String.Empty;
+                    <tr>
+                        <td>
+                            <input class="ss-assignModal_table_input" type="checkbox" name="assignedProgramMeetingId" value="@Model.AssignedPrograms[i].Item1" @disabledText />
+                            @Model.AssignedPrograms[i].Item2
+                        </td>
+                        @if (Model.AssignedPrograms[i].Item3)
+                        {
+                            <td>Cannot be removed. A panel has been assigned.</td>
+                        }
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="ss-assignModal_text">There are no assigned programs.</div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+
+            var programMeetingIds = [];
+            $('input[name="assignedProgramMeetingId"]:checked').each(function (i) {
+                programMeetingIds[i] = $(this).val();
+            });
+
+            var inputOut = $('.assign-filter input').not(':disabled');
+            var msg = "";
+
+            if (programMeetingIds.length == 0) {
+                msg = "Please check at least one program.";
+                $('.assign-filter input').not(':disabled').closest('td').css('color', 'red');
+            } else {
+                $('.assign-filter input').not(':disabled').closest('td').css('color', 'black');
+            }
+            $("#unassignProgramsAlert").html(msg);
+            if (msg == "") {
+                var inputData = {
+                    "programMeetingIds": programMeetingIds
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveUnassignProgram',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#unassignProgramsAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            repopulateHighlightParentGrid();
+                            var meetingName = $("#mtgName").html();
+                            $("#successMessage").text(programMeetingIds.length + " program(s) unassigned from meeting " + meetingName +
+                                " successfully.").show();
+                            $('.ui-dialog-titlebar-close').click();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#unassignProgramsAlert").html("Failed to save the meeting.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+</script>

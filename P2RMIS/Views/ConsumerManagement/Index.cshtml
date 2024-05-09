@@ -1,0 +1,66 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ConsumerManagementViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.Tab1;
+    @Html.Partial("_KendoHeader2016");
+}
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Consumer Management</span>
+    <div id="successMessage"></div>
+</div>
+<!-- Tabs -->
+<div class="mm-fieldSet">
+    @Html.Hidden("nonReviewerOnly", false)
+    <!-- Select Filters -->
+    <div class="mm-filterBox">
+        <div class="mm-filterBox_title">Select Filters</div>
+        <form id="consumerSearchForm">
+            <table class="mm-filterBox_table">
+                <tr>
+                    <td class="mm-filterBox_table_search"><input placeholder="Last Name, First Name" class="mm-filterBox_table_search_input" id="nomineeName" /></td>
+                    <td class="mm-filterBox_table_typeSelect padding-left5 padding-right5">@Html.DropDownList("NomineeTypeId", new SelectList(Model.NomineeTypes, "Key", "Value", Model.NomineeTypeId), "All Types", new { @id = "nomineeTypeId", @class = "mm-filterBox_table_search_input margin-none" })</td>
+                    <td class="mm-filterBox_table_search padding-left5"><input class="mm-filterBox_table_search_input" id="nominatingOrg" placeholder="Nominating Org" /></td>
+                    <td class="mm-filterBox_table_search padding-left5"><input class="mm-filterBox_table_search_input" id="nomineeScore" min="0" max="10" placeholder="Score" /></td>
+                    <td class="mm-filterBox_table_buttonShell"><input type="submit" value="Find" id="btn-find-nominees" class="mm-filterBox_table_buttonShell_buttonPrimary" /></td>
+                    <td class="mm-filterBox_table_buttonShell"><button id="btn-clear-nominees" class="mm-filterBox_table_buttonShell_buttonSecondary">Clear</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="add-nominee" id="main-text">
+        Please click 'Find' to activate search or
+        click '<a href="/ConsumerManagement/Consumer" id="addConsumer">Add Consumer</a>'
+        to add a new consumer record.
+    </div>
+    <!-- Main Body -->
+    <div class="mm-main">
+        <h4 class="mm-main_title" id="result-header"><span id="searchCriteria"></span></h4><div id="recordCount" class="ss-gridHeader_totalCount"><span id="recordCount"></span></div>
+    </div>
+    <div class="mm-main_text hidden" id="noResults">
+        No matching records found. Click '<a href="/ConsumerManagement/Consumer" id="addConsumer">Add Consumer</a>'
+        to add a new consumer.
+    </div>
+    <div id="loading"></div>
+</div>
+
+<!-- Grid Header -->
+<section id="mainContentArea" class="p2GridHeader hidden">
+    <div class="ss-gridHeader">
+        <h4 class="ss-gridHeader_title">Consumer Data</h4><div id="totalCount" class="ss-gridHeader_totalCount">( <span></span> records )</div><a href="/ConsumerManagement/Consumer" class="ss-gridHeader_addConsumerButton"><img src="~/Content/img/addconsumer.png" alt="Add Consumer" title="Add Consumer" style="border:0px;" /></a>
+        <h6 class="ss-gridHeader_exportButton" id="btnExport"><a href="#" class="ss-gridHeader_exportButton__link"><img src="/Content/img/icon_export_excel_labeled.png" /></a></h6>
+    </div>
+    <!-- Grid -->
+    <div id="grid" class="ss-grid-consumer"></div>
+</section>
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/ConsumerManagement/consumerSetup.js")

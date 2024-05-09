@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="P2RMISDS">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source="rds-usgw1-1ab-d-w-p2rmisdb01.cod2vnvjj4uy.us-gov-west-1.rds.amazonaws.com, 1433";Initial Catalog=P2RMISDB-Staging</ConnectString>
+    <Prompt>Creds</Prompt>
+  </ConnectionProperties>
+  <DataSourceID>0789aaf5-cf13-4858-a841-6c138367ab04</DataSourceID>
+</RptDataSource>

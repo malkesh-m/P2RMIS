@@ -1,0 +1,336 @@
+﻿@model Sra.P2rmis.Web.UI.Models.AwardWizardViewModel
+@using Newtonsoft.Json;
+
+<style type="text/css">
+    .k-widget.k-combobox.k-header.ss-awardModal_award-container_table_select-award_select {
+        width: 67%;
+    }
+</style>
+
+<div class="row-fluid ss-awardModal" id="addAwardPanel">
+    <div id="awardWizardAlert" class="ss-awardModal__error"></div>
+    <div class="ss-awardModal_explanatory-text">* Indicates a required field.</div>
+    <div class="ss-awardModal_applied-filters">
+        <div class="ss-awardModal_award-container_title">Details</div>
+        <table class="ss-awardModal_applied-filters_table">
+            <tr>
+                <td class="ss-awardModal_applied-filters_table_client">Client:<span id="clientAwardModal" class="ss-awardModal_applied-filters_table_client_result"></span></td>
+                <td class="ss-awardModal_applied-filters_table_program">Program:<span id="programAwardModal" class="ss-awardModal_applied-filters_table_program_result"></span></td>
+                <td class="ss-awardModal_applied-filters_table_active">Active:<span id="activeAwardModal" class="ss-awardModal_applied-filters_table_active_result"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="ss-awardModal_award-container">
+        <div class="ss-awardModal_award-container_title">Award</div>
+        <table class="ss-awardModal_award-container_table">
+            <tr>
+                <td class="ss-awardModal_award-container_table_receipt-cycle"><label for="receiptCycle" class="ss-awardModal_award-container_table_receipt-cycle_text">*Receipt Cycle:</label><input class="ss-awardModal_award-container_table_receipt-cycle_input" min="1" max="99" type="number" maxlength="2" id="receiptCycle" /></td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_select-award">
+                    <input id="awardTypeId" type="hidden" value="@Model.AwardTypeId" class="ss-awardModal_award-container_table_select-award_input" />
+                    <label for="pnComboBox" class="ss-awardModal_award-container_table_select-award_text">*Award:</label>
+                    <select class="ss-awardModal_award-container_table_select-award_select" style="width: 65%" name="fyField" id="pnComboBox">
+                        <option value="" id="awardName" class="ui-widget-content" selected>Select</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_award-abbr">
+
+                    <label for="awardAbbrID" class="ss-awardModal_award-container_table_award-abbr_text">Award Abbr:</label>
+                    <input id="awardAbbrID" readonly class="ss-awardModal_award-container_table_award-abbr_input" />
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_oppId">
+
+                    <label for="oppIdValue" class="ss-awardModal_award-container_table_oppId_text">Opportunity ID:</label>
+                    <input id="oppIdValue" maxlength="50" class="ss-awardModal_award-container_table_oppId_input" />
+                    <div class="ss-awardModal_award-container_table_oppId_baseline">&nbsp; Max 50 char.</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_blinded">
+                    <label for="blindedID" class="ss-awardModal_award-container_table_blinded_text">*Blinded:</label>
+                    <select id="blindedID" class="ss-awardModal_award-container_table_blinded_select">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_partnering">
+                    <label for="partneringPiAllowedFlag" class="ss-awardModal_award-container_table_partnering_text">*Partnering PIs:</label>
+                    <select id="partneringPiAllowedFlag" class="ss-awardModal_award-container_table_partnering_select">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_appDue">
+                    <label for="receiptDeadline" class="ss-awardModal_award-container_table_appDue_text">App Due Date:</label>
+                    <input type="text" id="receiptDeadline" value="@Model.ReceiptDeadline" class="ss-awardModal_award-container_table_appDue_datepicker" />
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_preApp">
+                    <label for="preApp" class="ss-awardModal_award-container_table_preApp_text">Pre-Application:</label>
+                    <select id="preApp" class="ss-awardModal_award-container_table_preApp_select">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="ss-awardModal_award-container_table_preAppDue">
+                    <label for="preAppDue" class="ss-awardModal_award-container_table_preAppDue_text">Pre-App Due:</label>
+                    <input type="text" id="preAppDue" value="@Model.ReceiptDeadline" class="ss-awardModal_award-container_table_preAppDue_datepicker" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="awardDataSource" class="hidden">
+    @Html.Raw(JsonConvert.SerializeObject(Model.AwardTypes))
+</div>
+
+<input type="hidden" id="programMechanismId" value="@Model.ProgramMechanismId" />
+<input type="hidden" id="parentProgramMechanismId" value="@Model.ParentProgramMechanismId" />
+<input type="hidden" id="clientProgramId" value="@Model.ClientProgramId" />
+<input type="hidden" id="isBlinded" value="@Model.IsBlinded" />
+<input type="hidden" id="isPartnering" value="@Model.IsPartnering" />
+<input type="hidden" id="preAppWarningChecked" value="false" />
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+    });
+    $(function () {
+        var awardsJson = JSON.parse($.trim($("#awardDataSource").html()));
+        // Get award abbreviation
+        function getAwardAbbr(awardTypeId) {
+            var abbr = "";
+            var i = 0;
+            while (abbr == "" && i < awardsJson.length) {
+                if (awardsJson[i].awardTypeId == awardTypeId) {
+                    abbr = awardsJson[i].awardAbbr;
+                }
+                i++;
+            }
+            return abbr;
+        }
+        // Executes when award drop-down value is changed
+        function setAwardAbbr() {
+            var awardTypeId = $("#pnComboBox").data("kendoComboBox").value();
+            var option = $("#pnComboBox").find("option[value='" + awardTypeId + "']");
+            if (option.length > 0) {
+                $("#awardAbbrID").val(getAwardAbbr(awardTypeId)).prop("disabled", true);
+            } else {
+                $("#awardAbbrID").val("").prop("disabled", false);
+            }
+        }
+        // Set flags
+        $("#blindedID").val($("#isBlinded").val() === "True" ? "Yes" : "No");
+        $("#partneringPiAllowedFlag").val($("#isPartnering").val() === "True" ? "Yes" : "No");
+
+        // Award
+        $('#pnComboBox').kendoComboBox({
+            change: setAwardAbbr,
+            dataTextField: "awardName",
+            dataValueField: "awardTypeId",
+            placeholder: "Select Award",
+            dataSource: awardsJson,
+            filter: "startswith",
+            value: "Select Award",
+            enable: false
+        });
+        if ($("#awardTypeId").val() !== "0" && $("#awardTypeId").val() !== "") {
+            var awardTypeId = parseInt($("#awardTypeId").val());
+            $("#pnComboBox").data("kendoComboBox").value(awardTypeId);
+        }
+        setAwardAbbr();
+        // Pre app, deadline, partnering PI status
+        if ($("#programMechanismId").val() !== "") {
+            $(".ss-awardModal_award-container_table_receipt-cycle_input").prop("disabled", true);
+            $(".ss-awardModal_award-container_table_preApp").closest("tr").hide();
+            if ($("#parentProgramMechanismId").val() !== "") {
+                $(".ss-awardModal_award-container_table_appDue").closest("tr").hide();
+                $(".ss-awardModal_award-container_table_partnering").closest("tr").hide();
+            } else {
+                $(".ss-awardModal_award-container_table_preAppDue").closest("tr").hide();
+            }
+        }
+        // Receipt deadline format
+        $('#receiptDeadline').kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM/dd/yyyy"]
+        });
+        $('#preAppDue').kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM/dd/yyyy"]
+        });
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+
+            var msg = "";
+            var receiptCycle = $.trim($("#receiptCycle").val());
+            var minReceiptVal = parseInt($("#receiptCycle").attr("min"));
+            var maxReceiptVal = parseInt($("#receiptCycle").attr("max"));
+
+            if (receiptCycle == "") {
+                msg = "Please enter a receipt cycle.";
+                $('#receiptCycle').addClass('input-validation-error');
+            } else if (!$.isNumeric(receiptCycle) || parseInt(receiptCycle) < minReceiptVal || parseInt(receiptCycle) > parseInt(maxReceiptVal)) {
+                msg = "Receipt cycle must be a number between 1 and 99.";
+                $('#receiptCycle').addClass('input-validation-error');
+            } else {
+                $('#receiptCycle').removeClass('input-validation-error');
+                if ($('#pnComboBox').val() == "Select Award") {
+                    msg = "Please select an award.";
+                    $('.k-combobox input').addClass('input-validation-error');
+                } else {
+                    $('.k-combobox input').removeClass('input-validation-error');
+                }
+            }
+            var clientAwardTypeId = $("#pnComboBox").data("kendoComboBox").value();
+            if (clientAwardTypeId === "") {
+                msg += "Please select an award."
+            }
+            $("#awardWizardAlert").html(msg);
+
+            if (msg == "") {
+                // Check if preApp exists with set values and issue warning. Save will not happen until the user clicks save again.
+                var preAppWarningChecked = ($("#preAppWarningChecked").val() == "true" || $("#parentProgramMechanismId").val() !== "");
+                if (!preAppWarningChecked) {
+                    CheckIfPreAppExists();
+                } else {
+                    // once preappwarning is checked and the hidden var is set, run the save the next time.
+                    $('#saveDialogChanges').attr('disabled', true);
+                    // Save AJAX call
+                    SaveAward();
+                }
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+
+    function SaveAward() {
+        var receiptCycle = $.trim($("#receiptCycle").val());
+        var clientAwardTypeId = $("#pnComboBox").data("kendoComboBox").value();
+        var clientAwardType = $("#pnComboBox").data("kendoComboBox").text();
+        var receiptDeadline = $("#parentProgramMechanismId").val() === "" ?
+            $("#receiptDeadline").val() : $("#preAppDue").val();
+        var blindedFlag = $("#blindedID > option:selected").val() === "Yes";
+        var partneringPiAllowedFlag = $("#partneringPiAllowedFlag > option:selected").val() === "Yes";
+        var preAppFlag = $("#preApp > option:selected").val() === "Yes";
+        var preAppDueDate = $("#preAppDue").val();
+        var programMechanismId = $("#programMechanismId").val();
+        var inputData = {
+            "programMechanismId": programMechanismId, "programYearId": $(".ss-filterBox_award-table_programSelect option:selected").val(), "clientProgramId": $("#clientProgramId").val(),
+            "clientAwardTypeId": parseInt(clientAwardTypeId), "receiptCycle": parseInt(receiptCycle), "receiptDeadline": receiptDeadline,
+            "blindedFlag": blindedFlag, "fundingOpportunityId": $("#oppIdValue").val(), "partneringPiAllowedFlag": partneringPiAllowedFlag, "preApp": preAppFlag, "preAppDue": preAppDueDate
+        };
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: '/Setup/SaveAward',
+            data: inputData,
+            success: function (data) {
+                if (!data.flag) {
+                    for (var i = 0; i < data.messages.length; i++) {
+                        $("#awardWizardAlert").append($("<div/>").html(data.messages[i]));
+                    }
+                } else {
+                    //repopulateHighlightParentGrid();
+                    $('.ui-dialog-titlebar-close').click();
+                    $('a.k-pager-refresh').click();
+                    if (programMechanismId === "") {
+                        $("#successMessage").html("Award " + clientAwardType + " added successfully!").show();
+                    } else {
+                        $("#successMessage").html("Award " + clientAwardType + " updated successfully!").show();
+                    }
+                    $("#failureMessage").html("").hide();
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#awardWizardAlert").html("Failed to save the award.");
+            },
+            complete: function (data) {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    }
+
+    function CheckIfPreAppExists() {
+        var receiptCycle = $.trim($("#receiptCycle").val());
+        var clientAwardTypeId = $("#pnComboBox").data("kendoComboBox").value();
+        var programYearId = $(".ss-filterBox_award-table_programSelect option:selected").val();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: '/Setup/CheckIfPreAppMatch',
+            data: {
+                programYearId: programYearId, cycle: receiptCycle
+            },
+            success: function (result) {
+                if (result.warningFlag) {
+                    $("#awardWizardAlert").html("This cycle is associated with pre-applications. Click 'Save' to proceed or select a different receipt cycle.");
+                } else {
+                    $('#saveDialogChanges').attr('disabled', true);
+                    SaveAward();
+                }
+                var warningStatus = $("#preAppWarningChecked").val();
+                var warningToggle = (warningStatus == "true") ? "false" : "true";
+                $("#preAppWarningChecked").val(warningToggle);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#awardWizardAlert").html("Unable to perform pre-application check.");
+            }
+        });
+    }
+
+    // Kendo Validator
+    var $in = $('.k-dropdown-wrap input');
+    var anArray = [];
+    $('#pnComboBox_listbox li').each(function (i, value) {
+        var text = $(this).text();
+        anArray.push(text);
+    });
+    $in.on('focusout', function () {
+        if ($('#pnComboBox').val() == "Select Award") {
+            $('.k-dropdown-wrap input').val('');
+        }
+    });
+
+    $("#receiptCycle").focusout(function (e) {
+        if ($("#programMechanismId").val() === "") {
+            var thisCycle = parseInt($("#receiptCycle").val());
+            if ($.isNumeric(thisCycle)) {
+                $.ajax({
+                    url: '/Setup/GetAwardsByCycle',
+                    data: {
+                        programYearId: $(".ss-filterBox_award-table_programSelect option:selected").val(),
+                        cycle: thisCycle
+                    }
+                }).done(function (results) {
+                    var newDS = JSON.parse(results);
+                    var ds = new kendo.data.DataSource({
+                        data: newDS
+                    });
+
+                    var combobox = $("#pnComboBox").data("kendoComboBox");
+                    combobox.enable(true);
+                    combobox.setDataSource(ds);
+                    //combobox.dataSource.read();
+                    $("#awardAbbrID").val("");
+                });
+            }
+        }
+    });
+
+</script>

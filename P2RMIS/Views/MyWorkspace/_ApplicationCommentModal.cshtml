@@ -1,0 +1,28 @@
+﻿@using Sra.P2rmis.Web.Controllers
+<!-- These parameters are required for the application comments -->
+<input type="hidden" id="canModifyGeneralComments" value="true" />
+<input type="hidden" id="canViewEditorComments" value="true" />
+<input type="hidden" id="generalCommentMaxCharLimit" value="1200" />
+<div id="generalCommentsModal">
+    <div id="saveGeneralCommentSection" style="padding: 0 20px">
+        <h5 id="addGeneralCommentTitle">Add an application comment:</h5>
+        <h5 id="editGeneralCommentTitle" class="hide">Edit an application comment:</h5>
+        <input type="hidden" id="generalCommentId" value="" />
+        <label for="generalComment" class="sr-only">Add an application comment</label>
+        <textarea id="generalComment" style="width:98%;height:160px;"></textarea>
+    </div>
+    <div id="displayGeneralComments" style="padding: 20px 20px;s"></div>
+</div>
+<div id="commentEntryTemplate" class="commentEntry hide">
+    <span class="commentEntryComment"></span><br /><br />
+    <span class="commentEntryAuthor"></span><br />
+    <span class="commentEntryPublishedDate"></span><br />
+    <a class="commentEntryEdit" href="#">Edit</a>
+    <a class="commentEntryDelete" href="#">Delete</a><br />
+    <hr />
+</div>
+<!-- Comment Widget -->
+@Html.IncludeVersionedFiles("/Scripts/datejs/date.js")
+@Html.IncludeVersionedFiles("/Scripts/common/commentwidget.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/MyWorkspace/ApplicationComments.js")
+

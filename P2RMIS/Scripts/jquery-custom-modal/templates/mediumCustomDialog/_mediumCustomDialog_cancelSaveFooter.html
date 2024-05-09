@@ -1,0 +1,38 @@
+﻿<!-- Stylesheet for the custom Modal -->
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<div id="mediumModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content modalMed">
+            <div class="modal-body">
+            </div>
+        </div>
+        <div class="modal-footer modalFooter"></div>
+    </div>
+</div>
+
+<!-- Javascript to include the cancel save footer -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#mediumModal .modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+    });
+</script>
+
+<!-- Custom JavaScript -->
+<script type="text/javascript">
+    // function to perform cancel operation
+    $('#mediumModal div.modal-footer a[id="closeModal"]').on('click', function (e) {
+        e.preventDefault();
+        
+        // Close the Dialog
+        $(this).closest(".ui-dialog .ui-dialog-content").dialog("close");
+    });
+
+    //function to perform save operation
+    $('#mediumModal div.modal-footer :button').on('click', function (e) {
+        e.preventDefault();
+        if ($(this).attr('id') == 'saveDialogChanges') { }
+    });
+</script>
+
+

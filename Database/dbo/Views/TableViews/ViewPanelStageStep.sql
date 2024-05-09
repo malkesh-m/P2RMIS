@@ -1,0 +1,20 @@
+CREATE VIEW [dbo].ViewPanelStageStep AS
+SELECT [PanelStageStepId]
+      ,[PanelStageId]
+      ,[StepTypeId]
+      ,[StepName]
+      ,[StepOrder]
+      ,[StartDate]
+      ,[EndDate]
+      ,[ReOpenDate]
+      ,[ReCloseDate]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+      ,[DeletedFlag]
+      ,[DeletedBy]
+      ,[DeletedDate]
+  FROM [dbo].[PanelStageStep]
+WHERE [DeletedFlag] = 0
+

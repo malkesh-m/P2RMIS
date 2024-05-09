@@ -1,0 +1,177 @@
+﻿@model Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel
+@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+
+<style type="text/css">
+    .k-header {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+    #postAssignmentSection {
+        margin-top: 140px;
+    }
+</style>
+<div id="postAssignmentSection" class="title-container">
+    <div>
+        <h5>
+            Phase: @Model.PhaseName
+            @if (!Model.IsOnlineDiscussionPhase)
+            {
+                <text>Critique/Score Submission</text>
+            }
+        </h5>
+    </div>
+    @if (Model.PostAssignmentApplications != null && Model.PostAssignmentApplications.Count > 0)
+    {
+    <div class="right-title alignLeft">
+            @if (Model.IsOnlineDiscussionPhase)
+            {
+            <input id="showDBOnlyChkBx" type="checkbox" class="alignLeft"/>
+            <label for="showDBOnlyChkBx" class="alignLeft">Show Discussion Board Only</label>
+            }
+        <input id="showCritiqueActionNeededChkBx" type="checkbox" class="alignLeft" />
+        <label for="showCritiqueActionNeededChkBx" class="alignLeft margin-right10">Critique - Action Needed</label>
+
+        <input id="showAssignedChkBx" type="checkbox" class="alignLeft" checked />
+        <label for="showAssignedChkBx" class="alignLeft">Show Assigned Only</label>
+        </div>
+        <div id="postAssignmentGrid"></div>
+        <div id="noResultsMessage" style="display: none; text-align:center;">
+            No results returned based on selected preferences.
+        </div>
+    }
+    else
+    {
+        <div>You have not been currently assigned to any applications. Please contact your SRO if you have any questions.</div>
+    }
+</div>
+<script id="postAssignmentActionsTemplate" type="text/x-kendo-template">
+    <span class="icon-holder ">
+        # if (!isCoi) {
+        if (enabledNormalView) {
+        # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}">
+            <img src="/Content/img/view_20px_enabled.png" alt="View Critiques" title="View Critiques (Not Assigned)" />
+        </a> #
+        } else if (disabledNormalView) {
+        # <img src="/Content/img/view_20px_disabled.png" title="View Critiques (Not Assigned)" /> #
+        } else if (enabledNormalEdit) {
+        # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}"><img src="/Content/img/edit_20px_enabled.png" alt="Add/Edit Critiques" title="Add/Edit Critiques" /></a> #
+        } else if (enabledAbnormalEdit) {
+        # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}"><img src="/Content/img/edit_20px_delinquent_enabled.png" alt="Add/Edit Critique" title="Add/Edit Critique" /></a> #
+        } else if (disabledAbnormalEdit) {
+        # <img src="/Content/img/edit_20px_delinquent_disabled.png" title="Add/Edit/View Critiques" /> #
+        } else if (enabledSubmittedView) {
+        # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}"><img src="/Content/img/Submitted_Critique_20px_enabled.png" alt="View Critique" title="View Critique" /></a> #
+        } else if (disabledSubmittedView) {
+        # <img src="/Content/img/Submitted_Critique_20px_disabled.png" title="View Critique" /> #
+        }
+        } #
+    </span>
+    <span class="wide-icon-holder">
+        # if (!isCoi) {
+        if (canAccessDiscussionBoard) {
+        # <a href="/PanelManagement/DiscussionBoard?applicationStageStepId=${applicationStageStepId}">
+            <img src="/Content/img/discussion_board_16px_enabled.png" alt="Discussion Board" title="Discussion Board" />
+        </a> #
+        }
+        } #
+    </span>
+</script>
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+<script type="text/javascript">
+    //
+    // Turns off the "No results found" message.
+    //
+    function noResultsMessageOff() {
+        $('#noResultsMessage').hide();
+    }
+    //
+    // Turns on the "No results found" message.
+    //
+    function noResultsMessageOn() {
+        var rowsDisplayed = $('#applicationContents tr').length;
+        var rowsHidden = $('#applicationContents tr.filtered').length;
+        if (rowsHidden == rowsDisplayed) {
+            $('#noResultsMessage').show();
+        }
+    }
+    $(function () {
+        // Grid data source
+        var mainDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.PostAssignmentApplications))
+        });
+        $("#postAssignmentGrid").kendoGrid({
+            columns: [
+                {
+                    title: "Application", field: "logNumber", width: 80,
+                    attributes: { class: "left-align", title: "Application" },
+                    template: "# if (!isCoi) { # <a href='javascript:;' class='applicationLogNumber' data-applicationid='${applicationId}'>${logNumber}</a> # } else { # ${logNumber} # } #"
+                },
+                {
+                    title: "Principal Investigator", field: "piName", width: 140, sortable: false,
+                    attributes: { class: "left-align boxResponsive", title: "Principal Investigator" }
+                },
+                {
+                    title: "Application Title", field: "title", width: 250, sortable: false,
+                    attributes: { class: "left-align boxResponsive", title: "Application Title" }
+                },
+                {
+                    title: "Mechanism", field: "mechanism", width: 80,
+                    attributes: { class: "left-align", title: "Mechanism" }
+                },
+                {
+                    title: "Assignment", field: "assignmentText", width: 80,
+                    attributes: { class: "left-align", title: "Assignment" }
+                },
+                {
+                    title: "Expertise Level /<br>COI", field: "expertiseLevelOrCoi", width: 140,
+                    attributes: { class: "center-align", title: "Expertise" },
+                    template: "# if (hasExpertiseLevelOrCoi) { # <a href='javascript:;' class='reviewer-assignment' panel-app-id='${panelApplicationId}' participant-id='${panelUserAssignmentId}' has-expertise='1'>${expertiseLevelOrCoi}</a> # } else " +
+                        "{ # <a href='javascript:;' class='reviewer-assignment' panel-app-id='${panelApplicationId}' participant-id='${panelUserAssignmentId}' has-expertise='0'>Add</a> # } #"
+                },
+                {
+                    title: "Overall", field: "overallScore", width: 80,
+                    attributes: { class: "center-align", title: "Overall" }
+                },
+                {
+                    title: "Actions", field: "actions", width: 80, sortable: false,
+                    attributes: { class: "center-align valign-middle" },
+                    template: $("#postAssignmentActionsTemplate").html()
+                },
+                { title: "HasAssigned", field: "hasAssigned", hidden: true },
+                { title: "NeedCritiqueAction", field: "needCritiqueAction", hidden: true },
+                { title: "ShowDiscussionBoardOnly", field: "showDiscussionBoardOnly", hidden: true }
+            ],
+            dataSource: mainDataSource,
+            sortable: true,
+            filterable: false,
+            noRecords: {
+                template: "<p/>No results returned based on selected preferences."
+            }
+        });
+        // Checkbox handler
+        var gridFilterHandler = function() {
+            $filter = new Array();
+            if ($("#showAssignedChkBx").is(":checked")) {
+                // Check if "Show Assigned Only" is checked
+                $filter.push({ field: "hasAssigned", operator: "eq", value: true });
+            }
+            if ($("#showCritiqueActionNeededChkBx").is(":checked")) {
+                // Check if "Critique-Action Needed" is checked
+                $filter.push({ field: "needCritiqueAction", operator: "eq", value: true });
+            }
+            if ($("#showDBOnlyChkBx").is(":checked")) {
+                // Check if "Show Discussion Board Only" is checked
+                $filter.push({ field: "canAccessDiscussionBoard", operator: "eq", value: true });
+            }
+            var grid = $("#postAssignmentGrid").data("kendoGrid");
+            grid.dataSource.filter($filter);
+        };
+        $("#showAssignedChkBx, #showCritiqueActionNeededChkBx, #showDBOnlyChkBx").change(function () {
+            gridFilterHandler();
+        });
+        gridFilterHandler();
+    });
+</script>

@@ -1,0 +1,87 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="eng">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Cache-control" content="no-store" />
+    <title>Program and Peer Review Management System</title>
+
+    @*JQuery*@
+    @Html.IncludeVersionedFiles("/Content/themes/base/jquery-ui-1.11.4.smoothness.min.css")
+    @Html.IncludeVersionedFiles("/Scripts/jquery/jquery-1.12.1.min.js")
+
+    @Html.IncludeVersionedFiles("/Scripts/jquery/jquery-migrate-1.2.1.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery-ui/jquery-ui-1.11.4.min.js")
+
+    @*Place holder for jquery js/css includes*@
+    @RenderSection("HeaderJQueryExtension", false)
+
+    @Html.IncludeVersionedFiles("/Scripts/jquery.validate.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.validate.unobtrusive.min.js")
+    @Html.IncludeVersionedFiles("/Content/jquery.tablesorter/theme.default.css")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.tablesorter.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.tablesorter.widgets.min.js")
+
+    @*Multiselect include scripts below *@
+    @Html.IncludeVersionedFiles("/Scripts/jquery-multiselect/css/jquery.multiselect2side.css")
+    @Html.IncludeVersionedFiles("/Scripts/jquery-multiselect/js/jquery.multiselect2side.js")
+
+    @*Progressive Enhancement modal dialog*@
+    @Html.IncludeVersionedFiles("/Scripts/jquery.unobtrusive-ajax.min.js")
+
+    @*Scroll to the Top*@
+    @Html.IncludeVersionedFiles("/Scripts/ScrollTop.js")
+
+    @*Navigation Scripts*@
+    @Html.IncludeVersionedFiles("/Scripts/ResponsiveDropDown.js")
+
+    @*Twitter Bootstrap Includes*@
+    @Html.IncludeVersionedFiles("/Content/bootstrap.min.css")
+    @Html.IncludeVersionedFiles("/Content/bootstrap-responsive.min.css")
+    @Html.IncludeVersionedFiles("/Content/bootstrap-fixes.css")
+    @Html.IncludeVersionedFiles("/Scripts/bootstrap.min.js")
+
+    @*Modified StyleSheet *@
+    @Html.IncludeVersionedFiles("/Content/Site.css")
+    @Html.IncludeVersionedFiles("/Content/LESS/P2RMIS/global.min.css")
+
+    @*Font Awesome Fonts*@
+    @Html.IncludeVersionedFiles("/Content/font-awesome/css/font-awesome.min.css")
+
+    @*Placeholder for inputs used to provide placeholders for inputs for IE9*@
+    @Html.IncludeVersionedFiles("/Scripts/Placeholders.min.js")
+
+    @*Jquery for sticky header*@
+    @Html.IncludeVersionedFiles("/scripts/jquery.stickyheader.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.ba-throttle-debounce.min.js")
+
+    @*Common scripts shared by all pages*@
+    @Html.IncludeVersionedFiles("/Scripts/common/common.js")
+
+    <!-- Global Javascript includes for main layout -->
+    @Html.IncludeVersionedFiles("/Scripts/common/common-globalnamespace.js")
+
+    <!-- Load Modal Framework -->
+    @Html.IncludeVersionedFiles("/Scripts/jquery-custom-modal/js/jquery-custom-modal.js")
+
+    @Html.IncludeVersionedFiles("/Content/LESS/P2RMIS/global.min.css")
+
+    <!-- Numeric filter -->
+    <!-- The minified version doesn't fully support "select then modify" action. -->
+    @Html.IncludeVersionedFiles("/scripts/jquery.numeric.js")
+    @Html.IncludeVersionedFiles("/Scripts/Custom/FileSaver.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/Custom/jquery.wordexport.js")
+    @Html.IncludeVersionedFiles("/Content/LESS/less.js")
+    @*Place holder for ad-hoc js/css includes*@
+    @RenderSection("HeaderExtension", false)
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

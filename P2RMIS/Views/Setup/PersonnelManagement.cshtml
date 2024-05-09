@@ -1,0 +1,95 @@
+﻿@using Newtonsoft.Json;
+@model Sra.P2rmis.WebModels.Setup.PersonnelModel
+
+@{
+                /**/
+
+                ViewBag.PageTitle = "Personnel Management";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Personnel Management</span>
+</div>
+
+<!-- Select Filters -->
+<section class="p2FilterContainer">
+    <div class="p2FilterContainer_full">
+        <h6 class="p2FilterContainer_title">Search Filters</h6>
+        <div class="p2FilterContainer_contents">
+            <div class="p2FilterContainer_selects p2FilterContainer_full">
+                <label for="app-management-button" class="p2rmis-filterset_checkbox"><strong>Assignment Type:</strong></label>
+                <input type="radio" id="int-panelmember" name="per-management-radio" class="p2rmis-filterset_radio" value="0" checked />
+                <label for="int-panelmember" class="p2rmis-filterset_checkbox">Integration Panel Member</label>
+                <input type="radio" id="meeting-participant" name="per-management-radio" class="p2rmis-filterset_radio" value="1" />
+                <label for="meeting-participant" class="p2rmis-filterset_checkbox">Meeting Participant</label>
+            </div>
+            <div class="p2FilterContainer_selects">
+                <input type="text" placeholder="Last Name, First Name" id="per-management-application" style="margin-right: 10px;" />
+                <label for="per-management-button" class="sr-only">Last Name, First Name</label>
+                <label for="per-management-fy" class="sr-only">Select a Client</label>
+                <select class="p2FilterContainer_selects_select" id="per-management-client"><option selected value="0">Select Client</option></select>
+                <label for="per-management-fy" class="sr-only">Select a Fiscal Year</label>
+                <select class="p2FilterContainer_selects_select" id="per-management-fy"><option selected>Select FY</option></select>
+                <label for="per-management-fy" class="sr-only">Select a Meeting</label>
+                <select class="p2FilterContainer_selects_select hidden" id="per-management-meeting"><option selected>Select Meeting</option></select>
+                <label for="per-management-program" class="sr-only">Select a Program</label>
+                <select class="p2FilterContainer_selects_select" id="per-management-program"><option selected>Select Program</option></select>
+                <label for="per-management-application" class="sr-only">Search for an application</label>
+                <button class="buttonPrimary" id="per-management-button" disabled>Search</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Explanatory text -->
+<div id="explanatory-text" class="p2rmis-filterset_center">Please enter at least one search criteria to begin.</div>
+<div id="searchReturn" class="main-header_failure hidden"></div>
+
+<!-- Grid Header -->
+<section id="mainContentArea" class="p2GridHeader hidden">
+    <h4 class="p2GridHeader_title">
+        Search result
+        (<span id="totalCount" class="result-header-count"></span> records found.)
+    </h4>
+
+    <!-- Grid -->
+    <div id="personnelManagmentGrid" class="p2Grid"></div>
+    <input type="hidden" value="" id="ResetApplicationId" />
+</section>
+<input type="hidden" value="" id="assignmentsAssigned" />
+<script src="/Scripts/jquery-ui-multiselect/js/jquery.multiselect.js"></script>
+
+<script id="programTemplate" type="text/x-kendo-template">
+    <div>
+        # var programLength = Assignments.length; #
+        # for(var e=0;e<=Assignments.length-1;e++) { #
+        # if(e < 3){ #
+        # var meeting = Assignments[e].MeetingAbbreviation; #
+        #if(meeting == null){ #
+        <span class="panelsSelection">#= Assignments[e].FiscalYear # #= Assignments[e].ProgramAbbreviation #</span>
+        # } else {#
+        <span class="panelsSelection">#= Assignments[e].FiscalYear # #= Assignments[e].MeetingAbbreviation # #= Assignments[e].ProgramAbbreviation #</span>
+        # } #
+        # if(programLength-1 != e){ #
+        <span>,</span>
+        # } #
+        # } #
+        # } #
+        # if(programLength > 3){ #
+        <span class="newLink">More</span>
+        # } #
+    </div>
+</script>
+<script src="@Url.Content("~/Scripts/Custom/Setup/personnelManagement.js")" type="text/javascript"></script>
+

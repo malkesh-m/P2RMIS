@@ -1,0 +1,427 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.ViewModels.MeetingManagement.MeetingHotelViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.SubTab1;
+
+    string parameterString = (Model.PanelUserAssignmentId.HasValue) ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+
+    int? parameterValue = (Model.PanelUserAssignmentId.HasValue) ? Model.PanelUserAssignmentId : Model.SessionUserAssignmentId;
+
+    string HotelLink = Sra.P2rmis.Web.UI.Models.MMSubTabbedMenuViewModel.SubTab1Link + "?" + parameterString + "=" + parameterValue;
+    string TravelLink = Sra.P2rmis.Web.UI.Models.MMSubTabbedMenuViewModel.SubTab2Link + "?" + parameterString + "=" + parameterValue;
+    string CommentLink = Sra.P2rmis.Web.UI.Models.MMSubTabbedMenuViewModel.SubTab3Link + "?" + parameterString + "=" + parameterValue;
+
+    @Html.Partial("_KendoHeader2016");
+}
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Edit Meeting Details</span><span id="backtoStaff" class="main-header_title_back-to-staff"> (Back to Meeting Management)</span>
+</div>
+<!-- Tabs -->
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<br />
+<form id="editHotelForm" action="/MeetingManagement/SaveHotelMeetingDetails" method="post">
+    <div>
+        <!-- Details -->
+        <section class="p2FilterContainer">
+            <div class="p2FilterContainer_full">
+                <h6 class="p2FilterContainer_title">Details</h6>
+                <div class="p2FilterContainer_contents">
+                    <!-- Details Field Set -->
+                    <ul class="p2FilterContainer_details">
+                        <li>
+                            <label for="meeting-attendee" class="p2FilterContainer_details_label">Meeting Attendee:</label>
+                            <div id="meeting-attendee" class="p2FilterContainer_details_result">@Model.ReviewerName</div>
+                        </li>
+                        <li>
+                            <label for="preferred-phone" class="p2FilterContainer_details_label">Preferred Phone:</label>
+                            <div id="preferred-phone" class="p2FilterContainer_details_result">@Model.DetailsHeader.Phone</div>
+                        </li>
+                        <li>
+                            <label for="email" class="p2FilterContainer_details_label" style="float: left;">Email:</label>
+                            <div id="email" class="p2FilterContainer_details_result" style="width: 145px; word-break:break-word; float: left; padding-left: 5px;">@Model.DetailsHeader.Email</div>
+                        </li>
+                    </ul>
+                    <ul class="p2FilterContainer_details">
+                        <li>
+                            <label for="participant-type" class="p2FilterContainer_details_label">Participant Type:</label>
+                            <div id="participant-type" class="p2FilterContainer_details_result">@Model.DetailsHeader.ParticipantType</div>
+                        </li>
+                        <li>
+                            <label for="meeting-result" class="p2FilterContainer_details_label">Meeting:</label>
+                            <div id="meeting-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Meeting</div>
+                        </li>
+                        <li>
+                            <label for="meeting-dates" class="p2FilterContainer_details_label">Meeting Dates:</label>
+                            <div id="meeting-dates" class="p2FilterContainer_details_result">@Model.DetailsHeader.MeetingDates</div>
+                        </li>
+                    </ul>
+                    <ul class="p2FilterContainer_details">
+                        <li>
+                            <label for="panel-result" class="p2FilterContainer_details_label">Panel:</label>
+                            <div id="panel-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Panel</div>
+                        </li>
+                        <li>
+                            <label for="session-result" class="p2FilterContainer_details_label">Session:</label>
+                            <div id="session-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Session</div>
+                        </li>
+                        <li>
+                            <label for="session-dates" class="p2FilterContainer_details_label">Session Dates:</label>
+                            <div id="session-dates" class="p2FilterContainer_details_result">@Model.DetailsHeader.SessionDates</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        @Html.Partial("_MMSubTabbedMenu")
+        @Html.Hidden("IsDataCompleteFlag", Model.IsDataComplete)
+        <div id="checkMarkAsComplete" class="float-left">
+            <input type="checkbox" id="chk-mark-for-complete" class="noMargin" />
+            <label id="lblMarkForComplete" for="mark-for-complete" class="p2FilterContainer_label">Mark As Complete</label>
+        </div>
+        <div id="markedAsComplete" class="float-left">
+            <img src="~/Content/img/MarkedAsComplete.png" alt="Marked As Complete" title="Marked As Complete" />
+            <label for="Marked-for-complete" class="p2FilterContainer_label">Marked As Complete</label>
+        </div>
+
+        <div class="mm-filterBox_buttons"><input type="submit" id="mm-filterBox_buttons_save" class="mm-filterBox_buttons_save" value="Save" /><button id="mm-filterBox_buttons_cancel" class="mm-filterBox_buttons_cancel">Cancel</button></div>
+
+        <!-- Main Body -->
+        <div class="mm-detailsBox">
+            <div class="mm-detailsBox_title">Hotel Information</div>
+            <ul class="mm-informationBox" style="width: 650px;">
+                <li>
+                    <label for="AttendanceStart" class="p2FilterContainer_details_label">Attendance Start</label>
+                    @if (Model.AttendanceStart == null)
+                    {
+                        <input type="text" id="AttendanceStart" name="AttendanceStart" value="@Model.PanelStarted" class="mm-detailsBox_table_result_input" />
+                    }
+                    else
+                    {
+                        <input type="text" id="AttendanceStart" name="AttendanceStart" value="@Model.AttendanceStart" class="mm-detailsBox_table_result_input" />
+                    }
+                </li>
+                <li>
+                    <label for="AttendanceEnd" class="p2FilterContainer_details_label">Attendance End</label>
+                    @if (Model.AttendanceEnd == null)
+                    {
+                        <input type="text" id="AttendanceEnd" name="AttendanceEnd" value="@Model.PanelEnded" class="mm-detailsBox_table_result_input" />
+                    }
+                    else
+                    {
+                        <input type="text" id="AttendanceEnd" name="AttendanceEnd" value="@Model.AttendanceEnd" class="mm-detailsBox_table_result_input" />
+                    }
+                </li>
+                <li>
+                    <label for="HotelNotRequiredFlag" class="p2FilterContainer_details_label">Hotel not Required</label>
+                    @Html.CheckBoxFor(x => x.HotelNotRequiredFlag, new { @class = "mm-detailsBox_table_result_checkbox" })
+                </li>
+                <li>
+                    <label for="CheckInDate" class="p2FilterContainer_details_label">Check-in Date</label>
+                    @if (Model.CheckInDate == null)
+                    {
+                        <input type="text" id="CheckInDate" name="CheckInDate" value="@Model.PanelStarted" class="mm-detailsBox_table_result_input" />
+                    }
+                    else
+                    {
+                        <input type="text" id="CheckInDate" name="CheckInDate" value="@Model.CheckInDate" class="mm-detailsBox_table_result_input" />
+                    }
+                </li>
+                <li>
+                    <label for="CheckOutDate" class="p2FilterContainer_details_label">Check-out Date</label>
+                    @if (Model.CheckOutDate == null)
+                    {
+                        <input type="text" id="CheckOutDate" name="CheckOutDate" value="@Model.PanelEnded" class="mm-detailsBox_table_result_input" />
+                    }
+                    else
+                    {
+                        <input type="text" id="CheckOutDate" name="CheckOutDate" value="@Model.CheckOutDate" class="mm-detailsBox_table_result_input" />
+                    }
+                </li>
+                <li>
+                    <label for="HotelId" class="p2FilterContainer_details_label">Hotel</label>
+                    @Html.DropDownListFor(x => x.HotelId, new SelectList(Model.HotelDropdown, "Index", "Value"), new { @class = "mm-detailsBox_table_date-picker_select" })
+                </li>
+                <li>
+                    <label for="DoubleOccupancy" class="p2FilterContainer_details_label">Double Occupancy</label>
+                    @Html.CheckBoxFor(x => x.DoubleOccupancy, new { @class = "mm-detailsBox_table_result_checkbox" })
+                </li>
+                <li>
+                    <label for="SpecialRequest" class="p2FilterContainer_details_label">Special Hotel/Food Request</label>
+                    @Html.TextAreaFor(m => m.SpecialRequest, new { @class = "mm-detailsBox_table_result_textarea", maxlength = 500, placeholder = "Max limit: 500 characters", @style = "width: 400px;" })
+                </li>
+                <li>
+                    <label for="CancelDate" class="p2FilterContainer_details_label">Cancelled Date</label>
+                    @Html.TextBoxFor(x => x.CancelDate, new { @class = "mm-detailsBox_table_result_input" })
+                </li>
+                <li>
+                    <label for="participantSubmitted" class="p2FilterContainer_details_label">Participant Submitted:</label>
+                    <div id="participantSubmitted" class="p2FilterContainer_details_result">@Model.ParticipantSubmitted</div>
+                </li>
+                <li>
+                    <label for="last-updated" class="p2FilterContainer_details_label">Last Updated:</label>
+                    <div id="last-updated" class="p2FilterContainer_details_result">@Model.LastUpdated</div>
+                </li>
+                <li>
+                    <label for="last-updated-by" class="p2FilterContainer_details_label">Last Updated By:</label>
+                    <div id="last-updated-by" class="p2FilterContainer_details_result">@Model.LastUpdatedBy</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <input id="hotelSelected" value="@Model.HotelId" type="hidden" />
+    <input id="hotelDefaulted" value="@Model.DefaultHotelId" type="hidden" />
+    @Html.HiddenFor(m => m.PanelUserAssignmentId)
+    @Html.HiddenFor(m => m.SessionUserAssignmentId)
+</form>
+<script src="~/Scripts/Custom/MeetingManagement/hotelandTravel.js"></script>
+<script type="text/javascript">
+    var isDataComplete = $("#IsDataCompleteFlag").val();
+    if (isDataComplete == "True") {
+        $("#checkMarkAsComplete").hide();
+        $("#markedAsComplete").show();
+    }
+    else {
+        $("#checkMarkAsComplete").show();
+        $("#markedAsComplete").hide();
+    }
+
+    var getMeetingRegistrationId = sessionStorage.getItem('setMeetingRegistrationId');
+    var getPanelUserAssignmentId = sessionStorage.getItem('setPanelUserAssignmentId');
+    var getSessionUserAssignmentId = sessionStorage.getItem('setSessionUserAssignmentId');
+
+    var paramString = (getPanelUserAssignmentId != null) ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+
+    $('.mm-fieldSet li:nth-child(1) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditHotel?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    })
+    $('.mm-fieldSet li:nth-child(2) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditTravel?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    })
+    $('.mm-fieldSet li:nth-child(3) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditComments?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    })
+
+    var setPanelUserAssignmentId = $('#PanelUserAssignmentId').val();
+    var setSessionUserAssignmentId = $('#SessionUserassignmentId').val();
+
+    // Hotel validation checkbox
+    $('#HotelNotRequiredFlag').on('change', function () {
+        var isChecked = $(this).is(':checked');
+        if (isChecked) {
+            $('#CheckInDate').data('kendoDatePicker').enable(false);
+            $('#CheckOutDate').data('kendoDatePicker').enable(false);
+            $('#CheckInDate, #CheckOutDate, #DoubleOccupancy, #HotelId').val('');
+            $("#DoubleOccupancy, #HotelId").prop("disabled", true);
+        } else {
+            $('#CheckInDate').data('kendoDatePicker').enable(true);
+            $('#CheckOutDate').data('kendoDatePicker').enable(true);
+            $("#DoubleOccupancy, #HotelId").prop("disabled", false);
+            $('#HotelId').val($('#hotelDefaulted').val());
+            $('#CheckInDate').val($('#AttendanceStart').val());
+            $('#CheckOutDate').val($('#AttendanceEnd').val());
+        }
+    })
+
+    // Cancel button
+    $('.mm-filterBox_buttons_cancel').on('click', function () {
+        location.reload();
+    })
+
+    // Hotel Selected
+    var hotelSelected = $('#hotelSelected').val();
+    if (hotelSelected == "") {
+        $('.mm-detailsBox_table_date-picker_select option').each(function (i, value) {
+            var hotelDefaulted = $('#hotelDefaulted').val();
+            if (hotelDefaulted == value.value) {
+                $(this).attr('selected', 'selected');
+            }
+        })
+    } else {
+        $('.mm-detailsBox_table_date-picker_select option').each(function (i, value) {
+            var hotelSelected = $('#hotelSelected').val();
+            if (hotelSelected == value.value) {
+                $(this).attr('selected', 'selected');
+            }
+        })
+    }
+
+    $(function () {
+        function dateChange() {
+            var jqStart = $('#AttendanceStart');
+            var jqEnd = $('#AttendanceEnd');
+            var start = jqStart.data("kendoDatePicker"),
+                end = jqEnd.data("kendoDatePicker");
+            var startDate = start.value(),
+                endDate = end.value();
+            var datestring = kendo.toString(startDate, "MM/dd/yyyy");
+            var datestringEnd = kendo.toString(endDate, "MM/dd/yyyy");
+
+            if (datestring || datestringEnd) {
+                if (datestring) {
+                    datestring = new Date(datestring);
+                    datestring.setDate(datestring.getDate());
+                    end.min(datestring);
+                }
+                if (datestringEnd) {
+                    datestringEnd = new Date(datestringEnd);
+                    datestringEnd.setDate(datestringEnd.getDate());
+                    start.max(datestringEnd);
+                }
+            } else {
+                start.max(new Date(2099, 11, 31));
+                end.min(new Date(1900, 0, 1));
+            }
+        }
+
+        var start = $('#AttendanceStart').kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM/dd/yyyy"],
+            change: dateChange,
+            open: dateChange
+        }).data("kendoDatePicker");
+        var end = $('#AttendanceEnd').kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM/dd/yyyy"],
+            change: dateChange,
+            open: dateChange
+        }).data("kendoDatePicker");
+
+        start.max(end.value());
+        end.min(start.value());
+    });
+
+    $(function () {
+
+        if (sessionStorage.getItem("showHotelSuccessMessage") != null) {
+            $('#successMessage').html("Your changes were saved successfully.").show();
+            sessionStorage.removeItem("showHotelSuccessMessage");
+        }
+
+        $("#editHotelForm").on("submit", function (e) {
+            sessionStorage.setItem("showHotelSuccessMessage", true);
+        });
+
+        function dateCheckChange() {
+            var jqStart = $('#CheckInDate');
+            var jqEnd = $('#CheckOutDate');
+            var start = jqStart.data("kendoDatePicker"),
+                end = jqEnd.data("kendoDatePicker");
+            var startDate = start.value(),
+                endDate = end.value();
+
+            if (startDate || endDate) {
+                if (startDate) {
+                    startDate = new Date(startDate);
+                    startDate.setDate(startDate.getDate());
+                    end.min(startDate);
+                }
+                if (endDate) {
+                    endDate = new Date(endDate);
+                    endDate.setDate(endDate.getDate());
+                    start.max(endDate);
+                }
+            } else {
+                start.max(new Date(2099, 11, 31));
+                end.min(new Date(1900, 0, 1));
+            }
+            var checkIn = $('#CheckInDate').val();
+            if (checkIn.indexOf('AM') > 0 || checkIn.indexOf('PM') > 0) {
+                checkIn.slice(0, -11);
+            }
+        }
+
+        var start = $('#CheckInDate').kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM/dd/yyyy"],
+            change: dateCheckChange,
+            open: dateCheckChange
+        }).data("kendoDatePicker");
+        var end = $('#CheckOutDate').kendoDatePicker({
+            format: "MM/dd/yyyy",
+            parseFormats: ["MM/dd/yyyy"],
+            change: dateCheckChange,
+            open: dateCheckChange
+        }).data("kendoDatePicker");
+
+        start.max(end.value());
+        end.min(start.value());
+
+        var hotelChecked = $('#HotelNotRequiredFlag').is(':checked');
+        if (hotelChecked) {
+            $('#CheckInDate').data('kendoDatePicker').enable(false);
+            $('#CheckOutDate').data('kendoDatePicker').enable(false);
+            $("#DoubleOccupancy, #HotelId").prop("disabled", true);
+            $('#CheckInDate, #CheckOutDate, #DoubleOccupancy, #HotelId').val('');
+        } else {
+            $('#CheckInDate').data('kendoDatePicker').enable(true);
+            $('#CheckOutDate').data('kendoDatePicker').enable(true);
+            $("#DoubleOccupancy, #HotelId").prop("disabled", false);
+        }
+    });
+
+    $('#CancelDate').kendoDatePicker({
+        format: "MM/dd/yyyy",
+        parseFormats: ["MM/dd/yyyy"],
+    }).data("kendoDatePicker");
+
+    $('.nav-tabs a').each(function (i, value) {
+        var link = $.trim($(this).attr('href'));
+        var panelUserAssignmentId = $("#PanelUserAssignmentId").val();
+        var sessionUserAssignmentId = $("#SessionUserassignmentId").val();
+        var parameterString = (panelUserAssignmentId != "") ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+        var parameterValue = (panelUserAssignmentId != "") ? panelUserAssignmentId : sessionUserAssignmentId;
+        var newLink = link + "?" + parameterString + "=" + parameterValue;
+        $(this).attr('href', newLink);
+    });
+
+    // Mark as complete
+    $('#chk-mark-for-complete').on('click', function () {
+        var title = "Warning";
+        $.get('/Setup/RemoveWarning', function (data) {
+            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, title);
+            var attendeeName = $("#meeting-attendee").text();
+            var text = "You have completed the review of " + attendeeName + "'s hotel record. Click 'Confirm' to proceed or 'Cancel' to return to the previous screen.";
+
+            $('#ui-id-1').addClass('modalWarningCaption');
+            $('.p2rmis-disallowed_p').text(text);
+            $('#closeModal').on('click', function () {
+                $('#chk-mark-for-complete').attr('checked', false);
+            });
+            $('#saveDialogChanges').on('click', function () {
+                var data = {
+                    panelUserAssignmentId: $("#PanelUserAssignmentId").val(),
+                    sessionUserAssignmentId: $("#SessionUserassignmentId").val()
+                };
+
+                $.ajax({
+                    url: '/MeetingManagement/MarkHotelDataComplete',
+                    data: data
+                }).done(function (response) {
+                    switch (response.result) {
+                        case true:
+                            $('#successMessage').html("You successfully marked hotel information as complete.").show();
+                            $("#checkMarkAsComplete").hide();
+                            $("#markedAsComplete").show();
+                            break;
+                        case false:
+                            $("#failureMessage").html("Please save hotel information before marking it as complete.");
+                            $("#checkMarkAsComplete").show();
+                            $("#markedAsComplete").hide();
+                            break;
+                    }
+                });
+
+                $('.ui-dialog-titlebar-close').click();
+            });
+        })
+    });
+</script>

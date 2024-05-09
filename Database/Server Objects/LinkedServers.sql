@@ -1,0 +1,1 @@
+﻿EXEC master.dbo.sp_addlinkedserver @server = N'loopback', @srvproduct=N'', @provider=N'SQLNCLI', @datasrc=@@SERVERNAME

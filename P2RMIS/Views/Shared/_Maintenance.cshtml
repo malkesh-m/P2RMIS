@@ -1,0 +1,19 @@
+﻿<script>
+    $(document).ready(function () {
+        if (document.referrer) {
+            var pattern = new RegExp("^(https?:\/\/)?[a-z0-9\.\:\-]+(\/?)*$");
+            if (pattern.test(document.referrer)) {
+                var dialogTitle = "Maintenance Notification";
+                $.get("/Home/NotificationMessage", {},
+                        function (responseText, textStatus, XMLHttpRequest) {
+                            if (responseText.Message) {
+                                p2rims.modalFramework.displayModalNoEvent(responseText.Message, p2rims.modalFramework.customModalSizes.small, dialogTitle);
+                                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                            }
+                        }
+                    );
+            }
+        }
+    });
+</script>

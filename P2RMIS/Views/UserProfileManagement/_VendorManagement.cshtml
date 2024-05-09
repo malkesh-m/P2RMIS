@@ -1,0 +1,96 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+@using Sra.P2rmis.CrossCuttingServices
+
+@if (Model.CanViewVendorManagement && !Model.IsSroValue)
+{
+<section class="upm-profile-section-alternate-container" role="region" aria-labelledby="vendorid-contacts">
+    <div class="upm-profile-section-sub_main-header profile-margin" id="vendorid-contacts">Vendor ID Management</div>
+
+    <div class="upm-filterBox">
+        <label class="upm-filterBox_header">
+            Individual Vendor Info
+            @if (Model.VendorInfoIndividual != null && Model.VendorInfoIndividual.IsActive)
+            {
+                <span id="activeVendor">(Active)</span>
+            }
+        </label>
+        <div class="upm-profile-section_field">
+            <div class="upm-profile-w9-container_content alignLeft">
+                <div class="upm-profile-section-sub_field alignLeft">
+                    <label for="individualVendor" class="upm-profile-section_field_input-short"><div class="hidden-text">Individual</div> Vendor Name:</label>
+                </div>
+                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                    @if (Model.VendorInfoIndividual != null)
+                    {
+                        <label class="span10 alignLeft left-align normal-weight" id="individualVendor">@Html.DisplayTextFor(m => m.VendorInfoIndividual.VendorName)</label>
+                        @Html.HiddenFor(m => m.VendorInfoIndividual.VendorName)
+                    }
+                    else
+                    {
+                        <label class="span10 alignLeft left-align normal-weight" id="individualVendor">N/A</label>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="upm-profile-section_field">
+            <label for="individualVendorId" class="upm-profile-section_field_input-short"><div class="hidden-text">Individual</div> Vendor ID:</label>
+            @Html.TextBoxFor(m => m.VendorInfoIndividual.VendorId, new { @class = "upm-profile-section_field_input-long", @id = "individualVendorId", maxlength = "10" })
+            @Html.HiddenFor(m => m.VendorInfoIndividual.VendorId, new { @id = "hiddenIndVendorId" })
+        </div>
+    </div>
+    <div class="upm-inst-filterBox">
+        <label class="upm-filterBox_header">
+            Institution Vendor Info
+            @if (Model.VendorInfoInstitutional != null && Model.VendorInfoInstitutional.IsActive)
+            {
+                <span id="activeInstitutionalVendor">(Active)</span>
+            }
+            @if (Model.VendorInfoInstitutional == null)
+            {
+                <a id="userVendorAdd">
+                    <img src="~/Content/img/plus.png" alt="Add Institutional Vendor" />
+                </a>
+            }
+            else if (Model.VendorInfoInstitutional.VendorId == "" && Model.VendorInfoInstitutional.VendorName == "N/A")
+            {
+                <a id="userVendorAdd">
+                    <img src="~/Content/img/plus.png" alt="Add Institutional Vendor" />
+                </a>
+            }
+        </label>
+        <div class="upm-profile-section_field removeInstitution">
+            <div id="vendorHidden" class="upm-profile-w9-container_content alignLeft">
+                <div class="upm-profile-section-sub_field alignLeft">
+                    <label for="individualVendor" class="upm-profile-section_field_input-short"><div class="hidden-text">Institutional</div> Vendor Name:</label>
+                </div>
+                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                    @if (Model.VendorInfoInstitutional != null)
+                    {
+                        <label class="span10 alignLeft left-align normal-weight" id="institutionalVendor">@Html.DisplayTextFor(m => m.VendorInfoInstitutional.VendorName)</label>
+                        @Html.HiddenFor(m => m.VendorInfoInstitutional.VendorName)
+                    }
+                    else
+                    {
+                        <label class="span10 alignLeft left-align normal-weight" id="institutionalVendor">N/A</label>
+                    }
+                </div>
+                <div class="upm-profile-section_field">
+                    <label for="institutionalVendorId" class="upm-profile-section_field_input-short"><div class="hidden-text">Institutional</div> Vendor ID:</label>
+                    @Html.TextBoxFor(m => m.VendorInfoInstitutional.VendorId, new { @class = "upm-profile-section_field_input-long", @id = "institutionalVendorId", maxlength = "10" })
+                    @Html.HiddenFor(m => m.VendorInfoInstitutional.VendorId, new { @id = "hiddenInstVendorId" })
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+}
+<script type="text/javascript">
+    $('#individualVendorId, #institutionalVendorId').on('keydown', function (e) {
+        var letters = /^[0-9a-zA-Z]+$/;
+        if (!e.key.match(letters)) {
+            return false
+        } else {
+
+        }
+    })
+</script>

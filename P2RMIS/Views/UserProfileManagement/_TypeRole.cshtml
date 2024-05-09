@@ -1,0 +1,60 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@*Profile type is not viewable for MyAccount users, and only editable for admin when creating a new user*@
+@if (!Model.IsMyProfile)
+{
+    @Html.Hidden("ProspectProfileTypeId", Model.ProspectProfileTypeIdValue)
+    @Html.Hidden("MisconductProfileTypeId", Model.MisconductProfileTypeIdValue)
+    if (!Model.IsUpdateUser)
+    {
+        <div class="upm-profile-section_field alignLeft">
+            <label for="profileTypeDropdownList" class="upm-profile-section_field">Profile Type:</label>
+        </div>
+        <div class="upm-profile-section_field alignLeft padding-left-5 padding-top-5">
+            <div id="profileType">@Html.DropDownListFor(m => m.GeneralInfo.ProfileTypeId, new SelectList(Model.ProfileTypesDropdown, "Index", "Value", Model.GeneralInfo.ProfileTypeId), "Select", new { @id = "profileTypeDropdownList" })</div>
+        </div>
+    }
+    else
+    {
+        <div class="upm-profile-section_field alignLeft">
+            <label for="profileType" class="upm-profile-section_field">Profile Type:</label>
+        </div>
+        <div class="upm-profile-section_field alignLeft padding-left-5 padding-top-5">
+            <div id="profileType">@Html.DisplayFor(m => m.GeneralInfo.ProfileTypeTypeName)</div>
+            @Html.HiddenFor(m => m.GeneralInfo.ProfileTypeId)
+            @Html.HiddenFor(m => m.GeneralInfo.ProfileTypeTypeName)
+        </div>
+    }
+    if (Model.AreRolesDisplayed)
+    {
+        <div class="upm-profile-section_field alignLeft">
+            <label for="roleDropdownList" class="upm-profile-section_field">System Role</label>
+        </div>
+        <div class="upm-profile-section_field alignLeft">
+            @if ((Model.EnableDropDownListForSameProfileType) & (Model.EnableRoleDropDownList() && !Model.AreRolesDisabled))
+            {
+                @Html.DropDownListFor(m => m.GeneralInfo.SystemRoleId, new SelectList(Model.RoleDropdown, "Index", "Value", Model.GeneralInfo.SystemRoleId), (Model.GeneralInfo.SystemRoleId.HasValue) ? null : "Select", new { @id = "roleDropdownList" })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.GeneralInfo.SystemRoleId, new SelectList(Model.RoleDropdown, "Index", "Value", Model.GeneralInfo.SystemRoleId), (Model.RoleDropdown.Count() == 1) ? null : "Select", new { @id = "roleDropdownList", @disabled = "disabled" })
+                @Html.HiddenFor(m => m.GeneralInfo.SystemRoleId)
+            }
+        </div>
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.GeneralInfo.RoleOrder)
+        @Html.HiddenFor(m => m.GeneralInfo.SystemRoleId)
+    }
+    <label for="manageAccountButton" class="alignLeft paddingLeft10 marginBottom20">
+        <button type="button" id="manageAccountButton" class="btn btn-default">Manage Account</button>
+    </label>
+}
+else
+{
+    @Html.HiddenFor(m => m.GeneralInfo.ProfileTypeId)
+    @Html.HiddenFor(m => m.GeneralInfo.SystemRoleId)
+}
+@Html.HiddenFor(m => m.GeneralInfo.UserSystemRoleId)
+@Html.HiddenFor(m => m.GeneralInfo.RoleOrder)

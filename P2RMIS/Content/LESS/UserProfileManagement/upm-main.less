@@ -1,0 +1,541 @@
+﻿@import '../P2RMIS/variables.less';
+@import '../P2RMIS/global.less';
+
+// Header Area
+.upm-fieldSet {
+    padding-left: 0px;
+    margin-bottom: 20px;
+    width: 727px;
+    float: left;
+    background-color: #699dd1;
+    padding: 6px 0px 0px 40px;
+    height: 30px;
+    color: white;
+    text-align: center;
+    border-top-left-radius: .3em;
+    border-top-right-radius: .3em;
+
+    &_header {
+        width: 100%;
+
+        &_text {
+            font-size: 18px;
+            text-align: center;
+        }
+    }
+}
+
+// Fieldset Area
+.upm-filterBox {
+    width: 745px;
+    float: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+
+    .upm-profile-section_field {
+        display: inline-block;
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            width: 120px;
+            float: left;
+            text-align: right;
+            padding-right: 5px;
+            margin: 5px 0px;
+        }
+    }
+
+    .alternate-margin {
+        margin-left: 25px;
+        width: auto;
+    }
+
+    &_header {
+        background-color: @whiteColor;
+        color: gray;
+        margin-top: -20px;
+        font-weight: normal;
+        float: left;
+    }
+
+    &_content {
+        width: 100%;
+
+        &_header {
+            width: 15%;
+            padding-right: 5px;
+            margin-top: 10px;
+            float: left;
+
+            &_text {
+                font-weight: bold;
+                float: right;
+            }
+        }
+
+        &_result {
+            width: 82%;
+            float: left;
+            text-align: left;
+            margin-top: 10px;
+
+            &_button {
+                &:extend(.buttonPrimary all);
+            }
+        }
+
+        &_result-id {
+            width: 100px;
+            float: left;
+            text-align: left;
+            margin-top: 10px;
+        }
+    }
+}
+
+.upm-inst-filterBox {
+    &:extend(.upm-filterBox all);
+    margin-top: 20px;
+}
+
+.upm-profile-section {
+    width: 745px;
+    display: block;
+    float: left;
+    min-height: 30px;
+    margin: 0px 0px 20px 0px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+
+    &_header {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -20px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_required {
+        margin: 5px 0 5px 8px;
+        display: inline-block;
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_container {
+        width: 100%;
+    }
+
+    &_field {
+        display: inline-block;
+
+        &_required::before {
+            color: @errorRed;
+            font-size: 16px;
+            content: "*";
+            padding-right: 5px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            width: 110px;
+            float: left;
+            text-align: right;
+            padding-right: 5px;
+            margin: 5px 0px;
+
+            &.academic-rank {
+                font-size: 14px;
+                font-weight: bold;
+                width: 130px;
+                float: left;
+                text-align: right;
+                padding-right: 5px;
+                margin: 5px 0px;
+            }
+        }
+
+        &_input-abbr {
+            width: 15px;
+        }
+
+        &_input-short {
+            width: 125px;
+        }
+
+        &_input-short-dropdown {
+            width: 80px;
+        }
+
+        &_input-long {
+            width: 285px;
+        }
+
+        &_input-all {
+            width: 490px;
+        }
+
+        &_input-full {
+            width: 610px;
+        }
+
+        &_img {
+            padding-left: 10px;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.upm-profile-section-sub {
+    &:extend(.upm-profile-section all);
+    padding: 0px;
+    width: 767px;
+    margin: 0px 0px 20px 0px;
+    position: relative;
+
+    &_field_input-long {
+        float: left;
+    }
+
+    &_container-sub {
+        padding-left: 10px;
+
+        .upm-profile-section-sub_field {
+            margin-right: 10px;
+        }
+    }
+
+    &_container_exp-text {
+        padding-left: 25px;
+        padding-top: 10px;
+        display: flex;
+    }
+
+    &_field {
+        & input[type="radio"] {
+            margin-left: 10px;
+            margin-top: 10px;
+            float: left;
+        }
+
+        & label[data-label="side-label"] {
+            text-align: left;
+            font-weight: normal;
+            padding-left: 5px;
+        }
+
+        & input[name="userPrefPhoneRadio"] {
+            margin: 0px;
+            float: left;
+        }
+
+        &_phone {
+            display: inline-block;
+            vertical-align: text-bottom;
+
+            input[name="userPrefPhoneRadio"] {
+                margin: 0px;
+            }
+
+            .upm-profile-section-sub_field {
+                padding: 0px;
+            }
+        }
+
+        &_w9result {
+            width: 285px;
+            float: left;
+            word-wrap: break-word;
+        }
+    }
+
+    &_main-header {
+        padding: 8px 0px;
+        width: 100%;
+        display: block;
+        float: left;
+        font-size: 18px;
+        background-color: #699dd1;
+        text-align: center;
+        color: white;
+    }
+
+    &_link {
+        position: absolute;
+        top: 7px;
+        left: 50px;
+
+        label {
+            &.upm-profile-section_field {
+                color: white;
+                font-size: 12px;
+            }
+
+            &.upm-profile-section_field-disabled {
+                color: lightgray;
+                font-size: 12px;
+            }
+        }
+
+        &.disabled {
+            a::before {
+                content: "+";
+                font-size: 28px;
+                color: lightgray;
+                font-weight: bold;
+            }
+
+            label {
+                color: lightgray;
+            }
+        }
+
+        a::before {
+            content: "+";
+            font-size: 28px;
+            color: white;
+            font-weight: bold;
+            vertical-align: bottom;
+            margin-right: 5px;
+        }
+
+        a.disabled {
+            color: lightgray;
+        }
+
+        .upm-profile-section_field {
+            vertical-align: bottom;
+            color: white;
+        }
+    }
+}
+
+.upm-profile-section-alternate-container {
+    &:extend(.upm-profile-section all);
+    border: none;
+    padding: 0px;
+    width: 767px;
+    margin: 0px 0px 20px 0px;
+    position: relative;
+
+    &_section {
+        width: 745px;
+        display: block;
+        float: left;
+        min-height: 30px;
+        margin: 20px 0px 0px 0px;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        position: relative;
+
+        &_header {
+            position: absolute;
+            left: 10px;
+            top: -10px;
+            background: white;
+        }
+
+        .list-unstyled {
+            .upm-profile-section-sub_field {
+                margin-right: 10px;
+
+                .alt-email {
+                    margin: 0px 5px 0px 0px;
+                }
+            }
+        }
+    }
+}
+
+.upm-profile-section-academic {
+    &:extend(.upm-profile-section all);
+    width: 355px;
+    position: relative;
+
+    &_link {
+        position: absolute;
+        top: -9px;
+        left: 140px;
+        background: white;
+    }
+
+    &_client-link {
+        position: absolute;
+        top: -9px;
+        left: 70px;
+        background: white;
+    }
+
+    &_cv-link {
+        position: absolute;
+        top: -9px;
+        left: 45px;
+        background: white;
+    }
+
+    &_top-checkbox {
+        position: absolute;
+        top: -10px;
+        left: 170px;
+    }
+
+    &_top-label {
+        position: absolute;
+        top: -10px;
+        left: 188px;
+        background: white;
+    }
+
+    &_ul {
+        margin-left: 5px;
+
+        &_li {
+            margin: 10px 0px 20px 0px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            position: relative;
+            height: 90px;
+
+            &_delete-degree {
+                position: absolute;
+                top: -8px;
+            }
+        }
+    }
+
+    .upm-profile-section_field_input-short-military {
+        width: 125px;
+        margin-right: 10px;
+    }
+}
+
+.upm-profile-w9-container {
+    float: left;
+    width: auto;
+    display: block;
+    margin-left: 0px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+
+    &_header {
+        color: black;
+        float: left;
+        background: white;
+        margin-top: -20px;
+        font-weight: normal;
+    }
+
+    &_content {
+        width: 700px;
+        float: left;
+
+        &_padding {
+            padding: 0px 10px 0px 0px !important;
+        }
+    }
+}
+
+.upm-ma-section-password {
+    &:extend(.upm-profile-section all);
+    width: 400px;
+    padding-bottom: 30px;
+
+    .upm-profile-section_field_input-short{
+        width: 165px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    label{
+        width: 150px;
+    }
+}
+
+.upm-ma-section-guidelines {
+    &:extend(.upm-profile-section);
+    width:650px;
+    margin-left: 20px;
+    font-size: 12px;
+}
+
+.upm-ma-section-security {
+    &:extend(.upm-profile-section all);
+    width: 842px;
+}
+
+.upm-rw-container {
+    width: auto;
+
+    &_section {
+        border: 1px solid @mediumGrey;
+        float: left;
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+
+        &_header {
+            margin-top: -20px;
+            float: left;
+            background: white;
+            padding: 0px 10px;
+
+            &::before {
+                color: red;
+                content: "*";
+                padding-right: 5px;
+            }
+        }
+
+        &_header-nr {
+            margin-top: -20px;
+            float: left;
+            background: white;
+            padding: 0px 10px;
+        }
+
+        &_radio {
+            margin-top: 20px;
+        }
+    }
+
+    &_p-float {
+        margin: 10px 0px;
+        float: left;
+    }
+
+    &_p {
+        margin: 10px 0px;
+        display: inline-block;
+
+        label {
+            display: inline-block;
+        }
+
+        select {
+            width: auto;
+            display: inline-block;
+            margin: 5px;
+        }
+    }
+}
+
+.upm-header-container{
+
+    label {
+        display: inline-block;    
+    }
+}
+
+.upm-confirm-container{
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+}

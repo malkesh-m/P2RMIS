@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <tools>
+    <tool name="AjaxSpellCheck" Text="Spellchecker" shortcut="CTRL+S"/>
+  </tools>
+  <tools>
+    <tool name="Bold" shortcut="CTRL+B"/>
+    <tool name="Italic" shortcut="CTRL+I" />
+    <tool name="Underline" shortcut="CTRL+U" />
+  </tools>
+  <tools>
+    <tool name="InsertOrderedList" shortcut="CTRL+SHIFT+O"/>
+    <tool name="InsertUnorderedList" shortcut="CTRL+SHIFT+P"/>
+  </tools>
+  <tools>
+    <tool name="Undo" shortcut="CTRL+Z"/>
+    <tool name="Redo" shortcut="CTRL+Y"/>
+  </tools>
+  <tools name="TrackChangesToolbar">
+    <tool name="AcceptTrackChange" Text="Accept Track Change" shortcut="CTRL+1"/>
+    <tool name="RejectTrackChange" Text="Reject Track Change" shortcut="CTRL+2" />
+    <tool name="AcceptAllTrackChanges" Text="Accept All Track Changes" shortcut="CTRL+SHIFT+1"/>
+    <tool name="RejectAllTrackChanges" Text="Reject All Track Changes" shortcut="CTRL+SHIFT+2"/>
+  </tools>
+  <tools>
+    <tool name="InsertSymbol" Text="Insert Symbol" shortcut="CTRL+3" />
+  </tools>
+  <symbols>
+    <symbol value="\u2013" />
+    <symbol value="\u2014" />
+    <symbol value="\u2032" />
+    <symbol value="\u03B1" />
+    <symbol value="\u03B2" />
+    <symbol value="\u03B3" />
+    <symbol value="\u03B4" />
+    <symbol value="\u03B5" />
+    <symbol value="\u03B6" />
+    <symbol value="\u03B7" />
+    <symbol value="\u03B8" />
+    <symbol value="\u03B9" />
+    <symbol value="\u03BA" />
+    <symbol value="\u03BB" />
+    <symbol value="\u03BC" />
+    <symbol value="\u03BD" />
+    <symbol value="\u03BE" />
+    <symbol value="\u03BF" />
+    <symbol value="\u03C0" />
+    <symbol value="\u03C1" />
+    <symbol value="\u03C2" />
+    <symbol value="\u03C3" />
+    <symbol value="\u03C4" />
+    <symbol value="\u03C5" />
+    <symbol value="\u03C6" />
+    <symbol value="\u03C7" />
+    <symbol value="\u03C8" />
+    <symbol value="\u03C9" />
+    <symbol value="\u03D5" />
+    <symbol value="\u03F4" />
+    <symbol value="\u2122" />
+    <symbol value="\u2248" />
+    <symbol value="\u2260" />
+    <symbol value="\u2261" />
+    <symbol value="\u2264" />
+    <symbol value="\u2265" />
+    <symbol value="\u00B0" />
+    <symbol value="\u00B1" />
+    <symbol value="\u00D7" />
+    <symbol value="\u00A0" />
+    <symbol value="\u00A1" />
+    <symbol value="\u00A9" />
+    <symbol value="\u00AD" />
+    <symbol value="\u00AE" />
+    <symbol value="\u00B7" />
+    <symbol value="\u00BF" />
+    <symbol value="\u0393" />
+    <symbol value="\u0394" />
+    <symbol value="\u0399" />
+    <symbol value="\u03A3" />
+    <symbol value="\u03A6" />
+    <symbol value="\u03A7" />
+    <symbol value="\u03A8" />
+    <symbol value="\u03A9" />
+    <symbol value="\u00C0" />
+    <symbol value="\u00C1" />
+    <symbol value="\u00C2" />
+    <symbol value="\u00C3" />
+    <symbol value="\u00C4" />
+    <symbol value="\u00C5" />
+    <symbol value="\u00C6" />
+    <symbol value="\u00C7" />
+    <symbol value="\u00C8" />
+    <symbol value="\u00C9" />
+    <symbol value="\u00CA" />
+    <symbol value="\u00CB" />
+    <symbol value="\u00CC" />
+    <symbol value="\u00CD" />
+    <symbol value="\u00CE" />
+    <symbol value="\u00CF" />
+    <symbol value="\u00D0" />
+    <symbol value="\u00D1" />
+    <symbol value="\u00D2" />
+    <symbol value="\u00D3" />
+    <symbol value="\u00D4" />
+    <symbol value="\u00D5" />
+    <symbol value="\u00D6" />
+    <symbol value="\u00D8" />
+    <symbol value="\u00D9" />
+    <symbol value="\u00DA" />
+    <symbol value="\u00DB" />
+    <symbol value="\u00DC" />
+    <symbol value="\u00DF" />
+    <symbol value="\u00E0" />
+    <symbol value="\u00E1" />
+    <symbol value="\u00E2" />
+    <symbol value="\u00E3" />
+    <symbol value="\u00E4" />
+    <symbol value="\u00E5" />
+    <symbol value="\u00E6" />
+    <symbol value="\u00E7" />
+    <symbol value="\u00E8" />
+    <symbol value="\u00E9" />
+    <symbol value="\u00EA" />
+    <symbol value="\u00EB" />
+    <symbol value="\u00EC" />
+    <symbol value="\u00ED" />
+    <symbol value="\u00EE" />
+    <symbol value="\u00EF" />
+    <symbol value="\u00F1" />
+    <symbol value="\u00F2" />
+    <symbol value="\u00F3" />
+    <symbol value="\u00F4" />
+    <symbol value="\u00F5" />
+    <symbol value="\u00F6" />
+    <symbol value="\u00F8" />
+    <symbol value="\u00F9" />
+    <symbol value="\u00FA" />
+    <symbol value="\u00FB" />
+    <symbol value="\u00FC" />
+    <symbol value="\u00FD" />
+    <symbol value="\u00FF" />
+  </symbols>
+  <tools name="CommentsToolbar">
+    <tool name="InsertComment" Text="Highlight an area then click this icon to add your comment" shortcut="CTRL+4"/>
+    <tool name="MarkupMode" Text="Markup Mode" shortcut="CTRL+M" />
+  </tools>
+</root>
+

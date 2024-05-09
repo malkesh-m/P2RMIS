@@ -1,0 +1,282 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationWizardViewModel
+
+<style>
+    .ui-widget {
+        font-size: 1em !important;
+    }
+    .ui-widget-content a {
+        color:#0487c4;
+    }
+    .bordered-webonly {
+        border: 1px solid #ddd;
+        -webkit-border-radius:4px;
+        -moz-border-radius:4px;
+        border-radius:4px;
+        padding: 10px;
+    }
+    .tbl800px {
+        width: 800px !important;
+        display: unset !important;
+    }
+</style>
+<input type="hidden" id="participationId" value="@Model.ParticipationId" />
+<ul class="rwzBreadCrumb">
+    @{
+        @*Check the first workflow step to determine signed status for the wizard*@
+        bool? isSigned = Model.Workflow.WorkflowSteps.Values.ElementAt(0).IsSigned;
+        for (var i = 0; i < Model.Workflow.WorkflowSteps.Count; i++)
+        {
+            var key = Model.Workflow.WorkflowSteps.Keys.ElementAt(i);
+            var documentId = Model.Workflow.WorkflowSteps.Values.ElementAt(i).DocumentId;
+            var documentName = Model.Workflow.WorkflowSteps.Values.ElementAt(i).DocumentName;
+            var confirmationText = Model.Workflow.WorkflowSteps.Values.ElementAt(i).ConfirmationText;
+            var selectedClass = (key == Model.Form.FormKey) ? "rwzSelected" : "";
+            var atFirstClass = (i == 0) ? "rwzFirst" : "";
+            var atLastClass = (i == Model.Workflow.WorkflowSteps.Count - 1) ? "rwzLast" : "";
+            <li class="rwzLI @selectedClass @atFirstClass @atLastClass" data-sortorder="@Model.Workflow.WorkflowSteps.Values.ElementAt(i).SortOrder">
+                <span class="rwzLabel">
+                    @if (isSigned != null)
+                    {
+                        var signIndicatorClass = ((bool)isSigned) ? "signed" : "unsigned";
+                        <span class="document-sig @signIndicatorClass" data-documentid="@documentId"></span>
+                    }
+                    <span class="rwzText noPadding margin-none" title="@documentName">
+                        @if (isSigned.HasValue && (bool)isSigned)
+                        {
+                            <a role="button" class="rwzLink">@documentName</a>
+                        }
+                        else
+                        {
+                            @documentName
+                        }
+                    </span>
+                    @if (i < Model.Workflow.WorkflowSteps.Count - 1)
+                    {
+                        <span class="rwzCallout"></span>
+                    }
+                </span>
+            </li>
+        }
+    }
+</ul>
+<div class="redMessage" id="rwzMessageContainer"></div>
+<div id="documentForm">
+    @Html.Partial(@Model.PartialViewName)
+</div>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.registrationCloseFooter);
+    $("a[id='closeWizardModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+
+    // Get html content
+    var inputValues = fnGetInputValues();
+
+    var fnSelectBack = function () {
+        var selectedTab = $(".rwzSelected");
+        var idx = selectedTab.index();
+        var sortOrder = selectedTab.data("sortorder");
+        var newIdx = idx - 1;
+        var newSortOrder = sortOrder - 1;
+        fnLoadTab(newIdx, newSortOrder);
+    }
+
+    var fnSelectNext = function () {
+        var warning = fnGetWarning();
+        if (warning == "") {
+            var selectedTab = $(".rwzSelected");
+            var idx = selectedTab.index();
+            var sortOrder = selectedTab.data("sortorder");
+            var newIdx = idx + 1;
+            var newSortOrder = sortOrder + 1;
+            fnLoadTab(newIdx, newSortOrder);
+        } else {
+            $("#rwzMessageContainer").html(warning);
+            $('.innerModalContainer').scrollTop(0);
+        }
+    }
+
+    var fnLoadTab = function (newIdx, newSortOrder) {
+        var tabs = $(".rwzBreadCrumb").children();
+        var participationId = $("#participationId").val();
+        var panelRegistrationDocumentId = $("#panelRegistrationDocumentId").val();
+        if (panelRegistrationDocumentId == 0) {
+            panelRegistrationDocumentId = null;
+        }
+        var formSection = $("#documentForm");
+        var formData = "";
+        if (typeof fnGetFormData === 'function' && fnGetFormData) {
+            formData = JSON.stringify(fnGetFormData());
+        }
+        var htmlContent = getDocHtmlContent();
+        // Reset Confirm/Sign check selections
+        resetConfirmSignCheckSelections();
+        // load the data via ajax
+        $.ajax({
+            cache: false,
+            async: false,
+            type: 'POST',
+            url: '@Url.Action(Routing.ProgramRegistration.SaveRegistrationForm, Routing.P2rmisControllers.ProgramRegistration)',
+            data: {
+                participationId: participationId, panelRegistrationDocumentId: panelRegistrationDocumentId,
+                formData: formData, sortOrder: newSortOrder, htmlContent: htmlContent
+            }
+        }).done(function (data) {
+            // Reset function
+            fnGetFormData = null;
+            // Get new HTML
+            formSection.html(data);
+            inputValues = fnGetInputValues();
+            // Change registration status to continue in parent screen
+            if (fnContinueRegistration) {
+                fnContinueRegistration(participationId);
+            }
+            // Change tab selection styles
+            $(".rwzSelected").removeClass("rwzSelected");
+            tabs.eq(newIdx).addClass("rwzSelected");
+            formSection.scrollTop(0);
+            $("#rwzMessageContainer").empty();
+        }).fail(function (xhr, ajaxOptions, thrownError) {
+            alert($.defaultFailureMessage);
+            return null;
+        });
+
+        $("#closeWizardModal").addClass("hide");
+        $('#nextDialog,#backDialog').show();
+        if (newIdx === tabs.length - 1) {
+            $("#closeWizardModal").removeClass("hide text-button move-left").addClass("text-button");
+            $("#nextDialog").hide();
+            $("#backDialog").removeClass("hide");
+        } else if (newIdx === 0) {
+            $("#closeWizardModal").removeClass("hide btn-info").addClass("text-button move-left");
+            $("#backDialog").hide();
+            $("#nextDialog").removeClass("hide");
+        }
+
+        $('.innerModalContainer').scrollTop(0);
+    }
+
+    // Emergency Contact Validation
+    function fnValidateEmContact() {
+        var firstName = $('#emergencyFirstName').val(),
+            lastName = $('#emergencyLastName').val(),
+            phoneNumber = $('#emergencyPrimaryPhone').val(),
+            firstNameError = 'Please enter a first name.',
+            lastNameError = 'Please enter a last name.',
+            phoneNumberError = 'Please enter a phone number.',
+            failureMessage = '';
+
+        if (firstName == '') {
+            $('#emergencyFirstName').addClass('input-validation-error');
+            failureMessage += firstNameError + ' ';
+        } else {
+            $('#emergencyFirstName').removeClass('input-validation-error');
+        }
+        if (lastName == '') {
+            $('#emergencyLastName').addClass('input-validation-error');
+            failureMessage += lastNameError + ' ';
+        } else {
+            $('#emergencyLastName').removeClass('input-validation-error');
+        }
+        if (phoneNumber == '') {
+            $('#emergencyPrimaryPhone').addClass('input-validation-error');
+            failureMessage += phoneNumberError;
+        } else {
+            $('#emergencyPrimaryPhone').removeClass('input-validation-error');
+        }
+
+        if ($('.input-validation-error').is(':visible')) {
+            $('#failureMessage').text(failureMessage);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Validate BiasCoi
+    function fnValidateBiasCoi() {
+
+        if (($("#additionalDisclosure:checked").val() === "true") && ($("#additionalDisclosureDetails").val().trim() == "")) {
+            $('#additionalDisclosureDetails').addClass('input-validation-error');
+        }
+        else {
+            $('#additionalDisclosureDetails').removeClass('input-validation-error');
+            $("#additionalDisclosureDetails").attr("data-warning-message", "");
+        }
+
+        if ($('.input-validation-error').is(':visible')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    // Validation
+    function fnGetWarning() {
+        for (var i = 0; i < $(".form-content-required").length; i++) {
+            var contentValue = "";
+            var o = $(".form-content-required").eq(i);
+            if (o.is("input")) {
+                var type = o.attr("type").toLowerCase();
+                if (type == "radio") {
+                    var name = o.attr("name");
+                    contentValue = $("input[name='"+ name +"']" + ":checked").val();
+                } else if (type == "checkbox") {
+                    contentValue = $("#" + o.attr("id") + ":checked").val();
+                } else {
+                    contentValue = $(this).val();
+                }
+            } else if ($(this).is("select")) {
+                contentValue = $(this).val();
+            }
+            if (contentValue == null || contentValue.length === 0) {
+                return o.attr("data-warning-message");
+            }
+        }
+        return "";
+    }
+    // Get input values
+    function fnGetInputValues() {
+        var formSection = $("#documentForm");
+        var inputValues = [];
+        for (var i = 0; i < formSection.find("input, select").length; i++) {
+            var contentValue = "";
+            var o = formSection.find("input, select").eq(i);
+            if (o.is("input")) {
+                var type = o.attr("type").toLowerCase();
+                if (type == "radio") {
+                    var name = o.attr("name");
+                    contentValue = $("input[name='"+ name +"']" + ":checked").val();
+                } else if (type == "checkbox") {
+                    contentValue = $("#" + o.attr("id") + ":checked").val();
+                } else {
+                    contentValue = o.val();
+                }
+            } else if (o.is("select")) {
+                contentValue = o.val();
+            }
+            inputValues.push(contentValue);
+        }
+        return inputValues;
+    }
+    // Get document HTML source
+    function getDocHtmlContent() {
+        var headContent = $("head").html();
+        // Set IDL state values and then get html content
+        var docElement = $("<div/>").append($("#documentForm").formhtml());
+        docElement.find(".hidden-text").remove();
+        var docContent = docElement.html();
+        var htmlContent = "<html><head>" + headContent + "</head>" +
+                "<body>" + docContent + "</body></html>";
+        return htmlContent;
+    }
+    // Reset Confirm/Sign check selections
+    function resetConfirmSignCheckSelections() {
+        var documentId = $("#panelRegistrationDocumentId").val();
+        var oldContent = inputValues;
+        var newContent = fnGetInputValues();
+        if (documentId != "0" && JSON.stringify(oldContent) != JSON.stringify(newContent)) {
+            sessionStorage.removeItem("ConfirmSign-" + documentId);
+        }
+    }
+</script>

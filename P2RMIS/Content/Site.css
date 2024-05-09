@@ -1,0 +1,2726 @@
+﻿/* <<<<<<<<<<<<<<<<<<<<<<<<< HEADER >>>>>>>>>>>>>>>>>>>>>>>>> */
+#skiptocontent a {
+    padding: 6px;
+    position: absolute;
+    top: -40px;
+    left: 0px;
+    color: white;
+    border-right: 1px solid white;
+    border-bottom-right-radius: 8px;
+    background: red;
+    transition: top 1s ease-out;
+    z-index: 100;
+    -webkit-transition: top 1s ease-out;
+}
+
+    #skiptocontent a:focus {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        outline-color: transparent;
+        -webkit-transition: top 1s ease-out;
+        transition: top 1s ease-in;
+    }
+
+.superContent {
+    width: 1240px;
+    max-width: 1240px;
+    min-width: 1240px;
+    margin: 0 auto;
+    -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
+    padding: 0px;
+    text-align: left;
+}
+
+#header {
+    padding: 5px;
+    height: 70px;
+    background: #f9f9f9; /* Old browsers */
+    background: -moz-linear-gradient(left, #f9f9f9 0%, #7aa3fe 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#f9f9f9), color-stop(100%,#7aa3fe)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #f9f9f9 0%,#7aa3fe 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #f9f9f9 0%,#7aa3fe 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #f9f9f9 0%,#7aa3fe 100%); /* IE10+ */
+    background: linear-gradient(to right, #f9f9f9 0%,#7aa3fe 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#7aa3fe',GradientType=1 ); /* IE6-9 */
+    color: #ffffff;
+    max-width: 1231px;
+    min-width: 1231px;
+    -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
+}
+
+#mainContent {
+    border: thin solid #ddd;
+    padding: 20px;
+}
+
+/* Navigation Icons */
+.nav > li > a > img {
+    margin: -5px;
+    width: 16px;
+}
+
+.info-icon-link {
+    padding-left: 10px;
+    margin-bottom: 20px
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+    margin-bottom: 10px;
+    z-index: 1001 !important;
+}
+
+.navbar .nav > li > a {
+    padding: 8px !important;
+    text-shadow: none !important;
+}
+
+.header-icon li a {
+    background: #5b6fba;
+    -moz-border-radius: 20px !important;
+    -webkit-border-radius: 20px !important;
+    -o-border-radius: 20px !important;
+    -ms-border-radius: 20px !important;
+    border-radius: 20px !important; /* Cleaner, but slightly less support: use "50%" as value */
+}
+
+.header-icon a:hover {
+    background: #000000 !important;
+    -moz-border-radius: 20px !important;
+    -webkit-border-radius: 20px !important;
+    -o-border-radius: 20px !important;
+    -ms-border-radius: 20px !important;
+    border-radius: 20px !important; /* Cleaner, but slightly less support: use "50%" as value */
+}
+
+.header-icon li a {
+    border-radius: 5px;
+    height: 4px;
+    position: relative;
+    width: 6px;
+}
+
+.header-icon li {
+    margin-top: 6px;
+    padding-left: 5px;
+}
+
+.header-icon li a span {
+    left: 6px;
+    position: absolute;
+    top: 3px;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > span {
+    border-top: 4px solid #92d050 !important;
+    border-radius: 0 !important;
+    padding-top: 5px !important;
+}
+
+.nav-tabs > li > a, .nav-tabs > li > span {
+    border: 1px solid #ddd !important;
+    border-radius: 0 !important;
+}
+
+.nav-tabs > li > span {
+    padding-bottom: 8px;
+    line-height: 20px;
+    padding-right: 12px;
+    padding-left: 12px;
+    display: block;
+    padding-top: 8px;
+    cursor: pointer;
+}
+    
+.navbar-inner {
+    background: #f9f9f9 !important; /* Old browsers */
+    background: -moz-linear-gradient(top, #f9f9f9 0%, #dddddd 100%) !important; /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(100%,#dddddd)) !important; /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f9f9f9 0%,#dddddd 100%) !important; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #f9f9f9 0%,#dddddd 100%) !important; /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #f9f9f9 0%,#dddddd 100%) !important; /* IE10+ */
+    background: linear-gradient(to bottom, #f9f9f9 0%,#dddddd 100%) !important; /* W3C */
+    min-height: 30px !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#dddddd',GradientType=0 ) !important; /* IE6-9 */
+}
+
+.welcome {
+    float: right !important;
+    text-align: right;
+    padding-right: 20px;
+    padding-top: 10px;
+    color: white;
+}
+
+    .welcome a {
+        color: yellow;
+    }
+
+.header-icon {
+    float: right !important;
+    text-align: right;
+}
+
+#sublink {
+    padding: 10px;
+    background-color: #FFFFFF;
+}
+
+#exitIcon {
+    margin: 3px -6px 3px 0px;
+}
+
+#moreIcon {
+    width: 20px;
+    height: 20px;
+    padding-top: 5px
+}
+
+/* ===== Header Images ===== */
+
+.header {
+    z-index: 1;
+    border: 0px
+}
+
+.header-logo-home {
+    width: 290px;
+}
+
+.header-logo {
+    width: 290px;
+    height: 74px;
+}
+
+.navFormSearch {
+    text-align: right;
+    margin-right: 10px;
+    margin-top: -57px;
+    z-index: 0;
+}
+
+/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<Body Style>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+.pageContent {
+    margin: 80px auto 0px auto;
+    padding: 60px 15px 15px 15px;
+}
+
+.formTitle {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.formFieldLabel {
+    font-weight: bold;
+    float: right
+}
+
+.validInstruction {
+    color: grey;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+span.field-validation-valid {
+    color: red;
+    font-weight: bold;
+}
+
+#title {
+    color: #002a5c;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#subtitle {
+    color: #002a5c;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.textHeader {
+    background-color: #fff;
+    margin-top: -20px;
+    font-weight: bold;
+    float: left;
+}
+
+.textHeaderNotBold {
+    background-color: #fff;
+    color: gray !important;
+    margin-top: -20px;
+    font-weight: normal;
+    float: left;
+}
+
+.textHeaderGeneric {
+    background-color: #fff;
+    color: gray !important;
+    position: relative;
+    top: 10px;
+    padding: 0px 5px;
+    float: left;
+}
+
+.closeHeader {
+    margin-top: -20px;
+    float: left;
+}
+
+.login {
+    padding: 40px 0 40px 0;
+    margin: 0px;
+}
+
+.loginHeader {
+    color: #002a5c;
+    font-size: 18px;
+    font-weight: bold;
+    *margin-top: 25px; /* IE7 Hack to add space between header 2 and content above. */
+    text-align: center;
+    line-height: 1;
+    padding: 0 0 20px 0;
+}
+
+.loginBox {
+    position: relative;
+    background-color: #eef2f5;
+    padding: 0px 15px 0px 15px;
+    border: 1px thin lightgrey;
+    -moz-border-radius: 5px;
+    box-shadow: 3px 3px 5px grey;
+    border-radius: 5px;
+    margin-bottom: 50px;
+    width: 400px;
+    margin: 0 auto 0 auto;
+    text-align: center;
+}
+
+.loginInfo input[type=text], input[type=password] {
+    width: 350px;
+    text-align: center;
+}
+
+.loginInfo input[type=submit] {
+    background-color: #3E5094;
+    border: 0px;
+    font-weight: normal;
+    color: #2C2C2C;
+}
+
+.loginInfo a {
+    color: #2C2C2C;
+    font-size: 12px;
+    float: right;
+}
+
+.loginInfo .image {
+    width: 400px;
+    background-image: url(../Content/themes/base/images/opt6.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 180px;
+}
+
+.loginInfo {
+    height: 340px;
+}
+
+#containerSub {
+    position: relative;
+    top: 120px;
+    background-color: #eef2f5;
+    padding: 0px 15px 15px 15px;
+    border: 1px solid #000;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 110px;
+    margin-top: -110px;
+}
+
+#containersub2 {
+    position: relative;
+    background-color: #FFF;
+    padding: 0px 15px 15px 15px;
+    margin: 0;
+    border: 1px solid #000;
+    -moz-border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.appInfo {
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #000;
+    background-color: #CFE2FC;
+}
+
+.appInfo #appInfo th {
+    text-align: left;
+    padding: 5px;
+}
+
+.appInfo #appImages {
+    border-left: 1px solid #000;
+    margin: 0 0 0 auto;
+    padding: 0;
+}
+
+.appInfo #appImages td {
+    padding: 10px 0px 10px 10px;
+}
+
+#appInfo #borderLeft {
+    border-left: 1px solid #000;
+    padding-left: 5px;
+    width: 15%;
+}
+
+#appInfo #headerLabel {
+    width: 15%;
+    padding-left: 5px;
+}
+
+.border {
+    border: 1px solid #000;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000 !important;
+    background-color: #ffeeee !important;
+}
+
+.validation-summary-errors ul {
+    list-style-type: none;
+    list-style-position: inside;
+    margin: 0;
+    padding-top: 20px;
+}
+
+textarea#comment {
+    width: 510px;
+    height: 100px;
+}
+
+.comments {
+    margin: 10px 0 0 0;
+}
+
+.addComment {
+    text-align: right;
+    display: block;
+    margin-top: -28px;
+    padding: 0 10px 7px 0;
+}
+
+.required {
+    color: #FF0000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.requiredFontSize16 {
+    color: #FF0000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.modal h5 {
+    margin: 0 0 15px 0;
+    padding: 0px;
+}
+
+#short input {
+    width: 50px;
+}
+
+.commentCount {
+    border: 1px solid #000;
+    background: #aebed9;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    color: #000;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0 4px 0 4px;
+    font-size: 10pt;
+}
+
+.saveSuccessful {
+    background-color: #ffff99;
+    color: #000000;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    line-height: 30px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 9px;
+}
+
+#userComments td {
+    padding: 2px 10px 2px 0px;
+}
+
+/* ===== focus (this is the awesome button) ===== */
+.focus {
+    -moz-box-shadow: inset 0px 1px 0px 0px #CCC;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #CCC;
+    box-shadow: inset 0px 1px 0px 0px #CCC;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aebed9), color-stop(1, #659cc3) );
+    background: -moz-linear-gradient( center top, #aebed9 5%, #659cc3 100% );
+    background: linear-gradient(to bottom, #aebed9, #659cc3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#aebed9', endColorstr='#659cc3');
+    background-color: #aebed9;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    border: 1px solid black;
+    display: inline-block;
+    color: #030;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 20px;
+    text-decoration: none;
+    text-shadow: -1px 1px 1px rgba(255,255,255,0.3);
+    *margin-left: 5px; /* IE7 hack to add space between buttons. */
+    *margin-right: 5px; /* IE7 hack to add space between buttons. */
+}
+
+.focus:hover {
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #659cc3), color-stop(1, #aebed9) );
+    background: -moz-linear-gradient( center top, #659cc3 5%, #aebed9 100% );
+    background: -ms-linear-gradient( 260deg, #659cc3 5%, #aebed9 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#659cc3', endColorstr='#aebed9');
+    background-color: #659cc3;
+}
+
+.focus:active {
+    position: relative;
+    top: 1px;
+}
+
+.critiqueAnchor {
+    position: absolute;
+    top: -375px;
+}
+/* ===== Normal (this is the standard button) ===== */
+.normal {
+    -moz-box-shadow: inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #ffffff;
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #ebebeb) );
+    background: -moz-linear-gradient( center top, #f9f9f9 5%, #ebebeb 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#ebebeb');
+    background-color: #f9f9f9;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    border: 1px solid #b3b3b3;
+    display: inline-block;
+    color: #3d3d3d;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 20px;
+    text-decoration: none;
+    text-shadow: -1px 1px 1px rgba(255,255,255,0.3);
+    *margin-left: 5px; /* IE7 hack to add space between buttons. */
+    *margin-right: 5px; /* IE7 hack to add space between buttons. */
+}
+
+.normal:hover {
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #C0C0C0), color-stop(1, #DFDFDF) );
+    background: -moz-linear-gradient( center top, #C0C0C0 5%, #DFDFDF 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C0C0C0', endColorstr='#DFDFDF');
+    background-color: #C0C0C0;
+}
+
+.normal:active {
+    position: relative;
+    top: 1px;
+}
+
+/*  <<<<<<<<<<<<<<<<<<<<<<<<< FOOTER >>>>>>>>>>>>>>>>>>>>>>>>> */
+/* ===== Footer Images ===== */
+.footerLeft {
+    float: left;
+    height: 41px;
+    width: 187px;
+    margin-left: -25px;
+    margin-top: 7px;
+    z-index: 1;
+    *margin-right: 350px; /* IE7 hack to align text correctly. */
+}
+
+/* ===== Footer Content ===== */
+#footer {
+    top: 0px;
+    background-color: #abc5fc;
+    padding: 10px 10px;
+    clear: both;
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== Footer 'Headings' ===== */
+#footer ul {
+    position: relative;
+    text-align: center;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    color: #555;
+}
+
+    #footer ul li {
+        list-style: none;
+        display: inline-block;
+    }
+
+#footer a {
+    color: #2C2C2C;
+    text-decoration: none;
+    color: #555;
+}
+
+#footer a:visited {
+    color: #2C2C2C;
+    text-decoration: underline;
+}
+
+#footer a:active {
+    color: #222D60;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: #222D60;
+    text-decoration: underline;
+}
+
+#savePassword .profileSave {
+    background-color: lightgray;
+    padding: 5px;
+}
+
+#clearForm {
+    color: #08c;
+    background: none;
+    text-shadow: none;
+    border: none;
+}
+
+.sticky {
+    position: absolute;
+    top: 0px;
+}
+
+.bordered {
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.arrowLeft {
+    background-image: url(/Content/img/Minus.png);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: right;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.arrowRight {
+    background-image: url(/Content/img/Search.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+}
+
+#collapseText p {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+
+.workflowHistory td {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.workflowHistory #previous {
+    background-image: url("/Content/themes/base/images/darkGrayCircle.png");
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 24pt;
+    padding: 35px;
+}
+
+.workflowHistory #active {
+    background-image: url("/Content/themes/base/images/blueCircle.png");
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 24pt;
+    padding: 35px;
+}
+
+.workflowHistory #future {
+    background-image: url("/Content/themes/base/images/lightGrayCircle.png");
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 24pt;
+    padding: 35px;
+}
+
+.explDarkText {
+    font-size: 14px;
+    color: #000;
+}
+
+.explText {
+    font-size: 14px;
+    color: #2f4f4f;
+}
+
+.tablesorter-filter {
+    width: 80px !important;
+}
+
+.tablesorter-new table {
+    max-width: 1200px;
+}
+
+/* Begin manageExpertise CSS */
+.component {
+    line-height: 1.5em;
+    margin: 0 auto;
+    padding: 0 0 3em;
+    width: 90%;
+    max-width: 1500px;
+    overflow: hidden;
+    min-width: 320px;
+}
+
+.component .filler {
+    font-family: "Blokk", Arial, sans-serif;
+    color: #d3d3d3;
+}
+
+.block-stat {
+    background-color: #a9a9a9;
+    color: white;
+}
+
+.expertiseColorLegend td {
+    width: 80px;
+    text-align: center;
+}
+
+/* Component styles */
+#log-num {
+    padding-left: 0px;
+    padding-right: 10px;
+    min-width: 100px;
+    width: auto;
+}
+
+#award-num {
+    padding-left: 0px;
+    padding-right: 10px;
+    min-width: 100px;
+    width: auto;
+}
+
+table {
+    border-collapse: separate !important;
+}
+
+.critique-details td:first-of-type {
+    border-left: thin solid #000 !important;
+    border-right: medium none !important;
+}
+
+.critique-details td:last-of-type {
+    border-left: medium none !important;
+    border-right: thin solid #000 !important;
+}
+
+.critique-overdue {
+    float: right;
+    font-size: 16px;
+    display: none;
+}
+
+
+/* Begin ManageCritiques CSS */
+
+/*#ManageCritiques td {
+    padding: 1em 1em;
+    text-align: center;
+    border: 1px solid #000;
+    table-layout: fixed;
+}
+
+#ManageCritiques table {
+    border-collapse: collapse;
+    margin-bottom: 3em;
+    width: 100%;
+    background: #fff;
+    table-layout: fixed;
+}
+
+#ManageCritiques th {
+    background-color: #31bc86;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+    table-layout: fixed;
+}
+
+#ManageCritiques tbody th {
+    background-color: #2ea879;
+    table-layout: fixed;
+}
+
+#ManageCritiques tbody tr:nth-child(2n-1) {
+    transition: all .125s ease-in-out;
+}*/
+
+.border-none {
+    border: medium none !important;
+}
+
+.myCollapse.in {
+    display: table-row;
+}
+
+tr.active td {
+    background-color: #8fc3f7;
+    color: white
+}
+
+.normal-alignment {
+    text-align: left !important;
+    vertical-align: top !important;
+}
+
+.normal-alignment div {
+    margin-top: 20px;
+    vertical-align: top !important;
+    margin-bottom: 20px;
+}
+
+.startDiscussionSpan {
+    float: right;
+    text-align: center;
+    font-style: italic;
+    width: 90px;
+    border-style: outset;
+    border-color: black;
+    border-width: 0px 0px 0px 2px;
+}
+
+.pageColumnTwo div {
+    margin-bottom: 20px;
+    background-color: transparent;
+}
+
+.infoHeader {
+    background-color: #699dd1;
+    color: white;
+    float: left;
+    padding: 6px 0px 0px 40px;
+    height: 36px;
+    border-top-left-radius: .3em;
+    border-top-right-radius: .3em;
+    -o-border-top-left-radius: .3em;
+    -o-border-top-right-radius: .3em;
+    -ms-border-top-left-radius: .3em;
+    -ms-border-top-right-radius: .3em;
+    -moz-border-top-left-radius: .3em;
+    -moz-border-top-right-radius: .3em;
+    -webkit-border-top-left-radius: .3em;
+    -webkit-border-top-right-radius: .3em;
+}
+
+.close-x {
+    background-color: #fff;
+    margin-top: -18px !important;
+    float: right;
+}
+
+.pageColumnOne ul li label {
+    padding-bottom: 0px;
+    padding-top: 5px;
+}
+
+.profile-expertise {
+    width: 327px;
+    height: 100px;
+    margin-bottom: 0px !important;
+    resize: none;
+}
+
+/* Begin Jquery UI Modal CSS */
+.ui-widget-header {
+    background: none repeat scroll 0 0 #5b6fba !important;
+    border: none !important;
+    color: white !important;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+    border-bottom-left-radius: 0 !important;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-bottom-right-radius: 0 !important;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+    border-top-right-radius: 0 !important;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+    border-top-left-radius: 0 !important;
+}
+
+.modal-footer {
+    bottom: 0 !important;
+    left: 0 !important;
+    margin-bottom: 0 !important;
+    position: relative !important;
+    right: 0 !important;
+    width: auto !important;
+    padding: 10px 15px !important;
+    border-radius: unset !important;
+}
+
+.modal-body {
+    max-height: none !important;
+    padding: 0px !important;
+}
+
+#coiDiv {
+    margin-bottom: 10px !important;
+    height: auto !important;
+}
+
+/* Begin Clearable Input Field X CSS */
+.clearable {
+    background: #fff url(data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=) no-repeat right -10px center;
+    border: 1px solid #999;
+    padding: 3px 18px 3px 4px; /* Use the same right padding (18) in jQ! */
+    border-radius: 3px;
+    transition: background 0.4s;
+}
+
+.clearable.x {
+    background-position: right 5px center;
+}
+
+.tablesorter-default .header, .tablesorter-default .tablesorter-header {
+    background-color: rgb(238,238,238) !important; /* Old browsers */
+    background-color: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(247,247,247,1) 100%) !important; /* FF3.6+ */
+    background-color: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(247,247,247,1))) !important; /* Chrome,Safari4+ */
+    background-color: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(247,247,247,1) 100%) !important; /* Chrome10+,Safari5.1+ */
+    background-color: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(247,247,247,1) 100%) !important; /* Opera 11.10+ */
+    background-color: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(247,247,247,1) 100%) !important; /* IE10+ */
+    background-color: linear-gradient(to bottom, rgba(238,238,238,1) 0%,rgba(247,247,247,1) 100%) !important; /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#f7f7f7',GradientType=0 ) !important; /* IE6-9 */
+    border-bottom: none !important;
+}
+
+
+.tablesorter-default tr:nth-child(even) {
+    background-color: rgb(233,246,253) !important; /* Old browsers */
+    background-color: -moz-linear-gradient(top, rgba(233,246,253,1) 0%, rgba(211,238,251,1) 100%) !important; /* FF3.6+ */
+    background-color: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(233,246,253,1)), color-stop(100%,rgba(211,238,251,1))) !important; /* Chrome,Safari4+ */
+    background-color: -webkit-linear-gradient(top, rgba(233,246,253,1) 0%,rgba(211,238,251,1) 100%) !important; /* Chrome10+,Safari5.1+ */
+    background-color: -o-linear-gradient(top, rgba(233,246,253,1) 0%,rgba(211,238,251,1) 100%) !important; /* Opera 11.10+ */
+    background-color: -ms-linear-gradient(top, rgba(233,246,253,1) 0%,rgba(211,238,251,1) 100%) !important; /* IE10+ */
+    background-color: linear-gradient(to bottom, rgba(233,246,253,1) 0%,rgba(211,238,251,1) 100%) !important; /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e9f6fd', endColorstr='#d3eefb',GradientType=0 ) !important; /* IE6-9 */
+}
+
+.tablesorter-default td {
+    padding: 1em 1em;
+    text-align: center;
+    border: 1px solid #cccccc;
+    table-layout: fixed;
+    background-color: transparent !important;
+}
+
+.tablesorter-default table {
+    border-collapse: collapse;
+    margin-bottom: 3em;
+    max-width: 1200px;
+    background: #fff;
+    table-layout: fixed;
+}
+
+.table-autolayout table td {
+    table-layout: auto !important;
+}
+
+.tablesorter th {
+    white-space: nowrap;
+    table-layout: fixed;
+}
+
+.tablesorter-default tbody th {
+    table-layout: fixed;
+}
+
+.tablesorter-default tbody tr:nth-child(2n-1) {
+    transition: all .125s ease-in-out;
+}
+
+#searchResultsModal {
+    width: 50px !important;
+}
+
+#lastUpdated {
+    color: gray;
+    padding: 10px;
+}
+
+.verticalMargin10 {
+    margin: 10px 0 10px 0;
+}
+
+.registrationCaution {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 9pt;
+    color: #222222;
+}
+
+/* Handles Kendo Upload control in JQuery modal */
+.k-upload-button input {
+    z-index: 10000 !important;
+}
+
+/* Handles wide button control */
+.k-upload-button {
+    width: 200px !important;
+}
+
+.fieldset-boxed {
+    display: block;
+    margin-left: 2px;
+    margin-right: 20px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 1px groove #DDD;
+}
+
+.fieldset-boxed legend {
+    border: 0;
+    font-size: 12pt;
+    color: grey;
+    width: auto;
+    padding: 0 10px;
+    margin-bottom: 0;
+    background-color: white;
+}
+
+.standardFont {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+}
+
+.modal-standard-font {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.modal-small-font {
+    font-size: 12px;
+}
+
+.ui-dialog-title, .ui-dialog-buttonset {
+    text-align: center;
+    width: 100%;
+}
+
+.lineHeight40 {
+    line-height: 40px;
+}
+
+#editSummaryStatementMain {
+    float: left;
+    display: inline;
+    width: 80%;
+    margin-top: 50px;
+}
+
+#editSummaryStatementSide {
+    float: right;
+    text-align: right;
+    margin: 50px 0px 0px 5px;
+    display: inline;
+    width: 19%;
+}
+
+#workflowStepMenu {
+    background-color: #87cefa;
+    color: #fff;
+}
+
+.activeWorkflowStep {
+    font-weight: bold;
+    background-color: #fff;
+    color: #87cefa;
+}
+
+#summaryStatementToolbar {
+    border: solid 1px gray;
+    margin: 10px 0px;
+    padding: 10px 10px 0 10px;
+    text-align: center;
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+    z-index: 990 !important;
+}
+
+.ui-dialog-title, .ui-dialog-buttonset {
+    text-align: center;
+    width: 100%;
+}
+
+#summaryStatementPanel {
+    border: solid 1px gray;
+    padding: 10px;
+}
+
+.gridTable {
+    width: 100%;
+    border-width: 1px;
+    border-spacing: 1px;
+    background-color: #000;
+}
+
+.editorIframe {
+    width: 100%;
+    height: 450px;
+}
+
+.sectionTitle:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+.contentEditor {
+    height: 480px;
+}
+
+#generalComment {
+    height: 300px;
+    width: 95%;
+}
+
+.closeButton {
+    background: url("/Content/themes/base/images/ui-icons_cd0a0a_256x240.png") no-repeat scroll -95px -126px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.backToTop {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.disabled-image {
+    opacity: 0.3;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    zoom: 1;
+}
+
+.action-bucket {
+    width: 100px !important;
+    white-space: nowrap;
+}
+
+.icon-holder {
+    width: 20px !important;
+    display: inline-block !important;
+}
+
+.wide-icon-holder {
+    width: 40px !important;
+    display: inline-block !important;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.navtoolbar {
+    background-color: #ddd;
+    margin-top: -20px;
+}
+
+.ols-icon-block {
+    display: inline-block;
+    width: 15%;
+    text-align: center;
+}
+
+.ols-left {
+    width: 68%;
+    display: inline-block;
+    border: solid 1px lightgray;
+    margin: 5px 10px 10px 0;
+    padding: 5px;
+}
+
+.ols-right {
+    width: 28%;
+    display: inline-block;
+    vertical-align: top;
+    border: solid 1px lightgray;
+    margin: 5px 10px 5px 0;
+    padding: 5px;
+}
+
+.ols-navtoolbar {
+    display: inline-block;
+    width: 68%;
+}
+
+.left-legend {
+    padding: 0px 5px;
+    background-color: #fff;
+    margin-top: -30px;
+    position: absolute;
+}
+
+.right-legend {
+    padding: 0px 5px;
+    background-color: #fff;
+    margin-top: -20px;
+    float: right;
+    font-size: 12px !important;
+}
+
+.standard-button {
+    background-color: #08c;
+    color: #fff;
+}
+
+.save-score-title {
+    padding: 0px 5px;
+    background-color: #fff;
+    margin-top: -15px;
+    position: absolute;
+}
+
+.ols-critique {
+    padding-top: 15px;
+    padding-left: 5px;
+}
+
+.scorecard-icon-block {
+    display: inline-block;
+    text-align: center;
+}
+
+.scorecard-main {
+    width: 100%;
+    display: inline-block;
+    border: solid 1px lightgray;
+    margin: 5px 10px 10px 0;
+    padding: 5px;
+}
+
+.k-customundo {
+    background-image: url("/Content/img/CommandSpritesMonoLight.png") !important;
+    background-position: -996px center !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: 8px;
+}
+
+.k-customredo {
+    background-image: url("/Content/img/CommandSpritesMonoLight.png") !important;
+    background-position: -967px center !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: 8px;
+}
+
+.k-customspell {
+    background-image: url("/Content/img/CommandSpritesMonoLight.png") !important;
+    background-position: -66px center !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: 5px;
+}
+
+/******* System Setup *******/
+
+/* Select Filter Box */
+
+.select-filter {
+    width: 55%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+}
+
+.select-filter-title {
+    padding: 0px 3px;
+    background-color: #FFF;
+    font-size: 12px;
+    margin: -15px 0px 0px 10px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.assign-filter-title {
+    padding: 0px 5px;
+    background-color: #FFF;
+    margin-top: -20px;
+    position: absolute;
+    font-size: 12px;
+}
+
+.select-filter-selected {
+    width: 40%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin: 5px 10px 10px 0px;
+    float: left;
+}
+
+.select-filter-selected {
+    flex: 1;
+}
+
+.select-filter-selected table {
+    border-spacing: 10px 0px;
+}
+
+.select-filter-selected tr td {
+    padding: 10px 0px;
+    word-break: break-all;
+}
+
+.application-filter {
+    width: 100%;
+    display: inline-block;
+    border: 1px solid #ddd;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px;
+}
+
+.session-filter-RO, .session-filter {
+    width: 97%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin: 10px 0px;
+    padding: 10px;
+}
+
+.assign-filter {
+    width: 96%;
+    border: 1px solid #D3D3D3;
+    float: left;
+    margin: 10px 0px;
+    padding: 10px 8px;
+}
+
+.eval-filter {
+    width: 99.5%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin: 5px 0px 10px 0px;
+    padding: 0px;
+    float: left;
+}
+
+.summary-filter-selected {
+    width: 50%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin: 5px 10px 10px 0px;
+    float: left;
+}
+
+.criteria-filter {
+    width: 45%;
+    display: inline-block;
+    border: 1px solid #D3D3D3;
+    margin: 5px 10px 10px 0px;
+    float: left;
+}
+
+.summary-filter-selected td {
+    padding: 5px 5px 0px 5px;
+}
+
+.awardSelectedClient, .awardSelectedActive {
+    width: 140px;
+}
+
+.awardSelectClient {
+    width: 24%;
+    padding: 0px 5px;
+}
+
+.awardSelectYear {
+    width: 24%;
+    padding: 0px;
+}
+
+.awardSelectedActive {
+    width: 120px;
+}
+
+.subtitle {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.application-details-section {
+    display: inline-block;
+    border: 1px solid gray;
+    width: 400px;
+    padding: 0 0 10px 10px;
+    vertical-align: top;
+    margin: 5px;
+}
+
+.application-details-large-title {
+    font-size: 24px;
+    font-weight: bold !important;
+}
+
+.scores-received-section {
+    display: inline-block;
+    border: 1px solid gray;
+    width: 425px;
+    padding-left: 10px;
+    vertical-align: top;
+    margin: 5px;
+}
+
+.scaling-section {
+    border: 1px solid gray;
+    width: 851px;
+    padding: 0 0 10px 10px;
+    vertical-align: top;
+    margin: 5px;
+}
+
+.scores-received {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.legend-title {
+    margin-top: -25px;
+    margin-left: 10px;
+    background-color: #fff;
+    display: inline-block;
+    padding: 0 5px;
+}
+
+.score-padding {
+    padding: 5px 0 0 5px;
+}
+
+.modal-score-padding {
+    padding: 5px 0;
+}
+
+.modal-critique-score {
+    padding: 0 20px;
+    display: inline-block;
+    width: 20px;
+}
+
+#documentForm {
+    padding: 20px 0px;
+}
+
+.unsigned {
+    width: 8px;
+    height: 8px;
+    background-color: #ff0000;
+    display: inline-block;
+}
+
+.signed {
+    width: 8px;
+    height: 8px;
+    background-color: #7aa3fe;
+    display: inline-block;
+}
+
+.banner {
+    background-color: #fffbd0;
+    color: black;
+    text-align: left;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: Arial;
+}
+
+.width-92p {
+    width: 92%;
+    max-width: 92%;
+}
+
+.message-box {
+    height: 100px;
+    line-height: 100px;
+}
+
+.text-button {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    font: inherit;
+    cursor: pointer;
+    color: #0487c4;
+}
+
+.move-left {
+    position: absolute !important;
+    left: 20px !important;
+}
+
+/* Multi-Select Plugin CSS Updates */
+.ui-multiselect-menu div.ui-widget-header {
+    font-weight: inherit;
+    display: none;
+}
+
+.ui-multiselect-checkboxes label input {
+    top: -3px !important;
+    margin-right: 3px;
+}
+
+.button-bar {
+    border: solid 1px #d4d4d4;
+    padding: 5px;
+    background: linear-gradient(to bottom, #f9f9f9 0%,#dddddd 100%) !important;
+}
+
+.toolbar-left {
+    display: table-cell;
+    width: 910px !important;
+}
+
+.toolbar-middle {
+    display: table-cell;
+    width: 180px !important;
+}
+
+.toolbar-right {
+    display: table-cell;
+    width: 120px !important;
+}
+
+.toolbar-divider {
+    display: table-cell;
+    text-align: center;
+    width: 15px !important
+}
+
+.critique-main-section {
+    display: inline-block;
+    border: 1px solid #d4d4d4;
+    padding: 10px;
+    width: 875px;
+}
+
+.critique-sub-section {
+    display: inline-block;
+    border: 1px solid #d4d4d4;
+    padding: 10px;
+    width: 280px;
+    float: right;
+    position: fixed;
+    z-index: 100;
+    margin-left: 910px;
+    height: 120px;
+}
+
+.bg-transient-gray {
+    background: transparent linear-gradient(to bottom, #F9F9F9 0%, #DDD 100%) repeat scroll 0% 0% !important
+}
+
+.title-container {
+    position: relative;
+}
+
+.right-title {
+    position: absolute;
+    top: 0px;
+    right: 0;
+}
+
+/* Start jQuery ellipsis plugin CSS */
+.ellip {
+    display: block;
+    height: 100%;
+}
+
+.ellip-line {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    max-width: 100%; /* Ellipsis Width Adjustment -- This can be percentage or fixed.  
+						   Note if fixed width is greater than column size is breaks ellipsis as
+						   the column size is percentage based.  If you need column size fixed
+						   apply an inline style to the column based on exact pixel size.
+						*/
+}
+
+.ellip,
+.ellip-line {
+    position: relative;
+    overflow: hidden;
+}
+
+.ellipsisCell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.disableEllipse {
+    overflow: visible !important;
+    white-space: normal !important;
+}
+/* End jQuery ellipsis plugin CSS */
+
+.w550 {
+    width: 550px !important;
+}
+
+.w150 {
+    width: 150px !important;
+}
+
+.critique-instructions {
+    height: 100px !important;
+    overflow-y: auto !important;
+    border: 1px solid lightgray !important;
+}
+
+fieldset.filter-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    width: inherit;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.filter-border {
+    font-size: 1em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+    margin-bottom: 0px !important;
+    color: gray;
+    position: relative;
+}
+
+.instructions-right {
+    float: right;
+    text-align: right;
+}
+/* Overrides default modal z-index */
+.ui-dialog {
+    z-index: 1001 !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    text-align: center;
+    width: 100% !important;
+    padding: 13px 0px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ui-widget-content {
+    max-width: 900px !important;
+    background-color: #fff !important;
+}
+
+.trow-grid {
+    padding: 0px !important;
+    line-height: 50px !important;
+}
+
+.manage-critique-cell {
+    height: 75px !important;
+    display: block !important;
+    overflow: hidden !important;
+}
+
+.large-modal-window {
+    overflow-y: auto !important;
+    height: 400px !important;
+    margin-bottom: 0px !important;
+}
+
+.loading-animation {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+}
+
+#reviewerEval table th:nth-child(4) {
+    width: 11%;
+    padding: 8px 0px 8px 8px;
+}
+
+#reviewerEval table th:nth-child(3) {
+    width: 15%;
+    padding: 8px 0px 8px 8px;
+}
+
+#reviewerEval table th:nth-child(2) {
+    width: 20%;
+    padding: 8px 0px 8px 8px;
+}
+
+#instructions p {
+    font-size: 14px;
+    text-align: left;
+}
+
+.row-fluid .clFirst, .row-fluid .clSecond {
+    width: 50% !important;
+}
+
+.row-fluid .clThird {
+    width: 100% !important;
+}
+
+.mainHighlight {
+    color: #002a5c !important;
+    font-weight: bold;
+}
+
+.accordion-group .accordion-inner li a {
+    color: #08c !important;
+    font-weight: normal;
+}
+
+.modalWarningCaption {
+    color: black !important;
+    background: #FFFF21 !important;
+}
+
+.positionFixed {
+    position: fixed;
+    z-index: 100;
+}
+
+.activeProgramBox {
+    padding: 15px 0px 15px 15px;
+}
+
+#backButton {
+    cursor: pointer;
+    vertical-align: super;
+}
+
+.addAwardContainer .selectText {
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Verdana,Arial,sans-serif;
+}
+
+.selectText {
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Verdana,Arial,sans-serif;
+}
+
+.modal-dialog .gridOptions select {
+    width: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+
+.modal-dialog .gridOptions select.selectSpan {
+    width: 105px;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+
+.modal-dialog .gridOptions .unselectable {
+    background: #ddd;
+    width: 65%;
+    font-size: 12px;
+    font-weight: bold;
+    display: list-item;
+    list-style: none;
+    margin: 0px;
+    padding-left: 10px;
+    float: left;
+    border: 1px solid #ccc;
+}
+
+.kendoGridTable {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.maxText {
+    font-size: 12px;
+    vertical-align: super;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    cursor: default;
+    padding-left: 0px;
+}
+
+.noButton {
+    background: none;
+    border: none;
+}
+
+.k-widget.k-combobox.k-header.unselectable {
+    padding-left: 0px;
+    border-radius: 4px;
+    padding: 6px 10px 2px 10px;
+    overflow: hidden;
+    height: 20px !important;
+    background: #eee !important;
+    color: #555;
+}
+
+#totalRecords {
+    display: inline-block;
+    margin: 0px 15px;
+    font-size: 12px;
+}
+
+#clickPrograms, .sessionLink, .panelCount {
+    display: block;
+    text-align: center;
+}
+
+.innerModalContainer {
+    overflow: auto;
+    max-height: 600px;
+    height: auto !important;
+    padding: 15px 35px;
+}
+
+.checkOut {
+    padding: 0px 5px;
+}
+
+.ui-widget-content {
+    box-shadow: 0 0 7px #696969;
+}
+
+#cancelBtn {
+    background-color: grey;
+    text-shadow: none;
+    text-decoration: none;
+    color: white;
+    background-image: none;
+    position: relative;
+    display: inline-block;
+    border: 1px solid grey;
+    border-radius: 0px !important;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    transition: all .3s ease-in-out;
+    font-weight: bold;
+    /*padding-bottom: 5px;*/
+}
+    /* Primary Buttons */
+#closeDialogBtn, #saveDialogChanges, #submitDialog, #Search.filterButton, #submitFilteredRegistrationStatusSearch, #Search, #nextDialog, #backDialog, #availableAssignments td button, #btn-find-meetings, #newFileButton, #manageAccountButton, #saveConfirmation, .manageCritiqueModal, .onSubmit, .btn-find-awards, .btn-find-sessions, .btn-find-fee-schedules, .btn-find-session-fee-schedules, .scorecardButton, #submitDialogChanges, #finishDialog, #saveChanges, #hiddenFileResume, #submitBtn, #assignBtn, #generateBtn, #push-button, #saveCritiqueChangesAndNext, #saveCritiqueChangesAndBack, #saveCritiqueChangesAndClose, #submitCritiqueButton, .k-grid-checkOut button, #saveBtn, .btnSubmit, .cancelSubmit, #searchSubmit, #saveAppChanges, #saveTransferChanges, #removeAppChanges, #saveProfileButton, #modal-confirm-send-credential-button, #verifyButton, #passwordSaveButton, #passwordCancelButton, #removeStaff, #saveGeneralComment, #saveCOIChanges, #saveTextChanges, button#SelectPanel, #addButton, .k-button.k-upload-button, #cancelButton, #modal-confirm-alternateContact-deletion-button, #education-confirm-deletion-button, #contractOfflineSubmit, #modal-confirm-reset-to-edit-button, #saveVendorChanges, #passwordSaveButton, #passwordCancelButton, #saveWithdrawApplication, #confirmResetWarning, #travellegsave, #nonRevAssignmentSave, #btnSelectAllDays, #btnClearAllDays, #btnAddSecurityPolicy, #btnApplyRange {
+    background-color: #5b6fba;
+    text-shadow: none;
+    text-decoration: none;
+    color: white;
+    background-image: none;
+    position: relative;
+    display: inline-block;
+    border: 1px solid #5b6fba;
+    border-radius: 0px !important;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    transition: all .3s ease-in-out;
+    font-weight: bold;
+    /*padding-bottom: 5px;*/
+}
+
+/* Primary Buttons Hover Effect */
+    #closeDialogBtn:hover, #saveDialogChanges:hover, #submitDialog:hover, #Search.filterButton:hover, #submitFilteredRegistrationStatusSearch:hover, #Search:hover, #nextDialog:hover, #backDialog:hover, #availableAssignments td button:hover, #btn-find-meetings:hover, #newFileButton:hover, #manageAccountButton:hover, #saveConfirmation:hover, .manageCritiqueModal:hover, .onSubmit:hover, .btn-find-awards:hover, .btn-find-sessions:hover, .btn-find-fee-schedules:hover, .btn-find-session-fee-schedules:hover, .scorecardButton:hover, #submitDialogChanges:hover, #finishDialog:hover, #saveChanges:hover, #hiddenFileResume:hover, #submitBtn:hover, #assignBtn:hover, #generateBtn:hover, #push-button:hover, #saveCritiqueChangesAndNext:hover, #saveCritiqueChangesAndBack:hover, #saveCritiqueChangesAndClose:hover, #submitCritiqueButton:hover, .k-grid-checkOut button:hover, #saveBtn:hover, #cancelBtn:hover, .btnSubmit:hover, .cancelSubmit:hover, #searchSubmit:hover, #saveAppChanges:hover, #saveTransferChanges:hover, #removeAppChanges:hover, #saveProfileButton:hover, #modal-confirm-send-credential-button:hover, #verifyButton:hover, #passwordSaveButton:hover, #passwordCancelButton:hover, #removeStaff:hover, #saveGeneralComment:hover, #saveCOIChanges:hover, #saveTextChanges:hover, button#SelectPanel:hover, #addButton:hover, .k-button.k-upload-button:hover, #cancelButton:hover, #modal-confirm-alternateContact-deletion-button:hover, #education-confirm-deletion-button:hover, #contractOfflineSubmit:hover, #modal-confirm-reset-to-edit-button:hover, #saveVendorChanges:hover, #passwordSaveButton:hover, #passwordCancelButton:hover, #saveWithdrawApplication:hover, #confirmResetWarning:hover, #travellegsave:hover, #nonRevAssignmentSave:hover, #btnSelectAllDays:hover, #btnClearAllDays:hover, #btnAddSecurityPolicy:hover, #btnApplyRange:hover {
+        color: white;
+        background: #006dcc;
+        box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .6);
+    }
+
+/* Primary Buttons Disabled */
+    #closeDialogBtn[disabled], #saveDialogChanges[disabled], #submitDialog[disabled], #Search.filterButton[disabled], #submitFilteredRegistrationStatusSearch[disabled], #Search[disabled], #nextDialog[disabled], #backDialog[disabled], #availableAssignments td button[disabled], #btn-find-meetings[disabled], #newFileButton[disabled], #manageAccountButton[disabled], #saveConfirmation[disabled], .manageCritiqueModal[disabled], .onSubmit[disabled], .btn-find-awards[disabled], .btn-find-sessions[disabled], .btn-find-fee-schedules[disabled], .btn-find-session-fee-schedules[disabled], .scorecardButton[disabled], #submitDialogChanges[disabled], #finishDialog[disabled], #saveChanges[disabled], #submitBtn[disabled], #assignBtn[disabled], #generateBtn[disabled], #push-button[disabled], #saveCritiqueChangesAndNext[disabled], #saveCritiqueChangesAndBack[disabled], #saveCritiqueChangesAndClose[disabled], #submitCritiqueButton[disabled], .k-grid-checkOut button[disabled], #saveBtn[disabled], .btnSubmit[disbled], #searchSubmit[disabled], #saveAppChanges[disabled], #saveTransferChanges[disabled], #removeAppChanges[disabled], #saveProfileButton[disabled], #modal-confirm-send-credential-button[disabled], #verifyButton[disabled], #passwordSaveButton[disabled], #passwordCancelButton[disabled], #removeStaff[disabled], #saveGeneralComment[disabled], #saveCOIChanges[disabled], #saveTextChanges[disabled], button#SelectPanel[disabled], #addButton[disabled], .k-button.k-upload-button[disabled], #cancelButton[disabled], #modal-confirm-alternateContact-deletion-button[disabled], #education-confirm-deletion-button[disabled], #contractOfflineSubmit[disabled], #modal-confirm-reset-to-edit-button[disabled], #saveVendorChanges[disabled], #saveWithdrawApplication[disabled], #confirmResetWarning[disabled], #travellegsave[disabled], #nonRevAssignmentSave[disabled] {
+        background-color: lightgrey;
+        border: 1px solid lightgrey;
+    }
+
+/* Primary Buttons Disabled Hover Effect*/
+        #closeDialogBtn[disabled]:hover, #saveDialogChanges[disabled]:hover, #submitDialog[disabled]:hover, #Search.filterButton[disabled]:hover, #submitFilteredRegistrationStatusSearch[disabled]:hover, #Search[disabled]:hover, #nextDialog[disabled]:hover, #backDialog[disabled]:hover, #availableAssignments td button[disabled]:hover, #btn-find-meetings[disabled]:hover, #newFileButton[disabled]:hover, #manageAccountButton[disabled]:hover, #saveConfirmation[disabled]:hover, .manageCritiqueModal[disabled]:hover, .onSubmit[disabled]:hover, .btn-find-awards[disabled]:hover, .btn-find-sessions[disabled]:hover, .btn-find-fee-schedules[disabled]:hover, .btn-find-session-fee-schedules[disabled]:hover, .scorecardButton[disabled]:hover, #submitDialogChanges[disabled]:hover, #finishDialog[disabled]:hover, #saveChanges[disabled]:hover, #submitBtn[disabled]:hover, #assignBtn[disabled]:hover, #generateBtn[disabled]:hover, #push-button[disabled]:hover, #saveCritiqueChangesAndNext[disabled]:hover, #saveCritiqueChangesAndBack[disabled]:hover, #saveCritiqueChangesAndClose[disabled]:hover, #submitCritiqueButton[disabled]:hover, .k-grid-checkOut button[disabled]:hover, #saveBtn[disabled]:hover, .btnSubmit[disabled]:hover, #searchSubmit[disabled]:hover, #saveAppChanges[disabled]:hover, #saveTransferChanges[disabled]:hover, #removeAppChanges[disabled]:hover, #saveProfileButton[disabled]:hover, #modal-confirm-send-credential-button[disabled]:hover, #verifyButton[disabled]:hover, #passwordSaveButton[disabled]:hover, #passwordCancelButton[disabled]:hover, #removeStaff[disabled]:hover, button#SelectPanel[disabled]:hover, #addButton[disabled]:hover, .k-button.k-upload-button[disabled]:hover, #cancelButton[disabled]:hover, #modal-confirm-alternateContact-deletion-button[disabled]:hover, #education-confirm-deletion-button[disabled]:hover, #contractOfflineSubmit[disabled]:hover, #modal-confirm-reset-to-edit-button[disabled]:hover, #saveVendorChanges[disabled]:hover, #saveWithdrawApplication[disabled]:hover, #confirmResetWarning[disabled]:hover, #travellegsave[disabled]:hover, #nonRevAssignmentSave[disabled]:hover {
+            background: lightgrey;
+            box-shadow: none;
+            cursor: auto;
+        }
+
+/* Secondary Buttons */
+#assignVendor, #assignVendorInst, #btn-clear-meetings {
+    background-color: #F5F5F5;
+    text-shadow: none;
+    text-decoration: none;
+    color: black;
+    background-image: none;
+    position: relative;
+    display: inline-block;
+    border: 1px solid #757575;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    transition: all .3s ease-in-out;
+    font-weight: bold;
+    /*padding-bottom: 5px;*/
+}
+
+/* Secondary Buttons Hover */
+    #assignVendor:hover, #assignVendorInst:hover, #btn-clear-meetings:hover {
+        color: white;
+        background: darkgrey;
+        box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .6);
+    }
+
+    #btn-clear-meetings[disabled] {
+        color: white;
+        background-color: lightgrey;
+        border: 1px solid lightgrey;
+    }
+
+        #btn-clear-meetings[disabled]:hover {
+            background: lightgrey;
+            box-shadow: none;
+            cursor: auto;
+        }
+    /* All buttons that need extra padding */
+    #availableAssignments td button, .scorecardButton, #generateBtn, #submitBtn, #assignBtn, #push-button, #saveCritiqueChangesAndNext, .k-grid-checkOut button, #assignVendorInst {
+        padding: 4px 12px;
+    }
+
+/* All buttons that need extra padding that are smaller */
+#saveConfirmation, .manageCritiqueModal, .onSubmit, .btn-find-sessions, .btn-find-awards, .btn-find-fee-schedules, .btn-find-session-fee-schedules, #newFileButton, #saveBtn, #cancelBtn, .btnSubmit, .cancelSubmit, #addButton, #cancelButton, #assignVendor, #assignVendor {
+    padding: 4px 10px;
+}
+
+#coiComment {
+    width: 99%;
+    height: 100px;
+    padding: 0px;
+}
+
+#success:target {
+    display: block;
+    background: #ffff99;
+    color: black;
+    font-size: 14px;
+    font-family: Arial, Arial, Helvetica, sans-serif;
+    line-height: 30px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 9px;
+}
+
+
+.smallModal .row-fluid p {
+    font-size: 14px;
+    line-height: 17px;
+}
+
+input:focus, .k-combobox input.k-input:focus, #receiptDeadline:focus, select:focus, #oppID:focus, #awardAbbrID:focus /*button:focus*/ {
+    border: 1px solid rgba(82,168,236,0.8) !important;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6) !important;
+}
+
+select:focus, input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus {
+    outline: none !important;
+}
+
+.iconPadding {
+    padding: 0px 10px 10px 10px;
+}
+
+.iconPadding img {
+    padding: 0px 3px 0px 10px;
+}
+
+#successMessage {
+    display: none;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+    background: #ffff99;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.errorMessage {
+    display: none;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+    background: rgba(238, 78, 78, 0.45);
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.blueCarat {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 3px;
+    border-color: blue transparent transparent blue;
+    margin: -.45em 0 0 -.6em;
+    padding: 0;
+    overflow: hidden;
+    vertical-align: top;
+    z-index: 1;
+    display: none;
+}
+
+.k-dirty {
+    z-index: 10;
+}
+
+/* ---- CSS Attributes---- */
+
+.hidden, .displayNone {
+    display: none !important;
+}
+
+.inlineBlock {
+    display: inline-block !important;
+}
+
+.displayBlock {
+    display: block !important;
+}
+
+.block {
+    display: block !important;
+}
+
+#validationMessage span {
+    display: block;
+}
+
+.displayInline {
+    display: inline-block;
+}
+
+.inline-block {
+    display: inline-block !important;
+}
+
+/* Display None */
+.field-validation-valid, #currentVendor, #saveBtn, #cancelBtn, #vendorHidden, .formNoResults, button.ui-dialog-titlebar-close, .profile-label-hidden, #blockedClients, .blockedClient, .myCollapse, .tablesorter thead .disabled, .validation-summary-valid, #w9Table, .uploadData, .documentList, #zeroResults, #fileLocation, #category, #categoryField, #linkPlace, #videoPlace, #addButton {
+    display: none;
+}
+
+/* Background Colors */
+#expertiseNoSelection, #legendScientist, .whiteBackground, .bg-white {
+    background-color: #ffffff;
+}
+
+/* Error Message */
+#failureMessage, .redColor, #validationMessage, .failureMessage {
+    color: red;
+}
+
+#infoMessage {
+    background-color: lightblue;
+    color: #08c;
+    padding: 5px;
+    display: none;
+}
+
+/* Green */
+#expertiseHigh {
+    /*background-color: #8BC34A;*/
+    background-color: #74d405;
+}
+
+/* Yellow */
+#expertiseMed {
+    background-color: #f9ed82;
+}
+
+#expertiseLow {
+    background-color: #A4DBF3;
+}
+
+/* Expertise Assignment Red */
+#expertiseNone {
+    background-color: #ff3300;
+}
+
+#legendSpecial {
+    background-color: #ccccff;
+}
+
+#legendConsumer {
+    background-color: #ffd5c0;
+}
+
+tr.high-lighted, .k-grid tr:hover, .gridHighlight {
+    background-color: #fffbd0 !important;
+}
+
+.table-hoverhighlight tr:hover {
+    background-color: #ffff99 !important;
+}
+
+td.noDisplay {
+    background-color: #BDBDBD !important;
+}
+
+.ui-dialog-buttonpane {
+    background-color: lightgray !important;
+}
+
+.grayBackground {
+    background-color: gray;
+}
+
+.go-button {
+    background-color: #aabbec;
+}
+
+.lightgray-background, .bg-lightgray {
+    background-color: lightgray;
+}
+
+thead.light {
+    background-color: #eee;
+}
+
+.greyBackground {
+    background: #f1f1f1;
+}
+
+.nav-tabs > li > a:hover {
+    background-color: none !important;
+}
+
+.sessionPanelLinks td.active {
+    background: #B8B8B8;
+}
+
+#w9Table tr:nth-child(even) {
+    background-color: #E2E2E2;
+}
+
+/* Font Colors */
+
+.header-icon ul li a span, .field-validation-error, .validation-summary-errors {
+    color: #fff;
+}
+
+.validation-summary-errors, .alert-message, .textRed, .redMessage {
+    color: #ff0000;
+}
+
+.sectionTitle, .addApp {
+    color: #000;
+}
+
+.commentEntryEdit, .commentEntryDelete {
+    color: #08c !important;
+}
+
+.lightgray {
+    color: lightgray;
+}
+
+.gray {
+    color: gray;
+}
+
+.darkgray {
+    color: darkgray;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.font-size-20 {
+    font-size: 20px !important;
+}
+
+.succcess-message {
+    color: #7aa3fe;
+}
+
+.accordion-group .accordion-inner .active a, .dropdown ul a.mainHighlight:hover {
+    color: white !important;
+}
+
+/* Margin */
+.loginInfo, .autoMargin {
+    margin: auto;
+}
+
+.noMargin, .margin-none, .marginZero {
+    margin: 0px !important;
+}
+
+.nav-tabs > li > a, .nav-pills > li > a {
+    margin-right: 0 !important;
+}
+
+.margin-right10, #currentVendor {
+    margin-right: 10px !important;
+}
+
+.marginRight15, .check-item-margin, .margin-right15 {
+    margin-right: 15px;
+}
+
+.marginBottom20 {
+    margin-bottom: 20px;
+}
+
+.check-box-margin, .margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.margin-bottom-10, .margin-bottom10, #updateCloseDate li, #vendorIdAuto, #vendorIdManual {
+    margin-bottom: 10px !important;
+}
+
+.marginBottom20 {
+    margin-bottom: 20px;
+}
+
+.infoDock {
+    margin-bottom: 40px;
+}
+
+[class*="span"] {
+    margin-left: 0 !important;
+}
+
+.checkone {
+    margin-left: 3px;
+}
+
+.margin-left10, .ui-multiselect-checkboxes label input {
+    margin-left: 10px !important;
+}
+
+.margin-left25 {
+    margin-left: 25px !important;
+}
+
+.margin-left30 {
+    margin-left: 30px;
+}
+
+.select-filter-selected .select-filter-title {
+    margin-top: -10px;
+}
+
+.pushUp20 {
+    margin-top: -20px;
+}
+
+.pushUp25 {
+    margin-top: -25px;
+}
+
+.dropdown-adjustment {
+    margin-top: 8px;
+}
+
+.margin-top10, .small-top-margin {
+    margin-top: 10px !important;
+}
+
+.margin-top5 {
+    margin-top: 5px !important;
+}
+
+.italics {
+    font-style: italic;
+}
+
+.margin-top20, .marginTop20 {
+    margin-top: 20px !important;
+}
+
+.margin-top30 {
+    margin-top: 30px !important;
+}
+
+.margin-top35 {
+    margin-top: 35px !important;
+}
+
+.margin-top45 {
+    margin-top: 45px !important;
+}
+
+.extended-margin {
+    margin-top: 178px;
+}
+
+.margin-top180 {
+    margin-top: 180px !important;
+}
+
+/* Padding */
+.noPadding, .ui-dialog, .ui-dialog #ModalDialog, .ui-draggable-handle, .ui-multiselect-menu {
+    padding: 0px !important;
+}
+
+.padding, .appInfo #appInfo td, .appInfo {
+    padding: 5px !important;
+}
+
+.padding10, .website-icon-link, .eval-filter td {
+    padding: 10px !important;
+}
+
+.padding20 {
+    padding: 20px !important;
+}
+
+.k-grid-checkIn {
+    padding-left: 2px;
+}
+
+.select-filter-selected td span, .padding-left-5, .padding-left5, .infoHeader i {
+    padding-left: 5px !important;
+}
+
+.padding-top-5 {
+    padding-top: 5px;
+}
+
+.width40 {
+    width: 40px;
+}
+
+.profile-margin {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.paddingLeft10, .padding-left10 {
+    padding-left: 10px !important;
+}
+
+.pageColumnTwo, .padding-left20 {
+    padding-left: 20px !important;
+}
+
+.padding-left-30, .padding-left30 {
+    padding-left: 30px !important;
+}
+
+.padding-left-40, .padding-left40 {
+    padding-left: 40px !important;
+}
+
+.leftPadding50, .padding-left50 {
+    padding-left: 50px !important;
+}
+
+.padding-left-60, .padding-left60 {
+    padding-left: 60px !important;
+}
+
+.paddingTop5 {
+    padding-top: 5px !important;
+}
+
+.padding-top-xx, .padding-top10 {
+    padding-top: 10px !important;
+}
+
+.padding-top15 {
+    padding-top: 15px;
+}
+
+.padding-top-20, .padding-top20 {
+    padding-top: 20px !important;
+}
+
+.paddingRight5, .padding-right5 {
+    padding-right: 5px !important;
+}
+
+.padding-right-xx, .padding-right10 {
+    padding-right: 10px !important;
+}
+
+.padding-bottom10 {
+    padding-bottom: 10px !important;
+}
+
+/* Text Align */
+.showHideForm, .meetingLegend, .AnchorSection {
+    text-align: right;
+}
+
+.workflowHistory, .tablesorter tr th, .tablesorter tr td, .center, .textCenter, #gridArchive th a, .alignCenter {
+    text-align: center;
+}
+
+.align-center, .modal-footer, .center-align {
+    text-align: center !important;
+}
+
+.align-right, .right-align {
+    text-align: right !important;
+}
+
+#ManageCritiques thead td, #ManageCritiques tr td div, .tablesorter-default tr td div, #passwordSection #password, .textAlignLeft {
+    text-align: left;
+}
+
+.left-align, #grid th a {
+    text-align: left !important;
+}
+
+/* Font Sizes */
+.fontSize12, .uploadData, #viewSearchResultsGrid {
+    font-size: 12px;
+}
+
+button {
+    font-size: 12px !important;
+}
+
+.fontSize14, .addProgram a {
+    font-size: 14px;
+}
+
+.sub-content14 {
+    font-size: 14px !important;
+}
+
+.priorityTitle {
+    font-size: 16px;
+}
+
+.infoHeaderText {
+    font-size: 18px;
+}
+
+.scorecard-title, .large-title {
+    font-size: 24px;
+}
+
+.sub-content {
+    font-size: 12px !important;
+}
+
+/* Random CSS Styles */
+.list-unstyled {
+    list-style: none;
+}
+
+.appInfo th, .push-up {
+    vertical-align: top;
+}
+
+.valign-top {
+    vertical-align: top !important;
+}
+
+.valign-middle, .table th, .table td {
+    vertical-align: middle !important;
+}
+
+.alignRight, .btn_right {
+    float: right;
+}
+
+.float-left {
+    float: left !important;
+}
+
+.float-right {
+    float: right !important;
+}
+
+.alignLeft, .uploadData, #w9Table {
+    float: left;
+}
+
+.prefAlternateContactTag {
+    font-weight: normal
+}
+
+.normal-weight {
+    font-weight: normal !important;
+}
+
+#expertiseTable th, .sticky-wrap th, .boldWeight, .bold {
+    font-weight: bold;
+}
+
+.leading-perc-width {
+    width: 5% !important;
+}
+
+.maxWidth20 {
+    width: 20%;
+}
+
+.maxWidth40 {
+    width: 40%;
+}
+
+.maxWidth60 {
+    width: 60px;
+}
+
+.main-perc-width {
+    width: 95% !important;
+}
+
+#ManageCritiques, .awardSelectClient select, .awardSelectYear select, .awardSelectProgram select, .maxWidth {
+    width: 100%;
+}
+
+.clearable.onX {
+    cursor: pointer;
+}
+
+.relative-position {
+    position: relative;
+}
+
+.flex {
+    display: flex;
+}
+
+.more-message {
+    color:#08c !important;
+}
+
+.download-warning, .session-warning {
+    font-size: 16px;
+}
+
+.save-cancel {
+    text-align: right;
+    margin-left: 80%;
+    margin-top: -5%
+}
+
+
+    /* IE Fixes */
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .kendoGridTable .k-input, .kendoGridAwardTable .k-input {
+        background: url('img/iearrow.png') no-repeat;
+        background-position: 98%;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+}
+
+/* Firefox Fixes */
+@-moz-document url-prefix() {
+    .kendoGridTable .k-input, .kendoGridAwardTable .k-input {
+        background: url('img/firefoxArrow.png') no-repeat;
+        background-position: 98%;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .k-combobox input.k-input {
+        background-position: 100%;
+    }
+}
+
+@media screen and (min-height: 800px) {
+}
+
+@media and (-webkit-min-device-pixel-ratio:0) {
+    #attachmentADetails table {
+        display: unset !important;
+    }
+}
+/* Glyphicons */
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('/Content/glyphicons-halflings-regular.eot');
+    src: url('/Content/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/Content/glyphicons-halflings-regular.woff2') format('woff2'), url('/Content/glyphicons-halflings-regular.woff') format('woff'), url('/Content/glyphicons-halflings-regular.ttf') format('truetype'), url('/Content/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+@media print {
+    #expertiseHigh {
+        background-color: #F28880;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #expertiseMed {
+        background-color: #8BC34A;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #expertiseLow {
+        background-color: #A4DBF3;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #expertiseNone {
+        background-color: #EE8C05;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #expertiseNoSelection {
+        background-color: #ffffff;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #expertiseCOI {
+        background-color: #ffff00;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #legendScientist {
+        background-color: white;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #legendSpecial {
+        background-color: #ccccff;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #legendConsumer {
+        background-color: #ffd5c0;
+        -webkit-print-color-adjust: exact;
+    }
+
+    tr.vendorListHeading {
+        background-color: #1a4567 !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .sticky-wrap #ExpertiseToggle {
+        background: #9e9e9e;
+        width: auto !important;
+    }
+
+    .sticky-thead #ExpertiseToggle div, #expertiseTable thead #ExpertiseToggle div {
+        padding-left: 0px !important;
+    }
+
+    .sticky-thead tr:nth-child(2) th:nth-child(2) #log-num {
+        margin: 0px;
+        width: 100%;
+        padding: 0px;
+        text-align: center;
+    }
+
+    .sticky-thead tr:nth-child(2) th:nth-child(3) #award-num {
+        margin: 0px;
+        width: 100%;
+        padding: 0px;
+        text-align: center;
+    }
+
+    .sticky-col {
+        left: unset;
+    }
+
+    .sticky-wrap.overflow-y, .sticky-intersect, .sticky-col {
+        overflow-y: unset;
+        left: unset !important;
+    }
+
+    .padding {
+        padding: 0px 9px;
+    }
+
+    .expertiseColorLegend td {
+        width: auto;
+    }
+
+    #legendTitle {
+        text-align: right;
+    }
+
+    .radio.inline, .checkbox.inline {
+        padding-top: 10px;
+    }
+
+    #btnExport {
+        padding-left: 35px;
+        vertical-align: super;
+    }   
+}

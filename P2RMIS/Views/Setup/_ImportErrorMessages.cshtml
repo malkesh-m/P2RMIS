@@ -1,0 +1,45 @@
+﻿@model Sra.P2rmis.Web.ViewModels.Setup.ImportErrorViewModel
+
+<head>
+    <style>
+        .modalWarningCaption {
+            color: black !important;
+            background: #FFFF21 !important;
+        }
+    </style>
+</head>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="row-fluid">
+            <div id="warningAlert" class="p2rmis-disallowed__error"></div>
+            <div>
+                <label class="displayInline"><strong>Mechanism:</strong></label>
+                <div id="programMechanism" class="displayInline"></div>
+            </div>
+            @if (Model.FailedCount > 0)
+            {
+                <div>
+                    <label class="displayInline"><strong>Applications not imported:</strong></label>
+                    <div id="failedApps" class="displayInline">@Model.FailedCount</div>
+                </div>
+            }
+            <div>
+                <label class="displayInline"><strong>Run Date:</strong></label>
+                <div class="displayInline">@Model.LastImportDate</div>
+            </div>
+            <div>
+                <label><strong>Error Details:</strong></label>
+                <div id="errorDetails">
+                    @for (var i = 0; i < Model.Messages.Count; i++)
+                    {
+                        <div>@Model.Messages[i]</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+</script>

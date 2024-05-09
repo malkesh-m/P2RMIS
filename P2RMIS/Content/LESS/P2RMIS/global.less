@@ -1,0 +1,485 @@
+﻿/* #region Imports */
+@import 'variables.less';
+/*@import "../AccountManagement/am-main.less";
+@import "../AccountManagement/Partials/am-partials.less";*/
+@import "../ManageApplicationScoring/mas-main.less";
+/*@import "../ManageApplicationScoring/Partials/mas-partials.less";*/
+@import "../MyWorkspace/mw-main.less";
+@import "../MyWorkspace/Partials/mw-partials.less";
+@import "../PanelManagement/pm-main.less";
+@import "../PanelManagement/Partials/pm-partials.less";
+@import "../MeetingManagment/mm-main.less";
+@import "../MeetingManagment/Partials/mm-partials.less";
+/*@import "../Reporting/rep-main.less";
+@import "../Reporting/Partials/rep-partials.less";
+@import "../SummaryStatement/sum-main.less";
+@import "../SummaryStatement/Partials/sum-partials.less";*/
+@import '../SystemSetup/ss-main.less';
+@import '../SystemSetup/Partials/ss-awardModals.less';
+@import '../sticky-header.less';
+@import '../UserProfileManagement/upm-main.less';
+/* #endregion */
+
+/* #region Field Sets for Filter Selections */
+.p2FilterContainer {
+    display: block;
+    font-size: 12px;
+    border: 1px solid #e2e2e2;
+    margin-bottom: 15px;
+    position: relative;
+
+    &_title {
+        background-color: @whiteColor;
+        margin: -10px 0px 0px 20px;
+        display: inline-block;
+        position: absolute;
+        left: 0px;
+    }
+
+    &_label {
+        display: inline-block;
+    }
+
+    &_full {
+        width: 100%;
+    }
+
+    &_partial {
+        width: 50%;
+        border: 1px solid #e2e2e2;
+        position: relative;
+        float: left;
+
+        p {
+            float: left;    
+        }
+    }
+
+    &_contents {
+        padding: 15px;
+        display: inline-table;
+    }
+
+    &_selects {
+        float: left;
+        padding-top: 5px;
+
+        &_select {
+            margin: 0px 10px 0px 0px;
+            width: auto;
+        }
+    }
+
+    &_details {
+        margin: 0px auto;
+        padding: 0px;
+        list-style: none;
+        float: left;
+        width: 300px;
+
+        &_label {
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+            cursor: auto;
+            text-align: right;
+            width: 150px;
+            margin: 0px;
+        }
+
+        &_result {
+            display: inline-block;
+            text-align: left;
+        }
+
+        &_input {
+            width: 100px;
+            margin: 0px !important;
+        }
+
+        &_textarea {
+            width: 260px;
+            margin: 0px !important;
+        }
+    }
+
+    &_modal-details {
+        margin: 0px auto;
+        padding: 0px;
+        list-style: none;
+        float: left;
+        width: 300px;
+
+        &_label {
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+            cursor: auto;
+            margin: 0px;
+            width: 90px;
+        }
+
+        &_result {
+            display: inline-block;
+            text-align: left;
+        }
+
+        &_input {
+            width: 100px;
+            margin: 0px !important;
+        }
+
+        &_textarea {
+            width: 260px;
+            margin: 0px !important;
+        }
+
+        &_margin{
+            margin: 5px;
+        }
+    }
+
+    &_label {
+        font-weight: bold;
+        font-size: 12px;
+        display: inline-block;
+        cursor: auto;
+        text-align: right;
+        margin: 0px;
+    }
+
+    input {
+        margin-bottom: 0px;
+    }
+
+    &_p2FilterActiveCheckbox {
+        float: left;
+        margin: 10px 10px 0px 15px;
+    }
+}
+/* #endregion */
+
+/* #region Main Header */
+.main-header {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+
+    &_back-button {
+        &_link {
+            cursor: pointer;
+        }
+    }
+
+    &_title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    &_img {
+        padding-bottom: 10px;
+    }
+
+    &_failure {
+        color: red;
+    }
+}
+/* #endregion */
+
+/* #region Grid Header with Grid */
+.p2GridHeader {
+    display: block;
+    width: 100%;
+
+    &_title {
+        display: inline-block;
+    }
+
+    &_totalCount {
+        display: inline-block;
+        margin: 0px 15px;
+        font-size: @fontSize12;
+        font-weight: bold;
+    }
+
+    &_linkButton {
+        font-size: @fontSize14;
+        font-style: italic;
+    }
+
+    &_exportButton {
+        float: right;
+        margin-right: 15px;
+
+        &__link {
+            font-size: @fontSize14;
+        }
+    }
+}
+/* #endregion */
+// Filter box
+.filterBox {
+    &_title {
+        padding: 0 3px;
+        margin: -20px 0 0 10px;
+        display: inline-block;
+        font-size: 14px;
+        background-color: #fff;
+        position: absolute;
+    }
+
+    &_subTitle {
+        vertical-align: baseline;
+        padding: 0px 5px;
+    }
+}
+
+// Remove modal
+.p2rmis-disallowed {
+    padding: 15px;
+
+    &_p {
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    &__error {
+        color: #ff0000;
+        text-align: center;
+        margin: 0px;
+    }
+
+    &_hidden {
+        overflow-x: hidden;
+    }
+}
+
+.p2rmis-failure {
+    color: @errorRed;
+    display: none;
+}
+// Primary Button
+.buttonPrimary {
+    padding: 4px 10px;
+    background-color: @buttonColor;
+    text-shadow: none;
+    text-decoration: none;
+    color: @whiteColor;
+    background-image: none;
+    position: relative;
+    display: inline-block;
+    border: @solidBorder @buttonColor;
+    border-radius: 0px;
+    /*left: 0px;
+    top: 0px;*/
+    box-shadow: 0 0 8px rgba(0,0,0, .1);
+    transition: all .3s ease-in-out;
+    font-weight: bold;
+
+    &:hover {
+        background: #006dcc;
+        box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .6);
+    }
+
+    &[disabled] {
+        background-color: @disabled;
+        border: @solidBorder @disabled;
+    }
+
+    &[disabled]:hover {
+        background: @lightGrey;
+        box-shadow: none;
+        cursor: auto;
+    }
+}
+
+.buttonSecondary {
+    background-color: #E0E0E0;
+    text-shadow: none;
+    text-decoration: none;
+    color: #424242;
+    background-image: none;
+    position: relative;
+    display: inline-block;
+    border: @solidBorder @secondaryGrey;
+    border-radius: 0px;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    transition: all .3s ease-in-out;
+    font-weight: bold;
+    padding: 4px 10px;
+
+    &:hover {
+        background: #006dcc;
+        box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .6);
+    }
+
+    &[disabled] {
+        background-color: @disabled;
+        border: @solidBorder @disabled;
+        color: white;
+    }
+
+    &[disabled]:hover {
+        background: @lightGrey;
+        box-shadow: none;
+        cursor: auto;
+        color: white;
+    }
+}
+
+.asterisk {
+    color: red;
+    display: inline-block;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayBlock {
+    display: block;
+}
+
+.displayCell {
+    display: table-cell;
+}
+
+.gridPush {
+    top: 250px;
+}
+
+.displayInline {
+    display: inline-block;
+}
+
+.redClass {
+    color: @errorRed;
+}
+.warning-message {
+    color: darkorange;
+    display: block;
+}
+.no-pointer-events {
+    pointer-events: none;
+}
+
+.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+// My Workspace Tabs
+.shared_mw_tabs {
+    padding-bottom: 10px;
+
+    &_back-arrow {
+        vertical-align: top !important;
+        display: inline-block !important;
+    }
+
+    &_h1 {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 20px;
+        margin: 0px;
+    }
+}
+
+.p2rmis-filterset {
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 15px 0px;
+    float: left;
+    font-size: 12px;
+    width: 100%;
+    position: relative;
+
+    &_container {
+        padding: 10px 15px 0px 5px;
+
+        &_title {
+            font-size: 12px;
+            font-weight: bold;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    &_title {
+        padding: 0 3px;
+        background-color: #fff;
+        margin: -15px;
+        font-weight: bold;
+        display: inline-block;
+        position: absolute;
+        left: 30px;
+        font-size: 12px;
+    }
+
+    &_required {
+        margin: 5px 0 5px 8px;
+        display: inline-block;
+        vertical-align: super;
+    }
+
+    &_checkbox{
+        display: inline-block;
+    }
+
+    &_radio{
+        margin-top: 0px !important;
+        margin-left: 10px !important;
+    }
+
+    &_center{
+        text-align: center;
+    }
+}
+
+.hidden-text {
+    width: 0px;
+    height: 0px;
+    color: transparent;
+    float: left;
+}
+
+// Library Section
+.lib-main-section {
+    position: relative;
+    display: inline-block;
+
+    &_title {
+        display: inline-block;
+        margin-right: 15px;
+        float: left;
+    }
+
+    &_part {
+        display: inline-block;
+        float: left;
+        margin-right: 5px !important;
+    }
+}
+
+main {
+    display: block;
+}
+
+.newLink {
+    color: #08c;
+    cursor: pointer;
+}
+
+.dropDownLabelInline {
+    float: left;
+    padding-top: 4px;
+    padding-right: 8px;
+    font-weight: bold;
+}
+.input-error {
+    border-color:red;
+}

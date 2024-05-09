@@ -1,0 +1,640 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.SearchForReviewersViewModel
+
+@{
+    ViewBag.Title = "Add Potential Reviewers";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<style>
+    .aprFormTitle {
+        font-size: 26px;
+        font-family: Arial;
+        font-weight: bold;
+    }
+
+    .aprFieldset {
+        margin: 10px;
+        font-size: 12px;
+    }
+
+    .aprFieldsetDefault {
+        height: 60px;
+    }
+
+    .aprFieldsetMid {
+        height: 80px
+    }
+
+    .aprFieldsetLeftmost {
+        height: 180px;
+    }
+
+    .aprFieldsetPerformance {
+        height: 60px;
+    }
+
+    .aprFieldsetDemographic {
+        height: 100px;
+    }
+
+    ul {
+        margin: 0px;
+    }
+
+    #aprAdvFilters {
+        display: none
+    }
+
+    #viewSearchResultsGrid {
+        font-size: 12px
+    }
+
+        #viewSearchResultsGrid th {
+            text-align: center;
+        }
+
+        #viewSearchResultsGrid td:nth-child(7),
+        #viewSearchResultsGrid td:nth-child(8),
+        #viewSearchResultsGrid td:nth-child(9) {
+            text-align: center
+        }
+
+    .viewTdImg {
+        margin: auto;
+        display: inline-flex;
+    }
+
+        .viewTdImg img {
+            padding: 5px;
+        }
+
+    select {
+        width: 90%;
+        margin: 0px 5px 0px 5px;
+    }
+
+    .searchTextField {
+        width: 90%;
+        overflow: scroll;
+    }
+
+    .sfrFormFieldLabel {
+        font-weight: bold;
+        font-size: 12px;
+        padding: 0px 5px 0px 5px;
+    }
+
+    .searchSelect {
+        width: 90%;
+        margin: 0px 5px 0px 5px;
+    }
+
+    .expertiseCell {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .k-grid-content-locked table tr td {
+        border: none;
+    }
+
+    .k-grid-content, .k-grid-content-locked {
+        border: none;
+    }
+
+    #failureMessage {
+        display: none;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <span class="span12"><a id="backButton" href="Reviewers"><img src="~/Content/img/backarrow_20px_enabled.png" border="0" alt="Go Back to Previous Page" title="Back" /></a><span class="aprFormTitle">Search for Reviewers</span><a href="Reviewers"> (Back to Panel)</a></span>
+    </div>
+    @using (Html.BeginForm("SearchForReviewers", "PanelManagement", FormMethod.Get, new { @id = "personSearchForm", @name = "personSearchForm" }))
+    {
+        <div class="row-fluid">
+            <div class="span4 bordered aprFieldset aprFieldsetDefault">
+                <span class="textHeaderNotBold alignLeft">Person</span>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="span5">
+                            @Html.DropDownListFor(m => m.PersonKey, new SelectList(Model.PersonKeyDropdown, "Key", "Value", Model.PersonKey), new { id = "aprPersonKey" })
+                        </span>
+                        <span class="span7">
+                            @Html.TextBoxFor(m => m.PersonValue, new { id = "aprPerson", @class = "searchTextField", style = "width:25ch" })
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="span4 bordered aprFieldset aprFieldsetDefault">
+                <span class="textHeaderNotBold alignLeft">Organization</span>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="span12">
+                            @Html.TextBoxFor(m => m.Organization, new { id = "sfrOrg", placeholder = "Organization", @class = "searchTextField", style = "width:35ch" })
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="span4 bordered aprFieldset aprFieldsetDefault">
+                <span class="textHeaderNotBold alignLeft">Program/Fiscal Year</span>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="span8">
+                            @Html.DropDownListFor(m => m.ProgramId, new SelectList(Model.ClientOpenProgramsDropdown, "ClientProgramId", "ProgramAbbreviation", Model.ProgramId), "Select Program", new { id = "sfrProgramSelect" })
+                        </span>
+                        <span class="span4">
+                            @if (Model.FiscalYearList == null)
+                            {
+                                @Html.DropDownListFor(m => m.YearId, new SelectList(Enumerable.Empty<SelectListItem>(), "ProgramYearId", "Year"), "Select Year", new { id = "sfrFySelect" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m => m.YearId, new SelectList(Model.FiscalYearList, "ProgramYearId", "Year", Model.YearId), "Select Year", new { id = "sfrFySelect" })
+                            }
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="span4 bordered aprFieldset aprFieldsetMid">
+                <span class="textHeaderNotBold alignLeft">Panel</span>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="explText span12">Enter a panel name <u>OR</u> select from the list below.</span>
+                        <span class="span7">
+                            @Html.TextBoxFor(m => m.PanelName, new { id = "sfrPanelText", @class = "searchTextField", style = "width:20ch" })
+                        </span>
+                        <span class="span5">
+                            @if (Model.PanelList == null || Model.PanelList.Count == 0)
+                            {
+                                @Html.DropDownListFor(m => m.SessionPanelAbbreviation, new SelectList(Enumerable.Empty<SelectListItem>(), "SessionPanelAbbreviation", "PanelAbbreviation", Model.SessionPanelAbbreviation), "Select Panel", new { id = "sfrPanelSelect" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m => m.SessionPanelAbbreviation, new SelectList(Model.PanelList, "SessionPanelAbbreviation", "SessionPanelAbbreviation", Model.SessionPanelAbbreviation), "Select Panel", new { id = "sfrPanelSelect" })
+                            }
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="span8 bordered aprFieldset aprFieldsetMid">
+                <span class="textHeaderNotBold alignLeft">Keywords</span>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="span5">
+                            <span class="sfrFormFieldLabel">CV</span><br />
+                            @Html.TextBoxFor(m => m.Resume, new { id = "sfrCV", style = "width:30ch", maxlength = "75" })
+                        </span>
+
+                        <span class="span7">
+                            <span class="sfrFormFieldLabel">Expertise</span><br />
+                            @Html.TextBoxFor(m => m.Expertise, new { id = "sfrExpertise", style = "width:55ch", maxlength = "75" })
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div id="aprAdvFilters" class="span12">
+                <div class="span4 bordered aprFieldset aprFieldsetLeftmost">
+                    <span class="textHeaderNotBold alignLeft">Type/Role/Rank</span>
+                    <ul class="list-unstyled">
+                        <li>
+                            <span class="sfrFormFieldLabel span4">Participant Type</span>
+                            <span class="span8">
+                                @Html.DropDownListFor(m => m.ParticipantTypeId, new SelectList(Model.ParticipantTypeDropdown, "Index", "Value", Model.ParticipantTypeId), "Select Type", new { id = "participantTypeDropDown", @class = "searchSelect" })
+                            </span>
+                        </li>
+                        <li>
+                            <span class="sfrFormFieldLabel span4">Participant Role</span>
+                            <span class="span8">
+                                @Html.DropDownListFor(m => m.ParticipantRoleId, new SelectList(Model.ParticipantRoleDropdown, "Index", "Value", Model.ParticipantRoleId), "Select Role", new { id = "participantRoleDropDown", @class = "searchSelect" })
+                            </span>
+                        </li>
+                        <li>
+                            <span class="sfrFormFieldLabel span4">Academic Rank</span>
+                            <span class="span8">
+                                @Html.DropDownListFor(m => m.AcademicRankId, new SelectList(Model.AcademicRankDropdown, "Index", "Value", Model.AcademicRankId), "Select Rank", new { id = "academicRankDropDown", @class = "searchSelect" })
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="span8 bordered aprFieldset aprFieldsetPerformance">
+                    <span class="textHeaderNotBold">Performance</span>
+                    <div class="row-fluid">
+                        <span class="sfrFormFieldLabel span2">Potential Chair?</span>
+                        <span class="span1">
+                            @Html.CheckBoxFor(m => m.IsPotentialChair)
+                        </span>
+                        <span class="sfrFormFieldLabel span2 right-align">Rating ></span>
+                        <span class="span3">
+                            @Html.DropDownListFor(m => m.Rating, new SelectList(Model.RatingDropdown, "Key", "Value", Model.Rating), "Select Rating", new { @class = "searchSelect" })
+                        </span>
+                        <span class="sfrFormFieldLabel span4 center-align" style="font-weight:normal">Rating: 1=Lowest   5=Highest</span>
+                    </div>
+                </div>
+                <div class="span8 bordered aprFieldset aprFieldsetDemographic">
+                    <span class="textHeaderNotBold alignLeft">Other</span>
+                    <div class="row-fluid">
+                        <span class="span6" style="height:40px">
+                            @Html.DropDownListFor(m => m.StateId, new SelectList(Model.StateDropdown, "Index", "Value", Model.GenderId), "Select State", new { id = "stateDropDown", @class = "searchSelect" })
+                        </span>
+                        <span class="span6" style="height:40px">
+                            @Html.CheckBoxFor(m => m.IsStateExcluded, new { id = "aprStateExclude" })<span>   Exclude persons who reside in this state.</span>
+                        </span>
+                        <span class="span6">
+                            @Html.DropDownListFor(m => m.GenderId, new SelectList(Model.GenderDropdown, "Index", "Value", Model.GenderId), "Select Gender", new { id = "genderDropDown", @class = "searchSelect" })
+                        </span>
+                        <span class="span6">
+                            @Html.DropDownListFor(m => m.EthinicityId, new SelectList(Model.EthnicityDropdown, "Index", "Value", Model.EthinicityId), "Select Ethnicity", new { id = "searchEthnicityDropDown", @class = "searchSelect" })
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12" style="border-top:1px ridge black">
+                <div class="span5"><a id="advFiltersLink" href="javascript:;" onclick="toggleAdvFilters()">Display Advanced Filters</a></div><div class="span2 bordered alignCenter">
+                    <a href="javascript:;" onclick="doRevSearch();">Search</a> | <a href="javascript:;" onclick="resetForm();">Clear</a>
+                </div><div class="span5"></div>
+            </div>
+        </div>
+    }
+    <br />
+    <div id="searchGrid" class="hidden">
+        <div id="searchWarning" class="alert-message hidden">Your search has returned over 100 records.  Please refine your search.</div>
+        <span class="formTitle">
+            Search Result for&nbsp;<span id="formTitleFy">@Model.FiscalYear</span>&nbsp;<span id="formTitleProgram">@Model.ProgramAbbreviation</span>&nbsp;<span id="formTitlePanel">@Model.PanelAbbreviation</span>
+            ( <span id="recCount"></span> record(s)  )
+        </span>  Click the plus <img src="~/Content/img/16x16_add_enabled.png" alt="Add" /> to add a potential reviewer to your panel.
+        <div id="viewSearchResultsGrid">
+        </div>
+    </div>
+    <div id="failureMessage">No matching records found.</div>
+    <div id="searchInstruction" class="align-center">Please enter search criteria to begin.</div>
+</div>
+@if (Model.ReviewerResults != null)
+{
+    <input type="hidden" id="hasReviewerResultsLength" value="true" />
+}
+<script>
+    //
+    // Function to retrieve the panels for a selected client program year
+    //
+    function GetProgramPanelForSpecificClient(selectedClient) {
+        $.getJSON('@Url.Action(Routing.PanelManagement.GetProgramPanelsForSpecificClient, Routing.P2rmisControllers.PanelManagement)', { clientId: selectedYear }, function (data) {
+            var panelDropdown = $('#sfrPanelSelect');
+            //
+            // We empty the selection list & populate the drop down with the values returned by the controller.
+            //
+            clearPanelDropdown();
+            $.each(data, function (index, listEntry) {
+                panelDropdown.append(
+                    $('<option/>').attr('value', listEntry.Value).text(listEntry.Value)
+                );
+            });
+        });
+    }
+    //
+    // Event handler for a selecting a year from the Year dropdown in the Program/Fiscal Year field set.
+    //
+    $(document).ready(function () {
+        $("#sfrFySelect").change(function () {
+            //
+            // if the index is 0
+            //
+            if ($(this).find(":selected").index() == 0) {
+                var selectedClientProgram = $('#sfrProgramSelect').val();
+                clearPanelDropdown();
+                $("#sfrPanelSelect").attr('disabled', 'disabled');
+            }
+            else {
+                //
+                // we empty the panel dropdown & get the selected value from the Year drop down.
+                //
+                $("#sfrPanelText").empty();
+                var selectedYear = $(this).val();
+                $("#sfrPanelSelect").removeAttr('disabled');
+                getProgramPanelForSpecificYear(selectedYear);
+            }
+        });
+    });
+</script>
+<script>
+    //
+    // Function to retrieve the program years for the selected client program
+    //
+    function getYears(selectedClientProgram) {
+        $.getJSON('@Url.Action(Routing.ProgramRegistration.GetProgramYears, Routing.P2rmisControllers.ProgramRegistrationStatus)', { clientProgramId: selectedClientProgram }, function (data) {
+
+            var programYearDropdown = $('#sfrFySelect');
+            $.each(data, function (index, programYear) {
+                programYearDropdown.append(
+                    $('<option/>').attr('value', programYear.ProgramYearId).text(programYear.Year)
+                );
+            });
+        });
+    }
+    //
+    // Function to retrieve the program years for the selected client program
+    //
+    function getClientPanels(selectedId) {
+        $.getJSON('@Url.Action(Routing.PanelManagement.GetProgramPanelsForSpecificClient, Routing.P2rmisControllers.PanelManagement)', { clientProgramId: selectedId }, function (data) {
+            clearPanelDropdown();
+            var dropdown = $('#sfrPanelSelect');
+            $.each(data, function (index, entry) {
+                dropdown.append(
+                    $('<option/>').attr('value', entry.Value).text(entry.Value)
+                );
+            });
+        });
+    }
+    //
+    // Function to retrieve the panels for a selected client program year
+    //
+    function getProgramPanelForSpecificYear(selectedYear) {
+        $.getJSON('@Url.Action(Routing.PanelManagement.GetProgramPanelsForProgramYear, Routing.P2rmisControllers.PanelManagement)', { programYearId: selectedYear }, function (data) {
+            var panelDropdown = $('#sfrPanelSelect');
+            //
+            // We empty the selection list & populate the drop down with the values returned by the controller.
+            //
+            clearPanelDropdown();
+            $.each(data, function (index, listEntry) {
+                panelDropdown.append(
+                    $('<option/>').attr('value', listEntry.Value).text(listEntry.Value)
+                );
+            });
+        });
+    }
+    //
+    // Function to set panel drop-down/textbox enabled or disabled
+    //
+    function setPanelEnabledStatus() {
+        if ($("#sfrProgramSelect").find(":selected").index() == 0) {
+            $("#sfrPanelSelect,#sfrFySelect").attr('disabled', 'disabled');
+            $("#sfrPanelText").removeAttr('disabled');
+        }  else {
+            $("#sfrFySelect").removeAttr('disabled');
+        }
+    }
+    //
+    // Function to set state drop-down enabled or disabled
+    //
+    function setStateEnabledStatus() {
+        if ($("#stateDropDown").find(":selected").index() == 0) {
+            $("#aprStateExclude").attr('disabled', 'disabled');
+        } else {
+            $("#aprStateExclude").removeAttr('disabled');
+        }
+    }
+
+    $(document).ready(function (e) {
+        // Set panel enabled/disabled from initial data
+        setPanelEnabledStatus();
+        // Set state drop-down enabled/disabled from initial data
+        setStateEnabledStatus();
+        // Program drop-down change event handler
+        $("#sfrProgramSelect").change(function () {
+            if ($(this).find(":selected").index() == 0) {
+                $("#sfrPanelSelect,#sfrFySelect").attr('disabled', 'disabled');
+                clearYearDropdown();
+                clearPanelDropdown();
+                clearPanelText();
+            } else {
+                clearPanelText();
+                $("#sfrFySelect,#sfrPanelText").removeAttr('disabled');
+                if ($("#sfrFySelect").find(":selected").index() == 0) { $("#sfrPanelSelect").attr('disabled', 'disabled'); } else { $("#sfrPanelSelect").removeAttr('disabled'); }
+                //
+                // Get the selected client
+                // clear the panel drop down
+                //
+                clearYearDropdown();
+                clearPanelDropdown();
+                var selectedClientProgram = $(this).val();
+                getYears(selectedClientProgram);
+            }
+            setPanelEnabledStatus();
+        });
+        $("#sfrPanelSelect").change(function () {
+            if ($(this).find(":selected").index() == 0) {
+                $("#sfrPanelText").removeAttr('disabled');
+            } else {
+                clearPanelText();
+                $("#sfrPanelText").attr('disabled', 'disabled');
+
+            }
+        });
+        $("#stateDropDown").change(function () {
+            setStateEnabledStatus();
+        });
+        // Name's watermark
+        setNameWatermark();
+        $("#aprPersonKey").change(function () {
+            setNameWatermark();
+        });
+
+        //actuate search with enter key
+        $('#personSearchForm').keypress(function (e) {
+            if (e.keyCode === 13) {
+                doRevSearch();
+            }
+        });
+        // Set reviewer grid
+        setReviewerGrid();
+    });
+    // Set reviewer grid
+    function setReviewerGrid() {
+        if ($("#hasReviewerResultsLength").length > 0 && $.toBoolean($("#hasReviewerResultsLength").val())) {
+            $("#searchGrid").removeClass("hidden");
+            $("#searchInstruction").addClass("hidden");
+            var dataSource = new kendo.data.DataSource({
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.ReviewerResults)),
+                pageSize: 50
+            });
+            loadSearchResultGrid(dataSource);
+            if ($(dataSource.data()).length == 0) {
+                $('#searchGrid').hide();
+                $('#failureMessage').show();
+            }
+        }
+    }
+
+    // Set name's watermark
+    function setNameWatermark() {
+        if ($("#aprPersonKey").val() == "Name") {
+            $("#aprPerson").attr("placeholder", "Last Name, First Name");
+        } else {
+            $("#aprPerson").attr("placeholder", "");
+        }
+    }
+
+    function loadSearchResultGrid(searchResult) {
+        var test = searchResult.length;
+        $("#viewSearchResultsGrid").empty().kendoGrid({
+            height: 400,
+            columns: [{ width: 50, filterable: false, template: "# if (!isOnPanel) { # <a href='javascript:;' onclick=\x27addPotentialAssignment(event, ${userId})\x27><img src='/Content/img/16x16_add_enabled.png' alt='Add' title='Add Reviewer to Panel' style='border:0px' /></a> # } #" },
+                { title: "Name", field: "name", width: 200, filterable: false, template: "# if (canManageAccount) { # <a class='alignLeft' href='/@Routing.P2rmisControllers.UserProfile/@Routing.UserProfileManagement.ViewUser?userInfoId=${userInfoId}'>${name}</a> # } else { # ${name} # } #" + tickChecker("blocked") },
+                { title: "Expertise", field: "expertise", width: 350, template: "<span class='expertiseCell' title='${expertise}'>${expertise}</span>" },
+                { title: "Organization", field: "organization", width: 200 },
+                { title: "Academic<br />Rank", field: "academicRank", width: 110 },
+                { title: "Military<br />Rank", field: "militaryRank", width: 100, filterable: false, template: "${militaryBranch}<br />${militaryRank}" },
+                { title: "Ethnicity", field: "ethnicity", width: 95, filterable: false },
+                { title: "Gender", field: "gender", width: 95, filterable: false },
+                { title: "Rating", field: "rating", filterable: false, width: 50, template: kendo.template(ratingChecker(true)), headerTemplate: "<img src='/Content/img/icon_rating_enabled.png' alt='Rating' title='Reviewer Rating' />" },
+                { title: "Potential Chair", field: "potentialChair", filterable: false, width: 50, template: kendo.template(tickChecker('potentialChair')), headerTemplate: "<img src='/Content/img/icon_potential_chair_opt2.png' alt='Potential Chair' title='Potential Chair' />" },
+                { title: "Previous Program Participation", field: "previousProgramParticipation", filterable: false, width: 50, template: kendo.template(tickChecker('previousProgramParticipation')), headerTemplate: "<img src='/Content/img/icon_prog_part_labeled.png' alt='Previous Program Participation' title='Previous Program Participation' />" },
+                {
+                    title: "View", field: "view", filterable: false, sortable: false, width: 100, template:
+                      "<span class='viewTdImg'><a href='javascript:;' onclick=\x27openCommunicationLogModal(\x22${name}\x22, \x22${userInfoId}\x22)\x27><img src='/Content/img/icon_comm_log_20x20_enabled.png' alt='Communication Log' title='Communication Log' /></a>"
+                    + " # if (showResumeLink){ #<a href='${resumeLink}'><img src='/Content/img/icon_cv_launch_20x20.png' alt='CV' title='CV.  Launches CV (PDF)' /></a> # } else { # <img class='disabled-image' src='/Content/img/icon_cv_launch_20x20_disabled.png' alt='CV Not Available' title='CV Not Available' /> # } #"
+                    + " # if (showPreferredLink) { # <a href='${preferredWebsiteAddress}' target='_blank'><img src='/Content/img/globe_link_20px_enabled.png' alt='Preferred Website' title='Preferred Website.  Launches Preferred Website' /></a> # } else { # <img src='/Content/img/globe_link_20px_disabled.png' alt='Preferred Website Not Available' title='Preferred Website Not Available for User' /> # } #</span>"
+                }
+            ],
+            dataSource: searchResult,
+            dataBound: onDataBound,
+            editable: false,
+            scrollable: true,
+            groupable: true,
+            sortable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "Starts with",
+                        eq: "Is equal to"
+                    }
+                }
+            },
+            pageable: {
+                input: true,
+                numeric: false,
+                refresh: true,
+                pageSizes: [20, 40, 60, "all"],
+                pageSize: 20
+            }
+        });
+        // This is where we added the same toolbar thats on the bottom of the grid to the top
+        var grid = $("#viewSearchResultsGrid").data("kendoGrid");
+        var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+        wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+        grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+
+        $('#viewSearchResultsGrid th a:nth-child(1)').addClass('alignCenter');
+        $('#viewSearchResultsGrid .k-grid-header th:nth-child(14) .k-icon').css('margin-top', '17px');
+        //setTimeout(gridSizeToFit("viewSearchResultsGrid", 101), 1000);
+    }
+    function onDataBound(e) {
+        e.preventDefault();
+        $("#recCount").html(this.dataSource.total());
+        if (this.dataSource.total() >= 100) {
+            $("#searchWarning").removeClass("hidden");
+        } else {
+            $("#searchWarning").addClass("hidden");
+        }
+    }
+    function toggleAdvFilters() {
+        $("#aprAdvFilters").slideToggle(function () {
+            var afl = $("#advFiltersLink");
+            if (afl.html().indexOf('Display') != -1) { afl.html('Hide Advanced Filters') } else { afl.html('Display Advanced Filters') }
+        })
+    }
+
+    @*modal for communication log*@
+    function openCommunicationLogModal(paName, userInfoId) {
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Communication Log for " + nameFormatter(paName) + "</span>";
+        $.get('@Url.Action(Routing.PanelManagement.CommunicationLogModal, Routing.P2rmisControllers.PanelManagement)',
+            { userInfoId: userInfoId },
+            function(responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            }
+        );
+    };
+    // Add potential assignment
+    function addPotentialAssignment(e, userId) {
+        $.get('@Url.Action("AddPotentialAssignment", "PanelManagement")',
+            { userId: userId },
+            function (responseText, textStatus, XMLHttpRequest) {
+                // Remove row from grid
+                var grid = $("#viewSearchResultsGrid").data("kendoGrid");
+                var dataItem = grid.dataItem($(e.target).closest("tr"));
+                grid.dataSource.remove(dataItem);
+            }
+        );
+    }
+
+    function doRevSearch() {
+        var dialogTitle = "";
+        $('input').each(function(){
+            $(this).val($(this).val().trim());
+        })
+        var f = [$("#sfrOrg").val().length, $("#sfrPanelText").val().length, $("#sfrCV").val().length, $("#sfrExpertise").val().length];
+        if ((f[0] && f[0] < 3) ||
+            (f[1] && f[1] < 3) ||
+            (f[2] && f[2] < 3) ||
+            (f[3] && f[3] < 3)) {
+            dialogTitle = "<span class='modalSmallCaption modalWarningCaption'>Not Enough Characters</span>";
+            $.get('@Url.Action("NotEnoughChars", "PanelManagement")',
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.small, dialogTitle);
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+            });
+        }
+        else {
+            // Search form submission here.
+            $('#personSearchForm')[0].submit();
+        };
+    }
+    // Show no records found modal
+    function showNoRecordsFoundModal() {
+        // Error modal
+        var dialogTitle = '<span class="modalSmallCaption modalWarningCaption">No Records Found</span>';
+        $.get('@Url.Action("NoRecordsFound", "PanelManagement")',
+        function (responseText, textStatus, XMLHttpRequest) {
+            p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.small, dialogTitle);
+            $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+            $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        });
+    }
+
+    // Reset form and restore fields to original values
+    function resetForm() {
+        $("#searchInstruction").removeClass("hidden");
+        $("#searchGrid").addClass("hidden");
+        $('#personSearchForm')[0].reset();
+        clearYearDropdown();
+        clearPanelDropdown();
+        $("#PersonKey option:first-child").attr("selected", "selected");
+        $("#aprPerson").val("");
+        $("#sfrOrg").val("");
+        $("#sfrProgramSelect option:first-child").attr("selected", "selected");
+        clearPanelText();
+        setPanelEnabledStatus();
+        $("#sfrCV").val("");
+        $("#sfrExpertise").val("");
+        $("#participantTypeDropDown option:first-child").attr("selected", "selected");
+        $("#participantRoleDropDown option:first-child").attr("selected", "selected");
+        $("#academicRankDropDown option:first-child").attr("selected", "selected");
+        $("#Rating option:first-child").attr("selected", "selected");
+        $("#stateDropDown option:first-child").attr("selected", "selected");
+        $("#genderDropDown option:first-child").attr("selected", "selected");
+        $("#searchEthnicityDropDown option:first-child").attr("selected", "selected");
+        $("#IsPotentialChair").prop("checked", false);
+        $("#aprStateExclude").prop("checked", false);
+        setStateEnabledStatus();
+    }
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/SearchForReviewers.js")
+@Html.IncludeVersionedFiles("/Scripts/rr-custom.js")
+
+
+
+
+

@@ -1,0 +1,1 @@
+﻿const INVALID_FILE_FORMAT = "Invalid file format.";

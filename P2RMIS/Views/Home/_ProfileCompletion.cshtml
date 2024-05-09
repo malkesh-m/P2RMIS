@@ -1,0 +1,57 @@
+﻿<!-- TODO: replace the pie chart section in Dashboard view and upgrade jQuery -->
+<div style="border:solid 1px lightgray;width:49%;float:left;text-align:center;height:200px;">
+    <div id="profileCompletion" style="height:200px;width:100%;">(pie image)</div>
+</div>
+<script>
+        var data = [
+            {
+                "source": "Address",
+                "percentage": 22
+            },
+            {
+                "source": "Degrees",
+                "percentage": 2
+            },
+            {
+                "source": "Phone Numbers",
+                "percentage": 49
+            },
+            {
+                "source": "Alternate Contacts",
+                "percentage": 27
+            }
+        ];
+
+        function createChart() {
+            $("#profileCompletion").kendoChart({
+                title: {
+                    text: "Profile",
+                    color: "#333",
+                    font: "bold 14px Helvetica,Arial,sans-serif"
+                },
+                legend: {
+                    position: "right",
+                    margin: {
+                        right: 150
+                    }
+                },
+                dataSource: {
+                    data: data
+                },
+                series: [{
+                    type: "pie",
+                    field: "percentage",
+                    categoryField: "source",
+                    explodeField: "explode"
+                }],
+                seriesColors: ["#03a9f4", "#ff9800", "#fad84a", "#4caf50"],
+                tooltip: {
+                    visible: true,
+                    template: "${ category } - ${ value }%"
+                }
+            });
+        }
+
+        $(document).ready(createChart);
+        $(document).bind("kendo:skinChange", createChart);
+</script>

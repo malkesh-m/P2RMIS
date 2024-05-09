@@ -1,0 +1,28 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@if (!Model.IsMyProfile && Model.IsSroValue != true)
+{
+        <div class="upm-profile-section-academic marginTop60" id="recruitmentBox">
+            <span class="upm-profile-section_header">Recruitment Status</span>
+            <div>
+                Please click on the link to block/unblock reviewer from program participation and view history.
+            </div>
+            <label for="openRecruitment" class="sr-only">Open for Recruitment</label>
+            <a href="#" style="font-size: 16px" id="openRecruitment"><strong><u>Open for Recruitment</u></strong></a>
+            <label for="blockedClient" class="sr-only">Blocked recruitment</label>
+            <a href="#" style="font-size: 16px" id="blockedClient"><strong><u>Blocked</u></strong></a><span id="blockedClients"></span>
+        </div>
+
+        <div class="row-fluid marginTop60" id="recruitmentBox">
+            <div class="bordered alignLeft span12" id="userClientsSection">
+                <span class="textHeaderNotBold alignLeft">
+                    Recruitment Status
+                </span>
+                <div>
+                    Please click on the link to block/unblock reviewer from program participation and view history.
+                </div>
+                <a href="#" style="font-size: 16px" id="openRecruitment"><strong><u>Open for Recruitment</u></strong></a>
+                <a href="#" style="font-size: 16px" id="blockedClient"><strong><u>Blocked</u></strong></a><span id="blockedClients"></span>
+            </div>
+        </div>
+        }

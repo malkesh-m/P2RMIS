@@ -1,0 +1,195 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers.PanelManagement
+@using Sra.P2rmis.Web.UI.Models
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ManageCritiquesViewModel
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab5;
+    int i = 0;
+}
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Panel Mgmt - Overview</span>
+</div>
+
+<div class="row-fluid">
+    <div id="mainContent" class="pm-manageCritiques">
+        @using (Html.BeginForm("ManageCritiques", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+        {
+            @Html.Partial("_PanelSelection")
+        }
+        @Html.Partial("_PrivilegedTabMenu")
+        @if (Model.CanAccessPanel)
+        {
+            if (!Model.HasCritiques)
+            {
+                <p style="text-align:center">@Model.NoResultsMessage</p>
+            }
+            else
+            {
+                <div class="pm-manageCritiques_phases">
+                    <form name="tcol" onsubmit="return false">
+                        <label class="checkbox inline">
+                            Phases: &nbsp;
+                        </label>
+                        @{i = 1;}
+                        @foreach (var header in Model.Critiques.PhaseHeaders)
+                        {
+                            <label class="checkbox inline">
+                                <input id="@ManageCritiquesViewModel.HtmlAttributeValue(i)" data-toggle="myCollapse" type=checkbox name="@ManageCritiquesViewModel.HtmlColumnName(i)" onclick="toggleVis(this.name)" checked>@header.Value.StepName@Model.CheckboxSeparator(i)
+                            </label>
+                            i++;
+                        }
+                    </form>
+                </div>
+                <table id="ManageCritiques" class="pm-manageCritiques_table">
+                    <thead>
+                        <tr>
+                            <td class="pm-manageCritiques_table_border-none" id="emptyTdBlock"></td>
+                            @{ i = 1;}
+                            @foreach (var header in Model.Critiques.PhaseHeaders)
+                            {
+                                var stepName = header.Value.IsModPhase ? "Online Discussion" : header.Value.StepName;
+                                <td class="pm-manageCritiques_table_row" name="@ManageCritiquesViewModel.HtmlAttributeValue(i)" id="@ManageCritiquesViewModel.HtmlAttributeValue(i)">
+                                    <div>
+                                        <div class="pm-manageCritiques_table_row_header">@stepName (@header.Value.CritiqueAssignmentSubmittedCount/@Model.Critiques.PanelCritiques.Count)</div>
+                                        <input type="hidden" value="@Model.MeetionSessionId" id="meetingSessionId" />
+                                        <input type="hidden" value="@header.Value.StageTypeId" id="stageTypeId" />
+                                        <input type="hidden" value="@Model.FormatCritiqueDate(header.Value.StartDate)" id="startDate" />
+                                        <input type="hidden" value="@Model.FormatCritiqueDate(header.Value.EndDate)" id="endDate" />
+                                        @if (header.Value.ReOpenDate != null)
+                                        {
+                                            <input type="hidden" value="@Model.FormatCritiqueDate(@header.Value.ReOpenDate)" id="reopenDate" />
+                                        }
+                                        else
+                                        {
+                                            <input type="hidden" value="" id="reopenDate" />
+                                        }
+                                        @if (header.Value.ReCloseDate != null)
+                                        {
+                                            <input type="hidden" value="@Model.FormatCritiqueDate(header.Value.ReCloseDate)" id="closeDate" />
+                                        }
+                                        else
+                                        {
+                                            <input type="hidden" value="" id="closeDate" />
+                                        }
+                                        <div class="pm-manageCritiques_table_row_status">Status:</div>
+                                        <input type="hidden" value="@header.Value.PhaseStatusKey" class="phaseStatusKey" />
+                                        <div class="pm-manageCritiques_table_row_status_result" id="statusResult">
+                                            @if (Model.HasModifyDatePermission)
+                                            {
+                                                <a href="#" class="pm-manageCritiques_table_row_status_result_link">@header.Value.PhaseStatus</a>
+                                            }
+                                            else
+                                            {
+                                                <span class="pm-manageCritiques_table_row_status_result_link"><a href="#">@header.Value.PhaseStatus</a></span>
+                                            }
+                                        </div>
+                                        @if (i > 1)
+                                        {
+                                            <button class="pm-manageCritiques_table_row_button" @Model.DisableButton(header.Value.CritiqueAssignmentSubmittedCount, Model.Critiques.PanelCritiques.Count) sessionPanelId="@Model.SelectedPanel" stepTypeId="@header.Value.StageTypeId">Submit</button>
+                                        }
+                                    </div>
+                                </td>
+                                i++;
+                            }
+                        </tr>
+                    </thead>
+                </table>
+                <div id="loading"></div>
+                <div id="pm-manageCritiques-grid" class="pm-manageCritiques-grid"></div>
+            }
+        }
+        else 
+        {
+            foreach (var message in Model.PanelAccessErrors)
+            {
+                <p><span class="failureMessage">@message</span></p>
+            }
+        }
+        </div>
+</div>
+<input id="manageCritiquesGridData" type="hidden" value='@Html.Raw(Json.Encode(Model.Critiques.PanelCritiques))' />
+<input id="sessionPanelId" type="hidden" value="@Html.Raw(Json.Encode(Model.SelectedPanel))" />
+<input id="targetController" type="hidden" value="PanelManagement" />
+<input id="targetAction" type="hidden" value="ManageCritiques" />
+<script type="text/javascript">
+    var sessionPanelId = @Model.SelectedPanel,
+        errorMessage = '@Model.ErrorMessage',
+        activeLogNumber = '@Model.ActiveLogNumber',
+        phaseName = '', //header.Value.StepName
+        startDate = '',
+        endDate = '',
+        reOpenDate = '',
+        reCloseDate = '',
+        meetingSessionId = @Model.MeetionSessionId,
+        stageTypeId = '';
+
+    // Shows and hides phases along with Kendo Grid
+    function toggleVis(btn) {
+        // This sets the checkbox to be disabled if value equals 1
+        var numberChecked = 0;
+        $('.checkbox input').each(function(i, value){
+            var checked = $(this).is(':checked');
+            if(checked){
+                $(this).attr('disabled', 'disabled');
+                numberChecked++;
+                if(numberChecked > 1){
+                    $('.checkbox input').attr('disabled', false);
+                }
+            }
+        })
+
+        // This hides/shows Kendo grid columns
+        var checkedBox = $('input[name="'+ btn +'"]').is(':checked');
+        if(checkedBox) {
+            var grid = $("#pm-manageCritiques-grid").data("kendoGrid");
+            if(btn == 'col1'){
+                grid.showColumn("PreStatus");
+                grid.showColumn("PreAction");
+            }
+            if(btn == 'col2'){
+                grid.showColumn("RevisedStatus");
+                grid.showColumn("RevisedAction");
+            }
+            if(btn == 'col3'){
+                grid.showColumn("OnlineStatus");
+                grid.showColumn("OnlineAction");
+                grid.showColumn("OnlineDiscussion");
+            }
+            setPhases();
+            $('td[name="t'+ btn +'"]').show();
+        }else{
+            $('td[name="t'+ btn +'"]').hide();
+            var grid = $("#pm-manageCritiques-grid").data("kendoGrid");
+            if(btn == 'col1'){
+                grid.hideColumn("PreStatus");
+                grid.hideColumn("PreAction");
+            }
+            if(btn == 'col2'){
+                grid.hideColumn("RevisedStatus");
+                grid.hideColumn("RevisedAction");
+            }
+            if(btn == 'col3'){
+                grid.hideColumn("OnlineStatus");
+                grid.hideColumn("OnlineAction");
+                grid.hideColumn("OnlineDiscussion");
+            }
+            setPhases();
+        }
+    }
+
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/manageCritiques.js")

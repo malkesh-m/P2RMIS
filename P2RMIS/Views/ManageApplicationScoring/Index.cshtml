@@ -1,0 +1,307 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.ViewModels.ManageApplicationScoring.ManageApplicationScoringViewModel
+
+<style type="text/css">
+    .tablesorter-header-inner {
+        text-align: center !important;
+    }
+</style>
+<div class="row-fluid">
+    <p class="formTitle">Manage Application Scoring</p>
+</div>
+@if (Model.CanViewScoreboard)
+{
+    <div class="row-fluid">
+        <div class="span12 align-right"><a href="/ManageApplicationScoring/Scoreboard/?panelId=@Model.SelectedPanelId" target="scoreboardWindow">Launch Scoreboard</a></div>
+    </div>
+}
+<div class="row-fluid">
+    @using (Html.BeginForm(Routing.ManageApplicationScoring.Index, Routing.P2rmisControllers.ManageApplicationScoring, FormMethod.Post, new { @name = "olsFilterPanel", @id = "olsFilterPanel" }))
+    {
+        <div class="application-filter">
+            <div class="select-filter-title">Filters</div>
+            <div style="margin-top: 10px;">
+                <div style="padding:0px 0px 5px 53px">Please select a program and panel to view application scoring.</div>
+                <!-- A user without one of the two permissions below shouldn't get access to this page -->
+                @if (Model.CanViewAllPanels)
+                {
+                    <span style="margin-left: 10px; vertical-align: super; font-size: 12px;"><b>Program:</b></span>
+                    <span class="selectMax">
+                        @Html.DropDownListFor(x => x.SelectedProgramId, new SelectList(Model.Programs, "ProgramID", "GetConcatProgram", Model.SelectedProgramId)
+                            , new { @id = "programId" })
+                    </span>
+                    <span style="vertical-align:super; margin-left: 5px; font-size: 12px;"><b>Meeting:</b></span>
+                    <span>
+                        @Html.DropDownListFor(x => x.SelectedSessionId, new SelectList(Model.Sessions, "SessionId", "DatePeriod", Model.SelectedSessionId)
+                            , "All Meetings", new { @id = "sessionId" })
+                    </span>
+                    <span style="vertical-align:super; margin-left:5px; font-size: 12px;"><b>Panel:</b></span>
+                    <span>
+                        @Html.DropDownListFor(x => x.SelectedPanelId, new SelectList(Model.Panels, "PanelId", "PanelAbbreviation", Model.SelectedPanelId)
+                            , "All Panels", new { @id = "panelId" })
+                    </span>
+                }
+                else if (Model.CanViewAssignedPanels)
+                {
+                    <span style="margin-left: 10px;"><b>Panel</b></span>
+                    <span>
+                        @Html.DropDownListFor(x => x.SelectedPanelId, new SelectList(Model.Panels, "PanelId", "PanelAbbreviation", Model.SelectedPanelId)
+                             , "All Panels", new { @id = "panelId" })
+                    </span>
+                }
+                <span>
+                    <button class="btn btn-primary" id="submitDialog" style="margin: 0px 0px 10px 10px;">Filter</button>
+                </span>
+            </div>
+        </div>
+    }
+    <div id="applicationCount" class="margin-bottom-10">
+        <div>
+            <span class="subtitle">Application Counts by Mechanism</span>
+            <span><a id="hideMechanisms" onclick="toggle_visibility('mechanismsSection', 'hideMechanisms');" href="javaScript:void(0);">Hide Table</a></span>
+        </div>
+        <div id="mechanismsSection" class="margin-top10">
+            <table id="tblMechanisms" class="table table-bordered table-striped tablesorter" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <td>Mechanism</td>
+                        <td>
+                            Total <img src="~/Content/img/info_20px_enabled.png" alt="Information"
+                                       title="Disapproved applications are not shown in the list. If there is a disapproved application(s) for mechanism, the number of scored and expedited counts will not add up to the total number of application." />
+                        </td>
+                        <td>
+                            Scored <img src="~/Content/img/info_20px_enabled.png" alt="Information"
+                                        title="Total number of applications scored. Includes partially and fully-scored applications. Does not include disapproved applications.">
+                        </td>
+                        <td>
+                            @MessageService.TriagedShortLabel <img src="~/Content/img/info_20px_enabled.png" alt="Information"
+                                                                   title="Total number of applications that do not move forward for full review" />
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.MechanismCounts != null && Model.MechanismCounts.Any())
+                {
+                    foreach (var mech in Model.MechanismCounts)
+                    {
+                        <tr>
+                            <td class="left-align">@mech.AwardAbbreviation</td>
+                            <td class="right-align">@mech.TotalApplications</td>
+                            <td class="right-align">@mech.TotalScored</td>
+                            <td class="right-align">@mech.TotalExpedited</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td class="center-align" colspan="4">No Mechanism Data</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@Html.Partial("_ManageApplicationScoringApplications")
+</div>
+<script type="text/javascript">
+    // Poll active application
+    var pollInterval = @Model.PollInterval;
+    var sessionPanelId = $("#panelId").find(":selected").val();
+
+    // Poll data if applications are under scoring
+    if ($("#applicationsSection").length > 0) {
+        setTimeout(function () { fnPollActiveApplicationId(sessionPanelId); }, pollInterval);  // 2712 is sessionPanelId - where does this come from
+    }
+    // Poll active application identifier via AJAX
+    var fnPollActiveApplicationId = function (sessionPanelId) {
+        if (typeof sessionPanelId != 'undefined')
+        {
+            $.get('@Url.Action(Routing.MyWorkspace.PollActiveApplicationId, Routing.P2rmisControllers.MyWorkspace)',
+                { sessionPanelId: sessionPanelId },
+                function (data, textStatus, XMLHttpRequest) {
+                    fnProcessAllApplicationStatus(data);
+                }
+            );
+        }
+        var theSessionPanelId = $("#panelId").find(":selected").val();
+        setTimeout(function () {
+            fnPollActiveApplicationId(theSessionPanelId);
+        }, pollInterval);
+    };
+    // Process score
+    var fnProcessAllApplicationStatus = function (data) {
+        //
+        // All we have to do is to iterate over the ajax JSON results
+        // find the element and update the status values.
+        //
+        for (var i = 0; i < data.length; i++) {
+            var entry = data[i];
+            var f = $('[panelappid="' + entry.PanelApplicationId + '"]');
+            f.text(entry.status);
+            var averageElement = $('[overall="' + entry.PanelApplicationId + '"]');
+            averageElement.text(entry.FormattedAverage);
+            var scoresElement = $('[score="' + entry.PanelApplicationId + '"]');
+            var formattedScore = entry.ActualScores + "/" + entry.PossibleScores;
+            scoresElement.text(formattedScore);
+        }
+        $(".refresh-date").html(new Date().toLocaleDateString() + " at " + new Date().toLocaleTimeString());
+    };
+    // Refresh grid as needed
+    $(".refresh-grid").on("click", function (e) {
+        e.preventDefault();
+        $("#submitDialog").click();
+    });
+</script>
+<script type="text/javascript">
+    //$("#tblApplications").tablesorter();
+    $("#tblApplications").tablesorter({
+        headers: { 11: { sorter: false } }
+    })
+    $('body').on('click', '#appStatus', function (e) {
+        // Get the parameters to pass
+        var dialogTitle = '';
+        var context = $(this).attr('data-context');
+        var panelAppId = $(this).attr('panelappid');
+        var currentAppStatus = $(this).attr('appstatusid');
+        var applicationId = $(this).attr('applicationid');
+        var elementName = e.target.tagName.toLowerCase();
+
+        if (elementName == "a") {
+            if (currentAppStatus == 1) {
+                dialogTitle = "Champion an Application";
+            } else if (currentAppStatus == 2) {
+                dialogTitle = "Select Application Status";
+            } else if (currentAppStatus == 6) {
+                dialogTitle = "Re-Activate";
+            } else if (currentAppStatus == 7) {
+                dialogTitle = "End Scoring";
+            } else if (currentAppStatus == 8) {
+                dialogTitle = "De-Activate";
+            }
+
+            $.get('/ManageApplicationScoring/AppStatus',
+                { context: context, panelAppId: panelAppId, currentAppStatus: currentAppStatus, applicationId: applicationId },
+                function (responseText, textStatus, XMLHttpRequest) {
+                    p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.medium, dialogTitle);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                }
+            );
+        }
+    });
+    // Get meetings when program is changed
+    var fnGetMeetingSessions = function () {
+        var programId = $("#programId").val();
+        // Set session to the drop-down
+        var fnSetSessions = function (data) {
+            $("#sessionId").find('option:gt(0)').remove();
+            $("#panelId").find('option:gt(0)').remove();
+            for (var i = 0; i < data.length; i++) {
+                var session = data[i];
+                $("#sessionId").append($("<option />").val(session.SessionId).html(session.DatePeriod));
+            }
+        };
+        var fnSetPanels = function (data) {
+            $("#panelId").find('option:gt(0)').remove();
+            for (var i = 0; i < data.length; i++) {
+                var panel = data[i];
+                $("#panelId").append($("<option />").val(panel.PanelId).html(panel.PanelAbbreviation)
+                    .attr("data-sessionId", panel.SessionId));
+            }
+        };
+        var fnSetSessionsAndPanels = function (data) {
+            fnSetSessions(data.sessions);
+            fnSetPanels(data.panels);
+        };
+        // load the data via ajax
+        if (programId !== undefined && programId !== "") {
+            $.get('/ManageApplicationScoring/GetSessionsAndPanels',
+                { selectedProgramId: programId },
+                function (responseText, textStatus, XMLHttpRequest) {
+                    fnSetSessionsAndPanels(responseText);
+                }
+            );
+        }
+    };
+    // Populate meeting sessions
+    if ($("#sessionId").children("option").length <= 1) {
+        fnGetMeetingSessions();
+    }
+    $("#programId").on("change", function () {
+        fnGetMeetingSessions();
+    });
+    // Get panels when meeting is changed
+    $("#sessionId").on("change", function () {
+        var programId = $("#programId").val();
+        var sessionId = $("#sessionId").val();
+        var fnSetPanels = function (data) {
+            $("#panelId").find('option:gt(0)').remove();
+            for (var i = 0; i < data.length; i++) {
+                var panel = data[i];
+                $("#panelId").append($("<option />").val(panel.PanelId).html(panel.PanelAbbreviation));
+            }
+        };
+        // Set panels to the drop-down
+        if (sessionId !== "") {
+            // load the data via ajax
+            $.get('/ManageApplicationScoring/GetPanels',
+                { selectedProgramId: programId, selectedSessionId: sessionId },
+                function (responseText, textStatus, XMLHttpRequest) {
+                    fnSetPanels(responseText);
+                }
+            );
+        } else {
+            fnGetMeetingSessions();
+        }
+    });
+
+    $("#panelId").on("change", function () {
+        var panelId = $("#panelId").val();
+        var sessionId = $("#panelId option:selected").attr("data-sessionId");
+        if (panelId && sessionId) {
+            $("#sessionId").val(sessionId);
+        }
+    });
+</script>
+@*Show/hide table*@
+<script type="text/javascript">
+    function toggle_visibility(id, caller) {
+        var e = document.getElementById(id);
+        var c = document.getElementById(caller);
+        if (e.style.display == 'none') {
+            e.style.display = 'block';
+            c.innerHTML = c.innerHTML.replace("Show", "Hide");
+        } else {
+            e.style.display = 'none';
+            c.innerHTML = c.innerHTML.replace("Hide", "Show");
+        }
+    }
+</script>
+@*Show/hide table columns*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input:checkbox:not(:checked)").each(function () {
+            var column = "table ." + $(this).attr("name");
+            $(column).hide();
+        });
+
+        $("input:checkbox").click(function () {
+            var column = "table ." + $(this).attr("name");
+            $(column).toggle();
+        });
+
+        $("input:checkbox").change(function () {
+            $("#colform").submit();
+        });
+    });
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/adminNotes.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/MyWorkspace/ApplicationScoring.js")
+<script type="text/javascript">
+    // Initialize
+    var gSetSessionPanelUrl = '@Url.Action(Routing.MyWorkspace.SetSessionPanel, Routing.P2rmisControllers.MyWorkspace)';
+    var gViewApplicationModalUrl = '@Url.Action(Routing.PanelManagement.PIInformation, Routing.P2rmisControllers.PanelManagement)';
+</script>

@@ -1,0 +1,598 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+<link rel="stylesheet" type="text/css" href="/Content/_ContractCprit.css" />
+
+@Html.Partial("_FormHeader")
+@{
+    string signedDate = ViewHelpers.FormatDate(Model.Form.DocumentSignedDateTime);
+    signedDate = (signedDate == string.Empty) ? ViewHelpers.FormatDate(GlobalProperties.P2rmisDateTimeNow) : signedDate;
+    bool signedOffLine = Model.Form.SignedOffLine != null && (bool)Model.Form.SignedOffLine;
+}
+@if (Model.Form.ContractData.IsContractBypassed)
+{
+}
+else if (Model.Form.ContractData.IsContractCustomized)
+{
+    if (Model.Form.DocumentSigned)
+    {
+        <br />
+        <a href="@Url.Action("GetDocumentPdf", new { panelRegistrationDocumentId = Model.Form.DocumentId })" target="_blank">Download Signed Contract</a>
+    }
+    else
+    {
+        <p class="margin-top10 boldWeight">Please download the updated contract and review. Please sign on the Confirm/Sign tab.</p>
+        <a href="@Url.Action("GetDocumentPdf", new { panelRegistrationDocumentId = Model.Form.DocumentId })" target="_blank">Download Updated Contract</a>
+    }
+}
+else if (Model.Form.DocumentSigned)
+{
+    <div id="documentFormContent" class="bordered-webonly" style="margin:30px 0px;float:left;width:98%;">
+        @Html.Raw(Model.Form.DocumentWebContent)
+    </div>
+}
+else if (!signedOffLine)
+{
+    <div id="documentFormContent" class="bordered-webonly" style="margin:30px 0px;float:left;width:98%;">
+        <div id="sraHeader">
+            <img id="gditLogo" src="/Content/img/gd_it_logo-color.jpg" alt="GDIT Logo" style="width:300px;" />
+            <h1>
+                Committee Member Agreement
+            </h1>
+            <h3 class="center-align">
+                Cancer Prevention Research Institute of Texas Scientific Research and<br />
+                Prevention Programs
+            </h3>
+        </div>
+        <div id="preamble">
+            <p>
+                This Committee Member Agreement ("Agreement") is made and entered into as of <span id="signatureDateOnContract">@Model.CurrentDateOrSignedDate</span> by and between:
+            </p>
+            <p class="preabmleName" style="font-weight: bold;">@Model.Form.ContractData.FullNameWithSuffix</p>
+            <p>
+                (hereinafter referred to as the Committee Member) and SRA International, a managed affiliate of General Dynamics Information Technology (GDIT) a Virginia corporation, with offices at 110 Thomas Jefferson Drive, Frederick, MD 21702 (hereinafter referred to as the “Company” or “SRA”).
+            </p>
+        </div>
+        <div id="articlesOfAgreement">
+            <div id="articleI">
+                <h3>ARTICLE I. STATEMENT OF WORK</h3>
+                <p>
+                    The Committee Member agrees to complete services in accordance with Attachment A – Committee Member Statement of Work ("Statement of Work"), which is incorporated herein.
+                </p>
+            </div>
+            <div id="articleII">
+                <h3>ARTICLE II. DIRECTION AND COORDINATION</h3>
+                <p>
+                    The Company shall direct and coordinate all services specified in the Agreement on behalf of its client, the Cancer Prevention and Research Institute of Texas (CPRIT). Any and all Committee Member interactions member agreement on behalf of CPRIT.
+                </p>
+            </div>
+            <div id="articleIII">
+                <h3>ARTICLE III.  TERMS AND CONDITIONS</h3>
+                <p>
+                    The Committee Member acknowledges and agrees to the following:
+                </p>
+                <ol>
+                    <li>
+                        Compensation and term of agreement are contained in “Attachment A – Committee Member Statement of Work”.
+                    </li>
+                    <li>
+                        The Committee Member will complete and sign the “Non-Disclosure Agreement for CPRIT Scientific Research
+                        and Prevention Program (SRPP) Committee Members,” which is incorporated herein by reference.
+                    </li>
+                    <li>
+                        The Committee Member will complete and sign the “Conflict of Interest Policy for CPRIT Scientific Research
+                        and Prevention Program (SRPP) Committee Members,” which is incorporated herein by reference.
+                    </li>
+                    <li>
+                        All conflicts of interest have been properly disclosed in accordance with the “Conflict of Interest Policy”.
+                    </li>
+                    <li>
+                        The Committee Member is acting as an independent contractor and is not in any way to be considered as an
+                        agent or employee of the Company or CPRIT.
+                    </li>
+                    <li>
+                        Services specified in the Statement of Work shall be performed by the named Committee Member personally. Services performed under this agreement shall be performed to high professional standards consistent with industry practices. The Agreement shall not be assigned or divided or transferred by the Committee Member to any other party. Support services, such as typing, may be performed by personnel other than the Committee Member although the Company will not be responsible for any cost associated with this.
+                    </li>
+                    <li>
+                        The Committee Member certifies that he/she is not in violation of any applicable federal, state or local
+                        laws regarding dual compensation and will not receive payment from another source for performing the same
+                        services specified in the Statement of Work.
+                    </li>
+                    <li>
+                        The Company retains ownership of, and all right, title, and interest in and to, the Company’s pre-existing
+                        Intellectual Property and no license therein, whether express or implied, is granted by this Agreement or
+                        as a result of the services performed hereunder.  The Parties agree that no intellectual property will be
+                        created pursuant to the Statement of Work that is the subject of this agreement.
+                    </li>
+                    <li>
+                        Either party may terminate this Agreement by giving the other party 10 (ten) days written notice. Confidentiality obligations set forth in Article IV shall survive termination of this Agreement.
+                    </li>
+                </ol>
+            </div>
+            <div id="articleIV">
+                <h3>ARTICLE IV. CONFIDENTIAL AND PROPRIETARY INFORMATION</h3>
+                <p>
+                    The Committee Member acknowledges and agrees that any and all nonpublic information of whatever kind or nature relating to this Agreement, or nonpublic information that the Committee Member acquires in connection with or as a result of this Agreement, or nonpublic information that the Committee Member receives or becomes aware of during the term of this Agreement concerning the Company, its clients, and other third parties, is confidential and proprietary ("Confidential Information"). Confidential Information shall include information marked as “Proprietary”, “Confidential”, or with a similar legend. In the absence of any marking, Confidential Information shall also include all information that a reasonable person would consider to be confidential. The Committee Member will use Confidential Information only for the purposes of this Agreement. The Committee Member shall not share Confidential Information with anyone except such persons expressly authorized to receive such information in connection with the performance of this Agreement (i.e., others designated to participate in the same peer review process). The Committee Member will not duplicate Confidential Information, or use it at any time to provide, perform, or furnish any services; or use it to invent, create, modify, adapt, or manufacture any products for the benefit of the Committee Member or any third party.
+                </p>
+                <p>
+                    If the Committee Member requires administrative assistance for the performance of obligations under this Agreement, he/she will limit access to Confidential Information only to those administrative assistants who have a legitimate need for access to perform this Agreement. The Committee Member will ensure that any assistant is aware of and agrees in writing to comply with the confidentiality restrictions of this Agreement.
+                </p>
+                <p>
+                    By execution of this agreement, Committee Member acknowledges that the unauthorized disclosure or use of
+                    Confidential and Proprietary Information as described in the “Non-Disclosure Agreement for the CPRIT Scientific
+                    Research and Prevention Program (SRPP) Committee Members,” which the Committee Member has signed and is
+                    incorporated herein by reference, could cause irreparable harm and significant injury to an applicant and/or the
+                    Company.  Accordingly, the Committee Member agrees that the applicant, the Company, and/or CPRIT acting on behalf
+                    of the applicant shall have the right to seek and obtain immediate injunctive relief from breach or threatened
+                    breach of this Agreement.  This is in addition to any other rights and remedies the applicant or Company may have.
+                </p>
+                <p>
+                    The Committee Member acknowledges that such use or disclosure of Confidential and Proprietary Information as described in the “Non­Disclosure Agreement” may constitute insider trading in violation of federal law, resulting in sanctions on individuals   and the corporate entities involved in insider trading.
+                </p>
+            </div>
+            <div id="articleV">
+                <h3>ARTICLE V. CONFLICTS OF INTEREST AND RELATED ACTIVITIES</h3>
+                <p>
+                    By execution of this agreement, the Committee Member certifies that to the best of his/her knowledge and belief,
+                    no conflict of interest, real or apparent, professional, financial, or personal, as set forth in the “Conflict of
+                    Interest Policy for CPRIT Scientific Research and Prevention Program (SRPP) Committee Members,” which the
+                    Committee Member will sign, and is incorporated herein by reference, exists in relation to performance under
+                    this agreement.
+                </p>
+                <p>
+                    The Committee Member acknowledges that he/she remains under a continuing obligation to comply with the
+                    conflict of interest policy and that the Committee Member will promptly disclose any conflicts of interest and
+                    follow the recusal process established by CPRIT.
+                </p>
+                <p>
+                    Unless waived by CPRIT, the Committee Member shall not provide professional
+                    services for compensation exceeding $5,000 to any grant recipient that was reviewed by the Committee
+                    Member’s Review Panel for one year following the review of the grant application.
+                    For purposes of this restriction, "professional
+                    services" do not include those services for which an honorarium is paid;
+                    however, honoraria exceeding $5,000 shall be reported within 30 days to CPRIT.
+                </p>
+                <p>
+                    While performing work as a Committee Member under this agreement,
+                    the Committee Member may not serve as a member of the board of directors or
+                    other governing board of a CPRIT grant recipient that is currently receiving CPRIT grant funds.
+                </p>
+            </div>
+            <div id="articleVI">
+                <h3>ARTICLE VI. JURISDICTION AND DISPUTE RESOLUTION</h3>
+                <p>
+                    This Agreement and any disputes arising under it shall be governed by the laws of the Commonwealth of Virginia,
+                    without regard to its choice of law provisions. The validity, construction, and enforcement of this Agreement
+                    shall also be governed by the laws of the Commonwealth of Virginia, without regard to its choice of law
+                    provisions. The parties agree that any legal action relating to this Agreement shall be filed in a court of
+                    competent jurisdiction in the Commonwealth of Virginia, to which jurisdiction and venue the parties expressly
+                    agree.
+                </p>
+            </div>
+            <div>
+                <p>
+                    IN WITNESS WHEREOF, the parties hereto, acting through their duly authorized officers or agent, have caused
+                    this Agreement to be executed on the day and year first written above.
+                </p>
+            </div>
+        </div>
+        <div id="attachmentASignatureBlock" style="page-break-inside:avoid">
+            <table class="tbl800px">
+                <tr>
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockTitles" style="font-weight: bold;">
+                            <span>
+                                SRA Project Manager:
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockTitles" style="font-weight: bold;">
+                            <span style="padding-left: 100px;">
+                                SRA Contract Administrator:
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr class="italics">
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockPrintedName">
+                            <span>
+                                Lee Rath
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockPrintedName">
+                            <span style="padding-left: 100px;">
+                                Casey Long
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr class="italics">
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockTitlePrinted">
+                            <span>
+                                Project Manager
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockTitlePrinted">
+                            <span style="padding-left: 100px;">
+                                Contract Administrator
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr class="italics">
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockPhoneNumber">
+                            <span>
+                                (240) 762-4113
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="attachmentASignatureBlockPhoneNumber">
+                            <span style="padding-left: 100px;">
+                                (301) 607-5016
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr class="italics">
+                    <td class="td400px">
+                        <p id="attachmentAEmail">
+                            <span>
+                                <a href="mailto:Lee.Rath@gdit.com">Lee.Rath@gdit.com</a>
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="attachmentAEmail">
+                            <span style="padding-left: 100px;">
+                                <a href="mailto:Casey.Long@gdit.com">Casey.Long@gdit.com</a>
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="signatureBlock" style="page-break-inside:avoid">
+            <table class="tbl800px">
+                <tr>
+                    <td class="td400px">
+                        <p id="signatureBlockTitles">
+                            <span>
+                                COMMITTEE MEMBER:
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="signatureBlockTitles">
+                            <span style="padding-left: 100px;">
+                                SRA International, Inc.
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px">
+                        <p>
+                            <img alt="Signature" />
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="signatureBlockSignatures">
+                            <img style="padding-left: 100px;" id="sraSignature" alt="Signature" />
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px">
+                        <p>
+                            <span>
+                                _______________________
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p>
+                            <span id="contractAdminSignature" style="padding-left: 100px;display:none;">
+                                <img src="~/Content/img/long-signature.png" style="margin-top:-55px;" alt="Signature" />
+                            </span>
+                            <span style="padding-left: 100px;display:inline-block;">
+                                _______________________
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px valign-top">
+                        <p id="signatureBlockPrintedName">
+                            <span>
+                                @Model.Form.ContractData.FullNameWithSuffix
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="signatureBlockPrintedName" style="padding-left: 100px;">
+                            <span>
+                                Casey Long<br />Contracts Administrator
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="attachmentA" style="page-break-before:always">
+            <div id="attachmentAHeader">
+                <h2>
+                    ATTACHMENT A
+                </h2>
+                <h2>
+                    COMMITTEE MEMBER STATEMENT OF WORK
+                </h2>
+            </div>
+            <div id="attachmentADetails">
+                <table class="tbl800px">
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Committee Member:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    @Model.Form.ContractData.FullNameWithSuffix
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Project Name:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    Cancer Prevention & Research Institute of Texas (CPRIT) Peer Review
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Committee Name:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    @Model.Form.ContractData.PanelName
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Period of Performance:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    @ViewHelpers.FormatDate(Model.Form.ContractData.PeriodOfPerformanceStartDate)
+                                    to @ViewHelpers.FormatDate(Model.Form.ContractData.PeriodOfPerformanceEndDate)
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    <span style="font-weight: bold;">
+                        Committee Member Fees and Compensation for Assigned Tasks:
+                    </span>
+                </p>
+                <p class="padding-bottom10">
+                    @Model.Form.ContractData.ConsultantFeeText
+                </p>
+                <div style="display:none;" id="consultantFeeAmount">@Model.Form.ContractData.ConsultantFee</div>
+            </div>
+            <div id="attachmentADOW">
+                <h4>
+                    Description of Work:
+                </h4>
+                <p>
+                    You will serve as a reviewer for the peer review of applications submitted to CPRIT.
+                    Your key responsibilities include:
+                    @Model.Form.ContractData.DescriptionOfWork
+                    <b>
+                        If you do not fulfill the key responsibilities,
+                        your honorarium may be reduced by an appropriate amount as stated in the CPRIT Peer Review Honoraria Policy.
+                    </b> To view the full honoraria
+                    policy, please reference this
+                    <a href="https://www.cprit.texas.gov/grants-process/peer-review-committees/">
+                        <span class="hidden-text">
+                            To view the full honoraria
+                            policy, please reference this
+                        </span>link
+                    </a>.
+                </p>
+                <p>
+                    The in-person peer review meeting is held in Texas (location to be determined.)
+                    <b>
+                        Attendance and participation at peer review meetings, whether the meeting is held by conference call or in person, is required.
+                    </b>
+                    If an emergency prevents you from traveling to the in-person peer review meeting, notify the GDIT Project Manager immediately.
+                    The Company may accommodate your participation by teleconference.
+                    However, this option may not be possible, is not ideal, and will affect the honorarium payment.
+                </p>
+                <p>
+                    You will fulfill your key responsibilities under the direction of CPRIT, the Product Development Review Council Chair and Vice Chair,
+                    and the GDIT Project Manager. As a Committee Member,
+                    you will successfully complete the above tasks within the designated period of performance.
+                    You must notify the GDIT Project Manager immediately if an emergency prevents you from completing your key responsibilities as a Committee Member.
+                </p>
+            </div>
+
+            <div id="attachmentAAuthExp">
+
+                <h4>
+                    Authorized Expenses (if applicable):
+                </h4>
+                <ol>
+                    <li>
+                        <div>
+                            <h4>
+                                Travel to and From Peer Review Meeting:
+                            </h4>
+                            <p>
+                                Your primary airline (or train) travel to and from the designated meeting site must be arranged through an
+                                SRA-designated travel agent. The SRA Meeting Planner will provide specific instructions and the deadline
+                                for completing travel arrangements. If alternate means of travel are planned, you must receive prior
+                                approval from the SRA Project Manager.
+                            </p>
+                            <p>
+                                SRA will pay the cost of primary travel to and from the meeting site from either your home or office when
+                                arrangements are made as described above. It is essential to understand that SRA is authorized to pay the
+                                costs for your primary travel ONLY when that travel has been arranged as described above. The costs of any
+                                travel that you arrange through any travel agent other than the SRA-designated travel agent may not be
+                                reimbursable.
+                                <b>
+                                    If travel is not finalized through the provided registration link in the pre-meeting factsheet by the established date,
+                                    you will be provided a not-to-exceed reimbursable amount and will be required to purchase your own travel. You will be reimbursed the cost
+                                    of your travel up to the provided amount.
+                                </b>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h4>
+                                Ground Transportation to and From the Airport (or Train Station):
+                            </h4>
+                            <p>
+                                Airport shuttle or taxi service may be used to travel from your home or office to the airport for your
+                                outbound trip, and then from the airport to your home or office on your return trip. Taxi services should
+                                be used for trips to and from the airport to the meeting/hotel. SRA will reimburse you for these expenses.
+                                You must have an original receipt to be reimbursed. <b>SRA must preapprove all limousine and/or car services.</b>
+                            </p>
+                            <p>
+                                In some cases, SRA will arrange for complementary shuttle service between the designated hotel meeting site
+                                and the closest airport. When so arranged, you are expected to use this shuttle service to travel from the
+                                airport to the hotel upon your arrival, and again from the hotel to the airport upon your departure. If you
+                                arrive outside normal shuttle service hours or at a different airport (or train station), you may use an
+                                airport shuttle or taxi service. You will receive information before the meeting regarding those meetings
+                                where SRA arranges complementary shuttle service.
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <h4>
+                            Use of a Personal Vehicle to Drive to the Peer Review Meeting:
+                        </h4>
+                        <p>
+                            If you prefer to drive to the meeting using a personal vehicle or rental car,
+                            you will be reimbursed for mileage for your personal vehicle at the
+                            allowable federal government rate per mile in effect at the time of your travel, or the cost of a rental car,
+                            plus tolls and parking in accordance with Federal Travel Regulations (FTR) guidelines.
+                            <b>
+                                You will be reimbursed only up to the cost of round-trip airfare as determined by SRA's designated travel agency.
+                            </b>
+                            <b>SRA must provide preapproval</b>; the expenses will not be reimbursed if not approved in advance. Receipts must be
+                            provided for reimbursement of the cost of a preapproved rental car.
+                        </p>
+                    </li>
+                    <li>
+                        <h4>Lodging:</h4>
+                        <p>
+                            SRA will arrange and pay for your hotel accommodations at the hotel designated for the peer review meeting for
+                            the specified duration of the meeting. Instructions and the deadline for completing hotel arrangements will be
+                            provided by the SRA Project Manager. <b>
+                                Do not contact the hotel directly; the hotel will accept reservations and
+                                changes only through SRA.
+                            </b>
+                        </p>
+                        <p>
+                            The payment of your hotel accommodations includes hotel room, internet, and tax, when arranged by SRA as described
+                            above. You will be responsible for paying, at checkout from the hotel, any incidentals billed to your hotel room
+                            during the meeting. Examples of incidentals include telephone calls, room service, spa services, restaurant charges,
+                            pay television, and pay-per-view; hotel incidentals are not eligible for reimbursement by SRA.
+                        </p>
+                    </li>
+                    <li>
+                        <h4>
+                            Meals:
+                        </h4>
+                        <p>
+                            Typically, breakfast, lunch, and morning/afternoon refreshments will be provided to you during the peer review
+                            meeting. Any meals provided to you on site during the meeting will NOT be reimbursed if you dine elsewhere. You
+                            will be provided federal government per diem, according to FTR guidelines, for other meals during the meeting period.
+                        </p>
+                        <p>
+                            Expenses are authorized and will be reimbursed only as described herein. All expenses will be reimbursed according to
+                            FTR guidelines. No other expenses will be reimbursed without prior written approval from the SRA Project Manager.
+                        </p>
+                    </li>
+                </ol>
+            </div>
+            <div id="attachmentAInvoicing">
+                <h4>
+                    Invoicing Procedures for Committee Member Fees and Authorized Expenses:
+                </h4>
+                <p>
+                    To avoid payment delays, and to expedite the processing of your payment check for consultant fee as well as reimbursement of authorized expenses,
+                    you must follow the procedures below:
+                </p>
+                <ol>
+                    <li>
+                        <b>Submit a properly executed, complete, and legible W-9 form</b> if you are a first-time reviewer for SRA
+                        or if personal information (e.g., address, name) has changed since the last time you served as a reviewer.
+                        Your permanent <b>home address</b> (<b>NOT</b> your work address) should be listed in the W-9 form.
+                        The only exception to the address information is if you are completing the W-9 as a business entity.
+                        The W-9 address is the one to which your consultant's fee and expense reimbursements will be sent.
+                    </li>
+                    <li>
+                        <b>Submit an expense reimbursement form (if applicable)</b> to SRA for payment of authorized reimbursable expenses.
+                        Submit this form to the designated SRA employee at the conclusion of the peer review meeting.
+                        Receipts should be submitted within 7 days following the conclusion of the meeting.
+                    </li>
+                </ol>
+
+                <p>
+                    Payment for your consultant fee and authorized expenses will be made as one check within forty-five business days
+                    following the conclusion of the meeting. Receipt of a properly executed and documented expense reimbursement form is required.
+                    SRA will return for correction any reimbursement request that is not properly completed or that is not submitted on the prescribed form.
+                    SRA may withhold, at its sole and absolute discretion, all or part of the fee if required tasks as set forth above are not satisfactorily completed.
+                </p>
+                <p>
+                    The fee you receive for your peer review service is taxable as income.
+                    Reviewers are responsible for reporting this income to the IRS and should maintain their own tax records.
+                    SRA does not provide tax preparation services. SRA will send a 1099 to all reviewers receiving annual income
+                    in excess of the U.S. 1099 taxable limit in the year following their receipt of payment for services.
+                </p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div style="margin:30px 0px;float:left;">
+        This contract is not currently available on-line. Please contact your RTA to obtain a copy.
+    </div>
+}

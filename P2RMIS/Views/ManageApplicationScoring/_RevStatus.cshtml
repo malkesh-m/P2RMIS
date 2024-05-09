@@ -1,0 +1,96 @@
+﻿@model Sra.P2rmis.Web.UI.Models.RevStatusViewModel
+@{
+    string abstain = "Abstain";
+    string markAsCoi = "MarkCoi";
+    string select = "select";
+    string markAsCoiDisplay = "COI";
+}
+
+
+@using (Html.BeginForm("SetRevStatus", "ManageApplicationScoring", FormMethod.Post, new { @Name = "RevStatusForm", @id = "RevStatusForm" }))
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <input type="hidden" name="panelAppId" value="@Model.PanelAppId" />
+                <input type="hidden" name="panelUserAssignmentId" value="@Model.PanelUserAssignmentId" />
+                <input type="hidden" name="sessionPanelId" value="@Model.SessionPanelId" />
+                <div id="validationMessageCoiType" style="display: none;" class="alert-message standardFont">
+                    Reason is required.
+                </div>
+                <div id="validationMessageCoiComment" style="display: none;" class="alert-message standardFont">
+                    Explanation is required.
+                </div>
+                <div id="validationMessageStatusAction" style="display: none;" class="alert-message standardFont">
+                    Please choose an action to perform, COI or Abstain.
+                </div>
+                <h5>COI/Abstain</h5>
+                <select name="RevStatusAction" id="RevStatusAction">
+                    <option id="@select" value="Select" selected="selected">Select</option>
+                    <option id="@abstain" value="@abstain">@abstain</option>
+                    <option id="@markAsCoi" value="@markAsCoi">@markAsCoiDisplay</option>
+                </select>
+                <h5>Reason</h5>
+                <label>@Html.DropDownListFor(m => m.ClientCoiTypeId, new SelectList(Model.CoiDropdown, "ClientCoiTypeId", "CoiTypeDescription", Model.ClientCoiTypeId), "Select", new { @id = "coiTypeDropdownList", disabled = "disabled" })</label>
+                <h5>Explanation</h5>
+                <label>@Html.TextArea("CoiComment", Model.CoiComment, new { @id = "coiComment", disabled = "disabled" })</label>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">    
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.confirmFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+
+    $('#saveDialogChanges').on('click', function () {
+        $("#RevStatusForm").submit();
+    });
+    $('body').on('click', '#cancelRevStatus', function () {
+        $('#ModalDialog').dialog('close');
+    });
+    // Enable/disable fields on radio button
+    $('body').on('change', '#RevStatusAction', function () {
+        if (this.value === '@markAsCoi') {
+            $('#coiTypeDropdownList').prop('disabled', false);
+            $('#coiComment').prop('disabled', false);
+        } else {
+            $('#coiTypeDropdownList').prop('disabled', true);
+            $('#coiComment').prop('disabled', true);
+        }
+    });
+    //Client side validation (needs improved)
+    $('body').on('submit', '#RevStatusForm', function(e) {
+        if ($("select#RevStatusAction :selected").val() === '@markAsCoi') {
+            if ($('#coiTypeDropdownList :selected').text() === 'Select') {
+                e.preventDefault();
+                e.stopPropagation();
+                $('#validationMessageCoiType').show();
+            } else
+                $('#validationMessageCoiType').hide();
+            if (!$('#coiComment').val()) {
+                e.preventDefault();
+                e.stopPropagation();
+                $('#validationMessageCoiComment').show();
+            } else
+                $('#validationMessageCoiComment').hide();
+        }
+        if ($("select#RevStatusAction :selected").val() === 'Select') {
+            e.preventDefault();
+            e.stopPropagation();
+            $('#validationMessageStatusAction').show();
+        } else
+            $('#validationMessageStatusAction').hide();
+    });
+    @*If discussion complete is false we disable certain features of the form on load*@
+        @if (Model.ReviewDiscussionComplete == false)
+    {
+        <text>
+        $(document).ready(function () {
+            $('#RevStatusAction').val('MarkCoi').prop('disabled', true);
+            $('#coiTypeDropdownList').prop('disabled', false);
+            $('#coiComment').prop('disabled', false);
+        });
+        </text>}
+
+</script>

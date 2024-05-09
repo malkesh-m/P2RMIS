@@ -1,0 +1,8 @@
+﻿--Update Resolution and ResolutionDate for each ApplicationWorkflowStep (conditionally included in script)
+UPDATE ApplicationWorkflowStep SET Resolution = CASE WHEN ApplicationWorkflowStepWorkLog.CheckInDate IS NOT NULL THEN 1 ELSE 0 END, ResolutionDate = ApplicationWorkflowStepWorkLog.CheckInDate, ModifiedBy = ApplicationWorkflowStepWorkLog.ModifiedBy,
+ModifiedDate = ApplicationWorkflowStepWorkLog.ModifiedDate
+FROM ApplicationWorkflowStep INNER JOIN
+ApplicationWorkflowStepAssignment ON ApplicationWorkflowStep.ApplicationWorkflowStepId = ApplicationWorkflowStepAssignment.ApplicationWorkflowStepId INNER JOIN
+ApplicationWorkflowStepWorkLog ON ApplicationWorkflowStepAssignment.ApplicationWorkflowStepId = ApplicationWorkflowStepWorkLog.ApplicationWorkflowStepId AND
+	ApplicationWorkflowStepAssignment.UserId = ApplicationWorkflowStepWorkLog.UserId
+

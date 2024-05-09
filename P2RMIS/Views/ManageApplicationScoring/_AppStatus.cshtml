@@ -1,0 +1,90 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@model Sra.P2rmis.Web.UI.Models.AppStatusViewModel
+
+@{
+    const string Champion = Sra.P2rmis.Web.UI.Models.AppStatusViewModel.AppStatusActions.Champion;
+    const string Triage = Sra.P2rmis.Web.UI.Models.AppStatusViewModel.AppStatusActions.Triage;
+    const string Activate = Sra.P2rmis.Web.UI.Models.AppStatusViewModel.AppStatusActions.Activate;
+    const string Deactivate = Sra.P2rmis.Web.UI.Models.AppStatusViewModel.AppStatusActions.Deactivate;
+    const string Disapprove = Sra.P2rmis.Web.UI.Models.AppStatusViewModel.AppStatusActions.Disapprove;
+}
+
+@using (Html.BeginForm("SetAppStatus", "ManageApplicationScoring", FormMethod.Post, new { @Name = "AppStatusForm", @id = "AppStatusForm" }))
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" name="panelAppId" value="@Model.PanelAppId"/>
+            <input type="hidden" name="logNumber" value="@Model.ApplicationId"/>
+            @*If current status is triaged display champion modal*@
+            @if (Model.CurrentStatus == Model.Triaged)
+            {
+                <div class="modal-body">
+                    <p>I wish to champion this application (@Model.ApplicationId) so that it can be scored.</p>
+                    <input type="hidden" name="appStatusAction" value="@Champion" />
+                </div>
+            }
+            else if (Model.CurrentStatus == Model.Active || Model.CurrentStatus == Model.Scoring)
+            {
+                <div class="modal-body">
+                    <p>
+                        This will inactivate the application (@Model.ApplicationId).<br /><br />
+                        You will be able to reactivate to complete scoring at a later time if needed.<br/><br />
+                        All submitted scores will be calculated<br/><br/>
+                        <label for="enableCheckbox"><input type="checkbox" id="enableCheckbox" name="enableCheckbox"/> <b>Yes. I wish to stop scoring and de-activate this application.</b></label>
+                    </p>
+                    <input type="hidden" name="appStatusAction" value="@Deactivate" />
+                </div>
+            }
+            else if (Model.CurrentStatus == Model.Scored)
+            {
+                <div class="modal-body">
+                    <p>Reactivate this application (@Model.ApplicationId).</p>
+                    <input type="hidden" name="appStatusAction" value="@Activate"/>
+                </div>
+            }
+            else if (Model.CurrentStatus == Model.ReadyToScore)
+            {
+                <div class="modal-body">
+                    <p>Select one of the following to change the status of @Model.ApplicationId.</p><br/>
+                    <label><input type="radio" name="appStatusAction" value="@Activate" checked="checked"/> <b>Activate</b> (This will change the status to ACTIVE.)</label><br/>
+                    <label><input type="radio" name="appStatusAction" value="@Disapprove" /> <b>Disapprove</b> (This will set the status to DISAPPROVED. You will not be able to score this application.)</label><br/>
+                    <label><input type="radio" name="appStatusAction" value="@Triage" /> <b>@MessageService.TriagedShortLabel</b> (This will set the status to @MessageService.TriagedShortLabel. You will not be able to score this application.)</label>
+                </div>
+            }
+            else
+            {
+                <p>Error</p>
+            }
+        </div>
+    </div>   
+    <input type="hidden" value="@Model.CurrentStatus" id="currentStatus"/>
+    <input type="hidden" value="@Model.Active" id="activeDiv" />
+    <input type="hidden" value="@Model.Scoring" id="scoringDiv" />
+}
+
+<script type="text/javascript">
+    if ($('#currentStatus').val() == $('#activeDiv').val() || $('#currentStatus').val() == $('#scoringDiv').val()) {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.confirmFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        $('#saveDialogChanges').attr('disabled', 'disabled');
+    } else {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.confirmFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        $('#saveDialogChanges').attr('disabled', false);
+    }
+    $('#saveDialogChanges').on('click', function () {
+        $("#AppStatusForm").submit();
+    });
+</script>
+
+<script type="text/javascript">
+    $('#enableCheckbox').change(function () {
+        if ($('#enableCheckbox').prop('checked')) {
+            $('#saveDialogChanges').prop("disabled", false);
+        }
+        else {
+            $('#saveDialogChanges').prop("disabled", true);
+        }
+    });
+</script>

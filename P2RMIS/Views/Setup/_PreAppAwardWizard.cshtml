@@ -1,0 +1,138 @@
+﻿@model Sra.P2rmis.Web.UI.Models.PreAppAwardWizardViewModel
+
+<style>
+    .k-combobox {
+        height: 30px;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: Verdana,Arial,sans-serif;
+    }
+    .k-datetimepicker {
+        width: 70%;
+    }
+
+</style>
+<div class="row-fluid ss-awardModal">
+    <div id="preAppAwardWizardAlert" class="ss-awardModal__error"></div>
+    <span class="ss-awardModal_explanatory-text">* Indicates a required field.</span>
+    <div class="ss-awardModal_applied-filters">
+        <table class="ss-awardModal_applied-filters_table">
+            <tr>
+                <td class="ss-awardModal_applied-filters_table_client">Client:<span id="clientAwardModal" class="ss-awardModal_applied-filters_table_client_result"></span></td>
+                <td class="ss-awardModal_applied-filters_table_program">Program:<span id="programAwardModal" class="ss-awardModal_applied-filters_table_program_result"></span></td>
+                <td class="ss-awardModal_applied-filters_table_active">Active:<span id="activeAwardModal" class="ss-awardModal_applied-filters_table_active_result"></span></td>
+            </tr>
+        </table>
+        <div class="ss-awardModal_applied-filters_middle">
+            <div class="ss-awardModal_applied-filters_middle_receipt-cycle"><div class="ss-awardModal_applied-filters_middle_receipt-cycle_title">Receipt Cycle:</div><span id="prentReceiptCycle" class="ss-awardModal_applied-filters_middle_receipt-cycle_result">@Model.ParentCycle</span></div>
+        </div>
+        <div class="ss-awardModal_applied-filters_middle">
+            <div class="ss-awardModal_applied-filters_middle_award"><div class="ss-awardModal_applied-filters_middle_award_title">Award:</div><span id="awardName" class="ss-awardModal_applied-filters_middle_award_result">@Model.ParentAwardName</span></div>
+        </div>
+        <div class="ss-awardModal_applied-filters_middle">
+            <div class="ss-awardModal_applied-filters_middle_awardAbbr"><div class="ss-awardModal_applied-filters_middle_awardAbbr_title">Award Abbr:</div><span id="awardAbbrID" class="ss-awardModal_applied-filters_middle_award_result">@Model.ParentAwardAbbr</span></div>
+            <div class="ss-awardModal_applied-filters_middle_blinded"><div class="ss-awardModal_applied-filters_middle_blinded_title">Blinded:</div><span id="blinded" class="ss-awardModal_applied-filters_middle_blinded_result">@Model.ParentBlindedText</span></div>
+        </div>
+        <div class="ss-awardModal_applied-filters_middle">
+            <div class="ss-awardModal_applied-filters_middle_oppId"><div class="ss-awardModal_applied-filters_middle_oppId_title">Opportunity ID:</div><span id="oppID" class="ss-awardModal_applied-filters_middle_oppId_result">@Model.ParentOpportunityId</span></div>
+            <div class="ss-awardModal_applied-filters_middle_pi"><div class="ss-awardModal_applied-filters_middle_pi_title">Partnering PIs:</div><span id="partnering" class="ss-awardModal_applied-filters_middle_pi_result">@Model.ParentPartneringPIsText</span></div>
+        </div>
+        <div class="ss-awardModal_applied-filters_middle">
+            <div class="ss-awardModal_applied-filters_middle_appDue"><div class="ss-awardModal_applied-filters_middle_appDue_title">Appl. Due:</div><span id="receipt" class="ss-awardModal_applied-filters_middle_appDue_result">@Model.ParentAppDueDateText</span></div>
+        </div>
+    </div>
+    <div class="ss-awardModal_preAppChanges">
+        <div class="ss-awardModal_preAppChanges_receipt-cycle">
+            <div class="ss-awardModal_preAppChanges_receipt-cycle_title">*Pre-Application Receipt Cycle:</div>
+            <input id="receiptCycle" type="number" min="25" class="ss-awardModal_preAppChanges_receipt-cycle_input" maxlength="2" value="@Model.Cycle "/>
+            <div class="ss-awardModal_preAppChanges_receipt-cycle_title_blinded">Blinded:</div>
+                @Html.DropDownListFor(m => m.IsBlinded, new SelectList(Model.BlindedList, "Key", "Value", Model.IsBlinded), "", new { style = "margin: 0px;", id = "blindedFlag" })
+        </div>
+        <div class="ss-awardModal_preAppChanges_appDue"><div class="ss-awardModal_preAppChanges_appDue_title">App Due:</div>&nbsp;<input id="receiptDeadline" value="@Model.AppDueDate" class="ss-awardModal_preAppChanges_appDue_input" /></div>
+    </div>
+</div>
+<input type="hidden" id="parentProgramMechanismId" value="@Model.ParentProgramMechanismId" />
+<input type="hidden" id="programMechanismId" value="@Model.ProgramMechanismId" />
+<input type="hidden" id="isBlinded" value="@Model.IsBlinded" />
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        $("#blindedFlag").val($("#isBlinded").val() == "True" ? "Yes" : "No");
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            var msg = "";
+            var receiptCycle = $.trim($("#receiptCycle").val());
+            var selectInput = $('#receiptCycle').val();
+            if (receiptCycle == "") {
+                msg = "Please enter a receipt cycle.";
+            }
+            if (selectInput <= 24) {
+                msg = "Value must be at least 25";
+                $('#receiptCycle').addClass('input-validation-error');
+            } else {
+                msg = "";
+                $('#receiptCycle').removeClass('input-validation-error');
+            }
+            var receiptDeadline = $("#receiptDeadline").val();
+            var blindedFlag = $("#blindedFlag > option:selected").val();
+            $("#preAppAwardWizardAlert").html(msg);
+            if (msg == "") {
+                // Save AJAX call
+                var inputData = { "parentProgramMechanismId": $("#parentProgramMechanismId").val(),
+                    "programMechanismId": $("#programMechanismId").val(), "receiptCycle": parseInt(receiptCycle), "receiptDeadline": receiptDeadline,
+                    "blindedFlag": blindedFlag
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SavePreAppAward',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#preAppAwardWizardAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            $('.ui-dialog-titlebar-close').click();
+                            setAwardGrid();
+                            $('a.k-pager-refresh').click();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#awardWizardAlert").html("Failed to save the award.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+    $('#receiptDeadline').kendoDatePicker();
+    $('#pnComboBox').kendoComboBox();
+
+    function setAwardGrid() {
+        $.ajax({
+            url: '/Setup/GetAwardsJsonString',
+            data: {
+                programYearId: $(".awardSelectProgram select").val()
+            }
+        }).done(function (results) {
+            if (results != "") {
+                var ds = populateAwardDataSource(JSON.parse(results));
+                var grid = $("#grid").data("kendoGrid");
+                ds.read();
+                grid.dataSource.data(ds.data());
+                grid.setDataSource(ds);
+                // Total data in Grid
+                var sourcedata = ds.data()
+                $('#totalRecords span').text(sourcedata.length);
+            }
+        });
+    }
+</script>

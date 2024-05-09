@@ -1,0 +1,100 @@
+﻿@model Sra.P2rmis.Web.UI.Models.AddProgramViewModel
+@using Newtonsoft.Json;
+
+<div class="row-fluid ss-session-no-panel">
+    <div id="addProgramAlert" class="ss-session-no-panel__error"></div>
+    <span class="ss-session-no-panel_required">All fields are required.</span>
+    <div class="ss-session-no-panel_info">
+        <div class="ss-session-no-panel_info_title">Meeting Information</div>
+        <table class="ss-session-no-panel_info_table">
+            <tr>
+                <td class="ss-session-no-panel_info_table_text">Client:<span id="clientName" class="ss-session-no-panel_info_table_text_result"></span></td>
+                <td class="ss-session-no-panel_info_table_text">Mtg:<span id="mtgName" class="ss-session-no-panel_info_table_text_result"></span></td>
+            </tr>
+        </table>
+    </div>
+    <table class="ss-session-no-panel_table">
+        <tr>
+            <td class="ss-session-no-panel_table_header">Fiscal Year</td>
+            <td class="ss-session-no-panel_table_result">
+                @Html.DropDownList("fiscalYear", new SelectList(Model.FiscalYears, "Key", "Value", ""), "Select", new { @id = "fiscalYear", @class = "ss-session-no-panel_table_result_select" })
+            </td>
+        </tr>
+        <tr>
+            <td class="ss-session-no-panel_table_header">Program</td>
+            <td class="ss-session-no-panel_table_result">
+                <select id="programYearId" class="ss-session-no-panel_table_result_select">
+                    <option value="">Select</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<input type="hidden" id="clientId" value="@Model.ClientId" />
+<input type="hidden" id="clientMeetingId" value="@Model.ClientMeetingId" />
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        var clientMeetingId = sessionStorage.getItem('clientMeetingId');
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            var msg = "";
+            if ($("#fiscalYear").val() == "") {
+                msg = "Please select a Fiscal Year.";
+            } else if ($("#programYearId").val() == "") {
+                msg = "Please select a Program.";
+            }
+            $("#addProgramAlert").html(msg);
+            if (msg == "") {
+                $('#saveDialogChanges').attr('disabled', true);
+                var inputData = {
+                    "clientId": $('#clientId').val(), "programYearId": $("#programYearId option:selected").val(), "clientMeetingId": clientMeetingId
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveAddMeeting',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#sessionWizardAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            $('.ui-dialog-titlebar-close').click();
+                            repopulateHighlightParentGridPanel();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#sessionWizardAlert").html("Failed to save the meeting.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+
+        $("#fiscalYear").on("change", function () {
+            var clientId = $("#clientId").val();
+            var fiscalYear = $("#fiscalYear").val();
+            $("#programYearId").find("option:gt(0)").remove();
+            if (fiscalYear) {
+                $.ajax({
+                    url: '/Setup/GetProgramsByFiscalYearJson',
+                    data: { clientId: clientId, fiscalYear: fiscalYear }
+                }).done(function (results) {
+                    $.each(results, function (i, item) {
+                        $("#programYearId").append($("<option/>")
+                            .attr("value", item.Key).html(item.Value));
+                    });
+                });
+            }
+        });
+    });
+</script>

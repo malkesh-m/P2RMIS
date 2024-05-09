@@ -1,0 +1,56 @@
+﻿@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+
+@Html.Partial("_FormHeader")
+@*@{
+    string contentClass = string.Empty;
+    string warningMessage = string.Empty;
+    bool disabledFlag = Model.Form.DocumentSigned != null && (bool)Model.Form.DocumentSigned;
+}*@
+<link href="~/Content/criterion.min.css" rel="stylesheet" />
+<input type="hidden" id="document-signed" value="@disabledFlag.ToString()">
+<div id="documentFormContent" class="mw-emergency-contact">
+    <div class="mw-emergency-contact_explanatory-text">Please add your emergency contact information.</div>
+    <div class="mw-emergency-contact_explanatory-text"><span class="asterisk">*</span>Indicates a required field.</div>
+    <table class="mw-emergency-contact_table">
+        <tr>
+            <td class="mw-emergency-contact_table_small">
+                <span class="asterisk">*</span>
+                <div>First</div>
+                <input type="text" id="emergencyFirstName" class="mw-emergency-contact_input"/>
+            </td>
+            <td class="mw-emergency-contact_table_large">
+                <span class="asterisk">*</span>
+                <div>Last</div>
+                <input type="text" id="emergencyLastName" class="mw-emergency-contact_input"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="mw-emergency-contact_table_small">
+                <span class="asterisk">*</span>
+                <div>Primary Phone</div>
+            </td>
+            <td class="mw-emergency-contact_table_large">
+                <select>
+
+                </select>
+                <input type="number" id="emergencyPrimaryPhone" class="mw-emergency-contact_inputSmall" />
+                <input type="checkbox" id="emergencyPrimaryCheckBox" /> International
+            </td>
+        </tr>
+        <tr>
+            <td class="mw-emergency-contact_table_small">
+                <div>Alternate Phone</div>
+            </td>
+            <td class="mw-emergency-contact_table_large">
+                <select>
+
+                </select>
+                <input type="number" id="emergencyAlternatePhone" class="mw-emergency-contact_inputSmall" />
+                <input type="checkbox" id="emergencyAlternateCheckBox" /> International
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+   
+</script>

@@ -1,0 +1,36 @@
+﻿@model Sra.P2rmis.Web.UI.Models.LibraryViewModel
+@using Sra.P2rmis.Web.Common
+<section role="region" class="mw_filter_container">
+    <div class="p2rmis-filterset">
+        <h6 class="p2rmis-filterset_title">Filters</h6>
+        <div class="p2rmis-filterset_container form-inline">
+            <div class="form-group margin-top10 padding10">
+                <label for="selectedProgramYear" class="p2rmis-filterset_container_title col-sm-2 control-label" id="programTitle">Program</label>
+                @Html.HiddenFor(m => m.ProgramYearId, new { id = "originalProgramYearId" })
+                @Html.DropDownListFor(m => m.ProgramYearId, new SelectList(Model.ProgramYears, "Index", "Value", Model.ProgramYearId), new { @id = "selectedProgramYear" })
+            </div>
+        </div>
+    </div>
+</section>
+
+@*script for ajax calls after selecting a Program/Year from menu*@
+<script type="text/javascript">
+    $(function () {
+        $('#selectedProgramYear').change(function () {
+            var programYearId = $(this).val();
+            if (programYearId !== "") {
+                $.ajax({
+                    cache: false,
+                    url: '@Url.Action(Routing.Library.SetProgramYear, Routing.P2rmisControllers.Library)',
+                    data: { "programYearId": programYearId }
+                }).done(function (data) {
+                    if (data) {
+                        document.location.reload();
+                    }
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert($.defaultFailureMessage);
+                });
+            }
+        });
+    });
+</script>

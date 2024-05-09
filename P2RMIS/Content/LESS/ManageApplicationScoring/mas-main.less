@@ -1,0 +1,221 @@
+﻿@import '../P2RMIS/variables.less';
+@import '../P2RMIS/global.less';
+
+// COI Scoreboard
+.mas-scoreboard {
+    padding: 30px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    &_text {
+        font-size: 20px;
+        display: inline-block;
+
+        input {
+            margin: 0px 0px 2px 0px;
+        }
+
+        label {
+            font-size: 20px;
+        }
+    }
+
+    &_fieldSet {
+        background: #f0f2f7;
+
+        &_coi-section {
+            padding: 30px;
+            border: 1px solid black;
+
+            &_result{
+                display: flex;    
+            }
+
+            &_names{
+                text-align: center;
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            &_header {
+                font-size: 36px;
+                font-weight: bold;
+                padding-bottom: 30px;
+            }
+
+            &_pi {
+                font-size: 28px;
+                line-height: 36px;
+                padding-bottom: 40px;
+            }
+
+            &_no-cois {
+                text-align: center;
+                font-size: 28px;
+                font-weight: bold;
+                display: inline-block;
+                float: left;
+
+                &_input{
+                    margin: 0px 10px 10px 0px !important;
+                    width: 15px !important;
+                    height: 15px;
+                }
+            }
+
+            &_footer {
+                text-align: right;
+                padding: 12px;
+                margin-top: 50px;
+
+                &_button {
+                    &:extend(.buttonPrimary all);
+
+                    &_cancel {
+                        &:extend(.buttonSecondary all);
+                    }
+                }
+            }
+        }
+
+        &_scoring {
+            padding: 30px;
+            border: 1px solid black;
+
+            &_header {
+                font-size: 36px;
+                font-weight: bold;
+                padding-bottom: 30px;
+            }
+
+            &_footer {
+
+                &_text {
+                    display: inline-block;
+
+                    input {
+                        margin: 0px 0px 2px 0px;
+                        font-weight: bold;
+                    }
+                }
+
+                label {
+                    font-size: 28px;
+                }
+
+                &_button {
+                    &:extend(.buttonPrimary all);
+                    float: right;
+                    display: inline-block;
+                }
+
+                &_button-continue {
+                    &:extend(.buttonPrimary all);
+                    margin-top: 10px;
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    &_table {
+        border-collapse: separate;
+        border-left: 0px;
+        border-radius: 4px;
+        width: 100%;
+        margin: 0px auto 20px auto;
+        border-spacing: 0;
+        width: 100%;
+        display: block;
+        overflow: auto;
+
+        tbody td:nth-child(1) {
+            max-width: 350px;
+            width: 100%;
+            line-height: 25px;
+        }
+
+        &_cell {
+            text-align: center;
+            background: #5b6fba;
+            border: 1px solid #e0e0e0;
+            font-size: 32px;
+            font-weight: normal;
+            color: white;
+            padding: 12px;
+            line-height: 30px;
+
+            &_text {
+                text-align: center;
+                background: #5b6fba;
+                border: 1px solid #e0e0e0;
+                font-size: 28px;
+                font-weight: normal;
+                color: white;
+                padding: 12px;
+                width: 200px;
+
+                &_input {
+                    font-size: 14px;
+                    text-align: center;
+                    margin: 10px auto 0px;
+                    width: 100px;
+                }
+
+                input {
+                    margin: 0px 5px 2px 0px;
+                }
+            }
+
+            &_header {
+                text-align: left;
+                background: #5b6fba;
+                border: 1px solid #e0e0e0;
+                font-size: 32px;
+                font-weight: normal;
+                color: white;
+                padding: 12px;
+                line-height: 30px;
+            }
+        }
+
+        &_criteriaName {
+            font-size: 28px;
+            padding: 10px;
+            border-right: 1px solid #5b6fba;
+            border-left: 1px solid #5b6fba;
+        }
+
+        &_number {
+            text-align: center;
+            font-size: 24px;
+            border-right: 1px solid #5b6fba;
+
+            input {
+                margin: 0px;
+                text-align: center;
+            }
+        }
+
+        &_empty {
+            text-align: center;
+            font-size: 24px;
+            border-right: 1px solid #5b6fba;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #d9d9d9;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: white;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 1px solid #5b6fba;
+            border-top: 3px solid #5b6fba;
+            font-size: 28px;
+            padding-left: 10px;
+        }
+    }
+}

@@ -1,0 +1,271 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.CrossCuttingServices.MessageServices;
+@model Sra.P2rmis.Web.UI.Models.CommunicationViewModel
+
+<style type="text/css">
+    .k-upload {
+        display: inline-block;
+    }
+
+    .k-upload-button, .k-upload-files, .k-file {
+        display: inline-block !important;
+    }
+
+    .k-filename {
+        padding-right: 30px !important;
+    }
+
+    #selectAllEmails {
+        float: left;
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+</style>
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader")
+}
+@{ 
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab3;
+    ViewBag.SubPageTitle = Sra.P2rmis.Web.UI.Models.CommunicationViewModel.SubTab1;
+    const string PanelSessionVar = SessionVariables.PanelId;
+    string cannotSendEmailWarningMessage = MessageService.CannotSendPanelCommunicationEmail;
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Panel Mgmt - Overview</span>
+</div>
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        @using (Html.BeginForm("Communication", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+        {
+            @Html.Partial("_PanelSelection")
+        }
+        @Html.Partial("_PrivilegedTabMenu")
+
+        @if (Model.SelectedPanel > 0)
+        {
+            @Html.Partial("_TabbedSubMenu")
+
+            <div class="p2rmis-failure">File name exceeds 100 characters.</div>
+            if (Model.CannotSendEmailWithCurrentAddress)
+            {
+                <div id="failureMessage">@cannotSendEmailWarningMessage</div>
+            }
+
+            using (Html.BeginForm("SendEmail", "PanelManagement", FormMethod.Post, new { @name = "pmSendEmail", @id = "pmSendEmail", enctype = "multipart/form-data" }))
+            {
+
+                @Html.Hidden("sessionPanelId", @Model.SessionPanelId)
+                @Html.Hidden("availableReviewerEmailAddresses", @Model.AvailableReviewerEmailAddresses)
+                <div class="box-with-border">
+                    <div class="container small-top-margin">
+                        <div class="span2">Available Email Templates: </div>
+                        <div class="span4">
+                            @foreach (var xx in Model.EmailTemplates)
+                            {
+                                <a href="#" data-id="@xx.ProgramEmailTemplateId" data-path="@xx.ContentUrl" data-video="@xx.IsVideo" data-link="@xx.IsLink" class="linkPage">@xx.DisplayLabel</a><br />
+                            }
+                        </div>
+                    </div>
+                    <div class="container small-top-margin">
+                        <div class="span1">From:</div>
+                        <div class="span4"><input id="from" type="text" name="senderEmail" value=@Model.SenderEmailAddress readonly style="width:90%;" /></div>
+                    </div>
+                    <div class="container small-top-margin">
+                        <div class="span1">To:</div>
+                        <div class="span8">
+                            @Html.ListBoxFor(m => m.SelectedPanelUserAssignmentIds, new MultiSelectList(@Model.ReviewerEmailsToShow, "Value", "Text"), new { @style = "width: 100%;", id = "recipientEmail", name = "recipientEmail" })
+                        </div><span id="selectAllEmails"><a href="#">Select All</a></span>
+
+                    </div>
+                    <div class="container small-top-margin">
+                        <div class="span1">Cc:</div>
+                        <div class="span8">
+                            @Html.ListBoxFor(m => m.PanelAdministrators, new MultiSelectList(@Model.PanelAdministratorEmailsToShow, "Value", "Text"), new { @style = "width: 100%;", id = "ccEmail", name = "ccEmail" })
+                        </div>
+                    </div>
+                    <div class="container small-top-margin">
+                        <div class="span1">BCC:</div>
+                        <div class="span8">
+                            <input id="bcc" type="text" name="bccEmail" style="width:90%;" />
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="span1"></div>
+                        <div class="span8">To send a blind carbon copy of this email to individuals not assigned to the panel, enter their email addresses in the BCC field separated by semi-colons(;).</div>
+                    </div>
+                    <div class="container small-top-margin">
+                        <div class="span1">Subject:</div>
+                        <div class="span8"><input id="subject" type="text" name="subject" style="width:90%;" /></div>
+                    </div>
+                    <div class="container">
+                        <div class="span1">Message:</div>
+                    </div>
+                    <div class="container">
+                        <div id="example" class="span9">
+                            <textarea id="editor" rows="5" cols="10" style="height:200px;width:100%;" name="communicationEditor">
+                                </textarea>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="span9 field-validation-error"></div>
+                    </div>
+                    <div class="container">
+                        <div class="span9">Attachments: <input name="files" id="files" type="file" multiple /></div>
+                    </div>
+                    <div class="container">
+                        <div class="span9" style="color:gray;">Note: Total 10mb size limit for all attachments</div>
+                        <div class="span9">Allowed file formats: .PDF, .DOCX, .XLSX, .MP4</div>
+                    </div>
+                    <div class="container" style="text-align:center;">
+                        <div class="span9"><button id="sendEmail" class="btn btn-default">Send Email</button></div>
+                    </div>
+                </div>
+
+                <div id="sendConfirmation" style="display:none">
+                    @Html.Partial("_ConfirmEmail")
+                </div>
+            }
+        }
+        else
+        {
+            <p style="text-align:center">@Model.NoResultsMessage</p>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    $(function () {
+        // Create Editor from textarea HTML element
+        $("#editor").kendoEditor({
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "fontName",
+                "fontSize",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "insertImage"
+            ]
+        });
+        //// Create Upload control
+        $("#files").kendoUpload({
+            localization: {
+                select: 'Browse'
+            },
+
+            select: function (e) {
+                var totalSize = 0;
+                $(".field-validation-error").empty();
+                for (var i = 0; i < e.files.length; i++) {
+                    var file = e.files[i];
+                    if (file.extension != ".pdf" && file.extension != ".xlsx" && file.extension != ".mp4" && file.extension != ".docx") {
+                        $(".field-validation-error").append($("<div/>").html(INVALID_FILE_FORMAT).addClass("redColor"));
+                        e.preventDefault();
+                        break;
+                    }
+                    if (e.files[i].name.length > 100) {
+                        $(".p2rmis-failure").addClass('displayBlock');
+                        $('#sendEmail').attr('disabled', true);
+                        e.preventDefault();
+                        break;
+                    }
+                    totalSize += file.size;
+                    if (totalSize > 10485760) {
+                        $(".field-validation-error").append($("<div/>").html("File size more than 10MB can not be uploaded.").addClass("redColor"));
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            }
+        });
+
+        // Create Multi-select control for BCC field
+        $("#emailTemplate").kendoMultiSelect().data("kendoSelect");
+        $("#recipientEmail").kendoMultiSelect().data("kendoMultiSelect");
+        $("#ccEmail").kendoMultiSelect().data("kendoMultiSelect");
+    });
+</script>
+
+@*script for ajax calls to display this email*@
+
+<script type="text/javascript">
+    var selectReviewersDialog;
+    $(document).ready(function () {
+
+        @*// Create the multi-selection boxes
+        $('#reviewerEmailAddressListBox').multiselect2side({
+            selectedPosition: 'right',
+            moveOptions: false,
+            labelsx: 'Available',
+            labeldx: 'Selected',
+            autoSort: true,
+            autoSortAvailable: true
+        });*@
+
+        $('body').on('click', '[id^=AvailableReviewerEmailId]', function () {
+            selectReviewersDialog = ($('#ModalDialog').length > 0) ? $('#ModalDialog') : $('<div id="ModalDialog" style="display:hidden"></div>').appendTo('body');
+            // Get the parameters to pass
+            var SessionPanelId = $(this).attr('data-sessionPanelId');
+            var dialogTitle = 'Select Reviewers';
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("SelectReviewersEmailAddress", "PanelManagement")',
+                data: { "sessionPanelId": SessionPanelId }
+            }).done(function (data) {
+                // fill the data into the modal
+                selectReviewersDialog.html(data);
+                selectReviewersDialog.dialog({
+                    bgiframe: true,
+                    modal: true,
+                    width: 940,
+                    title: dialogTitle
+                });
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert(errorMsg);
+            });
+        });
+
+        // Click event for closing the modal window
+        $('body').on('click', '#selectReviewers', function () {
+            viewCommunicationDialog.dialog('close');
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    (function ($) {
+        $('body').on('click', '#sendEmail', function (e) {
+            e.preventDefault();
+            var errorMsg = "Sorry, there was a problem processing your request.";
+            var theDialog = $('#sendConfirmation');
+            updateModal();
+            ////
+            //// Display the confirmation modal
+            ////
+            theDialog.dialog({
+                bgiframe: true,
+                modal: true,
+                width: 800,
+                height: 500,
+                title: 'Confirmation Before Sending'
+            });
+        });
+    }(jQuery))
+</script>
+@Html.IncludeVersionedFiles("/Scripts/common/common.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/Communication.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/documentDownload.js")

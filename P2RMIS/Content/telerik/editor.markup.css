@@ -1,0 +1,163 @@
+﻿/* comment styles */
+body.margin0 {
+    margin:0px;
+}
+.pageContent { 
+    padding: 0px 15px 0px 15px !important;
+}
+.hidden {
+    display:none;
+}
+.alert-message {
+    color: red;
+}
+a {
+    text-decoration: none;
+    color: #08c
+}
+textarea#comment {
+    height:100px;
+    width:95%;
+}
+#commentInstruction {
+    float:left;
+    font-style:italic;
+    padding: 10px 0px 20px 0px;
+}
+#editorPanel {
+    float:left; 
+    width:67%;
+}
+#commentPanel {
+    float:left;
+    padding-left:10px;
+    min-width:100px;
+    width:31%;
+    overflow-y:auto;
+    overflow-x:hidden;
+    height:445px;
+}
+#commentEntryTemplate {
+    display:none;
+}
+.comment-entry-caption {
+    color: #666;
+}
+.comment-entry-comment {
+    background-color: #eee;
+    width: 275px;
+    word-wrap: break-word;
+}
+.comment-entry {
+    padding-bottom:20px;
+}
+span.reCustomComment, font.reCustomComment {
+    border-style:dashed;
+    border-color:red;
+    border-width:2px;
+}
+span.reCustomCommentX, font.reCustomCommentX {
+    border-style: none;
+}
+span.reColor1, font.reColor1 {
+    border-color:blue !important;
+}
+span.reColor2, font.reColor2 {
+    border-color:orange !important;
+}
+span.reColor3, font.reColor3 {
+    border-color:green !important;
+}
+span.reColor4, font.reColor4 {
+    border-color:purple !important;
+}
+span.reColor5, font.reColor5 {
+    border-color:gold !important;
+}
+span.reColor6, font.reColor6 {
+    border-color:brown !important;
+}
+span.reColor7, font.reColor7 {
+    border-color:cyan !important;
+}
+span.reColor8, font.reColor8 {
+    border-color:magenta !important;
+}
+span.reColor9, font.reColor9 {
+    border-color:navy !important;
+}
+span.reColorX, font.reColorX {
+    border-style: none;
+}
+span[class*="reColor"], font[class*="reColor"] {
+    border-color: red;
+}
+/* track change styles */
+ins.reU1 {
+    color: #08c !important;
+}
+del.reU1 {
+    color: #ff0101 !important;
+}
+.reFormat {
+    border-width:0px 2px;
+    border-style:solid;
+    padding:0px 2px;
+}
+.reU1 {
+    border-color:#f00;
+}
+ol.reFormat, ul.reFormat {
+    padding: 0px 0px 0px 2.5em;
+}
+ins.reUX {
+    text-decoration:none;
+}
+del.reUX {
+    display:none;
+}
+.reTool .InsertComment {
+    background-image: url(/Content/img/icon_add_comment_18x18.png);
+    background-position: 0;
+}
+.reTool .InsertSymbol {
+    background-image: url(/Content/img/symbol_icon_18x18_enabled.png);
+    background-position: 0;
+}
+.reTool .MarkupMode {
+    background-image: url(/Content/img/icon_clean_version.png);
+    background-position: 0;
+}
+.reTool .ToggleComments {
+    background-image: url(/Content/img/comments_18x18_enabled.png);
+    background-position: 0;
+}
+.reTool:hover {
+    background-repeat: no-repeat;
+}
+.reToolAnnotation {
+    background: transparent !important;
+}
+.reInsertSymbol {
+    overflow-y: auto !important;
+}
+textarea.comment-entry-comment {
+    height:60px;
+    width:95%;
+    background-color: #fff;
+}
+.bordered {
+    border: 1px solid #ddd;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    padding: 10px;
+    margin-top: 10px;
+}
+.header-title {
+    background-color:#fff;
+    color:#808080;
+    margin-top:-20px;
+    float:left;
+    padding: 0 5px;
+}

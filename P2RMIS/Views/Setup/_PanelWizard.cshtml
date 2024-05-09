@@ -1,0 +1,139 @@
+﻿@model Sra.P2rmis.Web.UI.Models.PanelWizardViewModel
+
+<div class="row-fluid ss-add-panel">
+    <div id="addPanelAlert" class="ss-add-panel__error"></div>
+    <span class="ss-add-panel_required">All fields are required.</span>
+    <div class="ss-add-panel_filter">
+        <table class="ss-add-panel_filter_table">
+            <tr class="ss-add-panel_filter_table_row">
+                <td class="ss-add-panel_filter_table_row_cell">Client:<span id="clientAwardModal" class="ss-add-panel_filter_table_row_cell_result"></span></td>
+                <td class="ss-add-panel_filter_table_row_mtg">Mtg:<span id="programAwardModal" class="ss-add-panel_filter_table_row_mtg_result"></span></td>
+            </tr>
+        </table>
+        <table class="ss-add-panel_filter_table">
+            <tr class="ss-add-panel_filter_table_row">
+                <td class="ss-add-panel_filter_table_row_session">Session:<span id="activeAwardModal" class="ss-add-panel_filter_table_row_cell_result"></span></td>
+            </tr>
+        </table>
+    </div>
+    <table class="ss-add-panel_table">
+        <tbody class="ss-add-panel_table_body">
+            <tr class="ss-add-panel_table_body_row">
+                <td class="ss-add-panel_table_body_row_header">Panels</td>
+            </tr>
+            @if (Model.Panels.Count > 0)
+            {
+                for (var i = 0; i < Model.Panels.Count; i++)
+                {
+                    <tr class="ss-add-panel_table_body_row">
+                        <td class="ss-add-panel_table_body_row_cell">@Model.Panels[i].Key @Model.Panels[i].Value</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr class="ss-add-panel_table_body_row">
+                    <td class="ss-add-panel_table_body_row_cell">No panels are currently assigned.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table class="ss-add-panel_table-select">
+        <tr>
+            <td class="ss-add-panel_table-select_panel">Program</td>
+            <td class="ss-add-panel_table-select_panel_result">
+                @Html.DropDownListFor(x => x.ProgramId, new SelectList(Model.Programs, "Key", "Value", Model.ProgramId), "Select", new { @id = "programId", @class = "ss-add-panel_table-select_panel_select" })
+            </td>
+        </tr>
+        <tr>
+            <td class="ss-add-panel_table-select_panel">Panel Abbr</td>
+            <td class="ss-add-panel_table-select_panel_result"><input type="text" id="panelAbbr" maxlength="20" class="ss-add-panel_table-select_panel_result_input"/>&nbsp;Max 20 char.</td>
+        </tr>
+        <tr>
+            <td class="ss-add-panel_table-select_panel">Panel Name</td>
+            <td class="ss-add-panel_table-select_name"><input type="text" id="panelName" maxlength="100" />&nbsp;Max 100 char.</td>
+        </tr>
+    </table>
+    <div class="ss-add-panel_panel"><input type="checkbox" id="addPanelCheck" class="ss-add-panel_panel_input" /> Add another panel?</div>
+</div>
+<input type="hidden" id="meetingSessionId" value="@Model.MeetingSessionId" />
+<input type="hidden" id="clientMeetingId" value="@Model.ClientMeetingId"/>
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        var programLength = $('#programId').children('option').length;
+        if (programLength == 2) {
+            $("#programId option:eq(1)").prop("selected", true);
+        }
+
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            $("#successMessage").hide();
+            $("#failureMessage").hide();
+
+            var msg = "";
+            if ($("#programId").val() == "") {
+                msg = "Please select a program.";
+                $('#programId').addClass('input-validation-error');
+            }else{
+                $('#programId').removeClass('input-validation-error');
+                if ($("#panelAbbr").val() == "") {
+                    msg = "Please enter a panel abbreviation.";
+                    $('#panelAbbr').addClass('input-validation-error');
+                }else{
+                    $('#panelAbbr').removeClass('input-validation-error');
+                    if ($("#panelName").val() == "") {
+                        msg = "Please enter a panel name.";
+                        $('#panelName').addClass('input-validation-error');
+                    } else {
+                        $('#panelName').removeClass('input-validation-error');
+                    }
+                }
+            }
+            
+            $("#addPanelAlert").html(msg);
+            if (msg == "") {
+                // Save AJAX call
+                var panelName = $('#panelName').val();
+                var inputData = {
+                    "programYearId": $('#programId').val(), "panelAbbreviation": $('#panelAbbr').val(), "panelName": panelName,
+                    "meetingSessionId": $('#meetingSessionId').val(), "clientMeetingId": $('#clientMeetingId').val()
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveAssignProgramMeeting',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#addPanelAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            var checked = $("#addPanelCheck").prop("checked");
+                            if (checked) {
+                                setSessionGrid(openNewPanelModal);
+                                $('.ui-dialog-titlebar-close').click();
+                            } else {
+                                setSessionGrid();
+                                $('.ui-dialog-titlebar-close').click();
+                            }
+                            $("#successMessage").text("Panel " + panelName + " added successfully.").show();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#addPanelAlert").html("Failed to save the meeting.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+</script>

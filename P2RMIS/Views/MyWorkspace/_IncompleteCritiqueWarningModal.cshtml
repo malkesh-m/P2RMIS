@@ -1,0 +1,48 @@
+﻿@model List<Sra.P2rmis.Web.UI.Models.IncompleteCritiqueViewModel>
+@using Sra.P2rmis.Web.Common
+
+<div id="incompleteCritiqueWarningModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content modalMed">
+            <div class="modal-body">
+                <div class="padding-left20">You have not entered a critique and/or score for the following:</div>
+                <div class="padding-left50 padding-top10 padding-bottom10">
+                    @foreach (var element in Model)
+                    {
+                        <div class="incomplete-critique-element" data-elementid="@element.ApplicationWorkflowStepElementId">@element.CriteriaName</div>
+                    }
+                </div>
+                <div>
+                    To abstain from these sections, click the box below and select SUBMIT. 
+                    To enter a value, select CANCEL, and you will be returned to the Critique page to make any desired updates.
+                </div>
+                <div class="padding-top10 padding-left40" style="font-size: 13px;">
+                    <input type="checkbox" id="abstainFlag" class="valign-top" value="true" /> 
+                    &nbspYes, I wish to abstain from the sections listed above.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Javascript to include the cancel save footer -->
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $("#incompleteCritiqueWarningModal .modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSubmitFooter, function () {
+    //        $('#incompleteCritiqueWarningModal #submitDialog').prop("disabled", true);
+    //    });
+    //});
+</script>
+
+<!-- Custom JavaScript -->
+<script type="text/javascript">
+    // function to perform cancel operation
+    $('#incompleteCritiqueWarningModal div.modal-footer a[id="closeModal"]').on('click', function (e) {
+        e.preventDefault();
+        $('#ModalDialog').dialog('close');
+    });
+
+</script>
+
+
+

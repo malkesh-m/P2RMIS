@@ -1,0 +1,152 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.ViewModels.MeetingManagement.MeetingCommentViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.SubTab3;
+    @Html.Partial("_KendoHeader2016");
+}
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Edit Meeting Details</span><span id="backtoStaff" class="main-header_title_back-to-staff"> (Back to Meeting Management)</span>
+</div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<div class="mm-fieldSet">
+
+    <!-- Details -->
+    <section class="p2FilterContainer">
+        <div class="p2FilterContainer_full">
+            <h6 class="p2FilterContainer_title">Details</h6>
+            <div class="p2FilterContainer_contents">
+                <!-- Details Field Set -->
+                <ul class="p2FilterContainer_details">
+                    <li>
+                        <label for="meeting-attendee" class="p2FilterContainer_details_label">Meeting Attendee:</label>
+                        <div id="meeting-attendee" class="p2FilterContainer_details_result">@Model.ReviewerName</div>
+                    </li>
+                    <li>
+                        <label for="preferred-phone" class="p2FilterContainer_details_label">Preferred Phone:</label>
+                        <div id="preferred-phone" class="p2FilterContainer_details_result">@Model.DetailsHeader.Phone</div>
+                    </li>
+                    <li>
+                        <label for="email" class="p2FilterContainer_details_label">Email:</label>
+                        <div id="email" class="p2FilterContainer_details_result">@Model.DetailsHeader.Email</div>
+                    </li>
+                </ul>
+                <ul class="p2FilterContainer_details">
+                    <li>
+                        <label for="participant-type" class="p2FilterContainer_details_label">Participant Type:</label>
+                        <div id="participant-type" class="p2FilterContainer_details_result">@Model.DetailsHeader.ParticipantType</div>
+                    </li>
+                    <li>
+                        <label for="meeting-result" class="p2FilterContainer_details_label">Meeting:</label>
+                        <div id="meeting-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Meeting</div>
+                    </li>
+                    <li>
+                        <label for="meeting-dates" class="p2FilterContainer_details_label">Meeting Dates:</label>
+                        <div id="meeting-dates" class="p2FilterContainer_details_result">@Model.DetailsHeader.MeetingDates</div>
+                    </li>
+                </ul>
+                <ul class="p2FilterContainer_details">
+                    <li>
+                        <label for="panel-result" class="p2FilterContainer_details_label">Panel:</label>
+                        <div id="panel-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Panel</div>
+                    </li>
+                    <li>
+                        <label for="session-result" class="p2FilterContainer_details_label">Session:</label>
+                        <div id="session-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Session</div>
+                    </li>
+                    <li>
+                        <label for="session-dates" class="p2FilterContainer_details_label">Session Dates:</label>
+                        <div id="session-dates" class="p2FilterContainer_details_result">@Model.DetailsHeader.SessionDates</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    @Html.Partial("_MMSubTabbedMenu")
+    <div class="mm-filterBox_buttons"><button id="mm-filterBox_buttons_save" class="mm-filterBox_buttons_save">Save</button><button id="mm-filterBox_buttons_cancel" class="mm-filterBox_buttons_cancel">Cancel</button></div>
+    <!-- Main Body -->
+    <div class="mm-detailsBox">
+        <div class="mm-detailsBox_title">Comments</div>
+        <ul class="mm-informationBox" style="width: 850px;">
+            <li>
+                <label for="internalComments" style="vertical-align:top;" class="p2FilterContainer_details_label">Internal Comments:</label>
+                <textarea id="internalComments" class="mm-detailsBox_table_result_textarea" maxlength="1000">@Model.InternalComments</textarea>
+            </li>
+            <li>
+                <label for="last-updated" class="p2FilterContainer_details_label">Last Updated:</label>
+                <div id="last-updated" class="p2FilterContainer_details_result">@Model.LastUpdated</div>
+            </li>
+            <li>
+                <label for="last-updated-by" class="p2FilterContainer_details_label">Last Updated By:</label>
+                <div id="last-updated-by" class="p2FilterContainer_details_result">@Model.LastUpdatedBy</div>
+            </li>
+        </ul>
+    </div>
+</div>
+<input type="hidden" id="panelUserAssignmentId" value="@Model.PanelUserAssignmentId" />
+<input type="hidden" id="sessionUserAssignmentId" value="@Model.SessionUserAssignmentId" />
+<script src="~/Scripts/Custom/MeetingManagement/hotelandTravel.js"></script>
+<script type="text/javascript">
+    var getMeetingRegistrationId = sessionStorage.getItem('setMeetingRegistrationId');
+    var getPanelUserAssignmentId = sessionStorage.getItem('setPanelUserAssignmentId');
+    var getSessionUserAssignmentId = sessionStorage.getItem('setSessionUserAssignmentId');
+
+    var paramString = (getPanelUserAssignmentId != null) ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+
+    $('.mm-fieldSet li:nth-child(1) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditHotel?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    });
+    $('.mm-fieldSet li:nth-child(2) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditTravel?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    });
+    $('.mm-fieldSet li:nth-child(3) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditComments?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    });
+
+    var setPanelUserAssignmentId = $('#panelUserAssignmentId').val();
+    var setSessionUserAssignmentId = $('#sessionUserAssignmentId').val();
+
+    // Save Function
+    $("#mm-filterBox_buttons_save").on('click', function () {
+        $('#successMessage').html("").hide();
+        $('#failureMessage').html("").hide();
+        var data = {
+            panelUserAssignmentId: setPanelUserAssignmentId, sessionUserAssignmentId: setSessionUserAssignmentId,
+            internalComments: $('#internalComments').val()
+        };
+        $.ajax({
+            url: '/MeetingManagement/SaveCommentsMeetingDetails',
+            data: data
+        }).done(function (results) {
+            if (results.returnTrue) {
+                location.reload();
+            } else {
+                $('#failureMessage').text('An error has occurred while saving your changes. Please try again.');
+            }
+        })
+    });
+
+    // reload the page if cancel, to remove unsaved changes.
+    $("#mm-filterBox_buttons_cancel").on("click", function (e) {
+        location.reload();
+    });
+
+    $('.nav-tabs a').each(function (i, value) {
+        var link = $.trim($(this).attr('href'));
+        var panelUserAssignmentId = $("#panelUserAssignmentId").val();
+        var sessionUserAssignmentId = $("#sessionUserAssignmentId").val();
+        var parameterString = (panelUserAssignmentId != "") ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+        var parameterValue = (panelUserAssignmentId != "") ? panelUserAssignmentId : sessionUserAssignmentId;
+        var newLink = link + "?" + parameterString + "=" + parameterValue;
+        $(this).attr('href', newLink);
+    });
+</script>

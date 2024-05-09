@@ -1,0 +1,75 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.UI;
+@using Newtonsoft.Json;
+@using Sra.P2rmis.Web.Controllers
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+
+<style>
+
+    .k-combobox .k-input:after {
+        content: " \2193";
+    }
+
+</style>
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Award / Mechanism Setup</span>
+</div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<!-- Select Filters -->
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox">
+        <div class="ss-filterBox_title"><strong>Select Filters</strong></div>
+        <div class="ss-filterBox_required">All fields required.</div><span class="ss-filterBox_activeText"><input id="activeCheckbox" class="ss-filterBox_activeText__checkbox" type="checkbox" checked />&nbsp;Active Programs Only</span>
+        <table class="ss-filterBox_award-table">
+            <tr>
+                @Html.Hidden("programSetupPage_clientId", Session["programSetupPage_clientId"])
+                @Html.Hidden("programSetupPage_fiscalYear", Session["programSetupPage_fiscalYear"])
+                @Html.Hidden("programSetupPage_isActive", Session["programSetupPage_isActive"])
+                <td class="ss-filterBox_award-table_clientSelect"><select class="ss-filterBox_award-table_clientSelect__select" id="ss-award-client"><option value="">Select Client</option></select></td>
+                <td class="ss-filterBox_award-table_yearSelect"><select class="ss-filterBox_award-table_yearSelect__select" id="ss-award-fy"><option value="">Select Year</option></select></td>
+                <td class="ss-filterBox_award-table_programSelect"><select class="ss-filterBox_award-table_programSelect__select"><option value="">Select Program</option></select></td>
+                <td class="ss-filterBox_award-table_buttonShell" style="vertical-align: baseline; padding: 0px 5px;"><button class="ss-filterBox_award-table_buttonShell_buttonPrimary">Find</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-appliedBox">
+        <div class="ss-appliedBox_title"><strong>Applied Filters</strong></div>
+        <table class="ss-appliedBox_table">
+            <tr>
+                <td class="ss-appliedBox_table_client">Client:<span id="selectedClient" class="ss-appliedBox_table_client_result"></span></td>
+                <td class="ss-appliedBox_table_program">Program:<span id="selectedProgram" class="ss-appliedBox_table_program_result"></span></td>
+                <td class="ss-appliedBox_table_active">Active:<span id="selectedActive" class="ss-appliedBox_table_active_result"></span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<p class='afterComment'>Please select a client, fiscal year and program.</p>
+<p class="add-award hidden" style="margin-top: 10px;">No awards were found. Click <a href="#" class="ss-gridHeader_addAwardButton"><i>Assign Award</i></a> to add an award.</p>
+
+<!-- Grid Header -->
+<section id="mainContentArea" class="p2GridHeader hidden">
+    <div class="ss-gridHeader">
+        <h4 class="ss-gridHeader_title">Awards</h4><div id="totalCount" class="ss-gridHeader_totalCount">( Total Records: <span></span> )</div><a href="#" class="ss-gridHeader_addAwardButton"><i>(assign award)</i></a>
+        <h6 class="ss-gridHeader_exportButton" id="btnExport"><a href="#" class="ss-gridHeader_exportButton__link"><img src="/Content/img/icon_export_excel_labeled.png" /></a></h6>
+    </div>
+    <!-- Grid -->
+    <div id="grid" class="ss-grid-award"></div>
+</section>
+
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/awardSetup.js")

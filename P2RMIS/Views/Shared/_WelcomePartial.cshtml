@@ -1,0 +1,15 @@
+﻿@if(Request.IsAuthenticated) {
+   
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("My Assignments", "Index", "Home")</li>
+            <li>@Html.ActionLink("Peer Review", "Index", "Home")</li>
+            <li>@Html.ActionLink("Documents", "Index", "Home")</li>
+            <li>@Html.ActionLink("Competition Set Up", "Index", "Home")</li>
+            <li>@Html.ActionLink("Account Mgmt", "Index", "Home")</li>
+        </ul>
+
+
+}
+
+

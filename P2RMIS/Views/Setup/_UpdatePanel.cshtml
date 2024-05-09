@@ -1,0 +1,135 @@
+﻿@model Sra.P2rmis.Web.UI.Models.UpdatePanelViewModel
+
+<div class="row-fluid ss-update-panel">
+    <div id="updatePanelAlert" class="ss-update-panel__error"></div>
+    <div class="ss-update-panel_filter">
+        <table class="ss-update-panel_filter_table">
+            <tr class="ss-update-panel_filter_table_row">
+                <td class="ss-update-panel_filter_table_row_cell">Client:<span id="clientAwardModal" class="ss-update-panel_filter_table_row_cell_result"></span></td>
+                <td class="ss-update-panel_filter_table_row_mtg">Mtg:<span id="programAwardModal" class="ss-update-panel_filter_table_row_mtg_result"></span></td>
+            </tr>
+        </table>
+        <table class="ss-update-panel_filter_table">
+            <tr class="ss-update-panel_filter_table_row">
+                <td class="ss-update-panel_filter_table_row_cell">Session:<span id="activeAwardModal" class="ss-update-panel_filter_table_row_cell_result"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-update-panel_filter">
+        <div class="ss-update-panel_filter_title"><input type="radio" name="updatePanelButton" class="ss-update-panel_filter_title_input" value="update" checked />&nbsp;Update Panel Name</div>
+        <div class="ss-update-panel_required">All fields are required.</div>
+        <table class="ss-update-panel_filter_table">
+            <tr>
+                <td class="ss-update-panel_filter_table_row_cell">Program</td>
+                <td class="padding10 program-abbr">@Model.ProgramYear</td>
+            </tr>
+            <tr>
+                <td class="ss-update-panel_filter_table_row_cell">Panel Abbr</td>
+                <td class="ss-update-panel_filter_table_row_mtg"><input type="text" id="panelAbbr" value="@Model.PanelAbbr" maxlength="20" class="ss-update-panel_filter_table_row_mtg_input" /><div class="ss-update-panel_filter_table_row_mtg_input_max-text">Max 20 char.</div></td>
+            </tr>
+            <tr>
+                <td class="ss-update-panel_filter_table_row_cell">Panel Name</td>
+                <td class="ss-update-panel_filter_table_row_mtg"><input type="text" id="panelName" value="@Model.PanelName" maxlength="100" class="ss-update-panel_filter_table_row_mtg_input" /><div class="ss-update-panel_filter_table_row_mtg_input_max-text">Max 100 char.</div></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-update-panel_filter">
+        <div class="ss-update-panel_filter_title"><input type="radio" name="updatePanelButton" class="ss-update-panel_filter_title_input" value="move" /><strong>&nbsp;Move Panel to Another Session</strong></div>
+        <table class="ss-update-panel_filter_table">
+            <tr>
+                <td class="ss-update-panel_filter_table_row_cell">Session</td>
+                <td class="ss-update-panel_filter_table_row_mtg">
+                    @Html.DropDownList("sessionId", new SelectList(Model.Sessions, "Key", "Value", ""), "Select", new { @id = "sessionId", @class = "ss-update-panel_filter_table_row_mtg_session-select" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-update-panel_filter">
+        <div class="ss-update-panel_filter_title"><input type="radio" name="updatePanelButton" class="ss-update-panel_filter_title_input" value="remove" /><strong>&nbsp;Delete Panel</strong></div>
+        <table class="ss-update-panel_filter_table">
+            <tr>
+                <td class="ss-update-panel_filter_table_text">Remove this panel from this session.</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<input type="hidden" id="meetingSessionId" value="@Model.MeetingSessionId" />
+<input type="hidden" id="sessionPanelId" value="@Model.SessionPanelId" />
+<input type="hidden" id="areApplicationsReleased" value="@Model.AreApplicationsReleased.ToString()" />
+<input type="hidden" id="areApplicationsAssigned" value="@Model.AreApplicationsAssigned.ToString()" />
+<input type="hidden" id="areUsersAssigned" value="@Model.AreUsersAssigned.ToString()" />
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            var areApplicationsReleased = $.toBoolean($("#areApplicationsReleased").val());
+            var areApplicationsAssigned = $.toBoolean($("#areApplicationsAssigned").val());
+            var areUsersAssigned = $.toBoolean($("#areUsersAssigned").val());
+            var action = $("input[name='updatePanelButton']:checked").val();
+            var checkedValue = $('.ss-update-panel_filter input:checked').val();
+
+            var msg = "";
+            var panelName = $.trim($("#panelName").val());
+            if (areApplicationsReleased) {
+                msg = "You may not update, remove or re-assign this panel. Assignments have already been released.";
+            } else if ((action == "move" || action == "remove") && (areApplicationsAssigned || areUsersAssigned)) {
+                msg = "You may not remove this panel once applications or panelists have been assigned.";
+            } else {
+                if (action == "update") {
+                    var panelAbbr = $("#panelAbbr").val()
+                    if (panelAbbr == "") {
+                        msg = "Please enter a panel abbreviation.";
+                    }
+                    if (panelName == "" && msg == "") {
+                        msg = "Please enter a panel name.";
+                    }
+                } else if (action == "move") {
+                    var sessionId = $("#sessionId").val();
+                    if (sessionId == "" && msg == "") {
+                        msg = "Please select a session.";
+                    }
+                }
+            }
+            $("#updatePanelAlert").html(msg);
+            if (msg == "") {
+                var inputData = {
+                    "sessionPanelId": $('#sessionPanelId').val(), "panelAbbreviation": $("#panelAbbr").val(), "panelName": $("#panelName").val(),
+                    "meetingSessionId": $('#meetingSessionId').val(), "checkedValue": checkedValue, "newMeetingSessionId": $('#sessionId option:selected').val()
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveUpdatePanel',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#updatePanelAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            $('.ui-dialog-titlebar-close').click();
+                            setSessionGrid();
+                            if (action == "update") {
+                                $("#successMessage").text("Panel " + panelName + " updated successfully.").show();
+                            } else if (action == "move") {
+                                $("#successMessage").text("Panel " + panelName + " moved successfully.").show();
+                            } else if (action == "remove") {
+                                $("#successMessage").text("Panel " + panelName + " deleted successfully.").show();
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#updatePanelAlert").html("Failed to save the meeting.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            }
+        });
+    });
+</script>

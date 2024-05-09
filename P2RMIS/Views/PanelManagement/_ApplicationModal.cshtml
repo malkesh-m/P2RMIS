@@ -1,0 +1,74 @@
+﻿<style type="text/css">
+    .panelHolder {
+        width: 150px;
+    }
+    .panelHolder select {
+        width: 100%;
+    }
+    .midSection {
+        margin: 20px 35px;
+    }
+    .midSection button {
+        width:100px;
+    }
+    .float {
+        float: left;
+    }
+    .bold {
+        font-size: 14px;
+        line-height: 14px;
+        padding-bottom: 5px;
+    }
+    #multiselect_leftAll img, #multiselect_rightAll img{
+        width: 20%;
+    }
+    #multiselect_leftSelected img, #multiselect_rightSelected img{
+        width: 10%;
+    }
+</style>
+<div style="font-size: 14px; padding-bottom: 10px;"><strong>Select application(s) to add to panel <span class="fyPanel"></span></strong></div>
+<div class="newCycleSelection">
+    <select id="cycleSelection"></select>
+</div>
+<div>
+    <div class="panelHolder float" id="tested">
+        <div class="bold">Unassigned Applications (<span id="unassignedApps">0</span>)</div>
+        <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple" disabled></select>
+    </div>
+    
+    <div class="midSection float padding-top20">
+        <button type="button" id="multiselect_rightAll" class="btn btn-block"><img src="~/Content/img/playback-fast-forward.png" /></button>
+        <button type="button" id="multiselect_rightSelected" class="btn btn-block"><img src="~/Content/img/chevron-right.png" /></button>
+        <button type="button" id="multiselect_leftSelected" class="btn btn-block"><img src="~/Content/img/chevron-left.png" /></button>
+        <button type="button" id="multiselect_leftAll" class="btn btn-block"><img src="~/Content/img/playback-rewind.png" /></button>
+    </div>
+    
+    <div class="panelHolder float">
+        <div class="bold">Assigned Applications (<span id="assignedApps">0</span>)</div>
+        <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple" disabled></select>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#multiselect').multiselect();
+    $('#tested button').hide();
+    var fyPanel = sessionStorage.getItem('fyPanel');
+    var paPanel = sessionStorage.getItem('paPanel');
+    var pnPanel = sessionStorage.getItem('pnPanel');
+    $('.fyPanel').text(fyPanel + ' ' + paPanel + ' - ' + pnPanel);
+
+    $(document).on('click', 'button', function () {
+        var test = $('#multiselect_to option').is(':visible');
+        if (test) {
+            $('button#saveAppChanges').attr('disabled', false);
+            $('#multiselect_to').attr('disabled', false);
+        } else {
+            $('button#saveAppChanges').attr('disabled', 'disabled');
+            $('#multiselect_to').attr('disabled', 'disabled');
+        }
+        var unassignedLength = $('#multiselect option').length;
+        var assignedLength = $('#multiselect_to option').length;
+        $('#unassignedApps').text(unassignedLength);
+        $('#assignedApps').text(assignedLength);
+    })
+</script>
+  

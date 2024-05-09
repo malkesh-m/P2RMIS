@@ -1,0 +1,238 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SessionAttendanceDetailsViewModel
+
+@{
+    string instructionSubmitAlertMessage = "Once you have submitted your hotel request, you will not be able to make modifications. For any questions, please contact your RTA or the helpdesk at help@p2rmis.com. ";
+    string instructionTravelMode = "Please use the link in the Infosheet/Factsheet to book your air or train reservation.";
+
+    string instructionAlertMessage = (Model.TravelModeId == Model.AirTravelModeId || Model.TravelModeId == Model.TrainTravelModeId) ? instructionSubmitAlertMessage + instructionTravelMode : instructionSubmitAlertMessage;
+}
+<style>
+    .sadFieldset {
+        font-size: 12px;
+        height: 120px;
+    }
+
+    sadFieldsetSN {
+        font-size: 12px;
+        height: 140px
+    }
+
+    .sadFieldset .k-datepicker {
+        width: 113px;
+    }
+
+    select {
+        height: 26px
+    }
+
+    #specialNeedsGrid .k-header {
+        text-align: center
+    }
+
+    .threeRowTextArea {
+        width: 100%;
+        height: 65px;
+        font-size: 14px !important;
+        resize: none;
+    }
+
+    .textAreaLabel {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .k-picker-wrap .k-icon {
+        margin-top: 5px;
+    }
+
+    .k-datepicker.k-header {
+    }
+</style>
+<div id="sessionAttendanceDetailsModal" class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <span id="travel-alert-message">@instructionAlertMessage</span>
+                        <br><br/>
+                        <span class="required">*</span><span class="validInstruction">
+                            Indicates a required field.
+                        </span>
+
+                    </div>
+                    <div id="messages" class="span12 alert-message padding-top10 padding-bottom10"></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12 ellip-line">
+                        <b>@Html.Raw(Model.Panel)</b>
+                    </div>
+                </div>
+                <br />
+                <div class="row-fluid">
+                    <div class="span5 bordered sadFieldset" style="margin-right:16px;padding-left:25px">
+                        <span class="textHeaderNotBold alignLeft"><span class="required">*</span> Attendance (Used for Meal Planning)</span><br />
+                        <span class="row-fluid">
+                            <span class="span6">From<br /><input id="FromDP" value="@Model.AttendanceStartDate" /></span>
+                            <span class="span6">To<br /><input id="ToDP" value="@Model.AttendanceEndDate" /></span>
+                        </span>
+                    </div>
+                    <div class="span7 bordered sadFieldset" style="padding-left:25px">
+                        <span class="textHeaderNotBold alignLeft">
+                            <span class="required">*</span> Hotel
+                            &nbsp;&nbsp;&nbsp;&nbsp;@Html.CheckBoxFor(m => m.HotelNotRequired)  Hotel not required
+                            &nbsp;&nbsp;&nbsp;&nbsp;@Html.CheckBoxFor(m => m.HotelDoubleOccupancy)  Double Occupancy
+                        </span><br />
+                        <span class="row-fluid">
+                            <span class="span4" style="margin-right: 5px;">Check-in<br /><input id="CheckInDP" value="@Model.HotelCheckInDate" /></span>
+                            <span class="span4" style="margin-right: 5px;">Check-out<br /><input id="CheckOutDP" value="@Model.HotelCheckOutDate" /></span>
+                            <span class="span4">
+                                Travel Mode<br />
+                                @Html.DropDownListFor(m => m.TravelModeId, new SelectList(Model.TravelModeDropdown, "Index", "Value",
+                                    Model.TravelModeId), "Select", new { @id = "travelModeDropdownList" })
+                            </span>
+                        </span>
+                    </div>
+                    <div class="span12 bordered sadFieldsetSN" style="margin-top:18px; width: 99%;">
+                        <span class="textHeaderNotBold alignLeft">
+                            Special Requests
+                        </span><br />
+                        <span class="row-fluid">
+                            <span class="span2 align-right paddingRight5 textAreaLabel">Special Hotel/Food Request</span><span class="span10"><textarea maxlength="500" placeholder="Max Limit: 500 Characters" id="hotelAndFoodRequestComments" class="threeRowTextArea">@Model.HotelAndFoodRequestComments</textarea></span>
+                            <span class="span2 align-right paddingRight5 textAreaLabel">Special Travel Request</span><span class="span10"><textarea maxlength="500" id="travelRequestComments" placeholder="Max Limit: 500 Characters" class="threeRowTextArea">@Model.TravelRequestComments</textarea></span>
+                        </span>
+                    </div>
+                </div>
+                <br />
+                <div id="specialNeedsGrid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="panelUserAssignmentId" value="@Model.PanelUserAssignmentId" />
+<input type="hidden" id="meetingRegistrationId" value="@Model.MeetingRegistrationId" />
+<input type="hidden" id="hotelId" value="@Model.HotelId" />
+<input type="hidden" id="submitted" value="@Model.Submitted.ToString()" />
+@Html.Hidden("airTravelModeId", Model.AirTravelModeId)
+@Html.Hidden("trainTravelModeId", Model.TrainTravelModeId)
+
+<script>
+    $(function () {
+        $("#FromDP,#ToDP,#CheckInDP,#CheckOutDP").kendoDatePicker();
+        $(".ellip-line").each(function () { $(this).attr('title', $(this).text()) });
+
+        // Footer buttons
+        if ($.toBoolean($("#submitted").val())) {
+            $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+            $("input, select, textarea").prop("disabled", true);
+        } else {
+            $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelUpdateSubmitFooter);
+            // Handles hotel not required scenario
+            var fnToggleHotel = function () {
+                if ($("#HotelNotRequired").prop("checked")) {
+                    $("#HotelDoubleOccupancy").prop("checked", false);
+                    $("#HotelDoubleOccupancy, #CheckInDP, #CheckOutDP, #travelModeDropdownList").prop("disabled", true);
+                } else {
+                    $("#HotelDoubleOccupancy, #CheckInDP, #CheckOutDP, #travelModeDropdownList").prop("disabled", false);
+                }
+            };
+            fnToggleHotel();
+            $(document).off('change', "#HotelNotRequired").on("change", "#HotelNotRequired", function () {
+                fnToggleHotel();
+            });
+        }
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+
+        // Update or submit session attendance details
+        $(document).off('click', '#ModalDialog div.modal-footer :button')
+                .on('click', '#ModalDialog div.modal-footer :button', function (e) {
+                    e.preventDefault();
+                    var data = {
+                        panelUserAssignmentId: $("#panelUserAssignmentId").val(),
+                        meetingRegistrationId: $("#meetingRegistrationId").val(),
+                        attendanceStartDate: $("#FromDP").val(),
+                        attendanceEndDate: $("#ToDP").val(),
+                        hotelId: $("#hotelId").val(),
+                        hotelCheckInDate: $("#CheckInDP").val(),
+                        hotelCheckOutDate: $("#CheckOutDP").val(),
+                        travelModeId: $("#travelModeDropdownList").val(),
+                        hotelNotRequired: $("#HotelNotRequired").prop("checked"),
+                        hotelDoubleOccupancy: $("#HotelDoubleOccupancy").prop("checked"),
+                        hotelAndFoodRequestComments: $("#hotelAndFoodRequestComments").val(),
+                        travelRequestComments: $("#travelRequestComments").val(),
+                    };
+                        if ($(this).attr('id') == 'saveDialogChanges') {
+                            $.ajax({
+                                cache: false,
+                                type: "POST",
+                                url: '@Url.Action("SaveSessionAttendanceDetails", "MyWorkspace")',
+                                data: data
+                            }).done(function (result) {
+                                if (result) {
+                                    if (result.success) {
+                                        // Reload grid
+                                        if (fnReloadGrid) {
+                                            fnReloadGrid();
+                                        }
+                                        // Display success message
+                                        $('#hotelandtravelmessage').text('Your travel request has been updated.').show();
+                                        $(".alert-message").removeClass("hidden");
+                                        $('.ui-dialog-titlebar-close').click();
+                                    } else {
+                                        $("#messages").empty();
+                                        for (var i = 0; i < result.messages.length; i++) {
+                                            $("#messages").append($("<div/>").html(result.messages[i]));
+                                        }
+                                    }
+                                }
+                            }).fail(function (xhr, ajaxOptions, thrownError) {
+                                alert($.defaultFailureMessage);
+                            });
+                        } else if ($(this).attr('id') == 'submitDialogChanges') {
+                            $.ajax({
+                                cache: false,
+                                type: "POST",
+                                url: '@Url.Action("SubmitSessionAttendanceDetails", "MyWorkspace")',
+                                data: data
+                            }).done(function (result) {
+                                if (result) {
+                                    if (result.success) {
+                                        // Reload grid
+                                        if (fnReloadGrid) {
+                                            fnReloadGrid();
+                                        }
+                                        // Display success message
+                                        $('#hotelandtravelmessage').text('Your travel request has been submitted.').show();
+                                        $(".alert-message").removeClass("hidden");
+                                        $('.ui-dialog-titlebar-close').click();
+                                    } else {
+                                        $("#messages").empty();
+                                        for (var i = 0; i < result.messages.length; i++) {
+                                            $("#messages").append($("<div/>").html(result.messages[i]));
+                                        }
+                                    }
+                                }
+                            }).fail(function (xhr, ajaxOptions, thrownError) {
+                                alert($.defaultFailureMessage);
+                            });
+                        }
+                });
+    });
+    $(function () {
+        // scripts for drop down menu
+        $("#travelModeDropdownList").on("change", function () {
+            // Call ajax to set session
+            var travelModeId = $(this).val();
+            var airTravelModeId = $("#airTravelModeId").val();
+            var trainTravelModeId = $("#trainTravelModeId").val();
+            var message = $("#travel-alert-message");
+            if (travelModeId == airTravelModeId || travelModeId == trainTravelModeId) {
+                message.html("@instructionSubmitAlertMessage@instructionTravelMode");
+            }
+            else {
+                message.html("@instructionSubmitAlertMessage");
+            }
+        })
+    });
+</script>
+

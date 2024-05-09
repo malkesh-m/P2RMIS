@@ -1,0 +1,64 @@
+﻿h1 {
+    font-size: 21.5px !important;
+}
+
+h2 {
+    font-size: 19.5px !important;
+}
+
+h3 {
+    font-size: 17.5px !important;
+}
+
+h4 {
+    font-size: 15.5px !important;
+}
+
+OL {
+    padding-left: 55px;
+}
+
+    OL LI {
+        padding-left: 10px;
+    }
+
+.tbl800px {
+    width: 800px !important;
+}
+
+.td300px {
+    width: 300px !important;
+}
+
+.td400px {
+    width: 400px !important;
+}
+
+.td500px {
+    width: 500px !important;
+}
+
+#sraHeader H1 {
+    text-align: center;
+    padding-top: 10px;
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-bottom: 10px;
+}
+
+#signatureBlock SPAN {
+    font-weight: bold;
+}
+
+#signatureBlock #signatureBlockTitles {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+#attachmentAHeader H2 {
+    text-align: center;
+}
+
+#attachmentASignatureBlock {
+    padding-top: 10px;
+}

@@ -1,0 +1,66 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.Web.UI.Models
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.SummaryStatementViewModel
+
+@{
+    ViewBag.PageTitle = "Staged SS";
+    const string AwardSessionVar = SessionVariables.AwardTypeId;
+    const string ZeroSearchResults = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.ZeroSearchResults;
+    int? awardId = ((int?)Session[AwardSessionVar] == null) ? Model.SelectedAward : (int?)Session[AwardSessionVar];
+    @Html.Partial("_KendoHeader2016");
+}
+<style type="text/css">
+    .k-grid-header thead th:nth-child(1) {
+        padding: .4em .6em;
+        text-align: center;
+    }
+
+    #grid {
+        display: none;
+    }
+   
+    .fa-search {
+        position: absolute;
+        right: 25px;
+        color: #0B4FF4;
+        padding-top: 5px;
+    }
+</style>
+<p class="formTitle">Summary Statements</p>
+<div id="successMessage"></div>
+<div id="failureMessage" class="redMessage"></div>
+<div class="row-fluid">
+    <div class="span12" id="mainContent" style="border:thin solid #ddd;padding:20px">
+        @Html.Partial("_TabMenu")
+        @Html.Partial("_SSFilterMenu")
+        @Html.Partial("_ShowHideInstructions")
+        <div id="instructions">
+            <p style="font-size: 10pt;">
+            <p>Use SHOW/HIDE in the upper right of the screen to view or hide the instructions related to this page.</p>
+            <p>The purpose of this tab is to move summary statements that are ready for writing and editing into the process. This tab also may be used to mark summary statement priorities and change templates of workflows. Summary statements meeting the search criteria will be displayed in this tab.</p>
+            <ul style="list-style-type:disc;">
+                <li>Use the filters on top of the page to enter criteria for summary statement display.</li>
+                <li>To move all summary statements, click the checkbox in the header row then click the START PROCESS button.</li>
+                <li>To move individual summary statements, click the checkboxes at the individual row level then click the START PROCESS button.</li>
+                <li>Use the Application ID column to preview a preliminary, un-formatted draft of the summary statement.</li>
+            </ul>
+        </div>
+        <div class="formNoResults" id="formNoResults">@ZeroSearchResults</div>
+        <p id="actions" style="text-align: right;">
+            <button disabled="disabled" id="push-button">Start Process</button>
+        </p>
+        <table style="width: 100%">
+            <tr>
+                <td>Draft Summary Statements are available for checkout</td>
+                <td style="text-align:right" id="dataLoaded"></td>
+            </tr>
+        </table>
+        <div id="loading"></div>
+        <div id="grid"></div>
+    </div>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-document.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-Staged.js")

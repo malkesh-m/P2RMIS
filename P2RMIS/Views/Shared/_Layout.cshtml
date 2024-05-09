@@ -1,0 +1,221 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+
+@{
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
+    var loginPage = controllerName.Equals("account", StringComparison.OrdinalIgnoreCase) && actionName.Equals("logon", StringComparison.OrdinalIgnoreCase);
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="eng">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Cache-control" content="no-store" />
+    <title>Program and Peer Review Management System</title>
+
+    @*JQuery*@
+    @Html.IncludeVersionedFiles("/Content/themes/base/jquery-ui-1.11.4.smoothness.min.css")
+    @Html.IncludeVersionedFiles("/Scripts/jquery/jquery-1.12.1.min.js")
+
+    @Html.IncludeVersionedFiles("/Scripts/jquery/jquery-migrate-1.2.1.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery-ui/jquery-ui-1.11.4.min.js")
+
+    @*Place holder for jquery js/css includes*@
+    @RenderSection("HeaderJQueryExtension", false)
+
+    @Html.IncludeVersionedFiles("/Scripts/jquery.validate.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.validate.unobtrusive.min.js")
+    @Html.IncludeVersionedFiles("/Content/jquery.tablesorter/theme.default.css")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.tablesorter.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.tablesorter.widgets.min.js")
+
+    @*Multiselect include scripts below *@
+    @Html.IncludeVersionedFiles("/Scripts/jquery-multiselect/css/jquery.multiselect2side.css")
+    @Html.IncludeVersionedFiles("/Scripts/jquery-multiselect/js/jquery.multiselect2side.js")
+
+    @*Progressive Enhancement modal dialog*@
+    @Html.IncludeVersionedFiles("/Scripts/jquery.unobtrusive-ajax.min.js")
+
+    @*Scroll to the Top*@
+    @Html.IncludeVersionedFiles("/Scripts/ScrollTop.js")
+
+    @*Navigation Scripts*@
+    @Html.IncludeVersionedFiles("/Scripts/ResponsiveDropDown.js")
+
+    @*Twitter Bootstrap Includes*@
+    @Html.IncludeVersionedFiles("/Content/bootstrap.min.css")
+    @Html.IncludeVersionedFiles("/Content/bootstrap-responsive.min.css")
+    @Html.IncludeVersionedFiles("/Content/bootstrap-fixes.css")
+    @Html.IncludeVersionedFiles("/Scripts/bootstrap.min.js")
+
+    @*Modified StyleSheet *@
+    @Html.IncludeVersionedFiles("/Content/Site.css")
+    @Html.IncludeVersionedFiles("/Content/LESS/P2RMIS/global.min.css")
+
+    @*Font Awesome Fonts*@
+    @Html.IncludeVersionedFiles("/Content/font-awesome/css/font-awesome.min.css")
+
+    @*Placeholder for inputs used to provide placeholders for inputs for IE9*@
+    @Html.IncludeVersionedFiles("/Scripts/Placeholders.min.js")
+
+    @*Jquery for sticky header*@
+    @Html.IncludeVersionedFiles("/scripts/jquery.stickyheader.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.ba-throttle-debounce.min.js")
+
+    @*Common scripts shared by all pages*@
+    @Html.IncludeVersionedFiles("/Scripts/common/common.js")
+    @Html.IncludeVersionedFiles("/Scripts/common/messages.js")
+
+    <!-- Global Javascript includes for main layout -->
+    @Html.IncludeVersionedFiles("/Scripts/common/common-globalnamespace.js")
+
+    <!-- Load Modal Framework -->
+    @Html.IncludeVersionedFiles("/Scripts/jquery-custom-modal/js/jquery-custom-modal.js")
+
+    @Html.IncludeVersionedFiles("/Content/LESS/P2RMIS/global.min.css")
+
+    <!-- Numeric filter -->
+    <!-- The minified version doesn't fully support "select then modify" action. -->
+    @Html.IncludeVersionedFiles("/scripts/jquery.numeric.js")
+    @Html.IncludeVersionedFiles("/Scripts/Custom/FileSaver.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/Custom/jquery.wordexport.js")
+    @Html.IncludeVersionedFiles("/Content/LESS/less.js")
+    @*Place holder for ad-hoc js/css includes*@
+    @RenderSection("HeaderExtension", false)
+</head>
+
+<body>
+    <div class="superContent">
+        <header class="navbar navbar-fixed-top" role="banner">
+            <div id="skiptocontent"><a href="#main-content-area">skip to main content</a></div>
+            <div id="header">
+
+                <div class="span6">
+                    <!-- HEADER IMAGES -->
+                    @if (!Request.IsAuthenticated || Session[SessionVariables.Verified] == null || Session[SessionVariables.Verified].Equals(0) ||
+                       Session[SessionVariables.CredentialPermanent] == null || Session[SessionVariables.CredentialPermanent].Equals(0) || (string.IsNullOrEmpty(Session["ClientLogo"] as string)) ||
+                       SecurityHelpers.CheckPasswordAgeExpiredFromSession(Session))
+                    {
+                        <img src="@Url.Content("~/Content/themes/base/images/PRMIS R2 03.png")" class="header header-logo-home" alt="P2RMIS Logo" />
+                    }
+                    else
+                    {
+                        <a href='@Url.Action("Dashboard", "Home")'>
+                            <img src='@Url.Content("~/Content/themes/base/images/PRMIS R2 04.png")' class="header header-logo" alt="P2RMIS Logo" title="Home" />
+                        </a>
+                    }
+                </div>
+                @*only show action icons if user is authenticated and verified their profile*@
+                @if (Request.IsAuthenticated && ViewBag.Menu != "false")
+                {
+                    <div class="span6 welcome">
+                        <small>
+                            @if (Session[SessionVariables.Verified].Equals(1) && Session[SessionVariables.CredentialPermanent].Equals(1) && !SecurityHelpers.CheckPasswordAgeExpiredFromSession(Session))
+                            {
+                                <u>
+                                    <a href='@Url.Action("ViewUser", "UserProfileManagement")' title="Profile">@(((Sra.P2rmis.Web.Models.CustomIdentity)(User.Identity)).FullUserName)</a>
+                                </u>
+                                <br />
+                            }
+                            else
+                            {
+                                @(((Sra.P2rmis.Web.Models.CustomIdentity)(User.Identity)).FullUserName)
+                            }
+                            Last Logged in: @(((Sra.P2rmis.Web.Models.CustomIdentity)(User.Identity)).LastLoginDate)<br />
+                        </small>
+                        <label for="exitIcon" class="sr-only">Sign out</label>
+                        <a href="/Account/Logoff" id="href-p2rmis-logout"><img src="~/Content/img/Door_Icon.png" id="exitIcon" alt="Sign out" title="Sign out" /></a>
+                    </div>
+                    <input type="hidden" id="user-name-my-account" value="@(((Sra.P2rmis.Web.Models.CustomIdentity)(User.Identity)).FullUserName)" />
+                }
+            </div>@*close header*@
+
+            @*only show menu if user is authenticated and verified their profile*@
+            @if (Request.IsAuthenticated && ViewBag.Menu != "false")
+            {
+                <nav class="navbar navbar-inner" role="navigation">
+
+                    @if (Session[SessionVariables.Verified].Equals(1) && Session[SessionVariables.CredentialPermanent].Equals(1))
+                    {
+                        <!-- MAIN MENU-->
+                        @Html.MvcSiteMap().Menu(false, true, false)
+                        <!-- Search Functionality -->
+                        <!-- Do not display this at the moment @Html.Partial("_SearchResults") -->
+                    }
+                    @Html.Partial("_IconMenu")
+                </nav>
+            }
+
+            @*Place holder for ad-hoc sticky sub-header includes*@
+            @RenderSection("SubHeaderExtension", false)
+        </header>
+        <!-- PAGE CONTENT GOES HERE -->
+        <main class="pageContent" role="main" id="main-content-area" tabindex="-1">
+            @RenderBody()
+        </main>
+        <!-- FOOTER -->
+        <footer id="footer" class="footer" role="contentinfo">
+            <div>
+                <ul>
+                    <li>@Html.ActionLink("SRA International, Inc., a CSRA Company legal notices and trademark copyrights", "Copyright", "Home") |</li>
+                    <li>@Html.ActionLink("Privacy Policy", "PrivacyPolicy", "Home") |</li>
+                    <li><a href="mailto:@ViewHelpers.HelpDeskEmail">@ViewHelpers.HelpDeskEmail</a> @ViewHelpers.HelpDeskPhoneNumber @ViewHelpers.HelpDeskHours</li>
+                    <li>&copy; Copyright 2013 SRA International, Inc., a CSRA Company.All rights reserved.</li>
+                </ul>
+            </div>
+        </footer>
+
+        <!-- hidden iframe that is used to export table data into Excel Used for IE only -->
+        <iframe id="txtArea1" style="display: none;"></iframe>
+
+        @*modal for search user*@
+        <script type="text/javascript">
+            $(function () {
+                $('#saveDialogChanges').on('click', function () {
+                    $("#SearchUserForm").submit();
+                });
+                $('body').on('click', '#cancelSearchUsers', function () {
+                    $('#ModalDialog').dialog('close');
+                });
+                $('body').on('click', '.searchUser', function (e) {
+                    // Get the parameters to pass
+                    var dialogTitle = "<span class='modalMedCaption modalNotificationCaption'>Search for User</span>";
+                    var context = $(this).attr('data-context');
+
+                    // load the data via ajax
+                    $.get('/UserProfileManagement/SearchUser',
+                        { context: context },
+                        function (responseText, textStatus, XMLHttpRequest) {
+                            p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.medium, dialogTitle);
+                            var isVisible = $('.ui-dialog > .modal-footer').is(":visible");
+                            if (isVisible) {
+                                $('.ui-dialog > .modal-footer').remove();
+                            }
+                        }
+                    );
+                });
+                $("#href-p2rmis-logout").on("click", function () {
+                    $.jTimeout.loggedOut(true);
+                    $.jTimeout.reset(0);
+                });
+                $('.dropdown-submenu a.dropdown-submenu-toggle').on("click", function (e) {
+                    $(this).next('ul').toggle();
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+            });
+        </script>
+        @Html.Partial("_Maintenance")
+    </div>
+    @if (!loginPage)
+    {
+        @Html.Partial("_Timeout")
+    }
+</body>
+</html>
+
+
+

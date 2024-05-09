@@ -1,0 +1,16 @@
+﻿@model Sra.P2rmis.Web.UI.Models.AlreadyActiveAppViewModel
+
+<h3>Already Active Application</h3>
+
+@using (Html.BeginForm("DeactivateActivate", "ManageApplicationScoring", FormMethod.Post, new { @Name = "AlreadyActive", @id = "AlreadyActive" }))
+{ 
+    <p>
+        Application @Model.CurrentActiveAppLogNumber is active. Select PROCEED to inactivate and proceed to scoring for @Model.NewAppLogNumber.<br/><br/>
+        Select CANCEL to return to Application Scoring Mgmt. If you select CANCEL, @Model.CurrentActiveAppLogNumber will remain active.
+    </p>
+    <input type="hidden" value="@Model.CurrentActiveAppId" name="currentActiveApp"/>
+    <input type="hidden" value="@Model.NewAppId" name="newActiveApp"/>
+    <p><a href="Index" class="mas-scoreboard_fieldSet_coi-section_footer_button_cancel">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Proceed" class="mas-scoreboard_fieldSet_coi-section_footer_button" /></p>
+}
+
+

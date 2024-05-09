@@ -1,0 +1,93 @@
+﻿@using Sra.P2rmis.Web.Common
+
+<div id="notificationOfSubmitModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content modalSmall">
+            <div class="modal-body">
+                After submitting your Critique, you will not be able to make edits.
+                Select SUBMIT to submit your Critique or CANCEL to return to the screen and
+                make any desired edits using the edit links.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Javascript to include the cancel save footer -->
+<script type="text/javascript">
+    $(document).ready(function () {
+         $("#ModalDialog #notificationOfSubmitModal .modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSubmitFooter);
+    });
+</script>
+
+<!-- Custom JavaScript -->
+<script type="text/javascript">
+    // function to perform cancel operation
+    $('body').off('click', '#notificationOfSubmitModal #closeModal')
+            .on('click', '#notificationOfSubmitModal #closeModal', function () {
+        $('#ModalDialog').dialog('close');
+    });
+
+    //function to perform submit operation
+    $('body').off('click', '#submitDialog')
+        .on('click', '#submitDialog', function (e) {
+            e.preventDefault();
+            if ($(this).attr('id') == 'submitDialog') {
+
+                var applicationWorkflowId = $(".edit-critique").eq(0).closest(".mw-critiques_main_section").attr("data-workflowid");
+                var elementId = $(".edit-critique").eq(0).closest(".mw-critiques_main_sub-section_critique").attr("data-elementid");
+
+                if (applicationWorkflowId != "" || elementId != "") {
+                    $.ajax({
+                        cache: false,
+                        type: 'POST',
+                        url: '@Url.Action(Routing.MyWorkspace.CanSubmitCritique, Routing.P2rmisControllers.MyWorkspace)',
+                        data: {
+                            "applicationWorkflowId": applicationWorkflowId, "applicationWorkflowStepElementId": elementId, "confirmed": false
+                        }
+                    }).done(function (result) {
+                        if (result.success) {
+                            // Successful
+                            $.ajax({
+                                cache: false,
+                                type: 'POST',
+                                url: '@Url.Action(Routing.MyWorkspace.SubmitCritique, Routing.P2rmisControllers.MyWorkspace)',
+                                data: {
+                                    "applicationWorkflowId": applicationWorkflowId, "applicationWorkflowStepElementId": elementId
+                                }
+                            }).done(function (result) {
+                                // Overall evaluation is incomplete
+                                $.get("@Url.Action(Routing.MyWorkspace.GetConfirmationOfSuccessModal, Routing.P2rmisControllers.MyWorkspace)", function (data) {
+                                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, '<span class="modalSmallCaption modalNotificationCaption">Confirmation</span>');
+                                    $('.ui-dialog').find('#ModalDialog').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { document.location.reload(); });
+                                    $('#submitCritiqueButton').attr('disabled', 'disabled');
+                                    $('a.edit-critique').attr('disabled', 'disabled');
+                                    $("#ModalDialog").dialog({ position: { my: "top center", at: "top center", of: window } });
+                                });
+
+
+                            }).fail(function (xhr, ajaxOptions, thrownError) {
+                                alert($.defaultFailureMessage);
+                            });
+
+                        } else {
+                            if (result.code === 1) {
+                                $.get("@Url.Action(Routing.MyWorkspace.AlreadySubmittedCritique, Routing.P2rmisControllers.MyWorkspace)", function (data) {
+                                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, '<span class="modalSmallCaption modalNotificationCaption">Already submitted critique</span>');
+                                    $('.ui-dialog').find('#ModalDialog').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { document.location.reload(); });
+                                    $('#submitCritiqueButton').attr('disabled', 'disabled');
+                                    $('a.edit-critique').attr('disabled', 'disabled');
+                                    $("#ModalDialog").dialog({ position: { my: "top center", at: "top center", of: window } });
+                                });
+
+                            }
+
+                        }
+                    });
+
+                }
+            }
+        });
+</script>
+

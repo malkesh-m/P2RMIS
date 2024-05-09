@@ -1,0 +1,353 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@model Sra.P2rmis.Web.UI.Models.OrderOfReviewViewModel
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab6;
+}
+<style>
+    .ellipsisCell, .ellipsisCellCoi {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #failureMessage {
+        color: red;
+        padding-bottom: 5px;
+    }
+
+    .tooltipRole {
+        background: white !important;
+        border: 10px solid #FFA500 !important;
+        width: 400px;
+        height: 150px;
+        box-shadow: 10px 10px 5px #666 !important;
+        color: black !important;
+        text-align: left;
+        padding-left: 5px;
+        border-radius: 10px;
+    }
+        .tooltipRole::before {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 20px;
+            top: 60px;
+            border: 15px solid;
+            border-color: #FFA500 transparent transparent #FFA500;
+        }
+        .tooltipRole::after {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 28px;
+            top: 60px;
+            border: 5px solid;
+            border-color: #fff transparent transparent #fff;
+        }
+</style>
+
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Panel Mgmt - Overview</span>
+</div>
+<div class="row-fluid">
+    <div id="successMessage"></div>
+    <div id="failureMessage"></div>
+    <div id="mainContent" class="span12">
+        @using (Html.BeginForm("OrderOfReview", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+        {
+            @Html.Partial("_PanelSelection")
+        }
+        @Html.Partial("_PrivilegedTabMenu")
+        @Html.Partial("_ShowHideInstructions")
+        <div id="instructions">
+            <p style="font-size: 10pt;">
+                To set review order, please drag and drop the application row to the desired place.<br /><br />
+                To @MessageService.TriageHelp an application, please first click "Show @MessageService.TriagedShortLabel" to display @MessageService.TriageHelped applications, then select the checkbox next to the application you want to @MessageService.TriageHelpOpposite.   Un-select the check-box next to an application will @MessageService.TriageHelpOpposite the application. A review order will be set depending on the application currently listed position.
+            </p>
+        </div>
+        @if ((Model.OrdersOfReview != null) && (Model.OrdersOfReview.Count() > 0))
+        {
+            <div style="padding-bottom: 5px;">
+                <button id="saveChanges" class="buttonPrimary" disabled>Save</button>
+                <button id="cancelChanges" class="buttonSecondary">Cancel</button>
+                <span class="pull-right">
+                    <a href="#" style="        color: black;
+        text-decoration: none;" id="showTriaged">Show</a> | <a href="#" id="hideTriaged">Hide</a> @MessageService.TriagedShortLabel
+    </span>
+</div>
+<div id="grid"></div>
+}
+else
+{
+<p style="text-align:center">@Model.NoResultsMessage</p>
+}
+    </div>
+</div>
+
+@*template scripts for Kendo grid*@
+<script id="orderTemplate" type="text/x-kendo-template">
+    <div>
+        # if (Order != "@MessageService.TriagedAbbreviation") { #
+        <input type="text" value="#=Order #" class="order-of-review" style="vertical-align:top;width:50px;" maxlength="3" data-value="#= LogNumber #">
+        # } else { #
+        <span>@MessageService.TriagedAbbreviation</span>
+        # } #
+    </div>
+</script>
+<script id="ndTemplate" type="text/x-kendo-template">
+    <div class="align-center">
+        <input type="checkbox" #=IsTriaged? checked="checked" : "" # class="kendogrid-chkbx" style="vertical-align:top;">
+    </div>
+</script>
+<script id="assignedReviewsTemplate" type="text/x-kendo-template">
+    <div>
+        # for(var i=0;i<=ApplicationReviewers.length-1;i++) { #
+        <div class="ellipsisCell">#= ApplicationReviewers[i].Order #-#= ApplicationReviewers[i].ReviewerLastName #, #= ApplicationReviewers[i].ReviewerFirstName #(#= PartType[i] #)</div>
+        # } #
+    </div>
+</script>
+<script id="coisTemplate" type="text/x-kendo-template">
+    <div>
+        # for(var i=0;i<=CoiFirstName.length-1;i++) { #
+        <div class="ellipsisCellCoi">#= CoiLastName[i] #, #= CoiFirstName[i] #</div>
+        # } #
+    </div>
+</script>
+<script id="preMeetingScoresTemplate" type="text/x-kendo-template">
+    <div>
+        # for(var i=0;i<=PreMeetingScores.length-1;i++) { #
+        <div>#= PreMeetingScores[i].FormattedScore #</div>
+        # } #
+    </div>
+</script>
+<script id="tooltipTemplate" type="text/x-kendo-template">
+    <div style="padding-top:8px">
+        <span><strong> #:assignment# </strong></span> <br/> <span><strong> Role: </strong> #:role#</span>
+    </div>
+</script>
+@*script for ajax call to populate the grid data*@
+<script type="text/javascript">
+    $(function() {
+        // Define grid's data model
+        var dataModel = kendo.data.Model.define({
+            id: "id",
+            fields: { Order: { editable: false } }
+        });
+        // Define grid's data source
+        var mainDataSource = new kendo.data.DataSource({
+            schema: { model: dataModel },
+            type: "json",
+            data: @Html.Raw(Json.Encode(Model.OrdersOfReview)),
+        });
+
+        if ($("#grid").length > 0) {
+            // Create grid
+            var grid = $("#grid").kendoGrid({
+                dataSource: mainDataSource,
+                columns: [ { field: "Order", template: $("#orderTemplate").html(), width: 75 },
+                    { title: "Not Discussed", template: $("#ndTemplate").html(), width: 50 },
+                    { field: "LogNumber", title: "App ID", width: 75 },
+                    { title: "PI Name", template: "#= LastName + ', ' + FirstName #" },
+                    { field: "AwardMechanism", title: "Award Mechanism" },
+                    { title: "Assigned Reviewers", template: $("#assignedReviewsTemplate").html() },
+                    { title: "Pre-Meeting Scores", template: $("#preMeetingScoresTemplate").html() },
+                    { title: "COIs", template: $("#coisTemplate").html() }
+                ],
+                scrollable: false
+            }).data("kendoGrid");
+
+            // Set order of review
+            var setOrdersOfReview = function() {
+                var items = mainDataSource.view();
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var row  = $("#grid").find("tr[data-uid='"+item.uid+"']");
+                    if (row.find("input.order-of-review").length > 0) {
+                        item.Order = row.find("input.order-of-review").val();
+                    } else {
+                        item.Order = '@MessageService.TriagedAbbreviation';
+                    }
+                }
+            };
+            var savedOrderNumbers = [];
+            // Get largest number
+            var getLargestNumber = function() {
+                var largestNumber = 0;
+                var items = mainDataSource.view();
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var row  = $("#grid").find("tr[data-uid='"+item.uid+"']");
+                    if (row.find("input.order-of-review").length > 0) {
+                        var order = parseInt(row.find("input.order-of-review").val());
+                        if (!isNaN(order) && order > largestNumber) {
+                            largestNumber = order;
+                        }
+                    }
+                }
+                return largestNumber;
+            };
+            var getOrderNumber = function (logNumber) {
+                var instance = savedOrderNumbers.filter(function (chain) {
+                    return chain.logNumber === logNumber;
+                })[0];
+                if (instance == null) {
+                    orderNumber = getLargestNumber() + 1;
+                } else {
+                    orderNumber = instance.order;
+                }
+                return orderNumber;
+            };
+            // Set grid data at Check-box click event
+            $('#grid').on('click', '.kendogrid-chkbx', function () {
+                var checked = $(this).is(':checked');
+                var idx = $("#grid").find(".kendogrid-chkbx").index($(this));
+                var items = $("#grid").data().kendoGrid.dataSource.data();
+                items[idx].IsTriaged = checked;
+                if (checked) {
+                    savedOrderNumbers.push({ logNumber: items[idx].LogNumber, order: items[idx].Order });
+                    items[idx].Order = '@MessageService.TriagedAbbreviation';
+                } else {
+                    items[idx].Order = getOrderNumber(items[idx].LogNumber);
+                }
+                $("#grid").data('kendoGrid').refresh();
+            });
+        }
+        // Display failure messsages
+        var displayFailureMessages = function(messages) {
+            var fms = [];
+            for (var i = 0; i < messages.length; i++) {
+                if (fms.indexOf(messages[i].Value) == -1) {
+                    fms.push(messages[i].Value);
+                }
+                $("input.order-of-review[data-value='" + messages[i].Key + "']").addClass("input-validation-error");
+            }
+            for (var i = 0; i < fms.length; i++) {
+                var msgele = $("<div/>").html(fms[i]);
+                $("#failureMessage").append(msgele);
+            }
+        };
+       // Display tooltip
+      $("#grid").kendoTooltip({
+        filter: ".ellipsisCell",
+        content: function(e) {
+                    var grid = $("#grid").data("kendoGrid");
+                    var tr = e.target.closest('tr');
+                    var dataItem = grid.dataItem(tr);
+                    var colIdx = e.target.index();
+                    return kendo.template($("#tooltipTemplate").html())({
+                        assignment: dataItem.ApplicationReviewers[colIdx].ParticipantAssignment,
+                        role: dataItem.ApplicationReviewers[colIdx].ParticipantRoleName
+                    });
+        },
+        show: function (e) {
+              this.popup.element.addClass("tooltipRole");
+              $('[role="tooltip"]').find(".k-callout.k-callout-s").remove();
+        },        
+        width: 180,
+        height: 80,
+        offset: 15,
+        position: "top"
+      });
+
+        // Save changes
+        $("#saveChanges").on("click", function(e) {
+            // Reset messages
+            $("#successMessage").empty();
+            $("#failureMessage").empty();
+            $("input.order-of-review").removeClass("input-validation-error");
+            // Get post data
+            setOrdersOfReview();
+            var gridData = $("#grid").data().kendoGrid._data;
+            var postData = [];
+            for (var i=0; i<gridData.length; i++) {
+                postData.push({ LogNumber: gridData[i].LogNumber, IsTriaged: gridData[i].IsTriaged, Order: gridData[i].Order });
+            }
+            var failureMessage = "Sorry, there was a problem processing your request.";
+            // Save changes
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '/PanelManagement/SaveOrderOfReview',
+                data: JSON.stringify({ "ordersOfReview": postData }),
+                contentType: 'application/json',
+                dataType: 'json',
+            }).done(function (result) {
+                if (result && result.flag) {
+                    window.location.href="/PanelManagement/OrderOfReview";
+                } else {
+                    displayFailureMessages(result.messages);
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert(failureMessage);
+            });
+        });
+        // Hide triaged applications
+        $("#hideTriaged").on("click", function () {
+            var items = mainDataSource.view();
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if(item.Order === '@MessageService.TriagedAbbreviation'){
+                    var row  = $("#grid").find("tr[data-uid='"+item.uid+"']");
+                    row.addClass("hidden");
+                }
+            }
+            $(this).css("color", "black").css("text-decoration", "none");
+            $("#showTriaged").css("color", "#08c").css("text-decoration", "underline");
+            // Hide check-boxes
+            $("#grid").find(".kendogrid-chkbx").addClass("hidden");
+        });
+        // Show triaged applications
+        $("#showTriaged").on("click", function () {
+            var items = mainDataSource.view();
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if(item.Order === '@MessageService.TriagedAbbreviation'){
+                    var row  = $("#grid").find("tr[data-uid='"+item.uid+"']");
+                    row.removeClass("hidden");
+                }
+            }
+            $(this).css("color", "black").css("text-decoration", "none");
+            $("#hideTriaged").css("color", "#08c").css("text-decoration", "underline");
+            // Show check-boxes
+            $("#grid").find(".kendogrid-chkbx").removeClass("hidden");
+        });
+    });
+    // Page Reload on cancel click
+    $('#cancelChanges').on('click', function(){
+        location.reload();
+    })
+    // Enable save button
+    var count = 0;
+    var firstValue = 0;
+    $(document).on('focusin', '#grid td input', function(){
+        firstValue = $(this).val();
+    }).on('focusout', '#grid td input', function(e){
+        if(count == 0){
+            var secondValue = $(e.target).val();
+            if(firstValue != secondValue){
+                $('.buttonPrimary').attr('disabled', false);
+                count++;
+            }
+        }
+    })
+
+    $(document).on('click', 'input[type="checkbox"]', function(){
+        $('.buttonPrimary').attr('disabled', false);
+    })
+</script>

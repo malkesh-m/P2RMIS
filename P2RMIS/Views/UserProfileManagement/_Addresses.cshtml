@@ -1,0 +1,391 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@using Sra.P2rmis.CrossCuttingServices
+<section class="upm-profile-section-alternate-container" role="region" aria-labelledby="addresses-contacts">
+    @{
+        string addAddressIcon = Model.HasZeroOrOneAddress ? "" : "disabled";
+    }
+    <div class="upm-profile-section-sub_main-header" id="addresses-contacts">Addresses</div>
+    <div class="upm-profile-section-sub_link @addAddressIcon">
+        <label for="addressAdd" class="sr-only">Add Alternate</label>
+        <a href="#" id="addressAdd" title="Add Address" class="upm-profile-section_field @addAddressIcon">Add Address</a>
+    </div>
+    <p class="upm-profile-section-sub_container_exp-text" id="addressRequired">A <span class="italics">&nbsp;preferred address&nbsp;</span> is only required for <span class="italics">&nbsp;reviewers</span>.  If you choose to provide an address, please enter all required fields.</p>
+    @if (Model.Addresses != null && Model.Addresses.Count > 0)
+    {
+        for (var iAddr = 0; iAddr < Model.Addresses.Count; iAddr++)
+        {
+            var zipClass = ((Model.Addresses[iAddr].CountryId ?? Model.UsCountryValue) == (Model.UsCountryValue)) ? " UsZip" : " IntlZip";
+            var userAdddressDisplayClass = "";
+            var primaryFlag = "Addresses_" + iAddr + "__PrimaryFlag";
+            var addressTypeId = "Addresses_" + iAddr + "__AddressTypeId";
+            var addressesLine = "Addresses_" + iAddr + "__Address1";
+            var addressesLine2 = "Addresses_" + iAddr + "__Address2";
+            var addressesLine3 = "Addresses_" + iAddr + "__Address3";
+            var addressesLine4 = "Addresses_" + iAddr + "__Address4";
+            var cityId = "Addresses_" + iAddr + "__City";
+            var stateId = "Addresses_" + iAddr + "__StateId";
+            var zipId = "Addresses_" + iAddr + "__Zip";
+            var countryId = "Addresses_" + iAddr + "__CountryId";
+
+
+            if (Model.Addresses[iAddr].IsDeletable)
+            {
+                userAdddressDisplayClass = "hidden";
+            }
+    <div class="upm-profile-section-alternate-container_section address @userAdddressDisplayClass" data-section="@iAddr">
+        <div class="upm-profile-section-alternate-container_section_header">
+            @Html.HiddenFor(m => m.Addresses[iAddr].UserAddressId, new { @class = "addressId" })
+            @Html.RadioButtonFor(m => m.Addresses[iAddr].PrimaryFlag, true,
+                                                        Model.GetHtmlAttribute(Model.Addresses[iAddr].PrimaryFlag,
+                                                            new KeyValuePair<string, string>("class", "addressType"),
+                                                            new KeyValuePair<string, string>("checked", "checked")))
+            <label for="@primaryFlag" class="upm-profile-section-sub_field prefAddressTag">@Model.GetAddressPreferredText(Model.Addresses[iAddr], Model.PreferredText, Model.SecondaryText)<span class="hidden-text">Address</span></label>
+        </div>
+        <span class="alignRight"><a href="#" class="addressDelete"><img src="~/Content/img/cross.png" class="icon-cancel close-x" alt="Delete Address" /></a></span>
+
+        <!-- Address Type -->
+        <div class="upm-profile-section-sub_container-sub">
+            <div class="upm-profile-section_field">
+                <label for="@addressTypeId" class="upm-profile-section_field_required">Address Type <div class="hidden-text">Required</div></label>
+                @Html.DropDownListFor(m => m.Addresses[iAddr].AddressTypeId,
+                                                 new SelectList(Model.AddressTypeDropdown, "Index", "Value",
+                                                     Model.Addresses[iAddr].AddressTypeId), "Select",
+                                                 new { @class = "addressTypeId" })
+            </div>
+        </div>
+        @if (Model.Addresses[iAddr].AddressTypeId == 2)
+        {
+            <!-- Organization Name -->
+            <div class="upm-profile-section-sub_container-sub">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine" class="upm-profile-section_field_required">Org Name <div class="hidden-text">Required</div></label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address1, new { @class = "address1 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+            <!-- Dept. -->
+            <div class="upm-profile-section-sub_container-sub">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine2" class="upm-profile-section_field">Dept.</label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address2, new { @class = "address2 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+            <!-- Address Line 1 -->
+            <div class="upm-profile-section-sub_container-sub">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine3" class="upm-profile-section_field_required">Address 1</label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address3, new { @class = "address3 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+            <!-- Address Line 2 -->
+            <div class="upm-profile-section-sub_container-sub">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine4" class="upm-profile-section_field">Address 2</label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address4, new { @class = "address4 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Organization Name -->
+            <div class="upm-profile-section-sub_container-sub" style="display: none;">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine2" class="upm-profile-section_field_required">Org Name <div class="hidden-text">Required</div></label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address2, new { @class = "address5 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+            <!-- Dept. -->
+            <div class="upm-profile-section-sub_container-sub" style="display:none;">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine4" class="upm-profile-section_field">Dept.</label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address4, new { @class = "address6 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+            <!-- Address Line 1 -->
+            <div class="upm-profile-section-sub_container-sub">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine" class="upm-profile-section_field_required">Address 1 <div class="hidden-text">Required</div></label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address1, new { @class = "address1 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+            <!-- Address Line 2 -->
+            <div class="upm-profile-section-sub_container-sub">
+                <div class="upm-profile-section_field">
+                    <label for="@addressesLine2" class="upm-profile-section_field">Address 2</label>
+                    @Html.TextBoxFor(m => m.Addresses[iAddr].Address2, new { @class = "address2 upm-profile-section_field_input-all", maxlength = "75" })
+                </div>
+            </div>
+        }
+        <!-- City -->
+        <div class="upm-profile-section-sub_container-sub">
+            <div class="upm-profile-section_field">
+                <label for="@cityId" class="upm-profile-section_field_required">City <div class="hidden-text">Required</div></label>
+                @Html.TextBoxFor(m => m.Addresses[iAddr].City, new { @class = "addressCity upm-profile-section_field_input-long", maxlength = "30" })
+            </div>
+        </div>
+        <!-- State -->
+        <div class="upm-profile-section-sub_container-sub">
+            <div class="upm-profile-section_field">
+                <label for="@stateId" class="upm-profile-section_field_required">State <div class="hidden-text">Required</div></label>
+                @Html.DropDownListFor(m => m.Addresses[iAddr].StateId, new SelectList(Model.StateDropdown, "Index", "Value", Model.Addresses[iAddr].StateId), "Select", new { @class = "addressState upm-profile-section_field_input-long" })
+            </div>
+        </div>
+        <!-- Zip -->
+        <div class="upm-profile-section-sub_container-sub">
+            <div class="upm-profile-section_field">
+                <label for="@zipId" class="upm-profile-section_field_required">Zip <div class="hidden-text">Required</div></label>
+                @Html.TextBoxFor(m => m.Addresses[iAddr].Zip, new { @class = "addressZip upm-profile-section_field_input-short", maxlength = "30" })
+            </div>
+        </div>
+        <!-- Country -->
+        <div class="upm-profile-section-sub_container-sub">
+            <div class="upm-profile-section_field">
+                <label for="@countryId" class="upm-profile-section_field_required">Country <div class="hidden-text">Required</div></label>
+                @Html.DropDownListFor(m => m.Addresses[iAddr].CountryId, new SelectList(Model.CountryDropdown, "Index", "Value", Model.Addresses[iAddr].CountryId ?? Model.UsCountryValue), new { @class = "addressCountry upm-profile-section_field_input-long" })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.Addresses[iAddr].IsDeletable, new { @class = "addressIsDeletable" })
+    </div>
+        }
+    }
+</section>
+@if (Model.IsReviewer)
+    {
+        if (Model.W9Addresses != null && Model.W9Addresses.W9AddressExists)
+        {
+            @Html.HiddenFor(m => m.W9Addresses.W9AddressExists, new { @class = "w9AddressExists" })
+            var w9Address = Model.W9Addresses.Address;
+
+            <section class="upm-profile-w9-container" role="region">
+                <span class="upm-profile-w9-container_header">W-8/W-9 Information</span><span class="alignRight textHeaderNotBold"> (Last updated @ViewHelpers.FormatDate(w9Address.ModifiedDate))</span>
+
+                <p class=".legend-title" style="font-size: 10pt;">
+                    If your W-9 or W-8 information below is missing or inaccurate, please download the <a href="@Model.W9DownloadUrl" target="_blank">W-9 form</a> or <a href="@Model.W8DownloadUrl" target="_blank">W-8 form</a> form and fax the completed form to @Model.W9FaxNumber.  This address will be used for consultant fees, and expense reimbursements, and tax purposes.  Checks will be sent to this address.
+                </p>
+
+                <div class="span11 bordered">
+                    <span class="alignLeft textHeader"><span class="requiredFontSize16">* </span> Select</span>
+                    <span class="alignLeft span7">
+                        @Html.RadioButtonFor(m => m.W9Addresses.W9Verified, true, Model.W9RadioButtonAttributesIncludingId("W9_Accurate"))  
+                        <label for="W9_Accurate">The W-8/W-9 information below is accurate.</label><br />
+                        @Html.RadioButtonFor(m => m.W9Addresses.W9Verified, false, Model.W9RadioButtonAttributesIncludingId("W9_NotAccurate")) 
+                        <label for="W9_NotAccurate">The W-8/W-9 information below is inaccurate.</label>
+                    </span>
+                </div>
+
+                <p>
+                    <ul class="list-unstyled">
+                        <!-- Vendor Id -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="vendorid-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Vendor ID:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="upm-profile-section-sub_field_w9result" id="vendorid-w9">@Html.DisplayTextFor(m => m.W9Addresses.VendorId)</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Name -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="name-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Name:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="name-w9">@Html.DisplayTextFor(m => m.W9Addresses.VendorName)</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Address 1 -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="address1-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Address 1:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="address1-w9">@w9Address.Address1</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Address 2 -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="address2-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Address 2:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="address2-w9">@w9Address.Address2</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- City -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="city-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">City:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="city-w9">@w9Address.City</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- State -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="state-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">State:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="state-w9">@w9Address.State</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Postal Code -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="postal-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Postal Code:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="postal-w9">@w9Address.Zip</label>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Country -->
+                        <li>
+                            <div class="upm-profile-w9-container_content alignLeft">
+                                <div class="upm-profile-section-sub_field alignLeft">
+                                    <label for="country-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Country:</label>
+                                </div>
+                                <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                    <label class="span10 alignLeft" id="country-w9">@w9Address.Country</label>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </p>
+            </section>
+        }
+        else
+        {
+        <section class="upm-profile-w9-container" role="region">
+            <span class="upm-profile-w9-container_header">W-8/W-9 Information</span>
+
+            <p class=".legend-title" style="font-size: 10pt;">
+                If your W-9 or W-8 information below is missing or inaccurate, please download the <a href="@Model.W9DownloadUrl" target="_blank">W-9 form</a> or <a href="@Model.W8DownloadUrl" target="_blank">W-8 form</a> form and fax the completed form to @Model.W9FaxNumber.  This address will be used for consultant fees, and expense reimbursements, and tax purposes.  Checks will be sent to this address.
+            </p>
+
+            <!-- W9/W8 Information Radio Buttons-->
+            <div class="span11 bordered">
+                <span class="alignLeft textHeader"><span class="requiredFontSize16">* </span> Select</span>
+                <div class="alignLeft maxWidth margin-left30">
+                    @Html.RadioButtonFor(m => m.GeneralInfo.VerifiedW9, true, new { @disabled = "disabled" })
+                    <label for="GeneralInfo_VerifiedW9" class="upm-profile-section_field">The information below is accurate.</label>
+                </div>
+                <div class="alignLeft maxWidth margin-left30">
+                    @Html.RadioButtonFor(m => m.GeneralInfo.VerifiedW9, false, new { @disabled = "disabled" })
+                    <label for="GeneralInfo_VerifiedW9" class="upm-profile-section_field">The information below is accurate.</label>
+                </div>
+            </div>
+
+            <p>
+                <ul class="list-unstyled">
+                    <!-- Vendor Id -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="vendorid-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Vendor ID:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="upm-profile-section-sub_field_w9result" id="vendorid-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Name -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="name-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Name:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="name-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Address 1 -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="address1-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Address 1:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="address1-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Address 2 -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="address2-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Address 2:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="address2-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- City -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="city-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">City:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="city-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- State -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="state-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">State:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="state-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Postal Code -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="postal-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Postal Code:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="postal-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Country -->
+                    <li>
+                        <div class="upm-profile-w9-container_content alignLeft">
+                            <div class="upm-profile-section-sub_field alignLeft">
+                                <label for="country-w9" class="upm-profile-section-sub_field upm-profile-w9-container_content_padding">Country:</label>
+                            </div>
+                            <div class="upm-profile-section-academic_field_input-all alignLeft">
+                                <label class="span10 alignLeft" id="country-w9"></label>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </p>
+        </section>
+        }
+    }
+    <div id="AddressDeletionDialog" class="hidden">
+        <div class="modal-body">
+            <p style="text-align:center">This will remove this Address entry.<br />Click OK to proceed?</p>
+        </div>
+    </div>

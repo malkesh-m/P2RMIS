@@ -1,0 +1,59 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@{
+    int[] nonPrimaryPhoneTypes = { 2, 5 };
+}
+<section class="upm-profile-section-sub" role="region" aria-labelledby="phone-numbers">
+    <div class="upm-profile-section-sub_main-header" id="phone-numbers">Phone Numbers</div>
+    <div class="upm-profile-section-sub_link">
+        <label for="usPhoneAdd" class="sr-only">Add Phone</label>
+        <a href="#" id="usPhoneAdd" title="Add Phone Number" class="upm-profile-section_field">Add Phone</a>
+    </div>
+    <p class="upm-profile-section-sub_container_exp-text">
+        Select the radio button to indicate the preferred phone number.
+    </p>
+    <div class="upm-profile-section-sub_container-sub">
+        <ul class="list-unstyled" id="userPhones">
+            @Model.PopulateMinimumPhones(Model.UserPhones)
+            @for (var i = 0; i < Model.UserPhones.Count(); i++)
+            {
+                var phonePrefStatus = (Model.UserPhones[i].Primary) ? Model.PreferredText : Model.SecondaryText;
+                var phoneIntlStatus = (Model.UserPhones[i].International) ? "checked='checked'" : string.Empty;
+                var phoneNumberClass = (!Model.UserPhones[i].International && Model.UserPhones[i].PhoneTypeId == 3) ? " UsPhoneDesk" : !Model.UserPhones[i].International ? " UsPhone" : string.Empty;
+                var isPrimaryPhoneDisabled = (nonPrimaryPhoneTypes.Contains(Model.UserPhones[i].PhoneTypeId.GetValueOrDefault()));
+                var idUsed = "UserPhonePref_" + i;
+                var idPhone = "UserPhones_" + i + "__Number";
+                var phoneTypeId = "UserPhones_" + i + "__PhoneTypeId";
+                var intCheckId = "UserPhonesInt_" + i + "_Int";
+            <li>
+                <div class="upm-profile-section-sub_field">
+                    <label for="@phoneTypeId" class="sr-only">Phone Number Type</label>
+                    @Html.DropDownListFor(m => m.UserPhones[i].PhoneTypeId, new SelectList(Model.PhoneTypeDropdown, "Index", "Value", Model.UserPhones[i].PhoneTypeId), new { @class = "upm-profile-section_field_input-short userPhoneTypeDropDown" })
+                </div>
+                <div class="upm-profile-section-sub_field">
+                    <label for="@idPhone" class="sr-only">Phone Number</label>
+                    @Html.TextBoxFor(m => m.UserPhones[i].Number, new { @class = "userPhoneNumber upm-profile-section_field_input-short" + @phoneNumberClass, maxlength = "25" })
+                </div>
+                <div class="upm-profile-section-sub_field_phone">
+                    @if (!isPrimaryPhoneDisabled)
+                    {
+                        @Html.RadioButton("userPrefPhoneRadio", Model.UserPhones[i].Primary, Model.UserPhones[i].Primary, new { @class = "userPrefPhone", id = @idUsed })
+                        <label for="@idUsed" class="prefPhoneTag upm-profile-section-sub_field" data-label="side-label">@phonePrefStatus <span class="hidden-text">Phone Number</span></label>
+                    }
+                    else
+                    {
+                        @Html.RadioButton("userPrefPhoneRadio", Model.UserPhones[i].Primary, Model.UserPhones[i].Primary, new { @class = "userPrefPhone", id = "UserPhonePref_" + i, disabled = "disabled" })
+                        <label for="@idUsed" class="prefPhoneTag upm-profile-section-sub_field" data-label="side-label">@phonePrefStatus <span class="hidden-text">Phone Number</span></label>
+                    }
+                    <input type="checkbox" class="intlPhoneTag" @Html.Raw(phoneIntlStatus) id="@intCheckId">
+                    <label for="@intCheckId" class="upm-profile-section-sub_field" data-label="side-label">International <span class="hidden-text">Phone Number</span></label>
+                </div>
+
+                @Html.HiddenFor(m => m.UserPhones[i].PhoneId)
+                @Html.HiddenFor(m => m.UserPhones[i].International)
+                @Html.HiddenFor(m => m.UserPhones[i].Primary)
+            </li>
+            }
+        </ul>
+        </div>
+</section>

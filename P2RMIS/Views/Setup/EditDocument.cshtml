@@ -1,0 +1,773 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@{
+    ViewBag.Title = "Edit Document";
+}
+@*@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}*@
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<link href="/Scripts/jquery-ui-multiselect/css/jquery.multiselect.css" rel="stylesheet" />
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Edit Document</span><span id="backtoStaff" class="main-header_title_back-to-staff"> (Back to Document Management)</span>
+</div>
+
+<!-- Main Body -->
+<div id="mainContent" class="ss-edit-document">
+    <div>
+        <button id="cancelButton" type="button" class="ss-edit-document_button">Cancel</button><button id="uploadButton" type="button" class="ss-edit-document_button">Save</button>
+    </div>
+    <div class="row-fluid ss-fieldSet">
+        <div class="ss-ed-filterBox">
+            <div class="ss-ed-filterBox_title">Details</div>
+            <table class="ss-ed-filterBox_table">
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect"><div class="ss-ed-filterBox_table_clientSelect_header">Content Type: </div><span class="ss-ed-filterBox_table_clientSelect_text" id="contentTypeDoc"></span></td>
+                    <td class="ss-ed-filterBox_table_clientSelect"><div class="ss-ed-filterBox_table_clientSelect_header">Date Added: </div><span class="ss-ed-filterBox_table_clientSelect_text" id="createdDateDoc"></span></td>
+                    <td class="ss-ed-filterBox_table_clientSelect"><div class="ss-ed-filterBox_table_clientSelect_header">Last Updated: </div><span class="ss-ed-filterBox_table_clientSelect_text" id="updatedDateDoc"></span></td>
+                </tr>
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect"><div class="ss-ed-filterBox_table_clientSelect_header">File Type: </div><span class="ss-ed-filterBox_table_clientSelect_text" id="fileTypeDoc"></span></td>
+                    <td class="ss-ed-filterBox_table_clientSelect"><div class="ss-ed-filterBox_table_clientSelect_header">Added By: </div><span class="ss-ed-filterBox_table_clientSelect_text" id="addedTypeDoc"></span></td>
+                    <td class="ss-ed-filterBox_table_clientSelect"><div class="ss-ed-filterBox_table_clientSelect_header">Updated By: </div><span class="ss-ed-filterBox_table_clientSelect_text" id="updatedTypeDoc"></span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row-fluid ss-fieldSet">
+        <div class="ss-ed-documents">
+            <div class="ss-ed-documents_title">Document Properties</div>
+            <div class="ss-ed-documents_header"><span class="asterisk">*</span>Document Type</div>
+            <table class="ss-ed-documents_table">
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect">
+                        <select id="documentType">
+                            <option value="">Select</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="ss-ed-documents_header" id="categoryField"><span class="asterisk">*</span>Category</div>
+            <table class="ss-ed-documents_table">
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect">
+                        <select id="category">
+                            <option value="">Select</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="ss-ed-documents_header"><span class="asterisk">*</span>Heading</div>
+            <table class="ss-ed-documents_table">
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect"><input type="text" id="headingArea" class="ss-ed-documents_table_clientSelect_full" /></td>
+                </tr>
+            </table>
+            <div class="ss-ed-documents_header"><span class="asterisk">*</span>Description</div>
+            <table class="ss-ed-documents_table">
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect" id="descriptionArea"><textarea class="ss-ed-documents_table_clientSelect_full"></textarea></td>
+                </tr>
+            </table>
+        </div>
+        <div class="ss-ed-documents">
+            <div class="ss-ed-documents_title">Permissions</div>
+            <div class="ss-ed-documents_header">Client: <span id="selectedText"></span></div>
+            <table class="ss-ed-documents_table">
+                <tr>
+                    <td class="ss-ed-documents_header">Fiscal Year</td>
+                    <td class="ss-ed-documents_header">Program</td>
+                </tr>
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect"><select id="fiscalYearsDoc"><option selected>All</option></select></td>
+                    <td class="ss-ed-filterBox_table_clientSelect"><select id="programYearsDoc"><option selected>All</option></select></td>
+                </tr>
+            </table>
+            <div class="ss-ed-documents_header"><i><u>Note:</u> Selecting "All" for Fiscal Year and/or Program will automatically make the document available for all future Fiscal Years and/or Programs for the selected client.</i></div>
+            <table id="partTable" class="ss-ed-documents_table">
+                <tr>
+                    <td>
+                        <div class="ss-ed-documents_header">Meeting Type</div>
+                    </td>
+                    <td>
+                        <div class="ss-ed-documents_header">Participant Type</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect" id="mtg">
+                        <select name="basic[]" multiple="multiple" class="3col active" id="meetingTypeSelect">
+                            <option value="">All</option>
+                        </select>
+                    </td>
+                    <td class="ss-ed-filterBox_table_clientSelect" id="partype">
+                        <select name="basic[]" multiple="multiple" class="3col active" id="participantTypeLevel">
+                            <option value="">All</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;" class="levelTable">
+                <tr>
+                    <td>
+                        <div class="ss-ed-documents_header">Method</div>
+                    </td>
+                    <td>
+                        <div class="ss-ed-documents_header">Level</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ss-ed-filterBox_table_clientSelect">
+                        <select id="methodTypeSelect">
+                            <option value="All">All</option>
+                        </select>
+                    </td>
+                    <td class="ss-ed-filterBox_table_clientSelect">
+                        <select id="participantTypeLevelList"></select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <input type="hidden" id="fileLocation" />
+</div>
+
+<script type="text/javascript">
+    // Page setup
+    var trainingId, documentTypeIdValue, meetingList, meetingTypeIds, participantList, participantListIds, methodId, participantTypeLevelList, documentId, participantTypeIds;
+
+    $(document).ready(function () {
+        var newDocId = sessionStorage.getItem('documentId');
+        var addDocClient = false;
+        var newClientId = sessionStorage.getItem('originalClientSelect');
+
+        $.ajax({
+            url: '/Setup/GetPeerReviewDocument',
+            data: { documentId: newDocId, addDocClient: addDocClient, newClientId: newClientId },
+        }).done(function (results) {
+            // Values broken out
+            var docTypeList = results.DocumentTypeList,
+                trainingList = results.TrainingCategoryList,
+                fiscalYearList = results.FiscalYearList,
+                programList = results.ProgramList,
+                methodList = results.ParticipationMethodList,
+                levelList = results.ParticipationLevelList;
+
+            trainingId = results.TrainingCategoryId;
+            meetingList = results.MeetingTypeList;
+            meetingTypeIds = results.MeetingTypeIds;
+            participantList = results.ParticipantTypeList;
+            participantListIds = results.ParticipantTypeIds;
+            methodId = results.ParticipationMethodIds;
+            documentId = results.DocumentId;
+
+            // Document Dropdown List
+            $.each(docTypeList, function (i, item) {
+                $("#documentType").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            });
+            // Category Dropdown List
+            $.each(trainingList, function (i, item) {
+                $("#category").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            });
+            // Fiscal Year Dropdown List
+            $.each(fiscalYearList, function (i, item) {
+                $("#fiscalYearsDoc").append($("<option/>")
+                    .attr("value", item).html(item));
+
+                // Fiscal Year Select
+                if (item == results.FiscalYear) {
+                    $('#fiscalYearsDoc').val(item);
+                }
+            });
+            // Program Dropdown List
+            $.each(programList, function (i, item) {
+                $("#programYearsDoc").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+
+                // Fiscal Year Select
+                if (item.Value == results.Program) {
+                    $('#programYearsDoc').val(item.Key);
+                }
+            });
+            // Meeting Dropdown List
+            $.each(meetingList, function (i, item) {
+                $("#meetingTypeSelect").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            });
+            // Participant Dropdown List
+            $.each(participantList, function (i, item) {
+                $("#participantTypeLevel").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            });
+            // Method Dropdown List
+            $.each(methodList, function (i, item) {
+                $("#methodTypeSelect").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            });
+            // Level Dropdown List
+            $.each(levelList, function (i, item) {
+                $("#participantTypeLevelList").append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            });
+
+            // Sets Description Area
+            $('#descriptionArea textarea').text(results.Description);
+
+            // Sets Content Type
+            if (results.IsUrl) {
+                $('#contentTypeDoc').text('Link');
+                $('#fileTypeDoc').text('N/A');
+            } else if (results.IsVideo) {
+                $('#contentTypeDoc').text('Video');
+                $('#fileTypeDoc').text('N/A');
+            } else {
+                $('#contentTypeDoc').text('File');
+                var extension = sessionStorage.getItem('ext');
+                $('#fileTypeDoc').text(extension);
+            }
+
+            //Date Added
+            $('#createdDateDoc').text(results.CreatedDate);
+
+            //Last Updated
+            if (results.ModifiedDate == "") {
+                $('#updatedDateDoc').text('N/A');
+            } else {
+                $('#updatedDateDoc').text(results.ModifiedDate);
+            }
+
+            // Modified By
+            if (results.ModifiedByName == null) {
+                $('#updatedTypeDoc').text('N/A');
+            } else {
+                $('#updatedTypeDoc').text(results.ModifiedByName);
+            }
+
+            // Sets the heading
+            $('#headingArea').val(results.Heading);
+
+            // Sets the description
+            $('#headingArea textarea').val(results.Description);
+
+            // Sets the Document drop down
+            $('#documentType').val(results.DocumentTypeId);
+
+            // Created By
+            $('#addedTypeDoc').text(results.CreatedByName);
+
+            // Sets the method drop down
+            var newLevelValue = results.ParticipationMethodIds;
+            if (newLevelValue == "" || newLevelValue == null) {
+                $("#methodTypeSelect option:selected").val('All');
+            } else {
+                $("#methodTypeSelect").val(results.ParticipationMethodIds);
+            }
+
+            // Sets the Level drop down
+            if (results.ParticipationLevel == null) {
+                $('#participantTypeLevelList option:selected').val(null);
+            } else if (results.ParticipationLevel == true) {
+                $('#participantTypeLevelList option:nth-child(2)').attr('selected', true);
+            } else {
+                $('#participantTypeLevelList option:nth-child(3)').attr('selected', true);
+            }
+
+            // Sets the Document category
+            documentTypeIdValue = results.DocumentTypeId
+            $('#documentType').val(documentTypeIdValue);
+            if ($('#documentType option:selected').val() == 1) {
+                $('#category').show();
+                $('#categoryField').show();
+                $('#category').val(trainingId);
+                $('#partTable tr td:nth-child(2), .levelTable tr td:nth-child(2), .levelTable tr td:nth-child(1)').show();
+            } else if ($('#documentType option:selected').val() == 3) {
+                $('#category, #categoryField').hide();
+                $('#category option:nth-child(1)').attr('selected', true);
+                $('#partTable tr td:nth-child(2), .levelTable tr td:nth-child(2), .levelTable tr td:nth-child(1)').hide();
+            } else {
+                $('#category').hide();
+                $('#categoryField').hide();
+                $('#partTable tr td:nth-child(2), .levelTable tr td:nth-child(2), .levelTable tr td:nth-child(1)').show();
+            }
+        })
+
+        // Document Type dropdown
+        $('#documentType').on('change', function () {
+            var docTypeSelect = $('#documentType option:selected').val();
+            if (docTypeSelect == 1) {
+                $('#category').show();
+                $('#categoryField').show();
+                $('#category option:nth-child(1)').attr('selected', true);
+                $.ajax({
+                    url: '/Setup/GetTrainingCategoriesJson'
+                }).done(function (results) {
+                    $("#category").find("option:gt(0)").remove();
+                    $.each(results, function (i, item) {
+                        $("#category").append($("<option/>")
+                            .attr("value", item.Key).html(item.Value));
+                    });
+
+                    // Sets the Training category
+                    if (trainingId == null) {
+                        $('#category').val('');
+                    } else {
+                        $('#category').val(trainingId);
+                    }
+                    $('#partTable tr td:nth-child(2), .levelTable tr td:nth-child(2), .levelTable tr td:nth-child(1)').show();
+                });
+            } else if (docTypeSelect == 3) {
+                $('#category').hide();
+                $('#categoryField').hide();
+                $('#category option:nth-child(1)').attr('selected', true);
+                $('#partTable tr td:nth-child(2), .levelTable tr td:nth-child(2), .levelTable tr td:nth-child(1)').hide();
+            }
+            else {
+                $('#category').hide();
+                $('#categoryField').hide();
+                $('#category option:nth-child(1)').attr('selected', true);
+                $('#partTable tr td:nth-child(2), .levelTable tr td:nth-child(2), .levelTable tr td:nth-child(1)').show();
+            }
+        });
+
+        // File upload
+        $("#formData").kendoUpload({
+            async: {
+                saveUrl: "save",
+                removeUrl: "remove",
+                autoUpload: true,
+            },
+            localization: {
+                select: "Browse"
+            },
+            multiple: false,
+            select: onSelect,
+            upload: onUpload,
+            success: onSuccess,
+            remove: function (e) {
+                fileUidToRemove = e.files[0].uid;
+                e.preventDefault();
+                $(".k-upload-files li").each(function (i, item) {
+                    var dataId = $(this).attr("data-uid");
+                    if (fileUidToRemove == dataId) {
+                        $(this).remove();
+                    }
+                });
+                $('#failureMessage').hide();
+            }
+        });
+    });
+    function onUpload(e) {
+        e.sender.options.async.saveUrl = "SaveFileLocation";
+    }
+    function onSelect(e) {
+        // Validation for files
+        var contentTypeVar = $('#contentType option').val();
+        if (contentTypeVar == 1) {
+            $.each(e.files[0], function (index, value) {
+                var formData = value;
+                var fileContentType = e.files[0].extension.substring(1);
+                var contentType = $('#contentType option').val();
+                if (contentType == 1) {
+                    if (fileContentType.toLowerCase() == "pdf" || fileContentType.toLowerCase() == 'docx' || fileContentType.toLowerCase() == 'mp4' || fileContentType.toLowerCase() == 'xlsx') {
+                        var test = 'test';
+                        $(this).removeClass('input-validation-error');
+                    } else {
+                        $('.k-button.k-upload-button').removeClass('k-state-focused');
+                        $('#failureMessage').text(INVALID_FILE_FORMAT).show();
+                        $(this).addClass('input-validation-error');
+                        e.preventDefault();
+                    }
+                }
+                if (formData.size > 10485760) {
+                    $('.k-button.k-upload-button').removeClass('k-state-focused');
+                    $('#failureMessage').text('File size exceeds allowable limit of 10MB. Please select a different file.').show();
+                    $(this).addClass('input-validation-error');
+                    e.preventDefault();
+                } else {
+                    $(this).removeClass('input-validation-error');
+                }
+            });
+        } else if (contentTypeVar == 2) {
+
+        }
+    }
+
+    function onSuccess(e) {
+        var fileLocation = e.response;
+        $('#fileLocation').val(fileLocation);
+        var fileContentType = e.files[0].extension.substring(1);
+        $('.k-button.k-upload-button').removeClass('k-state-focused');
+        $('#failureMessage').hide();
+    }
+
+    $('#selectedText').text('');
+    var selectedTextText = sessionStorage.getItem('selectedText');
+    var selectedTextValue = sessionStorage.getItem('selectedTextValue');
+    if (selectedTextValue != null) {
+        $('#selectedText').text(selectedTextText);
+        $('#selectedText').attr('data-val', selectedTextValue);
+    }
+    // Back button
+    $('#backButton, #backtoStaff').on('click', function () {
+        var nullResponse = '';
+        sessionStorage.setItem('successMessageDoc', nullResponse);
+        window.history.back();
+    });
+
+    // Upload save event
+    $('#uploadButton').on('click', function () {
+        // Gets all meeting type id's
+        var newCount = 0;
+        var meetingTypeIdsSet = "";
+        var meetingTypeIds = "";
+        var firstInput = $('body .ui-multiselect-menu:nth-child(3) ul li:nth-child(1) input').is(':checked');
+        if (firstInput) {
+            meetingTypeIdsSet = "";
+            meetingTypeIds = "";
+        } else {
+            var firstInput = $('body .ui-multiselect-menu:nth-child(3) .ui-multiselect-checkboxes:nth-child(2) li input');
+            $(firstInput).each(function (i, value) {
+                var ifChecked = $(this).is(':checked');
+                if (ifChecked) {
+                    var selectTextValue = $(this).val();
+                    meetingTypeIdsSet += selectTextValue + ",";
+                    meetingTypeIds += selectTextValue;
+                    newCount++;
+                }
+            })
+            if (newCount == 0 || newCount == 5) {
+                meetingTypeIdsSet == "";
+                meetingTypeIds == "";
+            } else {
+                var num2 = meetingTypeIdsSet.slice(0, -1);
+                meetingTypeIds = num2;
+            }
+        }
+
+        // Gets all participant type id's
+        var newPartCount = 0;
+        var participantTypeIdsSet = "";
+        var participantTypeIds = "";
+        var firstPartInput = $('body .ui-multiselect-menu:nth-child(4) ul li:nth-child(1) input').is(':checked');
+        if (firstPartInput) {
+            participantTypeIdsSet = "";
+            participantTypeIds = "";
+        } else {
+            var firstInput = $('body .ui-multiselect-menu:nth-child(4) .ui-multiselect-checkboxes:nth-child(2) li input');
+            $(firstInput).each(function (i, value) {
+                var ifChecked = $(this).is(':checked');
+                if (ifChecked) {
+                    var selectTextValue = $(this).val();
+                    participantTypeIdsSet += i;
+                    participantTypeIds += selectTextValue + ",";
+                    newPartCount++;
+                }
+            })
+            if (newPartCount == 0 || newPartCount == 5) {
+                participantTypeIdsSet == "";
+                participantTypeIds == "";
+            } else {
+                var num2 = participantTypeIds.slice(0, -1);
+                participantTypeIds = num2;
+            }
+        }
+
+        var participationLevel = $('#participantTypeLevelList option:selected').val();
+        var participationMethodIds = $('#methodTypeSelect option:selected').val();
+        if (participationMethodIds == "All") {
+            participationMethodIds = null;
+        }
+        var fiscalYear = $('#fiscalYearsDoc option:selected').val();
+        var programYearsDoc = $('#programYearsDoc option:selected').val();
+        var data = {
+            documentId: documentId, fiscalYear: fiscalYear, clientProgramId: programYearsDoc,
+            heading: $('#headingArea').val(), description: $('#descriptionArea textarea').val(), documentTypeId: $('#documentType option:selected').val(),
+            trainingCategoryId: $('#category option:selected').val(), meetingTypeIds: meetingTypeIds,
+            participantTypeIds: participantTypeIds, participationMethodIds: participationMethodIds, participationLevel: participationLevel
+        };
+        $.ajax({
+            url: '/Setup/UpdatePeerReviewDocumentJson',
+            data: data,
+            type: "POST",
+        }).done(function (results) {
+            var success = $('#headingArea').val();
+            window.location.href = "/Setup/DocumentManagement";
+            var successMessage = 'Your changes were saved successfully.';
+            sessionStorage.setItem('successMessageDoc', successMessage);
+        });
+    })
+    // Upload button enabled/disabled
+    $('#videoUrl').on('focusout', function (e) {
+        var videoUrl = $(this).val();
+        var videoUrlFull = $('input#videoUrl:contains("vimeo")').length;
+        if (videoUrl.toLowerCase().indexOf("vimeo") > 0) {
+            $(this).removeClass('input-validation-error');
+        } else {
+            $('.k-button.k-upload-button').removeClass('k-state-focused');
+            $('#failureMessage').text('Invalid URL. Please enter a valud URL and try again.').show();
+            $(this).addClass('input-validation-error');
+            e.preventDefault();
+        }
+    });
+    $(document).on('change', 'select', function () {
+        $('#uploadButton').attr('disabled', false);
+        validationField();
+    })
+    $(document).on('focusout', 'input, textarea, #documentType, #category, #contentType', function (e) {
+        validationField();
+    })
+    function validationField(e) {
+        var docType = $('#documentType option:selected').val();
+        var headingArea = $('#headingArea').val().trim();
+        var descArea = $('#descriptionArea textarea').val();
+        var category = $('#category option:selected').val();
+        var categoryVis = $('#category').is(':visible');
+        var fail = $('#failureMessage').is(':visible');
+
+        // File Upload validation
+        if (docType != "") {
+            if (headingArea == "" || descArea == "") {
+                $('#uploadButton').attr('disabled', true);
+                return false;
+            } else {
+                if (docType == 1) {
+                    if (category == "") {
+                        $('#uploadButton').attr('disabled', true);
+                        return false;
+                    } else {
+                        $('#uploadButton').attr('disabled', false);
+                    }
+                } else {
+                    $('#uploadButton').attr('disabled', false);
+                }
+            }
+        } else {
+            $('#uploadButton').attr('disabled', true);
+            return false;
+        }
+    }
+    // Goes back to previous screen
+    $('#cancelButton').on('click', function () {
+        window.location.href = "/Setup/DocumentManagement";
+    })
+    // Multiselect drop downs
+    setTimeout(function () {
+        $(function () {
+            $('#meetingTypeSelect').multiselect({
+                columns: 3,
+                selectAll: true
+            });
+            $('#participantTypeLevel').multiselect({
+                columns: 3,
+                selectAll: true
+            });
+            $('.ss-ed-filterBox_table_clientSelect button span:nth-child(2)').text('All');
+            $('#mtg button span:nth-child(2)').addClass('ellipsisCell');
+            $('#partype button span:nth-child(2)').addClass('ellipsisCell');
+
+            // Meeting Dropdowns and selections
+            var newMeetingCount = 0;
+            var newMeetingString = '';
+            if (meetingList != null) {
+                $.each(meetingList, function (i, item) {
+                    if (meetingTypeIds != null) {
+                        if (meetingTypeIds.indexOf(item.Key) > -1) {
+                            var newCheckbox = $('body .ui-multiselect-menu:nth-child(3) .ui-multiselect-checkboxes:nth-child(2) li:nth-child(' + (i + 2) + ') input');
+                            $(newCheckbox).attr('checked', 'checked');
+                            newMeetingString += item.Value + ', ';
+                            newMeetingCount++;
+                        }
+                    }
+                });
+            }
+
+            if (newMeetingCount == 0) {
+                $('#mtg .ellipsisCell').text('All');
+            } else if (newMeetingCount == 1) {
+                var slicedNew = newMeetingString.slice(0, -2);
+                setTimeout(function () {
+                    $('#mtg .ellipsisCell').text(slicedNew);
+                }, 100);
+            } else if (newMeetingCount == 2) {
+                setTimeout(function () {
+                    var num2 = newMeetingString.slice(0, -1);
+                    newMeetingString = num2;
+                    $('#mtg .ellipsisCell').text(newMeetingString);
+                }, 100);
+            } else {
+                setTimeout(function () {
+                    if (newMeetingCount == 5) {
+                        $('#mtg .ellipsisCell').text('All');
+                    } else {
+                        $('#mtg .ellipsisCell').text(newMeetingCount + ' selected');
+                    }
+                }, 100);
+            };
+            // Participant dropdowns and selections
+            var newPartCount = 0;
+            var newPartString = '';
+            $.each(participantList, function (i, item) {
+                if (participantListIds != null) {
+                    if (participantListIds.indexOf(item.Key) > -1) {
+                        var newCheckbox = $('body .ui-multiselect-menu:nth-child(4) .ui-multiselect-checkboxes:nth-child(2) li:nth-child(' + (i + 2) + ') input');
+                        $(newCheckbox).attr('checked', 'checked');
+                        newPartString += item.Value + ', ';
+                        newPartCount++;
+                    }
+                }
+            });
+
+            if (newPartCount == 0) {
+                $('#partype .ellipsisCell').text('All');
+            } else if (newPartCount == 1) {
+                var sliced = newPartString.slice(0, -2);
+                setTimeout(function () {
+                    $('#partype .ellipsisCell').text(sliced);
+                }, 100);
+            } else if (newPartCount == 2) {
+                setTimeout(function () {
+                    var num2 = newPartString.slice(0, -1);
+                    newPartString = num2;
+                    $('#partype .ellipsisCell').text(newPartString);
+                }, 100);
+            } else {
+                setTimeout(function () {
+                    if (newPartCount == 5) {
+                        $('#partype .ellipsisCell').text('All');
+                    } else {
+                        $('#partype .ellipsisCell').text(newPartCount + ' selected');
+                    }
+                }, 100);
+            }
+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (isChrome) {
+                $('.ss-ed-filterBox_table_clientSelect .ui-icon-triangle-1-s').css('background-image', 'none');
+            }
+        });
+    }, 1000);
+    $(document).on('click', '#ui-multiselect-meetingTypeSelect-option-0', function () {
+        var checkedAllButton = $('#ui-multiselect-meetingTypeSelect-option-0').is(':checked');
+        if (checkedAllButton) {
+            var eachUl = $(this).closest('ul');
+            $(eachUl).find('input').each(function () {
+                $(this).attr('checked', 'checked');
+            })
+        } else {
+            var eachUl = $(this).closest('ul');
+            $(eachUl).find('input').each(function () {
+                $(this).attr('checked', false);
+            })
+            setTimeout(function () {
+                $('#mtg button span:nth-child(2)').text('All');
+            }, 100);
+        }
+    })
+    // All button
+    $(document).on('click', '#ui-multiselect-participantTypeLevel-option-0', function () {
+        var checkedAllButton = $('#ui-multiselect-participantTypeLevel-option-0').is(':checked');
+        if (checkedAllButton) {
+            var eachUl = $(this).closest('ul');
+            $(eachUl).find('input').each(function () {
+                $(this).attr('checked', 'checked');
+            })
+        } else {
+            var eachUl = $(this).closest('ul');
+            $(eachUl).find('input').each(function () {
+                $(this).attr('checked', false);
+            });
+            setTimeout(function () {
+                $('#partype button span:nth-child(2)').text('All');
+            }, 100);
+        }
+    })
+    $(document).on('click', 'input[name="multiselect_meetingTypeSelect"]', function () {
+        var eachUl = $(this).closest('ul');
+        var newCount = 0;
+        var newString = '';
+        $(eachUl).find('input').each(function (i, value) {
+            var ifChecked = $(this).is(':checked');
+            $('#mtg .ellipsisCell').text('');
+            if (ifChecked) {
+                var selectTextValue = $(this).next('span').text();
+                newString += selectTextValue + ', ';
+                console.log(newString);
+                newCount++;
+            }
+        })
+        if (newCount == 0) {
+            $('#mtg .ellipsisCell').text('All');
+        } else if (newCount == 1) {
+            var sliced = newString.slice(0, -2);
+            setTimeout(function () {
+                $('#mtg .ellipsisCell').text(sliced);
+            }, 100);
+        } else if (newCount == 2) {
+            setTimeout(function () {
+                $('#mtg .ellipsisCell').text(newString);
+            }, 100);
+        } else {
+            setTimeout(function () {
+                if (newCount == 5) {
+                    $('#mtg .ellipsisCell').text('All');
+                } else {
+                    $('#mtg .ellipsisCell').text(newCount + ' selected');
+                }
+            }, 100);
+        }
+    });
+    $(document).on('click', 'input[name="multiselect_participantTypeLevel"]', function () {
+        var eachUl = $(this).closest('ul');
+        var newCount = 0;
+        var newString = '';
+        $(eachUl).find('input').each(function (i, value) {
+            var ifChecked = $(this).is(':checked');
+            $('#partype .ellipsisCell').text('');
+            if (ifChecked) {
+                var selectTextValue = $(this).next('span').text();
+                newString += selectTextValue + ', ';
+                console.log(newString);
+                newCount++;
+            }
+        })
+        if (newCount == 0) {
+            $('#partype .ellipsisCell').text('All');
+        } else if (newCount == 1) {
+            var sliced = newString.slice(0, -2);
+            setTimeout(function () {
+                $('#partype .ellipsisCell').text(sliced);
+            }, 100);
+        } else if (newCount == 2) {
+            setTimeout(function () {
+                $('#partype .ellipsisCell').text(newString);
+            }, 100);
+        } else {
+            setTimeout(function () {
+                if (newCount == 5) {
+                    $('#partype .ellipsisCell').text('All');
+                } else {
+                    $('#partype .ellipsisCell').text(newCount + ' selected');
+                }
+            }, 100);
+        }
+    });
+</script>
+@Html.IncludeVersionedFiles("/Scripts/jquery-ui-multiselect/js/jquery.multiselect.js")
+
+
+
+
+
+

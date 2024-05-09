@@ -1,0 +1,9 @@
+﻿<div class="navFormSearch">
+ @*Ajax form that calls the index action in the search controller*@
+ @using (Ajax.BeginForm("Index", "Search", new AjaxOptions { UpdateTargetId = "result"}))
+ {
+        <span id="result"></span>
+        <input type="text" class="input-medium search-query" placeholder="Search for App ID" id="applicationId" name="applicationId"/>
+        <button type="submit" class="btn">Search</button>
+ }
+</div>

@@ -1,0 +1,93 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ApplicationPIViewModel
+
+@{
+    string showApplicationAbstract = "showApplicationAbstract";  
+} 
+<head>
+    <style type="text/css">
+        .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-draggable.ui-resizable {
+            overflow: hidden !important;
+        }
+    </style>
+</head>
+<table id="appView" class="table table-bordered table-striped alignCenter maxWidth">
+    <tr>
+        <td align="left">
+            <strong>Title:</strong> @Model.PiInformation.ApplicationTitle
+        </td>
+
+        <td rowspan="6" style="vertical-align:middle">
+            @{
+                int x = 1;
+                <p>@Invariables.Labels.ApplicationDocumentsName:</p>
+
+                if (Model.IsAbstractInDatabase)
+                {
+                    <p /><a href="@Url.Action("GetAbstractFile", "SummaryStatement", new {applicationId = Model.PiInformation.ApplicationId, logNumber = Model.PiInformation.LogNumber})" id="viewAbstract" target="_blank">@(x++). Abstract</a>
+                    <p />
+                }
+
+                foreach (var item in Model.ApplicationDocumentFiles)
+                {
+                    <p /><a href="/SummaryStatement/ViewApplicationFile/?logNumber=@item.FileInfo.LogNumber&fileSuffix=@item.FileInfo.FileSuffix" target="_blank">@(x). @item.FileInfo.DisplayLabel @ViewHelpers.FormatFileSize(item.FileSize)</a>
+                    x++;
+                }
+            }
+        </td>
+    </tr>
+    <tr>
+        <td align="left"><strong>@Invariables.Labels.PrimaryInvestigatorName:</strong> @Model.PiInformation.PiName</td>
+    </tr>
+
+    @if (!string.IsNullOrEmpty(Model.PiInformation.PartnerPiNames))
+    {
+        <tr>
+            <td>
+                <p><strong>@Invariables.Labels.PartnerPI:</strong></p>
+                <p class="pilist" data-partner-pi-names="@Model.PiInformation.PartnerPiNames">
+                    @Model.PiInformation.PartnerPiNamesCropped
+                    @if (Model.PiInformation.PartnerPiNames != Model.PiInformation.PartnerPiNamesCropped)
+                    {
+                        <a href="javascript:void(0)" id="view-pi-more" style="color:#08c;">More</a>
+                    }
+                </p>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td align="left"><strong>@Invariables.Labels.Organization:</strong> @Model.PiInformation.OrganizationName</td>
+    </tr>
+    <tr>
+        <td align="left"><strong>@Invariables.Labels.ResearchTopicAreaName:</strong> @Model.PiInformation.ResearchArea</td>
+    </tr>
+    <tr>
+        <td align="left"><strong>@Invariables.Labels.AwardName:</strong> @Model.PiInformation.AwardMechanism</td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    // Script for ajax calls to display application's Abstract from the database information
+    $('body').on('click', '#showApplicationAbstract', function () {
+        // Get the parameters to pass
+        var appId = $(this).attr('data-applicationid');
+        var logNo = $(this).attr('data-lognumber');
+        var title = logNo + ' Abstract';
+
+        $.get('/PanelManagement/AbstractText',
+        { "applicationId": appId, "applicationLogNum": logNo },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.medium, title);
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            }
+        );
+    });
+    // View all partner PI information
+    $("#view-pi-more").on("click", function(e) {
+        e.preventDefault();
+        var parentPi = $(".pilist");
+        parentPi.html(parentPi.attr("data-partner-pi-names"));
+    });
+</script>

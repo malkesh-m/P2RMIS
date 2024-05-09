@@ -1,0 +1,75 @@
+﻿@using Newtonsoft.Json;
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.WebModels.UserProfileManagement.UserAddressUploadModel
+
+@{
+    ViewBag.PageTitle = "W-9 Address Management";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">W-9 Address Management</span>
+</div>
+
+<!-- Main Body -->
+<div id="preText" class="main-header_failure"></div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<div id="mainContent">
+    <div class="row-fluid">
+        <!-- Select Filters -->
+        <button id="uploadButton" type="button" class="ss-w9_buttonPrimary" disabled>Upload</button>
+        <div class="row-fluid">
+            <div class="ss-w9-filterBox">
+                <div class="ss-w9-filterBox_title">Add File</div>
+                <div class="ss-w9-filterBox_activeText__bold">&nbsp;Select a file and click Upload. <a href="#" onclick="showFileDownloadWarning(undefined,undefined,'/Content/W9_File_Sample.xlsx')">View W-9 Address File Sample.</a></div>
+                <table class="ss-w9-filterBox_w9-table">
+                    <tr>
+                        <td class="ss-w9-filterBox_w9-table_row" id="filePlace">
+                            <div class="ss-w9-filterBox_w9-table_row_inner k-content">
+                                <input name="fileBase" id="fileBase" type="file" placeholder="C:\Documents\testfile.docx" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="ss-w9-filterBox_text" id="allowedFile">Allowed file format: <span id="redColor">XLSX</span></div>
+            </div>
+        </div>
+
+        <div class="uploadData"><strong>The following data will be updated once you click 'Upload'.</strong></div>
+        <table id="w9Table" class="ss-w9-table-management">
+            <thead>
+                <tr>
+                    <th class="ss-w9-table-management_header">#</th>
+                    <th class="ss-w9-table-management_header">Reviewer</th>
+                    <th class="ss-w9-table-management_header">Inst Vendor ID</th>
+                    <th class="ss-w9-table-management_header">Vendor ID</th>
+                    <th class="ss-w9-table-management_header">Vendor Name</th>
+                    <th class="ss-w9-table-management_header">Vendor Terms</th>
+                    <th class="ss-w9-table-management_header">User ID</th>
+                    <th class="ss-w9-table-management_header">1099 Tax ID</th>
+                    <th class="ss-w9-table-management_header">Payment Address Line 1</th>
+                    <th class="ss-w9-table-management_header">Payment Address Line 2</th>
+                    <th class="ss-w9-table-management_header">Payment Address Line 3</th>
+                    <th class="ss-w9-table-management_header">Payment City</th>
+                    <th class="ss-w9-table-management_header">Payment State</th>
+                    <th class="ss-w9-table-management_header">Payment Country Code</th>
+                    <th class="ss-w9-table-management_header">Payment Postal Code</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/w9management.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")

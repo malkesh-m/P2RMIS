@@ -1,0 +1,12 @@
+﻿@model Sra.P2rmis.Web.UI.Models.MMTabbedMenuViewModel
+@using Sra.P2rmis.WebModels
+
+<ul class="nav nav-tabs">
+    @{ string active = ""; }
+    @foreach (var item in Model.SubTabs)
+    {
+        if (ViewBag.PageTitle == item.TabName) { active = "active"; }
+        <li class="@active"><a href="@item.TabLink  ">@item.TabName</a></li>
+        active = "";
+    }
+</ul>

@@ -1,0 +1,1 @@
+﻿DELETE FROM [$(P2RMIS)].dbo.SYS_Groups_Modules WHERE MOD1_ID = 7 OR MOD1_ID = 21;

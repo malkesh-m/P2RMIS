@@ -1,0 +1,286 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+
+@model Sra.P2rmis.Web.ViewModels.Reviewer.ReviewersViewModel
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab7;
+}
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    fieldset.filter-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        width: 375px;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        height: 70%;
+    }
+
+    #btnExport {
+        padding-left: 10px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .viewStatusInformationTitle {
+        font-size: 20px
+    }
+
+    .titleItem {
+        border: none;
+        padding: 0px 0px 0px 10px
+    }
+
+    #viewStatusInformation {
+        font-size: 14px;
+    }
+
+        #viewStatusInformation a:hover,
+        #viewStatusInformation a:focus {
+            text-decoration: underline;
+            color: #005580;
+        }
+
+        #viewStatusInformation th,
+        #viewStatusInformation td:nth-child(1),
+        #viewStatusInformation td:nth-child(10),
+        #viewStatusInformation td:nth-child(11),
+        #viewStatusInformation td:nth-child(12) {
+            text-align: center;
+        }
+
+    .viewTdImg {
+        margin: auto;
+        display: inline-flex;
+    }
+
+        .viewTdImg img {
+            padding: 5px;
+        }
+
+    input[type="radio"] {
+        vertical-align: baseline;
+    }
+
+    label {
+        display: inline-block;
+        padding-left: 10px;
+    }
+
+    .ellipsisCell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    input[type="radio"] {
+        margin: 4px;
+        vertical-align: top;
+    }
+
+    #grid {
+        display: none;
+        float: left;
+    }
+
+    .k-grid-add {
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        background-color: transparent !important;
+        border: none !important;
+    }
+
+    .k-floatwrap {
+        padding: .714em 1.333em .643em 1.333em;
+        font-size: 14px;
+    }
+
+    #successMessage, #failureMessage {
+        display: none;
+    }
+
+    form {
+        height: auto;
+    }
+</style>
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_title">Reviewer Information</span>
+</div>
+<div class="container-fluid" id="mainContent">
+    <div id="successMessage"></div>
+    <div id="failureMessage"></div>
+    <div class="span12">
+        <div class="row-fluid">
+            @Html.Partial("_PanelSelection")
+        </div>
+        <div class="grid-container margin-top10 hidden">
+            <div class="row-fluid">
+                <span class="span9 bold viewStatusInformationTitle">
+                    <span id="listTitle">Reviewer List - </span>
+                    <span id="formTitleFy"></span>&nbsp;
+                    <span id="formTitleProgram"></span>&nbsp;-&nbsp;
+                    <span id="formTitlePanel"></span>&nbsp;
+                </span>
+            </div>
+            <div id="reviewerInformationGrid"></div>
+        </div>
+
+        <div class="message-section margin-top10 align-center hidden">
+            There are no reviewers assigned to this panel.
+        </div>
+    </div>
+    <div id="loading"></div>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/rr-custom.js")
+<script type="text/javascript">
+    // Load data on panel selection click event
+    var loadData = function () {
+        window.kendoLoad();
+        $.ajax({
+            url: '/Reviewer/GetPanelReviewersJson',
+            data: {
+                sessionPanelId: panelSelectField.val()
+            }
+        }).done(function (results) {
+            if (results.flag) {
+                if (results.reviewers !== null && results.reviewers.length > 0) {
+                    var grid = $("#reviewerInformationGrid").data("kendoGrid");
+                    var ds = populateDataSource(results.reviewers);
+                    ds.read();
+                    grid.dataSource.data(ds.data());
+                    grid.setDataSource(grid.dataSource);
+                    grid.refresh();
+                    if (grid.dataSource.page() !== 1) {
+                        grid.dataSource.page(1);
+                    }
+                    // Total data in Grid
+                    var sourcedata = ds.data();
+                    $('#totalCount span').text(sourcedata.length);
+                    // Set grid titles
+                    setGridTitles();
+                    // Show grid container and hide message
+                    $(".grid-container").removeClass("hidden");
+                    $(".message-section").addClass("hidden");
+                } else {
+                    // Show message and hide grid container
+                    $(".grid-container").addClass("hidden");
+                    $(".message-section").removeClass("hidden");
+                }
+            } else {
+                // Show message and hide grid container
+                $(".grid-container").addClass("hidden");
+                $(".message-section").removeClass("hidden");
+            }
+            window.kendoUnload();
+        });
+    };
+
+    // Refresh button
+    $('body').on('click', 'a.k-pager-refresh', function (e) {
+        e.preventDefault();
+        loadData();
+    });
+
+    // Set grid title
+    var setGridTitles = function () {
+        if (panelSelectionCalls !== undefined && panelSelectionCalls.getPanelSelection !== undefined) {
+            var sel = panelSelectionCalls.getPanelSelection();
+            $("#formTitleFy").text(sel.year);
+            $("#formTitleProgram").text(sel.program);
+            $("#formTitlePanel").text(sel.panel);
+        }
+    };
+    // Get grid data source
+    var populateDataSource = function (dataJson) {
+        var dataSource = new kendo.data.DataSource({
+            type: "json",
+            data: dataJson,
+            sort: [
+                { field: "lastName", dir: "asc" },
+                { field: "firstName", dir: "asc" }
+            ],
+            pageSize: 20
+        });
+        return dataSource;
+    };
+
+    var setExpertiseCell = function () {
+        // Check for large comments
+        $('.doubleRowEllipsisCell').each(function () {
+            var $ellipsisText = $(this);
+            $(this).parent().attr('title', $(this).text());
+            while ($ellipsisText.outerHeight(true) > 40) {
+                $ellipsisText.text(function (index, text) {
+                    return text.replace(/\W*\s(\S)*$/, '...');
+                });
+            }
+        });
+    };
+
+    // Set reviewer information grid
+    var setReviewerInformationGrid = function () {
+        $("#reviewerInformationGrid").kendoGrid({
+            height: 550,
+            resizable: true,
+            navigatable: true,
+            batch: true,
+            toolbar: ["create"],
+            columns: [
+                { title: "Name", field: "name", width: 150, template: "${name}" + tickChecker("blocked") },
+                { title: "Participant Type/Role", field: "participantTypeAndRoleAbbreviation", width: 200, template: "${participantType}<br />${participantRoleAbbreviation}" },
+                { title: "Expertise", field: "expertise", width: 350, template: "<span class='doubleRowEllipsisCell'>${expertise}</span>" },
+                { title: "Organization", field: "organization", width: 200 },
+                {
+                    title: "View", field: "view", width: 100, filterable: false, template:
+                        "<span class='viewTdImg'>"
+                        + " # if (showResumeLink){ #<a href='${resumeLink}' target='_blank'><img src='/Content/img/icon_cv_launch_20x20.png' alt='CV' title='CV.  Launches CV (PDF)' /></a> # } else { # <img class='disabled-image' src='/Content/img/icon_cv_launch_20x20_disabled.png' alt='CV Not Available' title='CV Not Available' /> # } #"
+                        + " # if (showPreferredLink) { # <a href='${preferredWebsiteAddress}' target='_blank'><img src='/Content/img/globe_link_20px_enabled.png' alt='Preferred Website' title='Preferred Website.  Launches Preferred Website' /></a> # } else { # <img src='/Content/img/globe_link_20px_disabled.png' alt='Preferred Website Not Available' title='Preferred Website Not Available for User' /> # } #</span>"
+                }
+            ],
+            editable: false,
+            scrollable: true,
+            groupable: true,
+            sortable: true,
+            dataBound: function (e) {
+                var element = $('#loading');
+                kendo.ui.progress(element, false);
+                $('.fa-search').closest('td').css('position', 'relative');
+                $('.fa-search').closest('td').css('text-align', 'center');
+                // Set expertise ellipsis
+                setTimeout(function () { setExpertiseCell(); }, 100);
+            },
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "Starts with",
+                        eq: "Is equal to"
+                    }
+                }
+            },
+            pageable: {
+                input: true,
+                numeric: false,
+                refresh: true,
+                pageSizes: [20, 40, 60, "all"],
+                pageSize: 20
+            }
+        });
+        // This is where we added the same toolbar thats on the bottom of the grid to the top
+        var grid = $("#reviewerInformationGrid").data("kendoGrid");
+        var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+        wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+        grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+    };
+    setReviewerInformationGrid();
+</script>

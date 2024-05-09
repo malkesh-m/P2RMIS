@@ -1,0 +1,110 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.MeetingManagementViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.Tab3;
+    @Html.Partial("_KendoHeader2016")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Meeting Management</span>
+</div>
+<!-- Main Body -->
+<div class="mm-fieldSet">
+    @Html.Partial("_MMTabbedMenu")
+    <!-- Main Body -->
+    <div id="mainContent" class="">
+        <div>
+            <div id="successMessage"></div>
+            <div id="failureMessage"></div>
+            <div id="validationMessage"></div>
+            <div id="searchInstruction"></div><button id="uploadButton" type="button" class="mm-main-upload_upload-button" disabled>Upload</button>
+        </div>
+        <div class="row-fluid mm-main-upload">
+            <div class="mm-main-upload_filterBox">
+                <div class="mm-main-upload_filterBox_title">Add File</div>
+                <div class="mm-main-upload_filterBox_header">
+                    <p>
+                        Select a file and click Upload.
+                        <a id="fileTemplateDownloadLink" href="javascript:void(0);">View World Travel Upload File Template</a>
+                    </p>
+                    <p>
+                        Instructions:
+                    </p>
+                    <p>
+                        <ol>
+                            <li>Delete all tabs other than 'Full Itinerary'</li>
+                            <li>
+                                On the 'Full Itinerary' tab:
+                                <ol type="a">
+                                    <li>Delete the column 'Cell Phone', (D)</li>
+                                    <li>Delete the column 'Emergency Contact', (F)</li>
+                                    <li>Delete the column 'Emergency Contact Phone', (G)</li>
+                                    <li>Add a new column (A) titled "Panel ID"</li>
+                                </ol>
+                            </li>
+                            <li>
+                                For each WT entry, add the Panel Participant ID in Column A "Panel ID":
+                                <ol type="a">
+                                    <li>Navigate to 'Panel Mgmt' -> Registration Status</li>
+                                    <li>Select the Program/Fiscal Year/Panel(s)</li>
+                                    <li>Export the Panelists by clicking 'Export into Excel'</li>
+                                    <li>Look to column B, 'Part ID', for the Panel ID</li>
+                                </ol>
+                            </li>
+                            <li>Save the file to your local machine</li>
+                            <li>Meeting Mgmt > Upload > Browse and select your file</li>
+                            <li>If upload is successful, a preview of the file will appear
+                                at the bottom of the screen. If not successful, revisit above steps
+                                to verify the file is set up correctly.
+                            </li>
+                            <li>Click 'Upload' to complete loading the Travel data to the Reviewers' records</li>
+                        </ol>
+                    </p>
+                </div>
+                <table class="mm-main-upload_filterBox_table">
+                    <tr>
+                        <td class="mm-main-upload_filterBox_table_file" id="filePlace">
+                            <div class="demo-section k-content">
+                                <input name="fileBase" id="fileBase" type="file" placeholder="C:\Documents\testfile.docx" class="mm-main-upload_filterBox_table_file_input" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="mm-main-upload_filterBox_header" id="allowedFile">Allowed file format: <span id="redColor">XLSX</span></div>
+            </div>
+            <div class="mm-main-upload_uploadMMData"><span class="mm-main-upload_uploadMMData_header">PREVIEW</span> - The following data will be updated once you click 'Upload'.</div>
+            <table id="mm-table" class="mm-main-upload_preview">
+                <thead class="mm-main-upload_preview_header">
+                    <tr>
+                        <th class="mm-main-upload_preview_header_index">#</th>
+                        <th class="mm-main-upload_preview_header_user-id">Part. ID</th>
+                        <th class="mm-main-upload_preview_header_last-name">Last Name</th>
+                        <th class="mm-main-upload_preview_header_first-name">First Name</th>
+                        <th class="mm-main-upload_preview_header_reservation">Reservation</th>
+                        <th class="mm-main-upload_preview_header_carrier">Carrier Name</th>
+                        <th class="mm-main-upload_preview_header_flight">Flight</th>
+                        <th class="mm-main-upload_preview_header_dep-city">Dep City</th>
+                        <th class="mm-main-upload_preview_header_first-name">Dep Date</th>
+                        <th class="mm-main-upload_preview_header_dep-city">Dep Time</th>
+                        <th class="mm-main-upload_preview_header_flight">Arr City</th>
+                        <th class="mm-main-upload_preview_header_first-name">Arr Date</th>
+                        <th class="mm-main-upload_preview_header_dep-city">Arr Time</th>
+                        <th class="mm-main-upload_preview_header_fare">Fare</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/mmUpload.js")

@@ -1,0 +1,254 @@
+﻿@model Sra.P2rmis.Web.UI.Models.CriterionWizardViewModel
+@using Newtonsoft.Json;
+
+<div class="row-fluid ss-add-eval">
+    <div id="criterionWizardAlert" class="ss-add-eval__error"></div>
+    <span class="ss-add-eval_required ss-add-only"><span class="redColor">*</span> Indicates required fields</span>
+    <div id="overallCriterionBox">
+        <span class="redColor ss-add-only">*</span>
+        @Html.DropDownListFor(m => m.ClientElementId, new SelectList(Model.AvailableCriteriaList, "Item1", "Item3", Model.ClientElementId), "Select Evaluation Criteria", new { @id = "criteriaSelection", @class = "ss-add-eval_select" })
+        @Html.CheckBoxFor(m => m.HasOverall, new { id = "evalID", @class = "ss-add-eval_checkbox" })
+        Overall Criterion
+    </div>
+    <div class="ss-add-eval_header">Evaluation Criteria:<span id="evalCriteria" class="ss-add-eval_result">@Model.EvaluationCriteria</span></div>
+    <div class="ss-add-eval_score-box">
+        <div class="ss-add-eval_score-box_title">Scoring & Critique ( Word Limit up to 500 )</div>
+        <table class="ss-add-eval_table">
+            <tr>
+                <td class="ss-add-eval_table_required">@Html.CheckBoxFor(m => m.RequireScore, new { id = "requireScore", @class = "ss-add-eval_table_required_checkbox" }) Require Score</td>
+                <td class="ss-add-eval_table_required">@Html.CheckBoxFor(m => m.RequireCritique, new { id = "requireCriteria", @class = "ss-add-eval_table_required_checkbox" }) Require Critique</td>
+                <td class="ss-add-eval_table_max">Word Max<input id="wordMax" type="number" min="0" max="5000" value="@Model.WordMax" class="ss-add-eval_table_max_input"/></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="padding-left:20px;">
+                    Scoreboard Desc
+                    @Html.DropDownListFor(m => m.ShowAbbreviationOnScoreboard, new SelectList(Model.ScoreboardDescList, "Key", "Value"), new { @id = "scoreboardDescSelection", @class = "ss-add-eval_select" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-add-eval_crit-order">
+        <div class="ss-add-eval_crit-order_title">Critique Order</div>
+        <div class="ss-add-eval_crit-order_select">
+            Critique Order
+            @Html.DropDownListFor(m => m.CritiqueOrder, new SelectList(Model.CritiqueOrderOptions), new { id = "critOrder", @class = "noMargin" })
+        </div>
+    </div>
+    <div class="ss-add-eval_ss">
+        <div class="ss-add-eval_ss_title">Summary Statement</div>
+        <table class="ss-add-eval_ss_table">
+            <tr>
+                <td class="ss-add-eval_ss_table_box">
+                    <input type="checkbox" class="ss-add-eval_ss_table_box_checkbox" id="hideCheckbox" />Hide Criterion
+                    <div class="ss-add-eval_ss_table_box_selectbox" id="ssOrderSection" >
+                        Order
+                        @Html.DropDownListFor(m => m.SummaryStatementOrder, new SelectList(Model.SummaryStatementOrderOptions), new { id = "sumOrder", @class = "ss-add-eval_ss_table_box_select" })
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-add-eval_text">Description</div>
+    <div class="ss-add-eval_editor">
+        <iframe class="ss-add-eval_editor_Iframe" src="/Home/RadEditor?type=evaluation" frameborder="0" id="criterion"></iframe>
+    </div>
+</div>
+<input type="hidden" id="availableCriteriaList" value="@JsonConvert.SerializeObject(Model.AvailableCriteriaList)" />
+<input type="hidden" id="crtierionDescription" value="@Model.Description" />
+<input type="hidden" id="partialEdit" value="@ViewBag.PartialEdit.ToString()" />
+
+<script type="text/javascript">
+    $('body').addClass('ss-add-eval-modal');
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        // Set criteria drop-down status
+        if ($("#criteriaSelection").val() !== "") {
+            $("#criteriaSelection").prop("disabled", true);
+            $(".ss-add-only").hide();
+        } else {
+            $("#criteriaSelection").prop("disabled", false);
+            $(".ss-add-only").show();
+        }
+        // Set char limit
+        var setEditorCharLimit = function (limit, maxAttempts) {
+            setTimeout(function () {
+                if ($(".ss-add-eval_editor_Iframe")[0].contentWindow.SetEditorCharLimit) {
+                    $(".ss-add-eval_editor_Iframe")[0].contentWindow.SetEditorCharLimit(limit);
+                } else if (maxAttempts > 0) {
+                    setEditorCharLimit(limit, maxAttempts - 1);
+                }
+            }, 500);
+        };
+        setEditorCharLimit(3500, 10);
+        // Enable edit
+        var fnEnableEditing = function () {
+            if ($(".ss-add-eval_editor_Iframe")[0].contentWindow.IsLoaded) {
+                $(".ss-add-eval_editor_Iframe")[0].contentWindow.ToggleEditing(true);
+            } else {
+                setTimeout(function () { fnEnableEditing(); }, 100);
+            }
+        };
+        fnEnableEditing();
+        // Modal word max validation
+        var setWordMaxStatus = function () {
+            $('#requireCriteria').attr('checked') ? $('#wordMax').attr('disabled', false) : $('#wordMax').attr('disabled', true);
+        };
+        setWordMaxStatus();
+        $('#requireCriteria').on('change', function () {
+            setWordMaxStatus();
+        });
+
+        var fnSetSSOrderSectionStatus = function () {
+        if ($("#hideCheckbox").prop("checked")) {
+            $("#sumOrder").attr('disabled', true);
+            $('#sumOrder').val('#sumOrder option:first');
+            } else {
+            $("#sumOrder").attr('disabled', false);
+            }
+        };
+        fnSetSSOrderSectionStatus();
+         // Hide criterion checkbox change event handler
+        $("#hideCheckbox").on("change", function () {
+            var savedOption = $('#sumOrder option:selected').text();
+            fnSetSSOrderSectionStatus();
+        });
+
+
+        // now that it's all set up let's see what can be modified.
+        // var partEdit = $("#partialEdit").val();
+ 
+       var partEdit = "@ViewBag.PartialEdit";
+       if (partEdit === "True") {
+           $('#evalID').attr('disabled', true);
+           $('#requireCriteria').attr("disabled", true);
+           $("#requireScore").attr('disabled', true);
+           $("#scoreboardDescSelection").attr('disabled', true);
+           $("#hideCheckbox").attr('disabled', true);
+           $('#critOrder').attr("disabled", true);
+           $("#sumOrder").attr("disabled", true);
+       }
+
+
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            var msg = "";
+
+            var newClientID = $('#criteriaSelection').val();
+            var newMechanismTemplateElementId = sessionStorage.getItem('newMechanismTemplateElementId');
+            var requireScore = $('#requireScore').attr('checked') ? 'true' : 'false';
+            var requireCriteria = $('#requireCriteria').attr('checked') ? 'true' : 'false';
+            var overallScore = $('#evalID').attr('checked') ? 'true' : 'false';
+            var partEdit = "@ViewBag.PartialEdit";
+
+            // Select either Score or Criteria validation
+            if (requireCriteria === 'false' && requireScore === 'false') {
+                msg = "Please select either a Required Score or a Required Critique.";
+                $('.ss-add-eval_table_required').css('color', 'red');
+            } else {
+                $('.ss-add-eval_table_required').css('color', 'black');
+            }
+            var content = $(".ss-add-eval_editor_Iframe")[0].contentWindow.GetEditorHtmlContent();
+            if (content === "Start typing instructions here...") {
+                content = "";
+            }
+            if ($('#criterionWizardAlert div:contains("Selected Evaluation Criteria")').length === 0) {
+                $('#criteriaSelection').removeClass('input-validation-error');
+            }
+            if ($('#criterionWizardAlert div:contains("one evaluation criteria")').length === 0) {
+                $('#overallCriterionBox').css('color', 'black');
+            }
+
+            // Select Criteria Validation
+            var evalCriteria = $("#criteriaSelection > option:selected").text();
+            var criteriaSelection = $("#criteriaSelection").val();
+            if (criteriaSelection === "") {
+                msg = "Please select an evaluation criterion.";
+                $('#criteriaSelection').addClass('input-validation-error');
+            } else {
+                $('#criteriaSelection').removeClass('input-validation-error');
+            }
+            var wordMax = $.toBoolean(requireCriteria) ? $("#wordMax").val() : null;
+            if ($.toBoolean(requireCriteria) && (wordMax === "" || parseInt(wordMax) < 0)) {
+                msg = "Please set the word max limit for critique text.";
+                $('#wordMax').addClass('input-validation-error');
+            } else {
+                $('#wordMax').removeClass('input-validation-error');
+            }
+
+            $("#criterionWizardAlert").html(msg);
+
+            selectValidation();
+            var addEvaluationFlag = sessionStorage.getItem('addEvaluationFlag');
+
+            if (msg === "") {
+                $('#saveDialogChanges').attr('disabled', true);
+                var inputData = {
+                    "clientId": newClientID, "clientElementId": $("#criteriaSelection").val(), "mechanismTemplateId": $("#mechanismTemplateId").val(), "mechanismTemplateElementId": newMechanismTemplateElementId, "overallFlag": overallScore, "scoreFlag": requireScore, "textFlag": requireCriteria, "recommendedWordCount": wordMax, "sortOrder": $("#critOrder option:selected").val(), "summaryIncludeFlag": false,
+                    "summarySortOrder": $("#sumOrder option:selected").val(), "instructionText": content, "showAbbreviationOnScoreboard": $("#scoreboardDescSelection").val().toLowerCase() === "true", "addEvaluationFlag": addEvaluationFlag, "partEditFlag": partEdit
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveCriteria',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#criterionWizardAlert").append($("<div/>").html(data.messages[i]));
+                                $('#overallCriterionBox').css('color', 'red');
+                            }
+                        } else {
+                            refreshGrid();
+                            $('#criteriaSelection').removeClass('input-validation-error');
+                            $('.ui-dialog-titlebar-close').click();
+                            if (newMechanismTemplateElementId) {
+                                $("#successMessage").html("Evaluation Criterion " + evalCriteria + " updated successfully!").show();
+                            } else {
+                                $("#successMessage").html("Evaluation Criterion " + evalCriteria + " added successfully!").show();
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#awardWizardAlert").html("Failed to save the award.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            }
+
+        });
+
+
+
+    });
+
+    // Criteria drop down change event handler
+    $("#criteriaSelection").on("change", function () {
+        var clientElementId = $("#criteriaSelection").val();
+        var availableCriteriaList = $("#availableCriteriaList").val();
+        var listJson = JSON.stringify(availableCriteriaList);
+        var found = false;
+        var i = 0;
+        while (!found && i < listJson.length) {
+            if (listJson[i].Item1 == clientElementId) {
+                $("#evalCriteria").html(listJson[i].Item3);
+                found = true;
+            }
+            i++;
+        }
+    });
+    // Applies word max rule
+    $("#wordMax").on("keyup", function () {
+        if (parseInt($(this).val()) > parseInt($(this).attr("max"))) {
+            $(this).val($(this).val().substring(0, $(this).val().length - 1));
+            $(this).select();
+        }
+    });
+    // Get criterion description
+    function getCriterionDescription() {
+        return $("#crtierionDescription").val();
+    }
+</script>

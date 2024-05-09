@@ -1,0 +1,81 @@
+﻿@using Newtonsoft.Json
+@model Sra.P2rmis.Web.UI.Models.ViewReviewerEvaluationViewModel
+<style>
+    .reFieldset {
+        margin: 10px;
+        font-size: 12px;
+        height: 40px;
+    }
+    .reFormFieldLabel {
+        font-weight:bold
+    }
+    #viewEvaluationDetailsGrid img {
+        display: block;
+        margin: auto;
+    }
+    .k-grid-header th.k-header,
+    #viewEvaluationDetailsGrid td:nth-child(3),
+    #viewEvaluationDetailsGrid td:nth-child(4) {
+        text-align: center;
+    }
+    .ratingEvalComment{
+        max-height:80px;
+        overflow-y:auto;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 bordered reFieldset ">
+            <ul class="list-unstyled">
+                <li>
+                    <span class="span4 alignCenter"><span class="reFormFieldLabel">AVG Rating:  </span><span id="reAVG">@Model.AverageRating</span></span>
+                    <span class="span4 alignCenter"><span class="reFormFieldLabel">No. of Ratings:  </span><span id="reNumRatings">@Model.NumberOfRatings</span></span>
+                    <span class="span4 alignCenter"><span class="reFormFieldLabel">No. of Potential Chair Recs:  </span><span id="rePotChairRecs">@Model.NumberOfPotentialChairRecomendations</span></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <span class="span6">Evaluation Records <span id="reEvalRecCount">(@Model.Ratings.Count())</span></span>
+        <span class="span6 alignRight">Rating Scale: 1=lowest, 5=highest</span>
+    </div>
+</div>
+<div id="viewEvaluationDetailsGrid">
+</div>
+<script>
+    $(document).ready(function () {
+        // Grid data source
+        var evalDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.Ratings)),
+            sort: [ { field: "fy", dir: "desc"},
+                { field: "program", dir: "asc"},
+                { field: "panel", dir: "panel"}
+            ],
+            schema: {
+                model: {
+                    fields: {
+                        status: { type: "string" }
+                    }
+                }
+            },
+            pageSize: 50
+        });
+        $("#viewEvaluationDetailsGrid").kendoGrid({
+            height:300,
+            columns: [
+                //{ title: "FY", field: "fy", width: 60 },
+                { title: "Program", field: "program", width: 100,template:"${fy} ${program}<br />${panel}" },
+                //{ title: "Panel", field: "panel", width: 100 },
+                //{ title: "Participation", field: "participation", width: 150 },
+                { title: "Type", field: "type", width: 150, template:"${participation}" },
+                { title: "Rating", field: "rating", width: 50, headerTemplate: "<img src='/Content/img/icon_rating_enabled.png' alt='Rating' title='Reviewer Rating' />" },
+                { title: "Potential Chair", field: "potentialChair", width: 50, template: kendo.template(tickChecker('potentialChair')), headerTemplate: "<img src='/Content/img/icon_potential_chair_opt2.png' alt='Potential Chair' title='Potential Chair' />" },
+                { title: "Comment", field: "comment", width: 300, template: "<div class='ratingEvalComment'>${comment}<br /><span style='font-size:small'>${ratingLine}</span></div>" }
+            ],
+            dataSource: evalDataSource
+        });
+    })
+</script>
+

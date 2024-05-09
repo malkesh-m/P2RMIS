@@ -1,0 +1,29 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapNodeModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+@{
+    const string CreateContext = Sra.P2rmis.Web.Controllers.UserProfileManagement.UserProfileManagementBaseController.SearchContexts.CreateContext;
+    const string UpdateContext = Sra.P2rmis.Web.Controllers.UserProfileManagement.UserProfileManagementBaseController.SearchContexts.UpdateContext;
+}
+
+@if (Model.IsCurrentNode && Model.SourceMetadata["HtmlHelper"].ToString() != "MvcSiteMapProvider.Web.Html.MenuHelper") 
+{ 
+    <text>@Model.Title</text>
+} 
+else if (Model.Title == "Create User" )
+{
+    <a href="#" class="searchUser" data-context="@CreateContext" role="menuitem">@Model.Title</a>
+}
+else if (Model.Title == "Update User")
+{
+    <a href="#" class="searchUser" data-context="@UpdateContext" role="menuitem">@Model.Title</a>
+}
+else if (Model.IsClickable) 
+{ 
+    <a href="@Model.Url" role="menuitem">@Model.Title</a>
+} 
+else 
+{ 
+    <text>@Model.Title</text>
+}

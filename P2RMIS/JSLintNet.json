@@ -1,0 +1,14 @@
+﻿{
+  "version": "2.2.1",
+  "ignore": [],
+  "options": {
+    "this": true,
+    "white": true
+  },
+  "globalVariables": [
+    "$",
+    "kendo",
+    "p2rims"
+  ],
+  "runOnSave": true
+}

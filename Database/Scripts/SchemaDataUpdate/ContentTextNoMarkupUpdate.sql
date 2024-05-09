@@ -1,0 +1,9 @@
+﻿UPDATE ApplicationWorkflowStepElementContent
+SET ContentTextNoMarkup = ContentText
+WHERE ApplicationWorkflowStepElementId IN
+(SELECT ApplicationWorkflowStepElementId FROM
+ApplicationWorkflowStepElement INNER JOIN
+ApplicationWorkflowStep ON ApplicationWorkflowStepElement.ApplicationWorkflowStepId = ApplicationWorkflowStep.ApplicationWorkflowStepId INNER JOIN
+ApplicationWorkflow ON ApplicationWorkflowStep.ApplicationWorkflowId = ApplicationWorkflow.ApplicationWorkflowId INNER JOIN
+ApplicationStage ON ApplicationWorkflow.ApplicationStageId = ApplicationStage.ApplicationStageId
+WHERE ApplicationStage.ReviewStageId = 3)

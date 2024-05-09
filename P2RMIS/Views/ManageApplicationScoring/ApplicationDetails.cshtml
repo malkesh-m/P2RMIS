@@ -1,0 +1,517 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ApplicationDetailsViewModel
+
+@{
+    string noteValidation = "Please enter a note.";
+}
+<style type="text/css">
+    .accordion-group {
+        border: 0px !important;
+    }
+    .padding15{
+        padding: 15px !important;
+    }
+</style>
+<input type="hidden" id="applicationId" value="@Model.ApplicationInformationModel.ApplicationId" />
+<div class="row-fluid">
+    <div>
+        <span>
+            @if (Model.IsFromMyWorkspace)
+            {
+                <a id="backButton" href="@Url.Action(Routing.MyWorkspace.ManageApplicationScoring, Routing.P2rmisControllers.MyWorkspace)">
+                    <img src="~/Content/img/backarrow_20px_enabled.png" border="0"
+                         alt="Go Back to Previous Page" title="Back" />
+                </a>
+            }
+            else
+            {
+                <a id="backButton" href="@Url.Action(Routing.ManageApplicationScoring.Index, Routing.P2rmisControllers.ManageApplicationScoring)">
+                    <img src="~/Content/img/backarrow_20px_enabled.png" border="0"
+                         alt="Go Back to Previous Page" title="Back" />
+                </a>
+            }
+                        
+</span>
+        <span class="application-details-large-title">Application Details for @Model.ApplicationInformationModel.LogNumber</span>
+    </div>
+    <div class="application-details-section">
+        <div class="padding-top-xx">
+            Application Title: @Model.ApplicationInformationModel.Title
+        </div>
+        <div>
+            <span class="padding-right-xx">PI: @ViewHelpers.ConstructNameWithComma(Model.ApplicationInformationModel.PiFirstName, Model.ApplicationInformationModel.PiLastName)</span>
+            <span>PI Org: @Model.ApplicationInformationModel.PiOrganization</span>
+        </div>
+        <div>
+            Mechanism: @Model.ApplicationInformationModel.AwardMechanism
+        </div>
+    </div>
+    <div class="scores-received-section">
+        <div class="legend-title">Final Scores Received</div>
+        <input type="hidden" id="numberOfReviewers" value="@Model.NumberOfReviewers" />
+        <div class="scores-received">@Model.NumberOfScored out of @Model.NumberOfReviewers</div>
+    </div>
+    <div class="scaling-section">
+        <div>
+            <div class="legend-title">
+                <a id="hideScoringScales" onclick="$.toggleVisibility('scoringScales', 'hideScoringScales');" href="javaScript:void(0);">Hide Key</a>
+            </div>
+            <div id="scoringScales" class="padding-top-xx">
+                @if (@Model.DisplayOverallKey)
+                { 
+                    <div>
+                        <b>@Model.ClientScoringScaleLegend.OverallScaleLabel: </b>
+                        @foreach (var criteria in Model.ClientScoringScaleLegend.Overall)
+                        {
+                            <span class="padding-right-xx">
+                                @criteria.LegendItemLabel @criteria.HighValue - @criteria.LowValue
+                            </span>
+                        }
+                    </div>
+                }
+                @if (@Model.DisplayCriterionKey)
+                { 
+                    <div>
+                        <b>@Model.ClientScoringScaleLegend.CriterionScaleLabel: </b>
+                        @foreach (var criteria in Model.ClientScoringScaleLegend.Criterion)
+                        {
+                            <span class="padding-right-xx">
+                                @criteria.LegendItemLabel @criteria.HighValue - @criteria.LowValue
+                            </span>
+                        }
+                    </div>
+                }
+                <div>
+                    <span class="padding-right-xx"><img src="~/Content/img/Critique_20px_enabled.png" alt="Critique" title="Critique" /> Critique</span>
+                    <span class="padding-right-xx"><img src="~/Content/img/revise_critique_20px_enabled.png" alt="Revised Critique" title="Revised Critique" /> Revised Critique</span>
+                    <span class="padding-right-xx"><img src="~/Content/img/missing_critique_20px_enabled.png" alt="Missing Critique" title="Missing Critique" /> Missing Critique</span>
+                    @*<span class="padding-right-xx"><img src="~/Content/img/change_user_status_20px_enabled.png" alt="Change User Status" title="Change User Status" /> Change User Status</span>*@
+                    <span class="padding-right-xx"><img src="~/Content/img/coi_20px_enabled.png" alt="COI" title="COI" /> COI</span>
+                    <span class="padding-right-xx"><img src="~/Content/img/abstain_20px_enabled.png" alt="Abstain" title="Abstain" /> Abstain</span>
+                    @*<span class="padding-right-xx"><img src="~/Content/img/scorecard_20px_enabled.png" alt="Adjust Score Card" title="Adjust Score Card" /> Adjust Score Card</span>*@
+                    <span class="padding-right-xx"><img src="~/Content/img/comment_20px_enabled.png" alt="Unassigned Reviewer Comments" title="Unassigned Reviewer Comments" /> Unassigned Reviewer Comments</span>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6 comments">
+        <div class="accordion" id="accordion2">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <img src="~/Content/img/NOTE_16px_enabled.png" alt="Note" title="Note" /><span style="padding-left: 5px;">@Model.UserApplicationComments.Count() Notes</span></a>
+                </div>
+                <div>* Click notes link to expand/collapse notes section</div>
+                <div>Adding notes available @ViewHelpers.FormatDate(Model.ApplicationInformationModel.PanelStartDate) - @ViewHelpers.FormatDate(Model.ApplicationInformationModel.PanelEndDate)</div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    @if (Model.ApplicationInformationModel.PanelEndDate >= GlobalProperties.P2rmisDateTimeNow && Model.ApplicationInformationModel.PanelStartDate <= GlobalProperties.P2rmisDateTimeNow)
+                    {
+                        <div class="accordion-inner">
+                            <div class="accordion" id="addNoteAccordion">
+                                <div class="accordion-group" style="margin-bottom: -20px;">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="subAccordion" href="#collapseAddComment">Add Note</a>
+                                    </div>
+                                    <div id="collapseAddComment" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            @using (Html.BeginForm("AddComment", "ManageApplicationScoring", FormMethod.Post, new { @id = "CommentAdd", @name = "CommentAdd", @onsubmit = "return validateForm()" }))
+                                            {
+                                                <div id="addComment">
+                                                    <h5>Add a Note for @Model.ApplicationInformationModel.LogNumber:</h5>
+                                                    <p style="color: Red;display:none;" id="commentValidation">@noteValidation</p>
+                                                    <select name="commentType">
+                                                        @foreach (var value in Model.CommentLookupTypes)
+                                                        {
+                                                            <option value="@value.CommentTypeId">@value.CommentTypeDescription</option>
+                                                        }
+                                                    </select>
+                                                    <textarea form="CommentAdd" name="comments" id="comments" rows="6" style="width:98%"></textarea>
+                                                    <input type="hidden" name="applicationId" value="@Model.ApplicationInformationModel.ApplicationId" />
+                                                    <input type="hidden" name="userId" value="@Model.UserId" />
+                                                    <input type="hidden" name="sessionPanelId" value="@Model.ApplicationInformationModel.SessionPanelId" />
+                                                    <input type="hidden" name="panelApplicationId" value="@Model.ApplicationInformationModel.PanelApplicationId" />
+                                                    <button type="button" class="btn" data-dismiss="modal" aria-hidden="true" id="cancelSaveComment">Cancel</button>&nbsp;&nbsp;<input type="submit" value="Save" name="saveComment" class="focus" />
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @foreach (var item in Model.UserApplicationComments)
+                    {
+                        <div class="accordion-inner">
+                            <div class="accordion" id="subAccordion">
+                                <div class="accordion-group" style="margin-bottom: -20px;">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="subAccordion" href="#collapse-@item.CommentID">@item.CommentLkpDescription - @item.UserFullName @item.ModifiedDate</a>
+                                    </div>
+                                    <div id="collapse-@item.CommentID" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            @using (Html.BeginForm("EditComment", "ManageApplicationScoring", FormMethod.Post, new { @id = @item.CommentFormName, @name = @item.CommentFormName }))
+                                            {
+                                                <div id="comment-@item.CommentID">
+                                                    @if ((item.UserID == Model.UserId) && (Model.ApplicationInformationModel.PanelEndDate >= GlobalProperties.P2rmisDateTimeNow && Model.ApplicationInformationModel.PanelStartDate <= GlobalProperties.P2rmisDateTimeNow))
+                                                    {
+                                                        <div style="text-align: right;"><a href="/ManageApplicationScoring/DeleteComment/?commentId=@item.CommentID&applicationId=@Model.ApplicationInformationModel.ApplicationId&sessionPanelId=@Model.ApplicationInformationModel.SessionPanelId&panelApplicationId=@Model.ApplicationInformationModel.PanelApplicationId">Delete</a></div>
+                                                        <select name="commentType">
+                                                            @foreach (var value in Model.CommentLookupTypes)
+                                                            {
+                                                                string select = "";
+                                                                if (item.CommentLkpId == value.CommentTypeId)
+                                                                { select = "selected"; }
+                                                                else
+                                                                { select = ""; }
+                                                                <option value="@value.CommentTypeId" @select>@value.CommentTypeDescription</option>
+                                                            }
+                                                        </select>
+                                                        <textarea form="@item.CommentFormName" name="comments" rows="6" style="width:98%">@item.Comments</textarea>
+                                                        <input type="hidden" name="commentId" value="@item.CommentID" />
+                                                        <input type="hidden" name="userId" value="@item.UserID" />
+                                                        <input type="hidden" name="sessionPanelId" value="@Model.ApplicationInformationModel.SessionPanelId" />
+                                                        <input type="hidden" name="panelApplicationId" value="@Model.ApplicationInformationModel.PanelApplicationId" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>@item.Comments</p>
+                                                    }
+                                                    @if ((item.UserID == Model.UserId) && (Model.ApplicationInformationModel.PanelEndDate >= GlobalProperties.P2rmisDateTimeNow && Model.ApplicationInformationModel.PanelStartDate <= GlobalProperties.P2rmisDateTimeNow))
+                                                    {
+                                                        <input type="submit" value="Save" name="editComment" class="focus" />
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="reviewer-scoring">
+        <h5>Reviewer Scoring</h5>
+        <table class="table table-bordered table-striped tablesorter">
+            <thead class="light">
+                <tr>
+                    <td class="center-align" style="width: 250px;">Name</td>
+                    <td class="center-align" style="width: 100px;">Participant Type/Role</td>
+                    <td class="center-align" style="width: 150px;">Action</td>
+                    @foreach (var item in Model.Columns)
+                    {
+                        <td title="@Model.ColumnAltText[@item.Key]">@item.Value</td>
+                    }
+                </tr>
+                <tr class="average-score-row">
+                    <td class="left-align">Average Score</td>
+                    <td class="lightgray-background">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    @foreach (var v in Model.Columns)
+                    {
+                        <td class="average-score">
+                            @if (Model.Averages != null && Model.Averages.Scores.Keys.Contains(v.Key))
+                            {
+                                @Model.Averages.Scores[v.Key]
+                            }
+                        </td>
+                    }
+                </tr>
+                <tr class="standard-deviation-row">
+                    <td class="left-align">Standard Deviation</td>
+                    <td class="lightgray-background">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    @foreach (var v in Model.Columns)
+                    {
+                        <td class="standard-deviation">
+                            @if (Model.StandardDeviation != null && Model.StandardDeviation.Scores.Keys.Contains(v.Key))
+                            {
+                                @Model.StandardDeviation.Scores[v.Key]
+                            }
+                        </td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ApplicationDetails)
+                {
+                    <tr data-reviewerid="@item.ReviewerId">
+                        <td class="left-align">@item.ReviewerName</td>
+                        <td class="left-align">@item.ReviewerRole</td>
+                        <td>
+                            @{
+                                var editCritiqueUrl = Url.Action("ViewCritiqueFromApplicationScoring", Routing.P2rmisControllers.MyWorkspace, new { panelApplicationId = Model.ApplicationInformationModel.PanelApplicationId, sessionPanelId = Model.ApplicationInformationModel.SessionPanelId, targetUserId = item.ReviewerUserId });
+                                var editIncompleteCritiqueUrl = Url.Action(Routing.MyWorkspace.ProcessIncompleteCritiqueFromApplicationScoring, Routing.P2rmisControllers.MyWorkspace, new { panelApplicationId = Model.ApplicationInformationModel.PanelApplicationId, sessionPanelId = Model.ApplicationInformationModel.SessionPanelId, targetUserId = item.ReviewerUserId });
+                            }
+                            @if (item.IsCritique)
+                            {
+                                <span class="icon-holder">
+                                    <a href="@editCritiqueUrl"><img src="~/Content/img/Critique_20px_enabled.png" alt="Critique" title="Critique" /></a></span>
+                            }
+                            else if (item.IsCritiqueRevised)
+                            {                                
+                                <span class="icon-holder">
+                                    <a href="@editCritiqueUrl"><img src="~/Content/img/revise_critique_20px_enabled.png" alt="Revised Critique" title="Revised Critique" /></a></span>
+                            }
+                            else if ((item.IsCritiqueMissing) && (Model.CanOnlyViewCritique))
+                            {
+                                <span class="icon-holder"><img src="~/Content/img/missing_critique_20px_enabled.png" alt="Missing Critique" title="Missing Critique" /></span>
+                            }
+                            else if (item.IsCritiqueMissing)
+                            {
+                                <span class="icon-holder"><a href="@editIncompleteCritiqueUrl"><img src="~/Content/img/missing_critique_20px_enabled.png" alt="Missing Critique" title="Missing Critique" /></a></span>
+                            }
+                            else if (item.hasComment)
+                            {
+                                <span class="icon-holder">
+                                    <a href='#@item.ReviewerId' data-toggle='modal'>
+                                        <img src="~/Content/img/comments.png" alt="Comments" title="Comments" /></a></span>
+                            }
+                            else
+                            {
+                                <span class="icon-holder">&nbsp;</span>
+                            }
+                            @if (item.isCoi)
+                            {
+                                <span class="icon-holder"><img src="~/Content/img/coi_20px_enabled.png" alt="COI" title="COI" /></span>
+                            }
+                            else if (item.IsAbstain)
+                            {
+                                <span class="icon-holder"><img src="~/Content/img/abstain_20px_enabled.png" alt="Abstain" title="Abstain" /></span>
+                            }
+                            else if (Model.CanEditAssignmentType)
+                            {
+                                <span class="icon-holder"><a href="javaScript:void(0);" data-panelapplicationid="@item.PanelApplicationId" data-paneluserassignmentid="@item.ReviewerId" data-sessionpanelid="@item.PanelId" data-reviewdiscussioncomplete="@Model.ApplicationInformationModel.ReviewDiscussionComplete" class="revStatus"><img src="~/Content/img/change_user_status_20px_enabled.png" alt="Change User Status" title="Change User Status" /></a></span>
+                            }
+                            else
+                            {
+                                <span class="icon-holder">&nbsp;</span>
+                            }
+                            @if ((Model.CanEditScoreCard) && (!item.isCoi))
+                            {
+                                var adjustScorecardUrl = "/MyWorkspace/Scorecard?panelapplicationid=" + Model.ApplicationInformationModel.PanelApplicationId + "&sessionpanelid=" + Model.ApplicationInformationModel.SessionPanelId + "&reviewerId=" + item.ReviewerUserId;
+                                <span class="icon-holder">
+                                    <span class="icon-holder">
+                                        @if (Model.ApplicationInformationModel.ReviewDiscussionComplete)
+                                        {
+
+                                            <a href="@adjustScorecardUrl"><img src="~/Content/img/scorecard_20px_enabled.png" alt="Adjust Score Card" title="Adjust Score Card" /></a>
+
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/img/scorecard_20px_disabled.png" title="Score Card Unavailable" />
+                                        }
+                                    </span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="icon-holder">&nbsp;</span>
+                            }                            
+                        </td>
+
+                        @foreach (var v in Model.Columns)
+                        {
+                            <td class="reviewer-score">@if (item.Scores.Keys.Contains(v.Key))
+                                {
+                                    @item.Scores[v.Key]
+                                }
+                            </td>
+                        }                    
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*Reviewer Comments Loop*@
+
+@foreach (var item in Model.ReviewerComments)
+{
+    <div id="@item.ReviewerId" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 id="myModalLabel">View Comments</h4>
+        </div>
+        <div class="modal-body padding15">
+            <h5>View Comments for @Model.ApplicationInformationModel.LogNumber by @item.ReviewerName:</h5>
+            <p>@item.ReviewerComment</p>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    if (!String.prototype.trim) {
+        String.prototype.trim = function() {
+            return this.replace(/^\s+|\s+$/g, '');
+        };
+    }
+
+// Validate the Add Comment form
+    function validateForm() {
+        var x = document.forms["CommentAdd"]["comments"].value;
+        if (x == null || x.trim() == "") {
+            document.getElementById("commentValidation").style.display = ""
+            return false;
+        }
+    }
+
+    // Cancel button when adding a comment
+    $("#cancelSaveComment").on("click", function(e) {
+        e.preventDefault();
+        // Reset the comment validation
+        document.getElementById("commentValidation").style.display = "none";
+        // Remove data
+        $(this).parent().find("#comments").val("");
+        // Collapse section
+        $(this).closest("#collapseAddComment").removeClass("in");
+        $(this).closest("#collapseAddComment").css("height", 0);
+    });
+
+    // Ensure the sections can vertically grow together
+    $(function() {
+        var ht = $(".application-details-section").outerHeight();
+        $(".scores-received-section").outerHeight(ht);
+        $(".scores-received").css("line-height", ht + "px");
+    });
+
+    // Poll score
+    $(function() {
+        // Customizable
+        var pollInterval = 10000;
+        // Process scores
+        var fnProcessScores = function (data) {
+            var scoreEntries = data.ScoreEntries;
+            for (var i = 0; i < scoreEntries.length; i++) {
+                var scoreEntry = scoreEntries[i];
+                var reviewerRow = $("tr[data-reviewerid='" + scoreEntry.ReviewerIndex + "'");
+                var reviewerScoreElement = reviewerRow.find(".reviewer-score");
+                fnUpdateScores(scoreEntry, reviewerScoreElement);
+                // Now we update the fact that a score was received for this reviewer.
+                fnUpdateScoreReceivedAttributes(scoreEntry, reviewerRow);
+            }
+            // Average
+            var averageScore = data.AverageScore;
+            var averageScoreElement = $("tr.average-score-row").find(".average-score");
+            fnUpdateScores(averageScore, averageScoreElement);
+            // Standard deviation
+            var standardDeviation = data.StandardDeviation;
+            var standardDeviationElement = $("tr.standard-deviation-row").find(".standard-deviation");
+            fnUpdateScores(standardDeviation, standardDeviationElement);
+        };
+
+        // Update score received attributes 
+        var fnUpdateScoreReceivedAttributes = function (dataEntry, reviewerRow) {
+            var received = true;
+            if (dataEntry.OverallScore == "") {
+                received = false;
+            }
+            var i = 0;
+            while (received && i < dataEntry.Scores.length) {
+                if (dataEntry.Scores[i] == "") {
+                    received = false;
+                }
+                i++;
+            }
+            if (received) {
+                reviewerRow.attr('data-scoreReceived', '1');
+            } else {
+                reviewerRow.attr('data-scoreReceived', '0');
+            }
+        };
+        // Update scores
+        var fnUpdateScores = function (dataEntry, targetElement) {
+            if (dataEntry.Scores != null && dataEntry.Scores.length > 0) {
+                for (var i = 0; i < targetElement.length; i++) {
+                    var newValue;
+                    if (i === 0) {
+                        newValue = dataEntry.OverallScore;
+                    } else {
+                        newValue = dataEntry.Scores[i - 1];
+                    }
+                    if (targetElement.eq(i).text().replace(/( |\r\n|\n|\r)/gm, "") != newValue) {
+                        targetElement.eq(i).text(newValue);
+                        targetElement.eq(i).effect("highlight", {}, 3000);
+                    }
+                }
+            }
+        };
+        //
+        // Updates the "Final Scores Received" display.
+        // Assumptions:
+        //   - any reviewer with a score is final.  We set the data attribute when the screen was loaded & updated
+        //   - the number of reviewers does not change during the meeting
+        //
+        var fnUpdateScoreCount = function () {
+            //
+            // determine how many final scores have been received & the number of reviewers.
+            //
+            var finalScoresRecieved = $('[data-scoreReceived="1"]').length;
+            var numberOfReviewers = $("#numberOfReviewers").val();
+            //
+            // construct the new display & set insert it into the document.
+            //
+            $(".scores-received").text(finalScoresRecieved + " out of " + numberOfReviewers);
+        };
+        // Poll score via AJAX
+        var fnPollScore = function (applicationId) {
+            var currentScores = [];
+            $("tr[data-reviewerid]").each(function () {
+                var reviewerIndex = $(this).attr("data-reviewerid");
+                var overallScore, scores = [];
+                for(var i = 0; i < $(this).find(".reviewer-score").length; i++) {
+                    if (i == 0) {
+                        overallScore = $.trim($(this).find(".reviewer-score").eq(0).html());
+                    } else {
+                        scores.push($.trim($(this).find(".reviewer-score").eq(i).html()));
+                    }
+                }
+                var currentScore = { "ReviewerIndex": reviewerIndex, "OverallScore": overallScore, "Scores": scores };
+                currentScores.push(currentScore);
+            });
+            $.ajax({
+                url: '@Url.Action(Routing.MyWorkspace.PollScore, Routing.P2rmisControllers.MyWorkspace)',
+                type: 'POST',
+                dataType: 'json',
+                data: { applicationId: applicationId, currentScores: currentScores },
+            }).done(               
+                function(data) {
+                    fnProcessScores(data);
+                    fnUpdateScoreCount();
+                }
+            );
+            setTimeout(function() { fnPollScore(applicationId); }, pollInterval);
+        };
+        var applicationId = $("#applicationId").val();
+        setTimeout(function() { fnPollScore(applicationId); }, pollInterval);
+    });
+</script>
+<script type="text/javascript">
+    //script for change reviewer status modal
+    $('body').on('click', '.revStatus', function (e) {
+        // Get the parameters to pass
+        var title = 'COI or Abstain';
+        var panelAppId = $(this).attr('data-panelapplicationid');
+        var panelUserAssignmentId = $(this).attr('data-paneluserassignmentid');
+        var sessionPanelId = $(this).attr('data-sessionpanelid');
+        var reviewDiscussionComplete = $(this).attr('data-reviewdiscussioncomplete');
+
+        // load the data via ajax
+        $.get('@Url.Action(Routing.ManageApplicationScoring.RevStatus, Routing.P2rmisControllers.ManageApplicationScoring)',
+            { panelAppId: panelAppId, panelUserAssignmentId:  panelUserAssignmentId, sessionPanelId: sessionPanelId, reviewDiscussionComplete: reviewDiscussionComplete },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.medium, title);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            }
+        );
+    });
+</script>

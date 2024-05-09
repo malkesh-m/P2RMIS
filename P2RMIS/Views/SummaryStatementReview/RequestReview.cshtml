@@ -1,0 +1,60 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.Web.UI.Models
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.ViewModels.SummaryStatementReview.RequestReviewViewModel
+
+@{
+    ViewBag.PageTitle = "Set Review Priorities";
+}
+
+@{
+    const string SubmitPriorityList = SummaryStatementReviewController.RequestReviewConstants.SubmitPriorityList;
+    const string ProgramSessionVar = SessionVariables.ClientProgramId;
+    const string AwardSessionVar = SessionVariables.AwardTypeId;
+    const string SearchInstruction = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.SearchInstruction;
+    const string ZeroSearchResults = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.ZeroSearchResults;
+
+    int? awardId = ((int?)Session[AwardSessionVar] == null) ? Model.SelectedAward : (int?)Session[AwardSessionVar];
+    const string UserIdSessionVar = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.UserIdSession;
+    int? userId = (int?)Session[UserIdSessionVar];
+}
+
+<p class="formTitle" style="text-align: left;">Summary Statements</p>
+<p id="successMessage" style="display: none; text-align: left; margin-top: 10px;"></p>
+<p id="errorMessage" style="display: none; text-align: left; margin-top: 10px;"></p>
+<div class="row-fluid">
+    <div class="span12" id="mainContent">
+        @Html.Partial("_TabMenu")
+        @Html.Partial("_KendoHeader2016")
+        @Html.Partial("../SummaryStatement/_SSFilterMenu")
+        @Html.Partial("_ShowHideInstructions")
+
+        <div id="instructions">
+            <p>
+                Use search on top to find draft summary statements.
+                <br /><br />To change the priority (Priority 1 or Priority 2) of an individual summary statement, check the box(es) in the far left column and click the 'Edit Priority' button.
+            </p>
+        </div>
+        <div style="width: 100%; display: block; text-align: right; margin-top: 10px;">
+            <button id="submitBtn" disabled="disabled">Edit Priority</button>
+        </div>
+        <div class="explDarkText" style="padding: 10px 0px;">
+            <table style="float:right;">
+                <tr>
+                    <td style="text-align:right" id="dataLoaded"></td>
+                </tr>
+            </table>
+        </div>
+        <div id="statementContents">
+            <div id="loading"></div>
+            <div id="grid"></div>
+        </div>
+    </div>
+    <input type="hidden" id="IsWebBased" value="@Model.IsWebBased.ToString()" />
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-document.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-priorities.js")
+
+

@@ -1,0 +1,466 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ViewApplicationViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab1;
+    @Html.Partial("_KendoHeader2020");
+}
+<style type="text/css">
+
+    ul.k-editor-toolbar, ul.k-editor-toolbar li {
+        /*height: 30px;*/
+        padding: 0px 0px;
+    }
+
+        ul.k-editor-toolbar .k-button-group .k-tool {
+            height: 30px;
+            padding: 0px;
+        }
+
+    .k-editor .k-tool:focus {
+        box-shadow: none;
+        border-color: transparent;
+        border: 0px;
+    }
+
+    .k-pager-info.k-label {
+        color: black;
+    }
+
+    .k-pager-wrap.k-grid-pager .k-icon, .pagerTop .k-icon {
+        margin-top: 2px;
+        vertical-align: baseline;
+    }
+
+        .k-pager-wrap .k-icon.k-i-arrow-60-down, .pagerTop .k-icon.k-i-arrow-60-down {
+            margin-top: 10px;
+        }
+
+    #applicationList {
+        display: none;
+        font-size: 20px;
+    }
+
+    .buttonAward {
+        font-size: 14px;
+    }
+
+    #selectedCycle {
+        display: none;
+    }
+
+    .k-grid-Destroy {
+        padding-left: 5px;
+    }
+
+    #addApplication {
+        position: relative;
+    }
+
+        #addApplication img {
+            padding-bottom: 25px;
+            padding-left: 25px;
+        }
+
+    .addApp {
+        font-size: 10px;
+        position: absolute;
+        left: 0;
+        width: 100px;
+        bottom: -5px;
+    }
+
+    #successMessage, #failureMessage, #addAppMessage {
+        display: none;
+    }
+
+    #failureMessage {
+        color: red;
+        padding-bottom: 5px;
+    }
+
+    #addAppMessage {
+        font-weight: bold;
+        color: red;
+    }
+
+    .input-validation-error {
+        background-color: transparent !important;
+    }
+
+    #grid {
+        display: none;
+    }
+</style>
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Panel Mgmt - Overview</span>
+</div>
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        <div id="successMessage"></div>
+        <div id="failureMessage"></div>
+        @Html.Partial("_PanelSelection")
+        @Html.Partial("_PrivilegedTabMenu")
+        @if (Model.Applications.Count > 0)
+        {
+            <div id="applicationList">
+                <strong>Application List for: &nbsp;&nbsp;<span id="fiscalYear"></span> <span id="programAbbreviation"></span> - <span id="panelAbbreviation"></span></strong> &nbsp;&nbsp;
+                @if (Model.CanAddApplication && !Model.IsSro)
+                {
+                    <span class="buttonAward"><a href="#" id="addApplication"><img src="~/Content/img/appicon.png" /><span class="addApp">Add Application</span></a></span>
+                }
+            </div>
+        }
+        else
+        {
+            <div id="applicationList">
+                <strong>Application List for: &nbsp;&nbsp;<span id="fiscalYear"></span> <span id="programAbbreviation"></span> - <span id="panelAbbreviation"></span></strong> &nbsp;&nbsp;
+                @if (Model.CanAddApplication && !Model.IsSro)
+                {
+                    <span class="buttonAward"><a href="#" id="addApplication"><img src="~/Content/img/appicon.png" /><span class="addApp">Add Application</span></a></span>
+                }
+            </div>
+            <div class="align-center noRecordsMessage">
+                No records were found for the selected panel.
+                @if (!@Model.IsSro)
+                {
+                    <span>To add an application, please select <a href="#" id="addApplicationMessage">Add Applications</a>.</span>
+                }
+            </div>
+        }
+        <div id="loading"></div>
+        <div id="addAppMessage"></div>
+        <div id="grid"></div>
+    </div>
+</div>
+<input type="hidden" value="@Model.ProgramYears" />
+<input type="hidden" value="" id="canRemove" />
+<input type="hidden" value="" id="canTransfer" />
+
+@if (@Model.IsSro)
+{
+    <input type="hidden" value="true" id="isSro" />
+}
+else
+{
+    <input type="hidden" value="false" id="isSro" />
+}
+<select id="selectedCycle" value=""></select>
+@*Script for showing the Request Transfer model window*@
+<script type="text/javascript">
+    var selectedOption = $('#selectedProgramYear option:selected').val();
+    if (selectedOption == '') {
+        $('#applicationList').hide();
+    } else {
+        $('#applicationList').show();
+    }
+    $('#SelectPanel').on('click', function () {
+        $('#applicationList').show();
+    });
+    $('body').on('click', '.transfer', function () {
+        // Get the parameters to pass
+        var appId = $(this).closest('tr').find('td a').attr('data-applicationId');
+        var logNo = $(this).closest('tr').find('td a').attr('data-logno');
+        var currentPanelName = $(this).closest('tr').find('td a').attr('data-currentPanelName');
+        var currentPanelId = $(this).closest('tr').find('td a').attr('data-panelapplicationid');
+        var hasAssign = $(this).closest('tr').find('td a').attr('data-hasAssigned');
+        var canTransfer = $('#canTransfer').val();
+        $('#successMessage').hide();
+        $('#failureMessage').hide();
+
+        if (canTransfer == 'true') {
+            var title = 'Transfer Application';
+            if (hasAssign == 'false') {
+                $.get('/PanelManagement/RequestTransfer', { logNumber: logNo, applicationId: appId, currentPanelName: currentPanelName, currentPanelId: currentPanelId },
+                    function (responseText, textStatus, XMLHttpRequest) {
+                        p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.medium, title);
+                        $('.ui-dialog .modal-footer').remove();
+                        $('.ui-dialog').append('<div class="modal-footer"></div>');
+                        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.savePanelFooter);
+                        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+
+                        var fyYear = sessionStorage.getItem('fyPanel');
+                        var panelTransfer = sessionStorage.getItem('paPanel');
+                        var panelName = sessionStorage.getItem('pnPanel');
+                        $('#transferAppId').text(logNo);
+                        $('#modalfiscalYear').text(fyYear);
+                        $('#modalprogramAbbreviation').text(panelTransfer);
+                        $('#modalpanelAbbreviation').text(panelName);
+                        $('button#saveTransferChanges').attr('disabled', 'disabled');
+
+                        var programYearId = $('#selectedProgramYear option:selected').val();
+                        var selectedPanel = $('#selectedPanel option:selected').val();
+                        $.get('/PanelManagement/GetDestinationPanels', { programYearId: programYearId, panelId: selectedPanel },
+                            function (data) {
+                                var selectedPanel = $('#destinationPanels');
+                                $(data).each(function (index, value) {
+                                    selectedPanel.append(
+                                        $('<option/>').attr('value', value.Key).text(value.Value)
+                                    );
+                                })
+                                $("button[id='saveTransferChanges']").click(function () {
+                                    var newSessionPanelId = $("#destinationPanels option:selected").val();
+                                    var newSessionPanelIdText = $("#destinationPanels option:selected").text();
+                                    $.ajax({
+                                        cache: false,
+                                        type: "POST",
+                                        url: '/PanelManagement/TransferApplicationToPanel',
+                                        data: { panelApplicationId: currentPanelId, applicationId: appId, newSessionPanelId: newSessionPanelId },
+                                        success: function (data) {
+                                            if (!data.flag) {
+
+                                            } else {
+                                                $('.ui-dialog-titlebar-close').click();
+                                                $('.k-i-reload').click();
+                                                var fyYear = sessionStorage.getItem('fyPanel');
+                                                var panelTransfer = sessionStorage.getItem('paPanel');
+                                                var panelName = sessionStorage.getItem('pnPanel');
+                                                $('#successMessage').text('You have successfully transferred application ' + logNo + ' from ' + fyYear + ' ' + panelTransfer + ' - ' + panelName + ' to ' + newSessionPanelIdText + '.');
+                                                $('#successMessage').show();
+                                            }
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            $("#warningAlert").html("Failed to remove application.");
+                                            console.log(xhr);
+                                        },
+                                        complete: function (data) {
+                                            console.log('made it');
+                                        }
+                                    });
+                                })
+                            })
+                    })
+
+            } else {
+                $('#failureMessage').text('');
+                var made = "Application " + logNo + " cannot be transferred because one or more reviewers are assigned to this application. Please remove all reviewer assignments and try again.";
+                $('#failureMessage').append(made);
+                $('#failureMessage').show();
+            }
+        } else {
+            var title = 'Request Transfer';
+            $.get("/PanelManagement/RequestApplicationModal", { logNumber: logNo, applicationId: appId, currentPanelId: currentPanelId, currentPanelName: currentPanelName },
+                function (data) {
+                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.large, title);
+                    $('.ui-dialog .modal-footer').remove();
+                    $('.ui-dialog').append('<div class="modal-footer"></div>');
+                    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelRequestFooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                });
+        }
+
+        //
+        // Display the model Request Transfer window
+        //
+
+    });
+</script>
+
+@*script for ajax calls to get the modal workflow history window*@
+<script type="text/javascript">
+    $('body').on('click', '.coiList', function () {
+        // Get the parameters to pass
+        var appId = $(this).closest('tr').find('td a').attr('data-applicationId');
+        var logNo = $(this).closest('tr').find('td a').attr('data-logno');
+        var piName = $(this).closest('tr').find('td:nth-child(2) div').attr('data-piname');
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>COI list for " + logNo + " PI: " + piName + "</span>";
+        // load the data via ajax
+        $.get('/PanelManagement/GetCoiList', { applicationId: appId },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $('.ui-dialog .modal-footer').remove();
+                $('.ui-dialog').append('<div class="modal-footer"></div>');
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            }
+        );
+    });
+</script>
+
+@*script for ajax calls to display application's PI information*@
+<script type="text/javascript">
+    $('body').on('click', '.viewApplicationModal', function () {
+        // Get the parameters to pass
+        var appId = $(this).closest('tr').find('td a').attr('data-applicationId');
+        var logNo = $(this).closest('tr').find('td a').attr('data-logno');
+        var dialogTitle = 'View Application ' + logNo;
+        $.get("/PanelManagement/PIInformation", { applicationId: appId },
+            function (data) {
+                p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $('.ui-dialog .modal-footer').remove();
+                $('.ui-dialog').append('<div class="modal-footer"></div>');
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            });
+    });
+</script>
+@*script for ajax calls to display application's Overview information*@
+<script type="text/javascript">
+    // Open the overview modal
+    $("body").on("click", ".overview", function () {
+        // Get the parameters to pass
+        var panelApplicationId = $(this).attr('data-panelapplicationid');
+        var logNo = $(this).closest('tr').find('td a').attr('data-logno');
+        var dialogTitle = 'View/Edit Overview for Application ' + logNo;
+        var dialogfooter = p2rims.modalFramework.defaultModalFooters.cancelSaveFooter;
+        var savedOverview = $(this).text();
+        if (savedOverview == 'Add') {
+            $(this).addClass('clickedAdd');
+        }
+        else if (savedOverview === 'View') {
+            dialogTitle = 'View Overview for Application ' + logNo;
+            dialogfooter = p2rims.modalFramework.defaultModalFooters.closeFooter
+        }
+
+        if (panelApplicationId != "") {
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("EditOverview", "PanelManagement")',
+                data: { "panelApplicationId": panelApplicationId }
+            }).done(function (data) {
+                p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, dialogTitle);
+                $('.ui-dialog .modal-footer').remove();
+                $('.ui-dialog').append('<div class="modal-footer"></div>');
+                $(".modal-footer").append(dialogfooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function() {
+                    $('.ui-dialog-titlebar-close').click();
+                    $('#grid').find('.clickedAdd').removeClass('clickedAdd')
+                });
+
+                // Create Editor from textarea HTML element
+                $("#PanelOverview").kendoEditor({
+                    tools: [
+                        "bold",
+                        "italic",
+                        "underline",
+                        "strikethrough",
+                        "insertUnorderedList",
+                        "insertOrderedList",
+                    ],
+                    pasteCleanup: {
+                        all: true,
+                        css: true,
+                        span: true,
+                        keepNewLines: true,
+                        msAllFormatting: true,
+                        msConvertLists: false,
+                        msTags: true,
+                    },
+                });
+
+                if (savedOverview === 'View') {
+                   $($("#PanelOverview").data("kendoEditor").body).attr("contenteditable", false);
+                }
+
+                $("#saveDialogChanges").on("click", function (e) {
+                    $("#editOverviewForm").submit();
+                });
+
+            }).fail(function(xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('#addApplication, #addApplicationMessage').on('click', function () {
+        var dialogTitle = 'Add Applications';
+        var programYearId = $('#selectedProgramYear').val();
+        $('#multiselect option').remove();
+        $('#selectedCycle option').remove();
+        $('#successMessage').text("").hide();
+        var selectedPanel = $('#selectedPanel option:selected').val();
+        if (selectedPanel == "") {
+            $('#failureMessage').text('Please select a panel.').show();
+            $('#selectedPanel').addClass('input-validation-error');
+            return false;
+        }
+        $('#failureMessage').text('').hide();
+        $('#selectedPanel').removeClass('input-validation-error');
+        $.getJSON('@Url.Action("GetCycles", "PanelManagement")', { programYearId: programYearId }, function (data) {
+            var selectedCycle = $('#selectedCycle');
+            $.each(data, function (index, panel) {
+                selectedCycle.append(
+                    $('<option/>').attr('value', panel).text(panel)
+                );
+            });
+        });
+        $.get("/PanelManagement/ViewModal",
+            function (data) {
+                p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, dialogTitle);
+                $('.ui-dialog .modal-footer').remove();
+                $('.ui-dialog').append('<div class="modal-footer"></div>');
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.confirmAppFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                var selectdCycles = $('#selectedCycle').children().clone();
+                $('#cycleSelection').remove();
+                $('.newCycleSelection').append('<select id="cycleSelection"><option value="" selected>Select Cycle</option></select>');
+                selectdCycles.appendTo('.newCycleSelection #cycleSelection');
+                $('#multiselect').show();
+                $('button#saveAppChanges').prop('disabled', 'disabled');
+            });
+    })
+    $(document).on('change', '#cycleSelection', function () {
+        var cycleValue = $(this).val();
+        var programYearId = $('#selectedProgramYear option:selected').val();
+        var selectedPanel = $('#selectedPanel option:selected').val();
+        $('#multiselect option').remove();
+        $('#multiselect').attr('disabled', false);
+        $.get("/PanelManagement/GetApplicationCandidates", { cycle: cycleValue, programYearId: programYearId, panelId: selectedPanel },
+            function (data) {
+                var selectedCycle = $('#multiselect');
+                $.each(data, function (key, value) {
+                    if ($("#multiselect_to").find("option[value='" + value.Key + "']").length == 0) {
+                        selectedCycle.append(
+                            $('<option/>').attr('value', value.Key).text(value.Value)
+                        );
+                    }
+                })
+            })
+        setTimeout(function () {
+            var unassignedLength = $('#multiselect option').length;
+            var assignedLength = $('#multiselect_to option').length;
+            $('#unassignedApps').text(unassignedLength);
+            $('#assignedApps').text(assignedLength);
+        }, 1000);
+    })
+    $(document).on('click', '#saveAppChanges', function () {
+        var selectedPanel = $('#selectedPanel option:selected').val();
+        var newArray = [];
+        $('#multiselect_to option').each(function (index, value) {
+            newArray.push(value.value);
+        })
+        var appArray = JSON.stringify(newArray);
+
+        $.ajax({
+                type: "POST",
+                cache: false,
+                url: '@Url.Action("AddPanelApplications", "PanelManagement")',
+                data: JSON.stringify({ 'panelId': selectedPanel, 'applicationIds': appArray }),
+                contentType: 'application/json'
+        }).done(function (data) {
+            $('.ui-dialog-titlebar-close').click();
+            $('.k-i-reload').click();
+            if (data.status) {
+                $('#successMessage').text('You have successfully added ' + newArray.length + ' application(s)');
+                $('#successMessage').show();
+            }
+        });
+    });
+    var selectedClient = $('#selectedPanel option:selected').val();
+    if (selectedClient == "") {
+        $('#applicationList').hide();
+        $('.noRecordsMessage').hide();
+    }
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/pm-abstracts.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/multiselect.min.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/adminNotes.js")

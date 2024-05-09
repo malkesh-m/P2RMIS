@@ -1,0 +1,77 @@
+﻿@using Newtonsoft.Json;
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.CriterionSetupViewModel
+
+@{
+    ViewBag.PageTitle = "Criterion Setup";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Evaluation Criteria</span>
+</div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox">
+        <div class="ss-filterBox_title">Award</div>
+        <table class="ss-filterBox_crit-table">
+            <tr>
+                <td class="ss-filterBox_crit-table_area"><div class="ss-filterBox_crit-table_title">Client:</div><span id="evalClient" class="ss-filterBox_crit-table_result">@Model.Client</span></td>
+                <td class="ss-filterBox_crit-table_area"><div class="ss-filterBox_crit-table_title">Program:</div><span id="evalProgram" class="ss-filterBox_crit-table_result">@Model.FiscalYear - @Model.Program</span></td>
+                <td class="ss-filterBox_crit-table_area"><div class="ss-filterBox_crit-table_title">Receipt Cycle:</div><span id="evalCycle" class="ss-filterBox_crit-table_result">@Model.ReceiptCycle</span></td>
+            </tr>
+            <tr>
+                <td class="ss-filterBox_crit-table_area"><div class="ss-filterBox_crit-table_title">Award:</div><span id="evalAward" class="ss-filterBox_crit-table_result">@Model.Award</span></td>
+                <td class="ss-filterBox_crit-table_area"><div class="ss-filterBox_crit-table_title">Blinded:</div><span id="evalBlinded" class="ss-filterBox_crit-table_result">@Model.BlindedText</span></td>
+                <td class="ss-filterBox_crit-table_area"><div class="ss-filterBox_crit-table_title">Partnering:</div><span id="evalPartnering" class="ss-filterBox_crit-table_result">@Model.ParnteringText</span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-smallFilterBox">
+        <div class="ss-smallFilterBox_title">Functions</div>
+        <div class="ss-smallFilterBox_linkArea"><a href="#" id="previewCriteria" class="ss-smallFilterBox_link">Preview Criteria Layout</a></div>
+    </div><br />
+    <div class="ss-smallFilterBoxTwo">
+        <div class="ss-smallFilterBoxTwo_title">Scoring Template</div>
+        <div class="ss-smallFilterBoxTwo_selectArea" id="scoringTemplate">
+            @if (Model.ScoringTemplateId == null)
+            {
+                @Html.DropDownListFor(m => m.ScoringTemplateId, new SelectList(Model.ScoringTemplates, "Key", "Value", Model.ClientId), "Select Template", new { style = "margin: 0px; width: 100%;", @id = "scoringTemplateId" })
+            }
+            else
+            {
+                <span class="template-name">@Model.ScoringTemplateName</span>
+                <span class="padding-left5"><a href="#" id="resetScoringTemplate" data-value="@Model.MechanismScoringTemplateId">Reset</a></span>
+            }
+        </div>
+    </div>
+</div>
+<p class='ss-gridHeader_no-records'>No records were found. Please add an <a href="#" class="ss-gridHeader-loaded_addCritButton">Evaluation Criterion</a>.</p>
+
+<div class="ss-gridHeader-loaded">
+    <h4 class="ss-gridHeader-loaded_title">Evaluation Criteria</h4><div id="totalCount" class="ss-gridHeader_totalCount">( <strong>Total Records:</strong> <span></span> )</div><a href="#" class="ss-gridHeader-loaded_addCritButton"><i>(add evaluation criterion)</i></a>
+    <h6 class="ss-gridHeader_exportButton" id="btnExport"><a href="#" class="ss-gridHeader_exportButton__link"><img src="/Content/img/icon_export_excel_labeled.png" /></a></h6>
+</div>
+<div id="ss-criterion-grid" class="ss-criterion-grid"></div>
+<input type="hidden" id="clientId" value="@Model.ClientId" />
+<input type="hidden" id="mechanismTemplateId" value="@Model.MechanismTemplateId" />
+<input type="hidden" id="hasApplicationsBeenReleased" value="@Model.HasApplicationsBeenReleased.ToString()" />
+<input type="hidden" id="selectedScoringTemplateId" value="@Model.ScoringTemplateId" />
+<input type="hidden" id="programMechanismId" value="@Model.ProgramMechanismId" />
+<div class="hidden" id="criteriaData">
+    @Html.Raw(JsonConvert.SerializeObject(Model.Criteria))
+</div>
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/criterionSetup.js")

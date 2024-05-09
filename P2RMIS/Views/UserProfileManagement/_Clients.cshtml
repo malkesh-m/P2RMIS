@@ -1,0 +1,37 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@if (!Model.IsMyProfile)
+{
+    <section class="upm-profile-section-academic clientsClass" id="userClientsSection" role="region" aria-labelledby="clients-section">
+        <span class="upm-profile-section_header" id="clients-section">Clients</span>
+        <label for="userClientAdd" class="sr-only">Add User Client</label>
+        <a href="#" id="userClientAdd" class="upm-profile-section-academic_client-link"><img id="addDegreeIcon" src="~/Content/img/plus.png" alt="Add User Client" /></a>
+        <ul class="list-unstyled" id="userClients">
+            <li class="verticalMargin10 userClientTemplate hide">
+                @Html.Hidden("UserClientIdTemplate", 0, new { @class = "userClientId" })
+                @Html.Hidden("UserIdTemplate", 0, new { @class = "userId" })
+                @Html.Hidden("ClientIdTemplate", 0, new { @Class = "clientId" })
+                @Html.Hidden("ClientAbrvIdTemplate", 0, new { @class = "clientAbrvId" })
+            </li>
+            @if (Model.UserClients != null && Model.UserClients.Count() > 0)
+            {
+                for (var i = 0; i < Model.UserClients.Count(); i++)
+                {
+                    <li class="verticalMargin10 userClient">
+                        @Html.HiddenFor(m => m.UserClients[i].UserClientId, new { @class = "userClientId" })
+                        @Html.HiddenFor(m => m.UserClients[i].UserId, new { @class = "userId" })
+                        @Html.HiddenFor(m => m.UserClients[i].ClientId, new { @Class = "clientId" })
+                        @Html.HiddenFor(m => m.UserClients[i].ClientAbrv, new { @class = "clientAbrvId" })
+                    </li>
+                }
+            }
+        </ul>
+        @{
+            string clientList = Model.UserClientsFormat();
+        }
+        <span class="list-unstyled" id="userClientsList">@clientList</span>
+    </section>
+    <div id="UserClientSelection" title="Update User Clients">
+        @Html.Partial("_UserClients")
+    </div>
+}

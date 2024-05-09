@@ -1,0 +1,22 @@
+CREATE VIEW [dbo].ViewMechanismTemplateElement AS
+SELECT [MechanismTemplateElementId]
+      ,[MechanismTemplateId]
+      ,[LegacyEcmId]
+      ,[ClientElementId]
+      ,[InstructionText]
+      ,[SortOrder]
+      ,[RecommendedWordCount]
+      ,[ScoreFlag]
+      ,[TextFlag]
+      ,[OverallFlag]
+	  ,[SummarySortOrder]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+      ,[DeletedFlag]
+      ,[DeletedBy]
+      ,[DeletedDate]
+  FROM [dbo].[MechanismTemplateElement]
+WHERE [DeletedFlag] = 0
+

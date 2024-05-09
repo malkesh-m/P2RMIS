@@ -1,0 +1,577 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+
+<link rel="stylesheet" type="text/css" href="/Content/_Contract.css" />
+
+@Html.Partial("_FormHeader")
+@{
+    string signedDate = ViewHelpers.FormatContractDate(Model.Form.DocumentSignedDateTime);
+    signedDate = (signedDate == string.Empty) ? ViewHelpers.FormatContractDate(GlobalProperties.P2rmisDateTimeNow) : signedDate;
+    bool signedOffLine = Model.Form.SignedOffLine != null && (bool)Model.Form.SignedOffLine;
+}
+
+@if (Model.Form.ContractData.IsContractBypassed)
+{
+}
+else if (Model.Form.ContractData.IsContractCustomized)
+{
+    if (Model.Form.DocumentSigned)
+    {
+        <br />
+        <a href="@Url.Action("GetDocumentPdf", new { panelRegistrationDocumentId = Model.Form.DocumentId })" target="_blank">Download Signed Contract</a>
+    }
+    else
+    {
+        <p class="margin-top10 boldWeight">Please download the updated contract and review. Please sign on the Confirm/Sign tab.</p>
+        <a href="@Url.Action("GetDocumentPdf", new { panelRegistrationDocumentId = Model.Form.DocumentId })" target="_blank">Download Updated Contract</a>
+    }
+}
+else if (Model.Form.DocumentSigned)
+{
+    <div id="documentFormContent" class="bordered-webonly" style="margin:30px 0px;float:left;width:98%;">
+        @Html.Raw(Model.Form.DocumentWebContent)
+    </div>
+}
+else if (!signedOffLine)
+{
+    <div id="documentFormContent" class="bordered-webonly" style="margin:30px 0px;float:left;width:98%;">
+        <div id="sraHeader">
+            <img id="gditLogo" src="/Content/img/gd_it_logo-color.jpg" alt="GDIT Logo" style="width:300px;" />
+            <h1>
+                Reviewer Agreement
+            </h1>
+            <p style="text-align: center; font-size: 14.5pt;">
+                @Model.Form.ContractData.FiscalYear @Model.Form.ContractData.ProgramDescription
+            </p>
+            <p style="text-align: center; font-size: 10pt; font-weight: bold;">
+                @Model.Form.ContractData.PanelName
+            </p>
+        </div>
+        <div id="preamble">
+            <p>
+                This Reviewer Agreement("Agreement"), is made and entered into as of <span id="signatureDateOnContract">@signedDate</span>, by and between:
+            </p>
+            <p>@Model.Form.ContractData.FullNameWithSuffix</p>
+            <p>
+                (hereinafter referred to as the "Reviewer") and SRA International, Inc. (SRA), a managed affiliate of
+                General Dynamics Information Technology (GDIT) with offices at 110 Thomas Johnson Drive, Frederick, MD 21702 (hereinafter referred to as
+                the "Company").
+            </p>
+        </div>
+        <div id="articlesOfAgreement">
+            <div id="articleI">
+                <h3>ARTICLE I. STATEMENT OF WORK</h3>
+                <p>
+                    The Reviewer agrees to provide services in accordance with
+                    Attachment A, Statement of Work (SOW), which is incorporated herein.
+                </p>
+            </div>
+            <div id="articleII">
+                <h3>ARTICLE II. DIRECTION AND COORDINATION</h3>
+                <p>
+                    The Company shall direct and coordinate all services specified in the SOW on behalf of
+                    its Government client(s). All Reviewer interaction with the Company's Government Client(s)
+                    will be coordinated through the Company.
+                </p>
+            </div>
+            <div id="articleIII">
+                <h3>ARTICLE III.  TERMS AND CONDITIONS</h3>
+                <p>
+                    The Reviewer acknowledges and agrees to the following:
+                </p>
+                <ol>
+                    <li>
+                        Compensation and work descriptions are contained in the SOW,
+                        subject to the restrictions set forth in Article IV, below.
+                    </li>
+                    <li>
+                        The Reviewer is an independent contractor and is not in any way an agent or employee of the Company.
+                    </li>
+                    <li>
+                        Services specified in the SOW shall be performed by the named Reviewer personally. The
+                        Agreement shall not be assigned or divided or transferred by the Reviewer to any other party. Support
+                        services (such as typing) may be performed by personnel other than the Reviewer at the Reviewer's expense
+                        and provided such personnel are subject to the confidentiality provisions set forth in
+                        Article V of this Agreement.
+                    </li>
+                    <li>
+                        Either party may terminate this Agreement at any time by giving the other party ten (10) days' written notice.
+                        Confidentiality obligations set forth in Article V shall survive termination of this Agreement.
+                    </li>
+                    <li>
+                        Services performed under this agreement shall be performed to high professional standards consistent with
+                        industry best practices.
+                    </li>
+                </ol>
+            </div>
+            <div id="articleIV">
+                <h3>ARTICLE IV. Federal, State, and Local Government Employees</h3>
+                <p>
+                    Charges for the time of Federal, State, and local government employees assigned to support services activities may
+                    be reimbursed or recognized only to the extent that they are directly or exclusively related to the assignment. In no
+                    case is dual compensation allowable. That is, an employee of a unit of government may not receive compensation from
+                    his/her unit or agency of government and the Company for work purportedly performed during a single period of time
+                    even though such work may benefit both activities.
+                </p>
+                <p>
+                    Federal Government employees and all Department of Defense civilian and active duty military personnel not taking leave
+                    are non-reimbursable Reviewers. Such a non-reimbursable Reviewer is responsible for paying all costs associated with
+                    his/her participation in this peer review. Company will provide a fund citation memorandum to the Reviewer, and it is the
+                    responsibility of the Reviewer to submit this to his/her agency to process reimbursement for eligible expenses from
+                    the client. It is the Reviewer's responsibility to verify eligibility to receive
+                    any fee or expense reimbursement with his/her employer or their respective ethics office.
+                </p>
+            </div>
+            <div id="articleV">
+                <h3>ARTICLE V. CONFIDENTIAL AND PROPRIETARY INFORMATION</h3>
+                <p>
+                    The Reviewer acknowledges and agrees that any and all nonpublic information of whatever kind or nature relating to this Agreement, or nonpublic information that Reviewer acquires in connection with or as a result of this Agreement, or nonpublic information that Reviewer receives or becomes aware of during the term of this Agreement concerning the Company, its clients, and other third parties, is confidential and proprietary ("Confidential Information"). Confidential Information shall include information marked as "Proprietary", "Confidential", or with a similar legend. In the absence of any marking, Confidential Information shall also include all information which a reasonable person would consider to be confidential. The Reviewer will use Confidential Information only for the purposes of this Agreement. The Reviewer shall not share Confidential Information with anyone except such persons expressly authorized to receive such information in connection with the performance of this Agreement (i.e., others designated to participate in the same peer review process). The Reviewer will not duplicate Confidential Information, or use it at any time to provide, perform, or furnish any services; or use it to invent, create, modify, adapt, or manufacture any products for the benefit of the Reviewer or any third party. If the Reviewer requires administrative assistance for the performance of obligations under this Agreement, he/she will limit access to Confidential Information only to those administrative assistants who have a legitimate need for access to perform this Agreement. The Reviewer will ensure that any assistant is aware of and agrees in writing to comply with the confidentiality restrictions of this Agreement. The Reviewer acknowledges that unauthorized disclosure or use of Confidential Information could cause irreparable harm and significant injury to the Company or its Government client(s). Accordingly, the Reviewer agrees that the Company shall have the right to seek and obtain immediate injunctive relief from breach or threatened breach of this Agreement in addition to any other rights and remedies it may have.
+                </p>
+                <p>
+                    As of April 3, 2018, SRA International, Inc. (SRA), is a managed affiliate of General Dynamics Information Technology (GDIT). GDIT maintains contracts in support of the Federal Government that are separate from those managed by SRA. SRA has adopted the GDIT branding as part of the acquisition process. However, SRA remains a separate legal entity. Due to this relationship, reviewers may encounter applications submitted utilizing GDIT branding similar to that adopted by SRA as a result of the recent acquisition. The Reviewer agrees to be bound by the terms of the Confidentiality and Conflict of Interest policies included herein and agrees to not disclose any information concerning the GDIT application to anyone other than U.S. Government personnel or authorized representatives of SRA. The panel member shall notify the Scientific Review Officer of any such requests or disclosures immediately.
+                </p>
+                <p>
+                    The Reviewer acknowledges that such use or disclosure of Confidential Information may constitute insider trading in violation of Federal law, resulting in severe sanctions on individuals and the corporate entities involved in insider trading.
+                </p>
+            </div>
+            <div id="articleVI">
+                <h3>ARTICLE VI. CONFLICTS OF INTEREST </h3>
+                <p>
+                    The integrity of scientific peer review depends on processes that are free of bias or conflict of interest ("COI"). A COI in peer review exists when a reviewer (or a close relative or a professional associate of that reviewer) has a financial or other interest in an application that may bias the reviewer's evaluation of the application, or where a reasonable person would otherwise have cause to question the reviewer's impartiality if he or she were to participate in the review.
+                </p>
+                <p>
+                    The peer review system relies on the professionalism and integrity of each reviewer to identify any real or apparent COI that is likely to bias his or her evaluation of an application or create the perception of bias. Reviewers are required to identify real or apparent COIs as early as possible in the review process. Regardless of the level of financial involvement or other interest, if a reviewer believes, or may be perceived as being unable to provide an objective evaluation, he or she may not participate in the review of the application.
+                </p>
+                <p>
+                    The Reviewer acknowledges that he/she has read and understand the Conflict of Interest (COI) policy (available on the client's web site at <a href="http://cdmrp.army.mil/about/2tierRevProcess" target="_blank">http://cdmrp.army.mil/about/2tierRevProcess</a>). The Reviewer agrees:
+                </p>
+                <p class="padding-left-30">
+                    1. To notify the Company immediately if he/she has a COI that prevents service on the panel.
+                </p>
+                <p class="padding-left-30">
+                    2. To declare any COI identified with application(s) or proposal(s) assigned to the panel, and to provide an explanation for each such declaration.
+                </p>
+                <p class="padding-left-30">
+                    3. To notify the Company immediately if he/she is assigned to an application or proposal with which he/she has a COI.
+                </p>
+            </div>
+            <div id="articleVII">
+                <h3>ARTICLE VII. POLITICAL AND PERSONAL ACTIVITIES</h3>
+                <p>
+                    The Reviewer is considered a government adviser when attending peer review meetings funded by a federal government agency. Thus, the Reviewer is expected to adhere to relevant regulations and appropriate standards of ethics regarding political activities or lobbying during his/her attendance (including travel as applicable) to the review meeting. The Reviewer who is on federal government travel status may not use that trip for lobbying or any political activities. The Reviewer should not discuss any proposed, enacted, or pending legislation or appropriations with members of Congress or their staff while attending the subject meeting. In addition, the Reviewer should not discuss his/her or another's federal government-funded grants or pending applications to a federal government agency with government officials during the trip.
+                </p>
+            </div>
+            <div id="articleVIII">
+                <h3>ARTICLE VIII. ENTIRE AGREEMENT</h3>
+                <p>
+                    The Reviewer and Company intend that this Agreement, together with all attachments, schedules, exhibits, and other documents that both are referenced in this Agreement and refer to this Agreement, represent the final expression of the parties' intent relating to the subject matter of this Agreement, contain all the terms the parties agreed to relating to the subject matter, and replace all of the parties' previous discussions, understandings, and agreements relating to the subject matter of this agreement.
+                </p>
+            </div>
+            <div id="articleIX">
+                <h3>ARTICLE IX. JURISDICTION</h3>
+                <p>
+                    This Agreement and any disputes arising under it shall be governed by the laws of the Commonwealth of Virginia without regard to its choice of law provisions. The parties agree that any legal action relating to this Agreement shall be filed in a court of competent jurisdiction in the Commonwealth of Virginia, the jurisdiction and venue of which the parties expressly agree to.
+                </p>
+            </div>
+            <div>
+                <p>
+                    IN WITNESS WHEREOF, the parties hereto, acting through their duly authorized officers or agents, have caused this Agreement
+                    to be executed on the day and year first written above.
+                </p>
+            </div>
+        </div>
+        <div id="signatureBlock" style="page-break-inside:avoid" class="padding-top-20">
+            <table class="tbl800px">
+                <tr>
+                    <td class="td400px">
+                        <p id="signatureBlockTitles" style="font-size: 12pt;">
+                            <span>
+                                SRA International, Inc.
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="signatureBlockTitles" style="font-size: 12pt;">
+                            <span style="padding-left: 100px;">
+                                Reviewer:
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px">
+                        <p id="signatureBlockSignatures">
+                            <img id="sraSignature" alt="Signature" />
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="signatureBlockSignatures">
+                            <img id="panelMemberSignature" style="padding-left: 100px;" alt="Signature" />
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px">
+                        <p>
+                            <span id="signatureNameOnContract">
+                                <span id="contractAdminSignature" style="display:none;">
+                                    <img src="~/Content/img/Graig_Signature.jpg"
+                                         style="display:block;margin-top:-55px;height:60px;" alt="Signature" />
+                                </span>
+                                _______________________
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p>
+                            <span style="padding-left: 100px;">
+                                _______________________
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px">
+                        <p id="signatureBlockPrintedName">
+                            <span style="font-weight: bold;">
+                                Graig Shockey
+                            </span>
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="signatureBlockPrintedName">
+                            <span style="font-weight: bold;padding-left: 100px;">
+                                @Model.Form.ContractData.FullNameWithSuffix
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td400px">
+                        <p id="personTitles" style="font-weight: bold;">
+                            Contracts Advisor
+                        </p>
+                    </td>
+                    <td class="td400px">
+                        <p id="personTitles" style="font-weight: bold;padding-left: 100px;">
+                            @Model.Form.ContractData.PanelName
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="attachmentA" style="page-break-before:always">
+            <div id="attachmentAHeader">
+                <img class="gditLogo" src="/Content/img/gd_it_logo-color.jpg" alt="GDIT Logo" style="width:300px;" />
+                <h2>
+                    Attachment A
+                </h2>
+                <h2>
+                    Statement of Work
+                </h2>
+            </div>
+            <div id="attachmentADetails">
+                <table class="tbl800px">
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Panel Member:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @Model.Form.ContractData.FullNameWithSuffix
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Client:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    @Model.Form.ContractData.ClientAbbreviation
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Program:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @Model.Form.ContractData.FiscalYear @Model.Form.ContractData.ProgramDescription
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Assigned Panel:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @Model.Form.ContractData.PanelName
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Panel Participant Type:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @Model.Form.ContractData.ParticipantTypeName
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Period of Performance:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @ViewHelpers.FormatDate(Model.Form.ContractData.PeriodOfPerformanceStartDate)
+                                    to @ViewHelpers.FormatDate(Model.Form.ContractData.PeriodOfPerformanceEndDate)
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Company Managers:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @Html.Raw(string.Join("<br />", Model.Form.ContractData.ManagerList))
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Reviewer Fee:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    @Model.Form.ContractData.ConsultantFeeText
+                                </span>
+                            </p>
+                            <div style="display:none;" id="consultantFeeAmount">@Model.Form.ContractData.ConsultantFee</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td300px">
+                            <p>
+                                <span style="font-weight: bold;">
+                                    Conditions of Performance:
+                                </span>
+                            </p>
+                        </td>
+                        <td class="td500px">
+                            <p>
+                                <span>
+                                    All activities must be performed in accordance with the Reviewer Agreement
+                                    executed between Company and Reviewer.
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p style="padding-top: 30px;">
+                    The Reviewer affirms eligibility to receive the consultant’s fee indicated above from the Company for service as a Reviewer. In addition, the Reviewer affirms that he/she is not aware of any breach or circumstance that would deem them ineligible to receive Federal grant funding and thereby ineligible to serve as a scientific peer reviewer for this program. If the Reviewer is a Federal Government employee, confirmation is hereby given that the appropriate ethics office has been consulted and approval has been received to accept this consultant fee (if such approval is required), and the employee will be on leave status from that position for the duration of the meeting for which this fee is being paid. Consultant fees are based on the meeting location, duration and level of effort/review load.  Therefore, any changes in these variables may warrant cancellation or reissuance of this Agreement with an adjusted consultant fee.
+                </p>
+            </div>
+            <div id="attachmentADOW">
+                <h4>
+                    DESCRIPTION OF WORK
+                </h4>
+                <p>
+                    @Model.Form.ContractData.DescriptionOfWork
+                </p>
+            </div>
+            <div id="attachmentATasksForPanelMembers">
+                <div id="allTasksForPanelMembers">
+                    <h4><u>Tasks for All Reviewers:</u></h4>
+                    <div id="taskCOIs">
+                        <p><i>Task 1: Identify COIs</i></p>
+                        <p>
+                            <b>IMMEDIATELY</b> upon release of abstracts or applications from the Company, review all applications for any potential COIs or potential sources of bias according to SRA guidelines. Notify the Company
+                            <b>IMMEDIATELY</b> of any potential COIs or sources of bias.
+                        </p>
+                    </div>
+                    <div id="taskUCV">
+                        <p><i>Task 2: Update Curriculum Vitae</i></p>
+                        <p>
+                            Provide the Company with a current copy of your curriculum vitae by uploading in the appropriate module in P<font style="font-size: 8pt;">2</font>RMIS<font style="font-size: 8pt;">&reg </font>.
+                            <i style="font-weight: normal;">(This is not applicable for consumer reviewers.)</i>
+                        </p>
+                    </div>
+                    <div id="taskAttendTrainingOrientation">
+                        <p><i>Task 3: Attend and Complete Required Training and Orientation Sessions</i></p>
+                        <p>
+                            You must complete all training, orientation, and plenary sessions appropriate to your panel participant type whether they
+                            are provided at the meeting site, by teleconference, or via Internet-based electronic delivery. A complete list of such sessions
+                            will be provided by the Company.
+                        </p>
+                    </div>
+                    <div id="taskEvaluateScoreApp">
+                        <p><i>Task 4: Evaluate and Score Assigned Applications</i></p>
+                        <p>
+                            Each application is to be evaluated on its own merit (not in comparison to other applications) and against the ideal standard of
+                            quality implicit in the evaluation criteria. You are required to prepare a written critique for each application assigned to you
+                            prior to the established deadline. Critiques must be submitted electronically using the Company's P<font style="font-size: 8pt;">2</font>RMIS<font style="font-size: 8pt;">&reg </font>
+                            system and typically are due at least 3 days prior to the PRP meeting. Additionally, prior to the PRP meeting, you are to review
+                            and assess all other applications assigned to your PRP in preparation for participating fully in the discussion and scoring of each
+                            application considered by your panel during the peer review meeting. You will bring one printed copy of each completed critique for
+                            your assigned applications to the PRP meeting as a hardcopy backup of your electronic critique submission.
+                        </p>
+                        <p>
+                            Applications should be evaluated in accordance with provided guidelines and based upon your knowledge and understanding of the
+                            subject area and your experience,
+                        </p>
+                    </div>
+                    <div id="taskAttendParticipatePRPMeeting">
+                        <p><i>Task 5: Attend and Participate in the Entire PRP Meeting</i></p>
+                        <p>
+                            You must be present for the entire duration of the meeting and attend all sessions of your assigned panel. If your evaluation of an
+                            assigned application has changed subsequent to the initial submission of your written critique, you must amend it accordingly <b>
+                                prior
+                                to the conclusion of the PRP meeting.
+                            </b>
+                        </p>
+                    </div>
+                    <div id="taskRespondDebriefSurvey">
+                        <p><i>Task 6: Respond to the Panel Debriefing Survey</i></p>
+                        <p>
+                            A debriefing and/or an online survey may be conducted either on the final day of the meeting and/or subsequent to the meeting in
+                            accordance with the process outlined by the Company in its handbooks and/or online resources. This survey allows each Reviewer the
+                            opportunity to provide feedback on the process and his or her experience as a Reviewer.
+                        </p>
+                    </div>
+                    <div id="taskReturnDocs">
+                        <p><i>Task 7: Return Documents</i></p>
+                        <p>
+                            All documents and materials provided or used in conjunction with the evaluation of applications must be returned to the Company, destroyed,
+                            or deleted immediately upon conclusion of all tasks required in this Agreement.
+                        </p>
+                    </div>
+                </div>
+                <div id="additionalTasksForChair">
+                    <h4><u>Additional Tasks Specific to the Panel Chair:</u></h4>
+                    <p>
+                        You will serve as a panel chair for the review of applications submitted to the Company’s client. In this capacity, you will preside at the meeting of your assigned panel and participate fully as a peer reviewer of applications assigned thereto. As the panel chair, it is your responsibility to provide leadership in moderating and guiding Reviewers in their deliberations about the merit of each application assigned to the panel and to ensure that each application receives a rigorous and fair review in accordance with published evaluation criteria and Company guidelines. At the conclusion of the discussion and deliberation of each application, the chair will summarize the panel’s findings by commenting on the application’s strengths and weaknesses with respect to each individual review criterion and the application’s overall scientific merit. Upon request, the chair will assist in identifying and recruiting scientific peer reviewers.
+                    </p>
+                </div>
+            </div>
+            <div id="attachmentAPaymentFee">
+                <h4>
+                    PAYMENT OF CONSULTANT FEE AND EXPENSE REIMBURSEMENT
+                </h4>
+                <p>
+                    If Reviewer is eligible to receive a fee or expense reimbursement, the following procedures must be followed to ensure timely payment:
+                </p>
+                <ol>
+                    <li>
+                        <b>Submit a properly executed, complete, and legible W-9 form</b> if you are a first-time     reviewer for the Company or if personal information (e.g., address, name) has changed since the last time you served as a Reviewer.
+                        Your permanent <b>home</b> address
+                        (<b>NOT</b> your work address) should be listed in the W-9 form. The W-9 address is the one to which your consultant’s fee and
+                        expense reimbursements will be sent.
+                    </li>
+                    <li>
+                        <b>Submit only one (1) expense reimbursement form</b> to the Company for payment of  authorized reimbursable expenses. Submit this form to the designated Company employee prior to leaving the meeting if it is complete, signed, and supported by required receipts.  Otherwise, mail the expense reimbursement form within 30 days following the conclusion of the PRP meeting to GDIT, 110 Thomas Johnson Drive, Suite 200, Frederick, Maryland 21702.
+                    </li>
+                </ol>
+                <p>
+                    Payment for your fee and authorized expenses will be made as one check within forty-five business days following the conclusion of the meeting. Receipt of a properly executed and documented expense reimbursement form is required. The Company will return for correction any reimbursement request that is not properly completed or that is not submitted on the prescribed form. The Company may withhold, at its sole and absolute discretion, all or part of the fee if required tasks as set forth above are not satisfactorily completed.
+                </p>
+                <p>
+                    The fee you receive for your peer review service is taxable as income. Reviewers are responsible for reporting this income to the IRS and should maintain their own tax records. The Company does not provide tax preparation services. The Company will send an IRS Form 1099 to all Reviewers receiving annual income in excess of the U.S. 1099 taxable limit in the year following their receipt of payment for services.
+                </p>
+            </div>
+            <div id="attachmentAAuthExpenses">
+                <h4>
+                    AUTHORIZED EXPENSES
+                </h4>
+                <p>
+                    The Company is authorized to pay the costs for your primary travel only when that travel has been arranged as described in the Reviewer Handbook found in the Company’s P²RMIS® system and is consistent with the Joint Travel Regulations. Expenses are authorized and will be reimbursed only as described in the Reviewer Handbook. Supplemental information specific to your meeting may be found in the Meeting Infosheet. No other expenses will be reimbursed without PRIOR WRITTEN APPROVAL from one of the Company managers designated above.
+                    <b>
+                        Note that Federal Government employees not taking leave may not be eligible to receive a fee for services and/or reimbursement for expenses by the Company.
+                    </b>
+                </p>
+            </div>
+            <div id="attachmentAPerformance">
+                <h4>PERFORMANCE</h4>
+                <p>
+                    Successful performance of your duties and responsibilities as described herein is defined as follows:
+                </p>
+                <ol>
+                    <li>
+                        Adherence to Company and client guidelines and technical direction provided by designated Company managers;
+                    </li>
+                    <li>
+                        Completion of all assigned tasks in compliance with Company standards of performance and quality;
+                    </li>
+                    <li>
+                        Adherence to Company prescribed timelines for completion of tasks; and
+                    </li>
+                    <li>
+                        Effective and harmonious working relationships with Company managers, staff, other Reviewers, and client staff.
+                    </li>
+                </ol>
+                <p>
+                    The Company’s project management staff, as part of our commitment to continuous quality improvement, will also assess the performance of Reviewers by collecting performance data. All evaluation information about members of the panel will be treated as confidential and company proprietary. A Reviewer may discuss his or her performance data with Company project management staff. This allows the Reviewer to respond to feedback and provide the Company with feedback on any procedural problems that the reviewer encountered.
+                </p>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div style="margin:30px 0px;float:left;">
+        This contract is not currently available on-line. Please contact your RTA to obtain a copy.
+    </div>
+}

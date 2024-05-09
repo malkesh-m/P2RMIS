@@ -1,0 +1,1371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F179916B-288A-48F5-BCD8-FB713C2B15E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sra.P2rmis.Dal</RootNamespace>
+    <AssemblyName>Sra.P2rmis.Dal</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SlowCheetahTargets Condition=" '$(SlowCheetahTargets)'=='' ">$(LOCALAPPDATA)\Microsoft\MSBuild\SlowCheetah\v1\SlowCheetah.Transforms.targets</SlowCheetahTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UA-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\UA-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Staging-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod-Cloud|AnyCPU'">
+    <OutputPath>bin\Prod-Cloud\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Dev-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test2-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test2-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcademicRank.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccessLevel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountStatu.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountStatusReason.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActionLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActionLogReason.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Airport.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlternateContactType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Application.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationBudget.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationCompliance.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationDefaultWorkflow.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationInfo.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationManagementRepository.cs" />
+    <Compile Include="ApplicationPersonnel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationResearchCategory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationReviewStatu.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationStage.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationStageStep.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationStageStepDiscussion.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationStageStepDiscussionComment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationSummaryLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationTemplate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationTemplateElement.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationText.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationTopicCode.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflow.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStep.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStepAssignment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStepElement.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStepElementComment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStepElementContent.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStepElementContentHistory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowStepWorkLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationWorkflowSummaryStatement.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssignmentType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssignmentTypeThreshold.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AwardOverallAverage_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Carrier.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Client.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientApplicationInfoType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientApplicationPersonnelType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientApplicationTextType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientAssignmentType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientAwardType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientCoiType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientConfiguration.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientDataDeliverable.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientDefaultWorkflow.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientElement.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientExpertiseRating.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientFileConfiguration.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientMeeting.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientParticipantType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientProgram.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientRegistration.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientRegistrationDocument.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientRegistrationDocumentItem.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientReviewerEvaluationGroup.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientRole.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientScoringScale.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientScoringScaleAdjectival.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientScoringScaleLegend.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientScoringScaleLegendItem.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientServiceAccount.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientSummaryTemplate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClientTransferType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommentType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationLogAttachment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationLogRecipient.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationLogRecipientType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMethod.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ComplianceStatu.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContractStatus.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Country.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Degree.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ElementType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailAddressType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCategory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ethnicity.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FileStore.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FileStoreMain.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Gender.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Hotel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ImportLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ImportLogItem.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IAssignmentTypeThresholdRepository.cs" />
+    <Compile Include="Interfaces\INotificationRepository.cs" />
+    <Compile Include="Partials\PolicyHistory.Extension.cs" />
+    <Compile Include="Partials\PolicyNetworkRangeHistory.Extension.cs" />
+    <Compile Include="PolicyHistory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyNetworkRangeHistory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyStatu.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyWeekDayHistory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Security\PolicyHistoryRepository.cs" />
+    <Compile Include="IUnitOfWork.ConsumerManagement.cs" />
+    <Compile Include="IUnitOfWork.Security.cs" />
+    <Compile Include="IUnitOfWork.SystemConfiguration.cs" />
+    <Compile Include="LookupReportGroup.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LookupReportParameter.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LookupTemplateCategory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LookupTemplateStage.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LookupTemplateType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MechanismRelationshipType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MechanismScoringTemplate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MechanismTemplate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MechanismTemplateElement.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MechanismTemplateElementScoring.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingRegistration.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingRegistrationAttendance.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingRegistrationComment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingRegistrationHotel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingRegistrationTravel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingRegistrationTravelFlight.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingSession.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MeetingType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MilitaryRank.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MilitaryStatusType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NominatingOrganization.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Nominee.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NomineeAffected.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NomineePhone.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NomineeProgram.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NomineeSponsor.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NomineeSponsorPhone.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NomineeType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Notification.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationRepository.cs" />
+    <Compile Include="P2RMISModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>P2RMISModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PanelApplication.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelApplicationReviewerAssignment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelApplicationReviewerCoiDetail.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelApplicationReviewerExpertise.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelApplicationSummary.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelStage.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelStageStep.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelUserAssignment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelUserPotentialAssignment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelUserRegistration.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelUserRegistrationDocument.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelUserRegistrationDocumentContract.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PanelUserRegistrationDocumentItem.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\ApplicationCompliance.extension.cs" />
+    <Compile Include="Partials\ApplicationInfo.extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowSummaryStatement.Extension.cs" />
+    <Compile Include="Partials\AssignmentTypeThreshold.Extension.cs" />
+    <Compile Include="Partials\ClientAwardType.Extension.cs" />
+    <Compile Include="Partials\ClientDataDeliverable.Extension.cs" />
+    <Compile Include="Partials\ClientMeeting.Extension.cs" />
+    <Compile Include="Partials\ContractStatus.Extensions.cs" />
+    <Compile Include="Partials\IFeeSchedule.cs" />
+    <Compile Include="Partials\MechanismRelationshipTypeId.Extension.cs" />
+    <Compile Include="Partials\MechanismScoringTemplate.Extension.cs" />
+    <Compile Include="Partials\MechanismTemplate.Extension.cs" />
+    <Compile Include="Partials\MechanismTemplateElementScoring.cs" />
+    <Compile Include="Partials\MeetingRegistrationComment.Extension.cs" />
+    <Compile Include="Partials\MeetingRegistrationTravelFlight.Extension.cs" />
+    <Compile Include="Partials\Nominee.Extension.cs" />
+    <Compile Include="Partials\NomineeProgram.Extension.cs" />
+    <Compile Include="Partials\NomineePhone.Extension.cs" />
+    <Compile Include="Partials\NomineeSponsorPhone.Extension.cs" />
+    <Compile Include="Partials\NomineeSponsor.Extension.cs" />
+    <Compile Include="Partials\PanelUserRegistrationDocumentContract.Extension.cs" />
+    <Compile Include="Partials\PeerReviewContentType.Extension.cs" />
+    <Compile Include="Partials\PeerReviewDocumentAccess.Extension.cs" />
+    <Compile Include="Partials\PeerReviewDocument.Extension.cs" />
+    <Compile Include="Partials\PeerReviewDocumentType.Extension.cs" />
+    <Compile Include="Partials\NomineeType.Extension.cs" />
+    <Compile Include="Partials\Policy.Extension.cs" />
+    <Compile Include="Partials\PolicyWeekDayHistory.Extension.cs" />
+    <Compile Include="Partials\PolicyNetworkRange.Extension.cs" />
+    <Compile Include="Partials\PolicyWeekDay.Extension.cs" />
+    <Compile Include="Partials\ProgramCycleDeliverable.Extension.cs" />
+    <Compile Include="Partials\ProgramMechanismImportLog.Extension.cs" />
+    <Compile Include="Partials\ProgramMechanismSummaryStatement.Extension.cs" />
+    <Compile Include="Partials\ProgramMeeting.extensiion.cs" />
+    <Compile Include="Partials\ProgramSessionPayRate.Extension.cs" />
+    <Compile Include="Partials\ProgramUserAssignment.extension.cs" />
+    <Compile Include="Partials\ReferralMapping.Extension.cs" />
+    <Compile Include="Partials\ReferralMappingData.extension.cs" />
+    <Compile Include="Partials\SessionUserAssignment.Extension.cs" />
+    <Compile Include="Partials\SummaryReviewerDescription.Extension.cs" />
+    <Compile Include="Partials\UserBlockLog.Extension.cs" />
+    <Compile Include="Partials\UserBlockLogClient.Extension.cs" />
+    <Compile Include="Partials\UserClientBlock.Extension.cs" />
+    <Compile Include="Partials\UserPassword.Extension.cs" />
+    <Compile Include="Partials\UserPeerReviewDocument.Extension.cs" />
+    <Compile Include="Partials\UserVendor.Extension.cs" />
+    <Compile Include="Partials\VendorIdAssigned.cs" />
+    <Compile Include="Partials\VendorType.Extension.cs" />
+    <Compile Include="ParticipationMethod.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PeerReviewContentType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PeerReviewDocument.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PeerReviewDocumentAccess.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PeerReviewDocumentType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PhoneType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Policy.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyNetworkRange.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyRestrictionType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PolicyWeekDay.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Prefix.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProfessionalAffiliation.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileTypeRole.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramCycleDeliverable.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramMechanism.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramMechanismImportLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramMechanismSummaryStatement.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramMeeting.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramPanel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramSessionPayRate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramUserAssignment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramYear.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QueryableExtensions\PanelApplicationExtensions.cs" />
+    <Compile Include="RecoveryQuestion.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReferralMapping.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReferralMappingData.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrationDocumentItem.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrationDocumentType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Report.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportParameter.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportPermission.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RepositoryHelpers.Notification.cs" />
+    <Compile Include="RepositoryHelpers.ReferralMapping.cs" />
+    <Compile Include="Repository\ConsumerManagement\NomineeSponsorRepository.cs" />
+    <Compile Include="Repository\ConsumerManagement\NomineeProgramRepository.cs" />
+    <Compile Include="Repository\ConsumerManagement\NomineeRepository.cs" />
+    <Compile Include="Repository\ConsumerManagement\NomineeAffectedRepository.cs" />
+    <Compile Include="Repository\LibraryManagement\PeerReviewDocumentRepository.cs" />
+    <Compile Include="Repository\LibraryManagement\UserPeerReviewDocumentRepository.cs" />
+    <Compile Include="Repository\MeetingManagement\ProgramUserAssignmentRepository.cs" />
+    <Compile Include="Repository\Security\PolicyNetworkRangeHistoryRepository.cs" />
+    <Compile Include="Repository\Security\PolicyNetworkRangeRepository.cs" />
+    <Compile Include="Repository\Security\PolicyWeekDayHistoryRepository.cs" />
+    <Compile Include="Repository\Security\PolicyWeekDayRepository.cs" />
+    <Compile Include="Repository\Security\PolicyRepository.cs" />
+    <Compile Include="Repository\Setup\AirportRepository.cs" />
+    <Compile Include="Repository\Setup\ApplicationBudgetRepository.cs" />
+    <Compile Include="Repository\Setup\ApplicationComplianceRepository.cs" />
+    <Compile Include="Repository\Setup\ApplicationInfoRepository.cs" />
+    <Compile Include="Repository\Setup\ApplicationPersonnelRepository.cs" />
+    <Compile Include="Repository\Setup\CarrierRepository.cs" />
+    <Compile Include="Repository\Setup\ClientApplicationInfoTypeRepository.cs" />
+    <Compile Include="Repository\Setup\ClientApplicationPersonnelTypeRepository.cs" />
+    <Compile Include="Repository\Setup\ComplianceStatusRepository.cs" />
+    <Compile Include="Repository\Setup\DeliverableRepository.cs" />
+    <Compile Include="Repository\Setup\ImportLogItemRepository.cs" />
+    <Compile Include="Repository\Setup\ImportLogRepository.cs" />
+    <Compile Include="Repository\MeetingManagement\MeetingRegistrationCommentRepository.cs" />
+    <Compile Include="Repository\MeetingManagement\MeetingRegistrationTravelFlightRepository.cs" />
+    <Compile Include="Repository\MeetingManagement\MeetingRegistrationTravelRepository.cs" />
+    <Compile Include="Repository\PanelManagement\AssignmentTypeThresholdRepository.cs" />
+    <Compile Include="Repository\Setup\ClientRegistrationDocumentRepository.cs" />
+    <Compile Include="Repository\MeetingManagement\MeetingRegistrationRepository.cs" />
+    <Compile Include="Repository\Setup\MechanismScoringTemplateRepository.cs" />
+    <Compile Include="Repository\Setup\MechanismTemplateElementRepository.cs" />
+    <Compile Include="Repository\Setup\MechanismTemplateElementScoringRepository.cs" />
+    <Compile Include="Repository\Setup\ProgramMechanismImportLogRepository.cs" />
+    <Compile Include="Repository\Setup\ProgramSessionPayRateRepository.cs" />
+    <Compile Include="Repository\Setup\ProgramYearRepository.cs" />
+    <Compile Include="Repository\Setup\ReferralMappingDataRepository.cs" />
+    <Compile Include="Repository\Setup\ReferralMappingRepository.cs" />
+    <Compile Include="Repository\Setup\ScoringTemplatePhaseRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\UserClientBlockRepository.cs" />
+    <Compile Include="Repository\Setup\WorkflowRepository.cs" />
+    <Compile Include="ResearchCategoryType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResultModels\PeerReviewResultModel.cs" />
+    <Compile Include="ResultModels\INotificationModel.cs" />
+    <Compile Include="ResultModels\IPanelStageResultModel.cs" />
+    <Compile Include="ResultModels\NotificationModel.cs" />
+    <Compile Include="ResultModels\PanelStageResultModel.cs" />
+    <Compile Include="ReviewerCritiques_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewerEvaluation.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewerEvaluationGroupGuidance.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewerInfo_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewStage.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewStatu.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewStatusType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleParticipantType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleTask.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScoringTemplate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScoringTemplatePhase.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SessionPanel.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SessionPhase.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SessionUserAssignment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="State.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StepType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StepTypeOperation.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SummaryDocument.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SummaryReviewerDescription.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SummaryStatementMode.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemConfiguration.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemOperation.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemRole.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemTask.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemTemplate.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemTemplateVersion.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaskOperation.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrainingCategory.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransferReason.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TravelMode.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfApplicationWorkflowActiveStep_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfApplicationWorkflowLastStep_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfGetSummaryReviewerDescription_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfLastUpdatedCritiquePhaseAverageOverall_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfLastUpdatedCritiquePhaseAverage_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfLastUpdatedCritiquePhase_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfPanelStageLastStep_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfResumeFullTextSearchNew_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udfReviewCriteriaPivot_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitOfWork.ConsumerManagement.cs" />
+    <Compile Include="UnitOfWork.Security.cs" />
+    <Compile Include="UnitOfWork.SystemConfiguration.cs" />
+    <Compile Include="EntityChanges\LookupConverter.cs" />
+    <Compile Include="EntityChanges\LookupConverterFactory.cs" />
+    <Compile Include="EntityChanges\PropertyChange.cs" />
+    <Compile Include="EntityChanges\EntityPropertyChange.cs" />
+    <Compile Include="EntityChanges\ILogEntityChanges.cs" />
+    <Compile Include="Interfaces\IApplicationDefaultWorkflowRepository.cs" />
+    <Compile Include="Interfaces\IApplicationSummaryLogRepository.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowStepAssignmentRepository.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowStepElementRepository.cs" />
+    <Compile Include="Interfaces\ISpecifyEntitySetName.cs" />
+    <Compile Include="Interfaces\IWorkflowMechanismRepository.cs" />
+    <Compile Include="IUnitOfWork.HotelAndTravel.cs" />
+    <Compile Include="IUnitOfWork.Lookup.cs" />
+    <Compile Include="IUnitOfWork.Mail.cs" />
+    <Compile Include="IUnitOfWork.OnLineScoring.cs" />
+    <Compile Include="IUnitOfWork.PanelManagement.cs" />
+    <Compile Include="IUnitOfWork.PanelRegistration.cs" />
+    <Compile Include="IUnitOfWork.LibraryManagement.cs" />
+    <Compile Include="IUnitOfWork.Setup.cs" />
+    <Compile Include="IUnitOfWork.User.cs" />
+    <Compile Include="Partials\AcademicRank.Extension.cs" />
+    <Compile Include="Partials\ApplicationBudget.Extension.cs" />
+    <Compile Include="Partials\ApplicationPersonnel.Extension.cs" />
+    <Compile Include="Partials\ApplicationStage.Extension.cs" />
+    <Compile Include="Partials\ApplicationStageStep.Extension.cs" />
+    <Compile Include="Partials\ApplicationStageStepDiscussion.Extension.cs" />
+    <Compile Include="Partials\ApplicationStageStepDiscussionComment.Extension.cs" />
+    <Compile Include="Partials\ApplicationTemplateElement.Extension.cs" />
+    <Compile Include="Partials\Client.Extension.cs" />
+    <Compile Include="Partials\ClientParticipantType.Extension.cs" />
+    <Compile Include="Partials\ClientProgram.Extension.cs" />
+    <Compile Include="Partials\ClientRegistrationDocument.Extension.cs" />
+    <Compile Include="Partials\ClientScoringScale.extension.cs" />
+    <Compile Include="Partials\ClientScoringScaleLegend.Extension.cs" />
+    <Compile Include="Partials\CommentType.Extension.cs" />
+    <Compile Include="Partials\CommunicationLog.Extension.cs" />
+    <Compile Include="Partials\CommunicationLogAttachment.Extension.cs" />
+    <Compile Include="Partials\CommunicationLogRecipient.Extension.cs" />
+    <Compile Include="Partials\CommunicationLogRecipientType.Extension.cs" />
+    <Compile Include="Partials\CommunicationMethod.Extension.cs" />
+    <Compile Include="Partials\Country.Extension.cs" />
+    <Compile Include="Partials\ElementType.Extension.cs" />
+    <Compile Include="Partials\AccountStatu.Extension.cs" />
+    <Compile Include="Partials\AccountStatusReason.Extension.cs" />
+    <Compile Include="Partials\AddressType.Extension.cs" />
+    <Compile Include="Partials\AlternateContactType.Extension.cs" />
+    <Compile Include="Partials\ClientAssignmentType.Extension.cs" />
+    <Compile Include="Partials\EmailAddressType.Extension.cs" />
+    <Compile Include="Partials\Helper.IPanelReviewer.cs" />
+    <Compile Include="Partials\IPanelReviewer.cs" />
+    <Compile Include="Partials\MechanismTemplateElement.Extension.cs" />
+    <Compile Include="Partials\MeetingRegistration.Extension.cs" />
+    <Compile Include="Partials\MeetingRegistrationAttendance.Extension.cs" />
+    <Compile Include="Partials\MeetingRegistrationHotel.Extension.cs" />
+    <Compile Include="Partials\MeetingRegistrationTravel.Extension.cs" />
+    <Compile Include="Partials\MeetingSession.Extension.cs" />
+    <Compile Include="Partials\MeetingType.Extension.cs" />
+    <Compile Include="Partials\MilitaryRank.Extension.cs" />
+    <Compile Include="Partials\MilitaryStatusType.Extension.cs" />
+    <Compile Include="Partials\P2RMISNetEntities.Extension.cs" />
+    <Compile Include="Partials\ActionLog.Extension.cs" />
+    <Compile Include="Partials\ActionLogReason.Extension.cs" />
+    <Compile Include="Partials\ApplicationDefaultWorkflow.Extension.cs" />
+    <Compile Include="Partials\ApplicationReviewStatu.Extension.cs" />
+    <Compile Include="Partials\ApplicationSummaryLog.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowStepAssignment.Extension.cs" />
+    <Compile Include="Partials\ClientExpertiseRating.Extension.cs" />
+    <Compile Include="Partials\PanelApplication.Extension.cs" />
+    <Compile Include="Partials\PanelApplicationReviewerAssignment.Extension.cs" />
+    <Compile Include="Partials\PanelApplicationReviewerCoiDetail.Extension.cs" />
+    <Compile Include="Partials\PanelApplicationReviewerExpertise.Extension.cs" />
+    <Compile Include="Partials\PanelApplicationSummary.Extension.cs" />
+    <Compile Include="Partials\PanelStage.Extension.cs" />
+    <Compile Include="Partials\PanelStageStep.Extension.cs" />
+    <Compile Include="Partials\PanelUserAssignment.Extension.cs" />
+    <Compile Include="Partials\PanelUserPotentialAssignment.Extension.cs" />
+    <Compile Include="Partials\PanelUserRegistration.Extension.cs" />
+    <Compile Include="Partials\PanelUserRegistrationDocument.Extension.cs" />
+    <Compile Include="Partials\PanelUserRegistrationDocumentItem.Extension.cs" />
+    <Compile Include="Partials\ParticipationMethod.Extension.cs" />
+    <Compile Include="Partials\PhoneType.Extension.cs" />
+    <Compile Include="Partials\Prefix.Extension.cs.cs" />
+    <Compile Include="Partials\ProfessionalAffiliation.Extension.cs" />
+    <Compile Include="Partials\ProfileType.Extension.cs" />
+    <Compile Include="Partials\ProgramMechanism.Extension.cs" />
+    <Compile Include="Partials\ProgramYear.Extension.cs" />
+    <Compile Include="Partials\RegistrationDocumentItem.Extension.cs" />
+    <Compile Include="Partials\RegistrationDocumentType.Extension.cs" />
+    <Compile Include="Partials\ReviewerEvaluation.Extension.cs" />
+    <Compile Include="Partials\ReviewStage.Extension.cs" />
+    <Compile Include="Partials\ReviewStatusType.Extension.cs" />
+    <Compile Include="Partials\SessionPanel.Extension.cs" />
+    <Compile Include="Partials\AssignmentType.Extension.cs" />
+    <Compile Include="Partials\State.cs" />
+    <Compile Include="Partials\StepType.Extension.cs" />
+    <Compile Include="Partials\SystemConfiguration.Extension.cs" />
+    <Compile Include="Partials\SystemRole.Extension.cs" />
+    <Compile Include="Partials\SummaryDocument.Extension.cs" />
+    <Compile Include="Partials\TransferReason.Extension.cs" />
+    <Compile Include="Partials\TravelMode.Extension.cs" />
+    <Compile Include="Partials\User.Extension.cs" />
+    <Compile Include="Partials\UserAccountRecovery.Extension.cs" />
+    <Compile Include="Partials\UserAccountStatu.Extension.cs" />
+    <Compile Include="Partials\UserAlternateContact.Extension.cs" />
+    <Compile Include="Partials\UserAlternateContactPhone.Extension.cs" />
+    <Compile Include="Partials\UserClient.Extension.cs" />
+    <Compile Include="Partials\UserCommunicationLog.Extension.cs" />
+    <Compile Include="Partials\UserDegree.Extension.cs" />
+    <Compile Include="Partials\UserAddress.Extension.cs" />
+    <Compile Include="Partials\UserInfo.Extension.cs" />
+    <Compile Include="Partials\UserEmail.Extension.cs" />
+    <Compile Include="Partials\UserInfoChangeLog.Extension.cs" />
+    <Compile Include="Partials\UserInfoChangeType.Extension.cs" />
+    <Compile Include="Partials\UserPhone.Extension.cs" />
+    <Compile Include="Partials\UserProfile.Extension.cs" />
+    <Compile Include="Partials\UserResume.Extension.cs" />
+    <Compile Include="Partials\UserSystemRole.cs" />
+    <Compile Include="Partials\UserWebsite.Extension.cs" />
+    <Compile Include="Partials\WebsiteType.Extension.cs" />
+    <Compile Include="Partials\UserApplicationComment.Extension.cs" />
+    <Compile Include="Partials\WorkflowMechanism.Extension.cs" />
+    <Compile Include="RepositoryHelpers.OnlineScoring.cs" />
+    <Compile Include="RepositoryHelpers.ProgramSetup.cs" />
+    <Compile Include="Repository\ApplicationDefaultWorkflowRepository.cs" />
+    <Compile Include="Repository\ApplicationScoring\ApplicationScoringRepository.cs" />
+    <Compile Include="Repository\ApplicationScoring\ClientScoringScaleLegendItemRepository.cs" />
+    <Compile Include="Repository\ApplicationScoring\ClientScoringScaleLegendRepository.cs" />
+    <Compile Include="Repository\ApplicationSummaryLogRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowStepAssignmentRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowStepElementRepository.cs" />
+    <Compile Include="Repository\EntityMetadataRepository.cs" />
+    <Compile Include="Repository\LibraryManagement\ILibraryManagementRepository.cs" />
+    <Compile Include="Repository\LibraryManagement\LibraryManagementRepository.cs" />
+    <Compile Include="Repository\PanelManagement\ActionLogRepository.cs" />
+    <Compile Include="Repository\PanelManagement\ClientAssignmentTypeRepository.cs" />
+    <Compile Include="Repository\PanelManagement\EmailRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IActionLogRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IClientAssignmentTypeRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IEmailRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IPanelApplicationReviewerCoiDetaiRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IPanelApplicationRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IPanelApplicationReviewerAssignmentRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IPanelManagementRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IPanelUserAssignmentRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IReviewerEvaluationRepository.cs" />
+    <Compile Include="Repository\PanelManagement\ISessionPanel.cs" />
+    <Compile Include="Repository\PanelManagement\PanelApplicationRepository.cs" />
+    <Compile Include="Repository\PanelManagement\PanelApplicationReviewerAssignmentRepository.cs" />
+    <Compile Include="Repository\PanelManagement\PanelApplicationReviewerCoiDetailRepository.cs" />
+    <Compile Include="Repository\PanelManagement\PanelApplicationReviewerExpertiseRepository.cs" />
+    <Compile Include="Repository\PanelManagement\PanelManagementRepository.cs" />
+    <Compile Include="Repository\PanelManagement\IPanelApplicationReviewerExpertiseRepository.cs" />
+    <Compile Include="Repository\PanelManagement\PanelUserAssignmentRepository.cs" />
+    <Compile Include="Repository\PanelManagement\RepositoryHelpers.PanelManagement.cs" />
+    <Compile Include="Repository\PanelManagement\ReviewerEvaluationRepository.cs" />
+    <Compile Include="Repository\PanelManagement\SessionPanelRepository.cs" />
+    <Compile Include="Repository\Setup\ClientProgramRepository.cs" />
+    <Compile Include="Repository\Setup\ProgramMechanismRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\IUserAccountStatusChangeLogRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\IUserAccountStatusRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\IUserRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\RepositoryHelpers.UserProfileManagement.cs" />
+    <Compile Include="Repository\UserProfileManagement\UserAccountStatusChangeLogRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\UserAccountStatusRepository.cs" />
+    <Compile Include="Repository\UserProfileManagement\UserRepository.cs" />
+    <Compile Include="Repository\WorkflowMechanismRepository.cs" />
+    <Compile Include="UnitOfWork.ChangeLog.cs" />
+    <Compile Include="UnitOfWork.HotelAndTravel.cs" />
+    <Compile Include="UnitOfWork.Lookup.cs" />
+    <Compile Include="UnitOfWork.Mail.cs" />
+    <Compile Include="UnitOfWork.OnLineScoring.cs" />
+    <Compile Include="UnitOfWork.PanelManagement.cs" />
+    <Compile Include="UnitOfWork.PanelRegistration.cs" />
+    <Compile Include="UnitOfWork.Setup.cs" />
+    <Compile Include="UnitOfWork.SummmaryStatements.cs" />
+    <Compile Include="UnitOfWork.LibraryManagement.cs" />
+    <Compile Include="UnitOfWork.User.cs" />
+    <Compile Include="User.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAccountRecovery.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAccountStatu.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAccountStatusChangeLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAddress.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAlternateContact.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAlternateContactPhone.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserApplicationComment.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserApplicationCommentRepository.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="GenericViewRepository.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="IGenericRepository.cs" />
+    <Compile Include="Interfaces\IApplicationRepository.cs" />
+    <Compile Include="Interfaces\IApplicationReviewStatuRepository.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowStepElementContentHistoryRepository.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowStepElementContentRepository.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowStepRepository.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowStepWorkLogRepository.cs" />
+    <Compile Include="Interfaces\IUserApplicationCommentRepository.cs" />
+    <Compile Include="Interfaces\IDateFields.cs" />
+    <Compile Include="Interfaces\IApplicationWorkflowRepository.cs" />
+    <Compile Include="Interfaces\IReportRepository.cs" />
+    <Compile Include="Interfaces\IReportViewerRepository.cs" />
+    <Compile Include="Interfaces\ISummaryManagementRepository.cs" />
+    <Compile Include="Interfaces\IUserClientRepository.cs" />
+    <Compile Include="Interfaces\IWorkflowInstanceRepository.cs" />
+    <Compile Include="Interfaces\IWorkflowTemplateRepository.cs" />
+    <Compile Include="P2RMISModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>P2RMISModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="P2RMISModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Partials\Application.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflow.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowStep.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowStepElement.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowStepElementContent.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowStepElementContentHistory.Extension.cs" />
+    <Compile Include="Partials\ApplicationWorkflowStepWorkLog.Extension.cs" />
+    <Compile Include="Partials\LookupCommentType.Extenstion.cs" />
+    <Compile Include="Partials\Workflow.Extension.cs" />
+    <Compile Include="Partials\WorkflowStep.Extension.cs" />
+    <Compile Include="Partials\ReviewStatus.Extension.cs" />
+    <Compile Include="ReportRepository.cs" />
+    <Compile Include="ReportViewerRepository.cs" />
+    <Compile Include="RepositoryHelpers.Criteria.cs" />
+    <Compile Include="RepositoryHelpers.Report.cs" />
+    <Compile Include="RepositoryHelpers.ReportViewer.cs" />
+    <Compile Include="RepositoryHelpers.SummaryManagement.cs" />
+    <Compile Include="Repository\ApplicationRepository.cs" />
+    <Compile Include="Repository\ApplicationReviewStatuRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowStepElementContentHistoryRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowStepElementContentRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowStepRepository.cs" />
+    <Compile Include="Repository\ApplicationWorkflowStepWorkLogRepository.cs" />
+    <Compile Include="Repository\WorkflowInstanceRepository.cs" />
+    <Compile Include="Repository\WorkflowTemplateRepository.cs" />
+    <Compile Include="ResultModels\Criteria\ProgramResultModel.cs" />
+    <Compile Include="ResultModels\Criteria\IProgramResultModel.cs" />
+    <Compile Include="ResultModels\ICommentTypes.cs" />
+    <Compile Include="ResultModels\CommentsTypes.cs" />
+    <Compile Include="ResultModels\IReportResultModel.cs" />
+    <Compile Include="ResultModels\IResultModel.cs" />
+    <Compile Include="ResultModels\ISearchResultModel.cs" />
+    <Compile Include="ResultModels\ReportResultModel.cs" />
+    <Compile Include="ResultModels\ResultModel.cs" />
+    <Compile Include="ResultModels\SearchResultModel.cs" />
+    <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="CustomMembershipProvider.cs" />
+    <Compile Include="Interfaces\IFileRepository.cs" />
+    <Compile Include="ModelPartials\SystemTemplateVersion_Partial.cs" />
+    <Compile Include="ModelPartials\SystemTemplate_Partial.cs" />
+    <Compile Include="ModelPartials\User_Partial.cs" />
+    <Compile Include="GenericRepository.cs" />
+    <Compile Include="MembershipRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryHelpers.cs" />
+    <Compile Include="RepositoryHelpers.Scoreboard.cs" />
+    <Compile Include="ResultModels\ApplicationDetail.cs" />
+    <Compile Include="ResultModels\ApplicationDetailResultModel.cs" />
+    <Compile Include="ResultModels\CritiqueDetailResultModel.cs" />
+    <Compile Include="ResultModels\IApplicationDetail.cs" />
+    <Compile Include="ResultModels\IApplicationDetailResultModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ResultModels\ICritiqueDetailResultModel.cs" />
+    <Compile Include="ResultModels\IReviewerComments.cs" />
+    <Compile Include="ResultModels\IReviewerScores.cs" />
+    <Compile Include="ResultModels\IUserApplicationComments.cs" />
+    <Compile Include="ResultModels\ReviewerComments.cs" />
+    <Compile Include="ResultModels\ReviewerScores.cs" />
+    <Compile Include="ResultModels\SessionsResultModel.cs" />
+    <Compile Include="ResultModels\ProgramListResultModel.cs" />
+    <Compile Include="ResultModels\UserApplicationComments.cs" />
+    <Compile Include="ResultModels\ViewPanelDetailsResultModel.cs" />
+    <Compile Include="RepositoryHelpers.ApplicationDetails.cs" />
+    <Compile Include="SessionDetailRepository.cs" />
+    <Compile Include="SummaryManagementRepository.cs" />
+    <Compile Include="SystemTemplateRepository.cs" />
+    <Compile Include="UnitofWork.cs" />
+    <Compile Include="UserBlockLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBlockLogClient.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserClient.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserClientBlock.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserClientRepository.cs" />
+    <Compile Include="UserCommunicationLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserDegree.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmail.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserEvaluationLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfo.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfoChangeLog.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfoChangeType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPassword.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPeerReviewDocument.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPhone.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserResume.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserSystemRole.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserVendor.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserWebsite.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetPeerReviewData_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetScoreDeliverableData_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetUsersByEmail_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetUsersByName_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetUsersByUserLogin_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPreviewApplicationSummaryWorkflow_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspReportApplicationDataQC_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspReportReviewerExpertisePostAssignmentSummary_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspReportReviewerExpertisePostAssignment_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspReportReviewerExpertisePreAssignment_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspReportScoringSetupQC_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspResumeFullTextSearch_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspSummaryDefault_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspViewPanelDetails_Result.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorIdAssigned.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewPanelDetailsRepository.cs" />
+    <Compile Include="WebsiteType.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WeekDay.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Workflow.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowMechanism.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowStep.cs">
+      <DependentUpon>P2RMISModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="P2RMISModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>P2RMISModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="P2RMISModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>P2RMISModel.Context.cs</LastGenOutput>
+      <DependentUpon>P2RMISModel.edmx</DependentUpon>
+    </None>
+    <None Include="P2RMISModel.edmx.diagram">
+      <DependentUpon>P2RMISModel.edmx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="P2RMISModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>P2RMISModel.cs</LastGenOutput>
+      <DependentUpon>P2RMISModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrossCuttingServices\CrossCuttingServices.csproj">
+      <Project>{317e285d-26a0-4230-b1d0-1a845be7c658}</Project>
+      <Name>CrossCuttingServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebModels\WebModels.csproj">
+      <Project>{f1059e19-b33b-48f6-8afa-ca31caf41cc9}</Project>
+      <Name>WebModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

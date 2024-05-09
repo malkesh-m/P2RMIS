@@ -1,0 +1,22 @@
+﻿@model Sra.P2rmis.Web.UI.Models.CommunicationViewModel
+<div class="ui-dialog-content">
+    @Html.ListBoxFor(m => Model.SelectedPanelUserAssignmentIds, Model.ReviewerEmailsToShow, new { id = "reviewerEmailAddressListBox", style = "height:400px;width:500px;" })
+
+    @if (Model.AvailableReviewerEmailAddresses != null && Model.AvailableReviewerEmailAddresses.Count > 0)
+    {
+        for (var iEmail = 0; iEmail < Model.AvailableReviewerEmailAddresses.Count; iEmail++)
+        {
+            <span>
+                @Html.HiddenFor(m => m.AvailableReviewerEmailAddresses[iEmail].PanelUserAssignmentId, new { @class = "emailIdAvailable" })
+                @Html.HiddenFor(m => m.AvailableReviewerEmailAddresses[iEmail].LastName, new { @class = "emailNameAvailable" })
+            </span>
+        }
+    }
+    <div id="emptyClientListError" style="display: none;" class="validation-summary-errors">
+        At least one client must be selected.
+    </div>
+</div>
+<div>
+    <button id="updateUserClients" class="btn btn-primary" type="button">OK</button>
+    <button id="cancelUpdateUserClients" class="btn btn-default" type="button">Cancel</button>
+</div>

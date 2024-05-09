@@ -1,0 +1,37 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<style type="text/css">
+    #manualInput{
+        margin-left: 10px;
+        width: 170px;
+    }
+
+    .input-validation-error{
+        background-color: transparent !important;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+    #activeMessage{
+        margin-bottom: 10px;
+    }
+    #currentVendor{
+        margin-top: 10px;
+    }
+</style>
+<div>
+    <div id="failureMessage"></div>
+    <div id="activeMessage"></div>
+</div>
+<div id="currentVendor"><strong>Current Vendor ID:</strong> <span class="currentVendor"></span></div>
+<div class="marginTop20 vendorModal">
+    <div class="autoVendor"><input type="radio" name="vendorId" id="vendorIdAuto" checked/>Auto-Assign Next Available Vendor ID</div>
+    <div class="margin-top10"><input type="radio" name="vendorId" id="vendorIdManual" />Manually Assign New Vendor ID<input type="number" id="manualInput" min="0" onkeydown="return vendorManagement.enterNumberInManual(event)"/></div>
+</div>

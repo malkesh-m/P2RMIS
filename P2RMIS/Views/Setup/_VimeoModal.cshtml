@@ -1,0 +1,59 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Vimeo Page";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<style>
+    .aprFormTitle {
+        font-size: 26px;
+        font-family: Arial;
+        font-weight: bold;
+    }
+
+    .heading {
+        font-size: 24px;
+        color: black;
+        display: block;
+        padding: 10px 0px;
+        vertical-align: top;
+        font-weight: bold;
+    }
+
+    .description {
+        display: block;
+        color: #046B99;
+        font-weight: bold;
+        padding: 10px 0px;
+    }
+</style>
+
+<div id="mainContent">
+    <div>
+        <div id="enterVideo"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Back button
+    $('#backButton').on('click', function () {
+        window.history.back();
+    });
+    var newVideoPath = sessionStorage.getItem('videoLink');
+    var newHeading = sessionStorage.getItem('newHeading');
+    var descriptionText = sessionStorage.getItem('newDescription');
+    $('#enterVideo').empty();
+    $('#enterVideo').append('<div>' + newVideoPath + '</div>');
+    $('.heading').text(newHeading);
+    $('.description').text(descriptionText);
+</script>
+
+
+
+
+
+

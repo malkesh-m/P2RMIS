@@ -1,0 +1,83 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@{
+    ViewBag.PageTitle = "Applications";
+    var errorMessageList = ViewBag.ErrorMessages;
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<link href="/Scripts/jquery-ui-multiselect/css/jquery.multiselect.css" rel="stylesheet" />
+<style type="text/css">
+    .k-grid-content {
+        min-height: 400px;
+    }
+</style>
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_title">Application Management</span>
+</div>
+
+<!-- Main Body -->
+<!-- Select Filters -->
+<section class="p2FilterContainer">
+    <div class="p2FilterContainer_full">
+        <h6 class="p2FilterContainer_title">Select Filters</h6>
+        <div class="p2FilterContainer_contents">
+            <div id="filter-instructions">
+                Please select client, fiscal year and program to initiate the search.
+                Alternatively, you can enter the application ID and may select client,
+                fiscal year and program.
+            </div>
+            <div class="p2FilterContainer_selects">
+                <label for="app-management-client" class="sr-only">Select a Client</label>
+                <select class="p2FilterContainer_selects_select" id="app-management-client"><option selected>Select Client</option></select>
+                <label for="app-management-fy" class="sr-only">Select a Fiscal Year</label>
+                <select class="p2FilterContainer_selects_select" id="app-management-fy"><option selected>Select FY</option></select>
+                <label for="app-management-program" class="sr-only">Select a Program</label>
+                <select class="p2FilterContainer_selects_select" id="app-management-program"><option selected>Select Program</option></select>
+                <label for="app-management-cycle" class="sr-only">Select a Cycle</label>
+                <select class="p2FilterContainer_selects_select" id="app-management-cycle"><option selected>Select Cycle</option></select>
+                <label for="app-management-panel" class="sr-only">Select a Panel</label>
+                <select class="p2FilterContainer_selects_select" id="app-management-panel"><option selected>Select Panel</option></select>
+                <label for="app-management-award" class="sr-only">Select an Award</label>
+                <select class="p2FilterContainer_selects_select" id="app-management-award"><option selected>Select Award</option></select>
+                <label for="app-management-application" class="sr-only">Search for an application</label>
+                <input type="text" placeholder="Search Applications" id="app-management-application" />
+                <label for="app-management-button" class="sr-only">Client</label>
+                <button class="buttonPrimary" id="app-management-button">Find</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="preText" class="main-header_failure"></div>
+<div id="successMessage"></div>
+<div id="failureMessage">
+    @ViewBag.ErrorMessages
+</div>
+<div id="loading"></div>
+<div class="applications-nav">
+    @Html.Partial("_TabbedMenu")
+</div>
+<div class="alignCenter hidden" id="noResultsFound">No matching records found.</div>
+
+<!-- Grid Header -->
+<section id="mainContentArea" class="p2GridHeader hidden">
+    <h4 class="p2GridHeader_title">
+        Applications for
+        <span class="result-header"></span>
+        (<span id="totalCount" class="result-header-count"></span> records)
+    </h4>
+
+    <!-- Grid -->
+    <div id="applicationGrid" class="p2Grid"></div>
+    <input type="hidden" value="" id="ResetApplicationId" />
+</section>
+<script type="text/javascript" src="~/Scripts/Custom/Setup/applications.js"></script>
+
+
+

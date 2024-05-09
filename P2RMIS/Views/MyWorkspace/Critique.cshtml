@@ -1,0 +1,125 @@
+﻿@model Sra.P2rmis.Web.UI.Models.CritiqueViewModel
+@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+
+@{
+    ViewBag.Title = "Critique";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader")
+    <link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+    @Html.IncludeVersionedFiles("/Scripts/jquery-custom-modal/js/jquery-custom-modal.js")
+    @Html.IncludeVersionedFiles("/Scripts/colResizable-1.5.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+    @Html.IncludeVersionedFiles("/Scripts/jquery.scrollTableBody-1.0.0.js")
+}
+@section SubHeaderExtension
+{
+    @Html.Partial("_CritiqueToolbar")
+}
+
+<input type="hidden" id="panelApplicationId" value="@Model.PanelApplicationId" />
+<input type="hidden" id="sessionPanelId" value="@Model.SessionPanelId" />
+<div class="mw-critiques_main">
+    @Html.Partial("_ApplicationInformation", Model.ApplicationInformation)
+    <div class="mw-critiques_nav">
+        @if ((Model.IsCurrentAssignmentEnabled) && (Model.IsReviewer))
+        {
+            <div class="mw-critiques_nav_link">
+                <a href="@Url.Action(Routing.MyWorkspace.Index, Routing.P2rmisControllers.MyWorkspace)">Current Assignments</a>
+            </div>
+        }
+        else if (Model.IsReviewer)
+        {
+            <div class="mw-critiques_nav_link">
+                <text>Current Assignments</text>
+            </div>
+        }
+
+        @if ((Model.IsScoreCardEnabled) && (Model.IsReviewer))
+        {
+            var scoreCardUrl = Url.Action(Routing.MyWorkspace.Scorecard, Routing.P2rmisControllers.MyWorkspace, new { panelapplicationid = Model.PanelApplicationId, sessionpanelid = Model.SessionPanelId });
+            <div class="mw-critiques_nav_link">
+                <a href="@scoreCardUrl">Score Card</a>
+            </div>
+        }
+        else if (Model.IsReviewer)
+        {
+            <div class="mw-critiques_nav_link">
+                <text>Score Card</text>
+            </div>
+        }
+
+        <div class="mw-critiques_nav_link">
+            <a href="javascript:void(0);" id="assignedRevLink" panel-app-id="@Model.PanelApplicationId" not-available="@Model.NoScoresAvailable">Assigned Reviewers' Scores</a>
+        </div>
+        <div class="mw-critiques_nav_link">
+            @if (Model.CanAccessDiscussionBoard)
+            {
+                <a href="/PanelManagement/DiscussionBoard?applicationStageStepId=@Model.ApplicationStageStepId" id="modLink" title="Discussion Board">Discussion Board</a>
+            }
+            else if (!Model.IsClient)
+            {
+                <text>Discussion Board</text>
+            }
+        </div>
+        <div class="mw-critiques_nav_link">&nbsp;</div>
+    </div>
+    @if (Model.ShowSubmitMessage)
+    {
+        <div class="redMessage margin-top10">
+            @Model.CritiqueUnsubmittedMessage
+        </div>
+    }
+    @for (var iSection = 0; iSection < Model.ReviewerCritiquesList.Count; iSection++)
+    {
+        Session["SavedFormattedReviewerName"] = Model.ReviewerCritiquesList[iSection].FormattedReviewerName;
+        Session["SavedCritiqueIndex"] = iSection;
+
+        @Html.Partial("_ReviewerCritiques", Model.ReviewerCritiquesList[iSection])
+    }
+</div>
+<input type="hidden" id="applicationId" />
+<input type="hidden" id="checkoutUserId" value=@Model.UserId />
+@Html.Partial("_EditCritiqueModal")
+@Html.Partial("_ApplicationCommentModal")
+<script>
+// Populate review assignment data to modal
+    $('body').on('click', '#assignedRevLink, #assignedRevImage', function(e) {
+        e.preventDefault();
+        // Get the parameters to pass
+        var dialogTitle;
+        var panelApplicationId = $(this).attr("panel-app-id");
+        var noScoresAvailable = $(this).attr("not-available");
+        if (noScoresAvailable) {
+            dialogTitle = "<span class='modalSmallCaption modalNotificationCaption'>No Data Available</span>";
+            // load the data via ajax
+            $.get('@Url.Action("GetNoScoresModal")',
+                function(responseText, textStatus, XMLHttpRequest) {
+                    p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.small, dialogTitle);
+                    $('.ui-dialog').find('#smallModal').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                }
+            );
+        } else {
+            dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Assigned Reviewers' Scores</span>";
+            // load the data via ajax
+            $.get('@Url.Action("AssignedReviewersScores")',
+                { panelApplicationId: panelApplicationId },
+                function (responseText, textStatus, XMLHttpRequest) {
+                    p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                    $('.ui-dialog').find('#ModalDialog').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                }
+        );
+        }
+    });
+    // Open view critique panel
+    $(document).on("click", ".view-critique-panel", function (e) {
+        e.preventDefault();
+        $.openPopupWindow($(this).attr("data-url"), 950, 500);
+    });
+</script>
+

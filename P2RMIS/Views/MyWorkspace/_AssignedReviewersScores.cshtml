@@ -1,0 +1,105 @@
+﻿@model Sra.P2rmis.Web.UI.Models.AssignedReviewersScoresViewModel
+@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+
+<style>
+    td, th {
+        font-family: arial !important;
+        font-size: 12px !important;
+        text-align:center
+    }
+    a {
+        color: rgb(0, 136, 204) !important;
+    }
+    a:hover {
+        color: darkblue !important;
+    }
+    h3 {
+        font-family: arial !important;
+    }
+    .w200 {
+        width: 200px;
+    }
+    .w150 {
+        width: 150px;
+    }
+
+    .w100 {
+        width: 100px;
+    }
+
+    .w75 {
+        width: 75px;
+    }
+    #assignedReviewerScoresKendoGrid {
+        padding:0px;margin:0px
+    }
+    #assignedReviewerScoresKendoGrid .k-header {
+        color:white;
+        font-weight:bold;
+        white-space:normal;
+        text-align:center;
+        background-color: navy !important;
+    }
+    .k-grid-content-locked td {
+        text-align:left
+    }
+</style>
+
+<h3>@Model.FiscalYear @Model.ProgramAbbreviation @Model.PanelAbbreviation Application @Model.LogNumber</h3>                   
+<div id="assignedReviewerScoresKendoGrid"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Initialize data sources
+        var headerDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.ReviewerPhaseList)),
+        });
+        var mainDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.CriteriaGridData)),
+        });
+        var overallDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.OverallGridData)),
+        });
+        var headerColumns=[{ title: "Criteria", field: "CriteriaName", width: 150,locked:true}];
+        var scoreCols = 0;
+        $.each(overallDataSource.options.data, function(){
+            mainDataSource.options.data.push(this);
+        });
+        $.each(headerDataSource.options.data, function(){
+            var reviewer = this;
+            var nameString = reviewer.FirstName.substring(0, 1) + ". " + reviewer.LastName + " (" + reviewer.AssignmentTypeAbbreviation + ")" + "<br />" + reviewer.ParticipantRole;
+            var subColumns = [];
+            $.each(reviewer.PhaseList, function(){
+                subColumns.push({ title: this.PhaseName, template: overallEvaluation('@Model.PanelApplicationId','@Model.SessionPanelId', scoreCols), width: 85 });
+                scoreCols+=1;
+            });
+            headerColumns.push({ title: nameString, columns: subColumns });
+        });
+    
+        setTimeout(function(){
+            $("#assignedReviewerScoresKendoGrid").kendoGrid({
+                //height:400,
+                columns: headerColumns,
+                dataSource: mainDataSource,
+                filterable: false
+            });
+            gridSizeToFit("assignedReviewerScoresKendoGrid", 110);
+            $(".view-critique-panel").parent().css({'border-top-color': 'lightgray', 'border-top-width': 'thick', 'background-color': 'white'}); 
+            
+        }, 100);
+        // Perform close operation
+        $('body').on('click', '.modal-footer :button', function (e) {
+            e.preventDefault();
+            if ($(this).attr('id') == 'closeDialogBtn') {
+                $('#ModalDialog').dialog('close').remove();
+            }
+        });
+    });
+</script>
+
+
+

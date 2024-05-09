@@ -1,0 +1,325 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@model Sra.P2rmis.Web.ViewModels.PanelManagement.SearchForStaffsViewModel
+@{
+    ViewBag.Title = "Add Potential Reviewers";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<style>
+    .aprFormTitle {
+        font-size: 26px;
+        font-family: Arial;
+        font-weight: bold;
+    }
+
+    .aprFieldset {
+        margin: 10px;
+        font-size: 12px;
+    }
+
+    .aprFieldsetDefault {
+        height: 60px;
+    }
+
+    .aprFieldsetMid {
+        height: 80px
+    }
+
+    .aprFieldsetLeftmost {
+        height: 180px;
+    }
+
+    .aprFieldsetPerformance {
+        height: 60px;
+    }
+
+    .aprFieldsetDemographic {
+        height: 100px;
+    }
+
+    ul {
+        margin: 0px;
+    }
+
+    #aprAdvFilters {
+        display: none
+    }
+
+    #viewSearchResultsGrid {
+        font-size: 12px
+    }
+
+        #viewSearchResultsGrid th {
+            text-align: center;
+        }
+
+        #viewSearchResultsGrid td:nth-child(7),
+        #viewSearchResultsGrid td:nth-child(8),
+        #viewSearchResultsGrid td:nth-child(9) {
+            text-align: center
+        }
+
+    .viewTdImg {
+        margin: auto;
+        display: inline-flex;
+    }
+
+        .viewTdImg img {
+            padding: 5px;
+        }
+
+    select {
+        width: 90%;
+        margin: 0px 5px 0px 5px;
+    }
+
+    .searchTextField {
+        width: 90%;
+        overflow: scroll;
+    }
+
+    .sfrFormFieldLabel {
+        font-weight: bold;
+        font-size: 12px;
+        padding: 0px 5px 0px 5px;
+    }
+
+    .searchSelect {
+        width: 90%;
+        margin: 0px 5px 0px 5px;
+    }
+
+    .expertiseCell {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #zeroResults {
+        display: none;
+    }
+
+    #failureMessage {
+        display: none;
+    }
+    .notAllowed{
+        cursor: not-allowed;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <span class="span12"><a id="backButton" href="Reviewers"><img src="~/Content/img/backarrow_20px_enabled.png" border="0" alt="Go Back to Previous Page" title="Back" /></a><span class="aprFormTitle">Search for Staff</span><a href="Reviewers" id="#backtoStaff"> (Back to Panel)</a></span>
+    </div>
+    <div id="successMessage"></div>
+    @using (Html.BeginForm("SearchForStaffs", "PanelManagement", FormMethod.Get, new { @id = "personSearchForm", @name = "personSearchForm" }))
+    {
+        <div class="row-fluid">
+            <div class="span4 bordered aprFieldset aprFieldsetDefault">
+                <span class="textHeaderNotBold alignLeft">Person</span>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="span5">
+                            @Html.DropDownListFor(m => m.PersonKey, new SelectList(Model.PersonKeyDropdown, "Key", "Value", Model.PersonKey), new { id = "aprPersonKey" })
+                        </span>
+                        <span class="span7">
+                            @Html.TextBoxFor(m => m.PersonValue, new { id = "aprPerson", @class = "searchTextField", @style = "width:25ch", @placeholder = "Last Name, First Name" })
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12" style="border-top:1px ridge black">
+                <div class="span5"></div><div class="span2 bordered alignCenter">
+                    <a href="javascript:;" id="hitSubmit">Search</a> | <a href="javascript:;" onclick="resetForm();">Clear</a>
+                </div><div class="span5"></div>
+            </div>
+        </div>
+    }
+    <br />
+    <div id="searchGrid" class="hidden">
+        <div id="searchWarning" class="alert-message hidden">Your search has returned over 100 records.  Please refine your search.</div>
+        <span class="formTitle">
+            Search Result for&nbsp;<span id="formTitleFy">@Model.FiscalYear</span>&nbsp;<span id="formTitleProgram">@Model.ProgramAbbreviation</span>&nbsp;<span id="formTitlePanel">@Model.PanelAbbreviation</span>
+            ( <span id="recCount"></span> record(s)  )
+        </span>
+        Select Role and click <img src="~/Content/img/16x16_add_enabled.png" alt="Add" /> to add an individual to the panel.
+        <div id="gridStaffResults">
+        </div>
+    </div>
+    <div id="failureMessage">No matching records found.</div>
+    <div id="searchInstruction" class="align-center">Please enter search criteria to begin.</div>
+</div>
+
+<script>
+    sessionStorage.setItem('staffRadio', true);
+    $('#aprPerson').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            event.preventDefault();
+            $('#hitSubmit').click();
+        }
+
+    });
+    // Staff grid
+    $("#gridStaffResults").kendoGrid({
+        pageable: true,
+        height: 550,
+        resizable: true,
+        navigatable: true,
+        batch: true,
+        toolbar: ["create"],
+        columns: [
+            { field: "StaffName", filterable: true, title: "Name", width: "200px", template: "<div class='' data-userId='${UserId}'>${StaffName}</div>" },
+            { field: "Organization", filterable: true, width: "300px" },
+            { field: "Email", filterable: false, title: "Email", width: "350px" },
+            { field: "Role", filterable: true, title: "Role" },
+            { field: "IsOnPanel", hidden:true },
+            {
+                command: [
+                {
+                    name: "Destroy",
+                    text: "",
+                    template: "<a class='k-grid-add k-grid-Destroy' href=''><img src='/Content/img/16x16_add_enabled.png' title='Add Staff' alt='Add Staff' /></a>",
+                    click: function (e) {  //add a click event listener on the delete button
+                        e.preventDefault();
+                        e.stopPropagation();
+                        $('#successMessage').hide();
+                        $('#failureMessage').hide();
+                        var title = '<span class="modalSmallCaption modalWarningCaption">Warning</span>',
+                            grid = $("#gridStaffResults").data("kendoGrid"),
+                            idx = $(e.target).closest("tr").index() + 1,
+                            dataItem = grid.dataItem("tr:eq(" + idx + ")"),
+                            role = dataItem.Role,
+                            assignedUserId = $(e.target).closest("tr").find('td div').attr('data-userId'),
+                            sessionPanelId = sessionStorage.getItem('sessionPanelSet'),
+                            panelUserName = $(e.target).closest("tr").find('td div').text();
+
+                        $.get("/PanelManagement/AddStaff", { assignedUserId: assignedUserId, sessionPanelId: sessionPanelId, },
+                            function (data) {
+                                $('.ui-dialog-titlebar-close').click();
+                                $('#hitSubmit').click();
+                                if (data) {
+                                    var fyYear = $('#formTitleFy').text();
+                                    var panelTransfer = $('#formTitleProgram').text();
+                                    var panelName = $('#formTitlePanel').text();
+                                    $('#successMessage').text('You have successfully assigned ' + panelUserName + ' as a ' + role + ' to ' + fyYear + ' ' + panelTransfer + ' - ' + panelName + '.');
+                                    $('#successMessage').show();
+                                }
+                        });
+                    }
+                }
+                ], title: "Action",
+            }
+        ],
+        editable: false,
+        scrollable: true,
+        groupable: true,
+        sortable: true,
+        dataBound: function (e) {
+            var element = $('#loading');
+            kendo.ui.progress(element, false);
+            $('.fa-search').closest('td').css('position', 'relative');
+            $('.fa-search').closest('td').css('text-align', 'center');
+            $("#recCount").html(this.dataSource.total());
+        },
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "Starts with",
+                    eq: "Is equal to"
+                }
+            }
+        },
+        pageable: {
+            input: true,
+            numeric: false,
+            refresh: true,
+            pageSizes: [20, 40, 60, "all"],
+            pageSize: 20
+        }
+    });
+
+    //This is where we added the same toolbar thats on the bottom of the grid to the top
+    var grid = $("#gridStaffResults").data("kendoGrid");
+    var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+    wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+    grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+
+    $('#gridStaffResults th a:nth-child(1)').addClass('alignCenter');
+    $('#gridStaffResults .k-grid-header th:nth-child(14) .k-icon').css('margin-top', '17px');
+
+    $('#hitSubmit').on('click', function () {
+        $('input').each(function () {
+            $(this).val($(this).val().trim());
+        })
+        var newdata = $('#personSearchForm')[0];
+        var data = $('form').serialize();
+        var url= "/PanelManagement/SearchForStaffs";
+        $.post(url, data).done(
+            function(results){
+                var ds = populateSsDataSource(results);
+                ds.read();
+                $("#gridStaffResults").data("kendoGrid").dataSource.data(ds.data());
+                var sourcedata = ds.data()
+                if (sourcedata.length == 0) {
+                    $('#searchGrid').addClass('hidden');
+                    $('#failureMessage').addClass('displayBlock');
+                } else {
+                    $('#searchGrid').removeClass('hidden');
+                    $('#failureMessage').removeClass('displayBlock');
+                    $.each(results, function (index, key) {
+                        var grid = $("#gridStaffResults").data("kendoGrid");
+                        var gridData = grid.dataSource.view();
+                        var IsOnPanel = gridData[index].IsOnPanel;
+                        if (IsOnPanel) {
+                            $('#gridStaffResults tr:nth-child(' + (index + 1) + ')').find('.k-grid-Destroy').empty().append('<img src="/Content/img/16x16_add_disabled.png" title="Currently Assigned" class="notAllowed" alt="Currently Assigned" />');
+                        }
+                    })
+                }
+            });
+
+        // Populate SS data source
+        function populateSsDataSource(dataJson) {
+            var dataSource = new kendo.data.DataSource({
+                type: "json",
+                data: dataJson,
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    model: {
+                        id: "programId",
+                        fields: {
+                            StaffName: { type: "string", editable: false },
+                            Organization: { type: "string", editable: false },
+                            Email: { type: "string", editable: false },
+                            Role: { type: "string", editable: false },
+                            Action: { type: "command" }
+                        }
+                    }
+                }
+            });
+            return dataSource;
+        }
+    })
+
+    // Reset form and restore fields to original values
+    function resetForm() {
+        $("#searchInstruction").removeClass("hidden");
+        $("#searchGrid").addClass("hidden");
+        $('#failureMessage').hide();
+        $('#searchInstruction').show();
+        $('#personSearchForm')[0].reset();
+    }
+</script>
+
+
+
+
+

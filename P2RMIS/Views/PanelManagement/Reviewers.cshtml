@@ -1,0 +1,547 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+
+@model Sra.P2rmis.Web.UI.Models.ReviewersViewModel
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab2;
+}
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    fieldset.filter-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        width: 375px;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        height: 70%;
+    }
+
+    #btnExport {
+        padding-left: 10px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .viewStatusInformationTitle {
+        font-size: 20px
+    }
+
+    .titleItem {
+        border: none;
+        padding: 0px 0px 0px 10px
+    }
+
+    #viewStatusInformation {
+        font-size: 14px;
+    }
+
+        #viewStatusInformation a:hover,
+        #viewStatusInformation a:focus {
+            text-decoration: underline;
+            color: #005580;
+        }
+
+        #viewStatusInformation th,
+        #viewStatusInformation td:nth-child(1),
+        #viewStatusInformation td:nth-child(10),
+        #viewStatusInformation td:nth-child(11),
+        #viewStatusInformation td:nth-child(12) {
+            text-align: center;
+        }
+
+    .viewTdImg {
+        margin: auto;
+        display: inline-flex;
+    }
+
+        .viewTdImg img {
+            padding: 5px;
+        }
+
+    input[type="radio"] {
+        vertical-align: baseline;
+    }
+
+    label {
+        display: inline-block;
+        padding-left: 10px;
+    }
+
+    .ellipsisCell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    input[type="radio"] {
+        margin: 4px;
+        vertical-align: top;
+    }
+
+    #grid {
+        display: none;
+        float: left;
+    }
+
+    .k-grid-add {
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        background-color: transparent !important;
+        border: none !important;
+    }
+
+    .k-floatwrap {
+        padding: .714em 1.333em .643em 1.333em;
+        font-size: 14px;
+    }
+
+    #successMessage, #failureMessage {
+        display: none;
+    }
+
+    form {
+        height: auto;
+    }
+</style>
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Panel Mgmt - Overview</span>
+</div>
+<div class="container-fluid" id="mainContent">
+    <div id="successMessage">test</div>
+    <div id="failureMessage"></div>
+    <div class="span12">
+        <div class="row-fluid">
+            @using (Html.BeginForm("Reviewers", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+            {
+                @Html.Partial("_PanelSelection")
+            }
+        </div>
+        <div class="row-fluid">
+            @Html.Partial("_PrivilegedTabMenu")
+        </div>
+        @if (Model.CanAccessPanel)
+        {
+            if (Model.PanelReviewers.Count > 0 || Model.AssignedStaffs.Count > 0)
+            {
+                <div class="row-fluid">
+                    <span class="span9 bold viewStatusInformationTitle">
+                        <span id="listTitle">Reviewer List - </span>
+                        <span id="formTitleFy">@Model.FiscalYear</span>&nbsp;
+                        <span id="formTitleProgram">@Model.ProgramAbbreviation</span>&nbsp;
+                        <span id="formTitlePanel">@Model.PanelAbbreviation</span>&nbsp;
+                    </span>
+                    @if (Model.CanProcessStaffs)
+                    {
+                        <span class="span3 bold align-right ellipsisCell">
+                            <input type="radio" id="reviewerButton" name="radioButton" value="1" checked="checked" />Reviewers
+                            <input type="radio" id="staffButton" name="radioButton" value="2" />Staff
+                        </span>
+                    }
+                </div>
+                <div id="viewStatusInformation">
+                </div>
+            }
+            else if (Model.SelectedProgramYear == null && Model.SelectedPanel == 0)
+            {
+                <div class="align-center">
+                    Please select a program and panel.
+                </div>
+            }
+            else if (Model.CanManagePanelReviewers)
+            {
+                <div class="align-center">
+                    No records were found for the selected panel. To add a potential reviewer, please select <a href="@Url.Action(Routing.PanelManagement.SearchReviewers)">Add Reviewers</a> or <a href="@Url.Action(Routing.PanelManagement.SearchStaff)">Add Staff</a>.
+                </div>
+            }
+            else
+            {
+                <div class="align-center">
+                    No records were found for the selected panel.
+                </div>
+            }
+        }
+        else
+        {
+            foreach (var message in Model.PanelAccessErrors)
+            {
+                <p><span class="failureMessage">@message</span></p>
+            }
+        }
+    </div>
+    <div id="loading"></div>
+    <div id="grid"></div>
+    <input type="hidden" value="@Model.AssignedStaffs" />
+    <input type="hidden" value="@Model.SelectedPanel" id="sessionPanelSet" />
+</div>
+<script type="text/javascript">
+        var hideColumns = @Json.Encode(!Model.CanManagePanelReviewers);
+        var canManage = @Json.Encode(Model.CanManagePanelReviewers);
+        var canEvaluate = @Json.Encode(Model.CanEvaluateReviewers);
+        var canManageUsers = @Json.Encode(Model.CanManageUserInfo);
+    sessionStorage.setItem('sessionPanelSet', $('#sessionPanelSet').val());
+    $(document).ready(function () {
+        sessionStorage.setItem('formTitleFy', $('#formTitleFy').text());
+        sessionStorage.setItem('formTitleProgram', $('#formTitleProgram').text());
+        sessionStorage.setItem('formTitlePanel', $('#formTitlePanel').text());
+
+        var checkedRadio = $('#staffButton').is(':checked');
+
+         //Reviewer Grid data source
+        var mainDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.PanelReviewers)),
+            sort: [ { field: "lastName", dir: "asc"},
+                { field: "firstName", dir: "asc"}
+            ],
+            schema: {
+                model: {
+                    fields: {
+                        status: { type: "string" },
+                    }
+                }
+            },
+            pageSize: 20
+        });
+        if ($("#viewStatusInformation").length > 0) {
+            $("#viewStatusInformation").kendoGrid({
+                pageable: true,
+                height: 550,
+                resizable: true,
+                navigatable: true,
+                batch: true,
+                toolbar: ["create"],
+                columns: [
+                    { title: "Name", field: "name", width: 150, filterable:false, template: "<a class='alignLeft' href='/@Routing.P2rmisControllers.UserProfile/@Routing.UserProfileManagement.ViewUser?userInfoId=${userInfoId}'>${name}</a>" + tickChecker("blocked") },
+                    { title: "Blocked", field: "blocked", hidden: true },
+                    { title: "Rating", field: "rating", width: 50, filterable: false, template:kendo.template(ratingChecker(canEvaluate)), headerTemplate: "<img src='/Content/img/icon_rating_enabled.png' alt='Rating' title='Reviewer Rating' />" },
+                    { title: "Participant Type/Role", field: "participantTypeAndRoleAbbreviation", width: 200, template: "${participantType}<br />${participantRoleAbbreviation}" },
+                    {
+                        title: "Status", field: "status", width: 110, template: "# if (" + canManage + "){ #<a href='javascript:;' onclick=\x27openPanelAssignmentModal(\x22${ name }\x22,false, ${ blocked }, \x22${ status }\x22, ${ userId }, ${ hasPreferredEmailAddress }, ${ isOnSitePanel }, ${ inPersonParticipationId }, ${ modifyParticipantPostAssignment }, ${ modifyParticipantPostAssignmentLimited }) \x27 > ${ status }</a > # } else { # ${status} # } #",
+                        filterable: {
+                            ui: function (element) {
+                                setTimeout(function(){
+                                    element.closest('form').find('div').next('.k-widget').hide();
+                                }, 200);
+                                element.kendoDropDownList({
+                                    dataSource: [ "Potential", "Assigned" ],
+                                });
+                            }
+                        }
+                    },
+                    { title: "Expertise", field: "expertise", width: 350, template: "<span class='ellipsisCell'>${expertise}</span>" },
+                    { title: "Organization", field: "organization", width: 200 },
+                    { title: "Academic<br />Rank", field: "academicRank", width: 120, filterable: false },
+                    { title: "Military<br />Rank", field: "militaryRank", hidden: hideColumns, width: 100, filterable: false, template: "${militaryBranch}<br />${militaryRank}" },
+                    { title: "Ethnicity", field: "ethnicity", hidden: hideColumns, width: 95, filterable: false },
+                    { title: "Gender", field: "gender", hidden: hideColumns, width: 95, filterable: false },
+                    { title: "Potential<br />Chair", field: "potentialChair", hidden: hideColumns, width: 50, filterable: false, template: kendo.template(tickChecker('potentialChair')), headerTemplate: "<img src='/Content/img/icon_potential_chair_opt2.png' alt='Potential Chair' title='Potential Chair' />" },
+                    { title: "Previous Program<br />Participation", field: "previousProgramParticipation", hidden: hideColumns, width: 50, filterable: false, template: kendo.template(tickChecker('previousProgramParticipation')), headerTemplate: "<img src='/Content/img/icon_prog_part_labeled.png' alt='Previous Program Participation' title='Previous Program Participation' />" },
+                    { title: "Approved by<br />Client", field: "approvedByClient", hidden: hideColumns, width: 50, filterable: false, template: kendo.template(tickChecker('approvedByClient')), headerTemplate: "<img src='/Content/img/icon_client_approved.png' alt='Approved by Client' title='Approved by Client' />" },
+                    { title: "View", field: "view", hidden: hideColumns, width: 100, filterable: false, template:
+                        "<span class='viewTdImg'><a href='javascript:;' onclick=\x27openCommunicationLogModal(\x22${name}\x22, \x22${userInfoId}\x22)\x27><img src='/Content/img/icon_comm_log_20x20_enabled.png' alt='Communication Log' title='Communication Log' /></a>"
+                        + " # if (showResumeLink){ #<a href='${resumeLink}' target='_blank'><img src='/Content/img/icon_cv_launch_20x20.png' alt='CV' title='CV.  Launches CV (PDF)' /></a> # } else { # <img class='disabled-image' src='/Content/img/icon_cv_launch_20x20_disabled.png' alt='CV Not Available' title='CV Not Available' /> # } #"
+                        + " # if (showPreferredLink) { # <a href='${preferredWebsiteAddress}' target='_blank'><img src='/Content/img/globe_link_20px_enabled.png' alt='Preferred Website' title='Preferred Website.  Launches Preferred Website' /></a> # } else { # <img src='/Content/img/globe_link_20px_disabled.png' alt='Preferred Website Not Available' title='Preferred Website Not Available for User' /> # } #</span>" },
+                    { title: "Name", field: "name", hidden: hideColumns, width: 150, filterable:false, template: "<a class='alignLeft' href='/@Routing.P2rmisControllers.UserProfile/@Routing.UserProfileManagement.ViewUser?userInfoId=${userInfoId}'>${name}</a>" + tickChecker("blocked") }
+                ],
+                dataSource: mainDataSource,
+                editable: false,
+                scrollable: true,
+                groupable: true,
+                sortable: true,
+                dataBound: function (e) {
+                    var element = $('#loading');
+                    kendo.ui.progress(element, false);
+                    $('.fa-search').closest('td').css('position', 'relative');
+                    $('.fa-search').closest('td').css('text-align', 'center');
+                },
+                filterable: {
+                    extra: false,
+                    operators: {
+                        string: {
+                            startswith: "Starts with",
+                            eq: "Is equal to"
+                        }
+                    }
+                },
+                pageable: {
+                    input: true,
+                    numeric: false,
+                    refresh: true,
+                    pageSizes: [20, 40, 60, "all"],
+                    pageSize: 20
+                }
+            });
+            //gridSizeToFit("viewStatusInformation",103);
+            var exportFlag = false;
+            $("#viewStatusInformation").data("kendoGrid").bind("excelExport", function (e) {
+                if (!exportFlag) {
+                    e.sender.showColumn(2);
+                    e.preventDefault();
+                    exportFlag = true;
+                    setTimeout(function () {
+                        e.sender.saveAsExcel();
+                    });
+                } else {
+                    e.sender.hideColumn(2);
+                    exportFlag = false;
+                }
+            });
+
+            // This is where we added the same toolbar thats on the bottom of the grid to the top
+            var grid = $("#viewStatusInformation").data("kendoGrid");
+            var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+            wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+            grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+        }else{
+            var element = $('#loading');
+            kendo.ui.progress(element, false);
+            return false;
+        }
+
+        $("#btnExport").click(function (e) {
+            var grid = $("#viewStatusInformation").data("kendoGrid");
+            grid.saveAsExcel();
+        });
+        $(".ellipsisCell").each(function(){ $(this).parent().attr('title',$(this).text()); });
+        var staffRadioButton = sessionStorage.getItem('staffRadio');
+        if (staffRadioButton == null || staffRadioButton == 'false') {
+            $('#staffButton').attr('checked', false);
+            $('#reviewerButton').attr('checked', 'checked');
+            sessionStorage.setItem('staffRadio', false);
+            $('#grid').hide();
+            $('#viewStatusInformation').show();
+            $('#listTitle').text('Reviewer List - ');
+            if (canManage)
+                $('.viewStatusInformationTitle').append('<a href="SearchForReviewers" id="searchLink"><img class="titleItem" alt="Add Reviewer" title="Add Reviewer" src="/Content/img/change_user_status_enabled_one_line.png" /></a>')
+            $('#viewStatusInformation').show();
+        } else {
+            $('#staffButton').attr('checked', 'checked');
+            $('#reviewerButton').attr('checked', false);
+            sessionStorage.setItem('staffRadio', false);
+            $('#grid').show();
+            $('#viewStatusInformation').hide();
+            $('#listTitle').text('Panel Admin Staff List - ');
+            if (canManage)
+                $('.viewStatusInformationTitle').append('<a href="SearchForStaff" id="searchLink"><img class="titleItem" alt="Add Staff" title="Add Staff" src="/Content/img/add_staff_icon.png" /></a>');
+            $('#viewStatusInformation').hide();
+        }
+    });
+        @*modal for communication log*@
+    function openCommunicationLogModal(paName, userInfoId) {
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Communication Log for " + nameFormatter(paName) + "</span>";
+        $.get('/PanelManagement/CommLog',
+            { userInfoId: userInfoId },
+            function(responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            });
+    };
+    $(document).on('click', 'input[name="radioButton"]', function(){
+        $('#successMessage').hide();
+        $('#failureMessage').hide();
+    });
+
+$(function () {
+    $('input[name="radioButton"]').on('click', function () {
+        var checkedRadio = $('input#staffButton').is(':checked');
+        if (checkedRadio == true) {
+            $('#viewStatusInformation').hide();
+            $('#listTitle').text('Panel Admin Staff List - ');
+            $('#grid').show();
+            $('#searchLink').remove();
+            if (canManage)
+                $('.viewStatusInformationTitle').append('<a href="SearchForStaff" id="searchLink"><img class="titleItem" alt="Add Staff" title="Add Staff" src="/Content/img/add_staff_icon.png" /></a>')
+        } else {
+            $('#viewStatusInformation').show();
+            $('#listTitle').text('Reviewer List - ');
+            $('#grid').hide();
+            $('#searchLink').remove();
+            if (canManage)
+                $('.viewStatusInformationTitle').append('<a href="SearchForReviewers" id="searchLink"><img class="titleItem" alt="Add Reviewer" title="Add Reviewer" src="/Content/img/change_user_status_enabled_one_line.png" /></a>')
+        }
+    });
+    // Start of Progress Bar
+    window.kendoLoad = function () {
+        var element = $('#loading');
+        kendo.ui.progress(element, true);
+    };
+    // End of Progress Bar
+    window.kendoUnload = function () {
+        var element = $('#loading');
+        kendo.ui.progress(element, false);
+    };
+    // Set Staff grid data
+    function setSsGrid() {
+        var panelList = $('#selectedPanel option:selected').val();
+        var sessionPanelId = $('#selectedPanel option:selected').val();
+        if (panelList != '') {
+            //kendoLoad();
+            $.ajax({
+                url: '/PanelManagement/GetAssignedStaffs',
+                data: {
+                    sessionPanelId: sessionPanelId
+                }
+            }).done(function (results) {
+                if (results != "") {
+                    var ds = populateSsDataSource(results);
+                    ds.read();
+                    $("#grid").data("kendoGrid").dataSource.data(ds.data());
+                }
+            });
+        }
+    }
+
+    // Populate Staff data source
+    function populateSsDataSource(dataJson) {
+        var dataSource = new kendo.data.DataSource({
+            type: "json",
+            data: dataJson,
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "programId",
+                    fields: {
+                        Name: { type: "string", editable: false },
+                        Organization: { type: "string", editable: false },
+                        Email: { type: "string", editable: false },
+                        Role: { type: "string", editable: false },
+                        Action: { type: "command" }
+                    }
+                }
+            }
+        });
+        return dataSource;
+    }
+
+    // Find button event
+    $("#Search").on("click", function (e) {
+        e.preventDefault();
+        if (validateSearchInputs()) {
+            setSsGrid();
+        }
+    });
+    // Refresh button handler
+    $('body').on('click', 'a.k-pager-refresh', function (e) {
+        e.preventDefault();
+        setSsGrid();
+    });
+    // Staff grid
+    $("#grid").kendoGrid({
+        pageable: true,
+        height: 550,
+        resizable: true,
+        navigatable: true,
+        batch: true,
+        toolbar: ["create"],
+        columns: [
+            { field: "Name", filterable: true, title: "Name", width: "200px" },
+            { field: "Organization", filterable: true, width: "300px" },
+            { field: "Email", filterable: false, title: "Email", width: "350px" },
+            { field: "Role", filterable: true, title: "Role", width: "" },
+            {
+                command: [
+                {
+                    name: "Destroy",
+                    text: "",
+                    template: "<a class='k-grid-add k-grid-Destroy' href=''><img src='/Content/img/icon_remove_16x16.png' title='Remove Staff' alt='Remove Staff' /></a>",
+                    click: function (e) {  //add a click event listener on the delete button
+                        e.preventDefault();
+                        e.stopPropagation();
+                        $('#successMessage').hide();
+                        $('#failureMessage').hide();
+                        var title = '<span class="modalSmallCaption modalWarningCaption">Warning</span>',
+                            grid = $("#grid").data("kendoGrid"),
+                            idx = $(e.target).closest("tr").index() + 1,
+                            dataItem = grid.dataItem("tr:eq(" + idx + ")"),
+                            role = dataItem.Role,
+                            panelUserAssignmentId = dataItem.PanelUserAssignmentId,
+                            panelUserName = $(e.target).closest("tr").find('td div').text();
+
+                        $.get("/Setup/RemoveWarning", function (data) {
+                            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, title);
+                            var made = "You are removing a " + role + " from the panel. Please select CONFIRM to remove or CANCEL to retain the " + role + " and return to the list.";
+                            $('.row-fluid p').append(made);
+                            $(document).on('click', '#closeModal', function () { $('.ui-dialog-titlebar-close').click(); });
+                            $('.modal-footer').empty();
+                            $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.removeStaff);
+                            $(document).on('click', '#removeStaff', function () {
+                                var PanelUserAssignmentId = parseInt(panelUserAssignmentId);
+                                $.get('/PanelManagement/RemoveUser', { panelUserAssignmentId: PanelUserAssignmentId },
+                                    function (data) {
+                                        $('.ui-dialog-titlebar-close').click();
+                                        $('.k-i-refresh').click();
+                                        var fyYear = $('#formTitleFy').text();
+                                        var panelTransfer = $('#formTitleProgram').text();
+                                        var panelName = $('#formTitlePanel').text();
+                                        $('#successMessage').text('You have successfully removed ' + panelUserName + ' from ' + fyYear + ' ' + panelTransfer + ' - ' + panelName + '.');
+                                        $('#successMessage').show();
+                                    })
+                            });
+                        });
+                    }
+
+                    }
+                ], title: "Action", field: "Action",
+            }
+        ],
+        editable: false,
+        scrollable: true,
+        groupable: true,
+        sortable: true,
+        dataBound: function (e) {
+            var element = $('#loading');
+            kendo.ui.progress(element, false);
+            $('.fa-search').closest('td').css('position', 'relative');
+            $('.fa-search').closest('td').css('text-align', 'center');
+        },
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "Starts with",
+                    eq: "Is equal to"
+                }
+            }
+        },
+        pageable: {
+            input: true,
+            numeric: false,
+            refresh: true,
+            pageSizes: [20, 40, 60, "all"],
+            pageSize: 20
+        }
+    });
+    setSsGrid();
+
+    // This is where we added the same toolbar thats on the bottom of the grid to the top
+    var grid = $("#grid").data("kendoGrid");
+    var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+    wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+    grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+
+    $('#grid th a:nth-child(1)').addClass('alignCenter');
+    $('#grid .k-grid-header th:nth-child(14) .k-icon').css('margin-top', '17px');
+    if (hideColumns) {
+        grid.hideColumn("Action");
+    }
+});
+</script>
+
+@Html.IncludeVersionedFiles("/Scripts/rr-custom.js")

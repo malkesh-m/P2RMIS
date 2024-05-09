@@ -1,0 +1,230 @@
+﻿@model Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel 
+@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+
+<style type="text/css">    
+    .k-header {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+    #applicationScoringSection {
+        margin-top: 140px;
+    }
+</style>
+<div id="applicationScoringSection" class="title-container">
+    <h5>Phase: @Model.PhaseTitle</h5>
+    <div class="mw-critique-checkboxes">
+        <input id="showCritiqueActionNeededChkBx" type="checkbox" />
+        <label for="showCritiqueActionNeededChkBx">Critique- Action Needed</label>
+        <input id="showAssignedChkBx" type="checkbox" />
+        <label for="showAssignedChkBx">Show Assigned Only</label>
+    </div>
+    <div id="applicationScoringGrid">
+    </div>
+    <div id="noResultsMessage" style="display: none; text-align:center;">
+        No results returned based on selected preferences.
+    </div>
+</div>
+<script id="scoringActionsTemplate" type="text/x-kendo-template">
+    <span class="icon-holder ">
+        # if (canViewApplication) { 
+            if (!hasAssigned) { 
+                # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}">
+                <img src="/Content/img/view_20px_enabled.png" border="0" alt="View Critique" title="View Critique" /></a> # 
+            } else { 
+                if (!hasCritiques) {
+                    # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}">
+                    <img src="/Content/img/edit_20px_delinquent_enabled.png" border="0" alt="Add/Edit/View Delinquent Critique"
+                     title="Add/Edit/View Delinquent Critique" /></a> #
+                } else {
+                    if (isSessionPanelActive) {
+                        # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}">
+                        <img src="/Content/img/Submitted_Critique_20px_enabled.png" border="0" alt="View Critique" title="View Critique" /></a> #
+                    } else {
+                        # <a href="Critique?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}">
+                        <img src="/Content/img/Submitted_Critique_20px_disabled.png" border="0" alt="View Critique" title="View Critique" /></a> #
+                    }
+                }                
+            } 
+        } #
+    </span>
+    <span class="wide-icon-holder">
+        # if (canAccessDiscussionBoard) {
+            # <a href="/PanelManagement/DiscussionBoard?applicationStageStepId=${applicationStageStepId}">
+                <img src="/Content/img/discussion_board_16px_enabled.png" alt="Discussion Board" title="Discussion Board" /></a> #
+        } #
+    </span>
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Grid data source
+        var mainDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.ScorableApplications)),
+            batch: true,
+            pageSize: 20,
+        });
+        // Data bound handler
+        function onDataBound(arg) {
+            dataView = this.dataSource.view();
+            for(var i = 0; i < dataView.length; i++) {
+                if(dataView[i].canAccessScoring == true) {
+                    var uid = dataView[i].uid;
+                    $("#applicationScoringGrid tbody").find("tr[data-uid=" + uid + "]").addClass("high-lighted");
+                }
+            }
+        }
+        $("#applicationScoringGrid").kendoGrid({
+            columns: [
+                { title: "Order", field: "order", width: 60,
+                    attributes: { class: "center-align" } },
+                { title: "AppAssign", field: "appAssign", width: 80,
+                    attributes: { class: "center-align" } },
+                { title: "Application", field: "logNumber", width: 80,
+                    attributes: { class: "center-align" },
+                    template: "# if (canViewApplication) { # <a href='javascript:;' class='applicationLogNumber' data-applicationid='${applicationId}'>${logNumber}</a> # } else { # ${logNumber} # } #" },
+                { title: "Title of Application", field: "title", width: 300, sortable: false,
+                    attributes: { class: "center-align" },
+                    template: "<span class='ellipsisCell center-align' title='${title}'>${title}</span>" },
+                { title: "PI", field: "pi", width: 80, sortable: false,
+                    attributes: { class: "center-align" } },
+                { title: "Mechanism", field: "mechanism", width: 80,
+                    attributes: { class: "center-align" } },
+                { title: "App Status", field: "applicationStatus", width: 80,
+                    attributes: { class: "center-align" },
+                    template: "# if (canAccessScoring) { # <div role='alert' aria-atomic='true'><a href='Scorecard?panelapplicationid=${panelApplicationId}&sessionpanelid=${sessionPanelId}'>" +
+                        "<span class='scoringStatus' data-isCoi='${isCoi}' data-appId='${applicationId}'>${applicationStatus}</span></a> </div> # } else { # " +
+                        "<div role='alert' aria-atomic='true'><span class='scoringStatus' data-isCoi='${isCoi}' data-appId='${applicationId}'>${applicationStatus}</span></div> # } #" },
+                { title: "Actions", field: "actions", width: 80, sortable: false,
+                    attributes: { class: "center-align" },
+                    template: $("#scoringActionsTemplate").html() },
+                { title: "CanAccessScoring", field: "canAccessScoring", hidden: true },
+                { title: "HasAssigned", field: "hasAssigned", hidden: true },
+                { title: "NeedCritiqueAction", field: "needCritiqueAction", hidden: true },
+            ],
+            dataSource: mainDataSource,
+            sortable: true,
+            filterable: false,
+            dataBound: onDataBound,
+            noRecords: {
+                template: "<p/>No results returned based on selected preferences."
+            },
+            pageable: {
+                input: true,
+                numeric: false,
+                refresh: true,
+                pageSizes: [ 20, 40, 60, "all"],
+                pageSize: 20
+            }
+        });
+
+        // This is where we added the same toolbar thats on the bottom of the grid to the top
+        var grid = $("#applicationScoringGrid").data("kendoGrid");
+        var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+        wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+        grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+
+        setTimeout(function () {
+            // First Pager Input
+            var pageTextBox = $('#applicationScoringGrid .pagerTop .k-pager-input input.k-textbox');
+            pageTextBox.attr('id', 'k-textBox');
+            pageTextBox.closest('.k-pager-input').append('<label for="k-textBox" class="sr-only">Page</label>');
+
+            var pageSelectBox = $('#applicationScoringGrid .pagerTop .k-pager-sizes select');
+            pageSelectBox.attr('id', 'k-textSelect');
+            pageSelectBox.closest('.k-widget').append('<label for="k-textSelect" class="sr-only">Items per Page</label>');
+
+            // Second Pager Input
+            var pageTextBox2 = $('#applicationScoringGrid .k-grid-pager .k-pager-input input.k-textbox');
+            pageTextBox2.attr('id', 'k-textBox-two');
+            pageTextBox2.closest('.k-pager-input').append('<label for="k-textBox-two" class="sr-only">Page</label>');
+
+            var pageSelectBox2 = $('#applicationScoringGrid .k-grid-pager .k-pager-sizes select');
+            pageSelectBox2.attr('id', 'k-textSelect-two');
+            pageSelectBox2.closest('.k-widget').append('<label for="k-textSelect-two" class="sr-only">Items per Page</label>');
+        }, 500);
+
+        // Checkbox handler
+        var gridFilterHandler = function() {
+            $filter = new Array();
+            if ($("#showAssignedChkBx").is(":checked")) {
+                // Check if "Show Assigned Only" is checked
+                $filter.push({ field: "hasAssigned", operator: "eq", value: true });
+            } 
+            if ($("#showCritiqueActionNeededChkBx").is(":checked")) {
+                // Check if "Critique-Action Needed" is checked
+                $filter.push({ field: "needCritiqueAction", operator: "eq", value: true });
+            } 
+            var grid = $("#applicationScoringGrid").data("kendoGrid");
+            grid.dataSource.filter($filter);
+        };   
+        $("#showAssignedChkBx, #showCritiqueActionNeededChkBx").change(function () {
+            gridFilterHandler();
+        });
+        gridFilterHandler();
+
+        var pollInterval = @Model.PollInterval;
+        // Reload grid
+        var fnReloadGrid = function (result) {
+            // Recreate the datasource and set it as the datasource for the grid.
+            if (result != "") {
+                var ds = new kendo.data.DataSource({
+                    type: "json",
+                    data: JSON.parse(result),
+                });
+                var grid = $('#applicationScoringGrid').data("kendoGrid");
+                ds.read();
+                grid.setDataSource(ds);
+            }
+        };
+        // Get active or scoring application
+        var fnGetActiveOrScoringApp = function () {
+            var app;
+            var gridData = $("#applicationScoringGrid").data().kendoGrid.dataSource.data();
+            for (var i = 0; i < gridData.length; i++) {
+                if (gridData[i].applicationStatus == "Active" || 
+                    gridData[i].applicationStatus == "Scoring") {
+                    app = { applicationId: gridData[i].applicationId, status: gridData[i].applicationStatus };
+                    break;
+                }
+            }
+            return app;
+        };
+        // Active or scoring application
+        var activeOrScoringApp = fnGetActiveOrScoringApp();
+        // Poll application scoring data
+        var fnPollApplicationScoringData = function (sessionPanelId) {
+            if (typeof sessionPanelId != 'undefined')
+            {                
+                $.get('@Url.Action(Routing.MyWorkspace.GetActiveOrScoringApplication, Routing.P2rmisControllers.MyWorkspace)',
+                    { sessionPanelId: sessionPanelId },
+                    function (data, textStatus, XMLHttpRequest) {
+                        if (JSON.stringify(data) !== JSON.stringify(activeOrScoringApp)) {
+                            activeOrScoringApp = data;
+                            $.get('@Url.Action(Routing.MyWorkspace.GetScorableApplications, Routing.P2rmisControllers.MyWorkspace)',
+                                    { sessionPanelId: sessionPanelId },
+                                    function (data, textStatus, XMLHttpRequest) {
+                                        fnReloadGrid(data);
+                                        gridFilterHandler();
+                                    }
+                            );
+                        }
+                    }
+                );
+            }
+            var theSessionPanelId = $("#selectedSessionPanel").find(":selected").val();
+            setTimeout(function () { fnPollApplicationScoringData(theSessionPanelId); }, pollInterval);
+        };
+        // Poll data if applications are under scoring
+        if ($("#applicationScoringSection").length > 0) {
+            var theSessionPanelId = $("#selectedSessionPanel").find(":selected").val();
+            setTimeout(function () { fnPollApplicationScoringData(theSessionPanelId); }, pollInterval);
+        }
+        // Add title attribute to application title cell
+        $(".ellipsisCell").each(function () {
+            $(this).text($.trim($(this).text()));
+            $(this).attr('title', $(this).text());
+        });
+    });
+</script>

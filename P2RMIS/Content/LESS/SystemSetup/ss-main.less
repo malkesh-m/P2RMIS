@@ -1,0 +1,1424 @@
+﻿@import '../P2RMIS/variables.less';
+@import '../P2RMIS/global.less';
+
+// Filter Area
+.ss-fieldSet {
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.ss-program-grid {
+    display: none;
+    float: left;
+    margin-bottom: 10px;
+    max-width: 100%;
+}
+.ss-grid-award, .ss-grid-feeSchedule, .ss-grid-session, .ss-grid-sessionSetup, .ss-grid-session_message, .ss-grid-feeSchedule_message, .ss-grid-dm, .ss-grid-dmArchive, .emptyMessage {
+    &:extend(.ss-program-grid);
+}
+
+/*#region Select Filters Box */
+.ss-filterBox {
+    display: inline-block;
+    width: 55%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_required {
+        margin: 5px 0 5px 8px;
+        display: inline-block;
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_required-field {
+        margin: 0px 0 5px 8px;
+        display: block;
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_activeText {
+        margin: 5px 0px 5px 3px;
+        display: inline-block;
+        vertical-align: super;
+        font-size: @fontSize14;
+
+        &__checkbox {
+            vertical-align: top;
+        }
+
+        &__bold {
+            font-weight: bold;
+            font-size: @fontSize12;
+        }
+    }
+
+    &_text {
+        font-size: @fontSize12;
+    }
+    /* Awards Page */
+    &_award-table {
+        border-collapse: separate;
+
+        &_clientSelect {
+            width: 24%;
+            padding: 0px 5px;
+
+            &__select {
+                width: 100%;
+            }
+        }
+
+        &_yearSelect {
+            width: 24%;
+            padding: 0px 5px;
+
+            &__select {
+                width: 100%;
+            }
+        }
+
+        &_programSelect {
+            width: 450px;
+            padding: 0px 5px;
+
+            &__select {
+                width: 100%;
+            }
+        }
+
+        &_buttonShell {
+            vertical-align: baseline;
+            padding: 0px 5px;
+
+            &_buttonPrimary {
+                &:extend(.buttonPrimary all);
+            }
+        }
+    }
+    /* Meetings Page */
+    &_meeting-table {
+        border-collapse: separate;
+
+        &_client-select {
+            width: 90%;
+            padding: 0px 5px;
+        }
+
+        &_buttonShell {
+            vertical-align: baseline;
+            padding: 0px 5px;
+
+            &_buttonPrimary {
+                &:extend(.buttonPrimary all);
+            }
+        }
+    }
+    /* Criterion Page */
+    &_crit-table {
+        padding: 25px;
+        width: 100%;
+
+        &_area {
+            padding: 0px 20px 10px 0px;
+        }
+
+        &_title {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        &_result {
+            width: 150px;
+            padding: 0px 5px;
+        }
+    }
+    /* Fee Schedule/Session Page */
+    &_fee-table {
+        border-collapse: separate;
+
+        &_clientSelect {
+            max-width: 160px;
+            padding: 0px 2px;
+
+            select {
+                width: 160px;
+            }
+        }
+
+        &_meetingSelect {
+            padding: 0px 2px;
+            max-width: 170px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+
+        &_meetingNameSelect {
+            padding: 0px 2px;
+            max-width: 170px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+    }
+
+    &_session-table {
+        border-collapse: separate;
+
+        &_clientSelect {
+            max-width: 220px;
+            padding: 0px 2px;
+
+            select {
+                width: 100%;
+            }
+        }
+
+        &_yearSelect {
+            padding: 0px 2px;
+            max-width: 105px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+
+        &_meetingSelect {
+            padding: 0px 2px;
+            max-width: 130px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+
+        &_programSelect {
+            padding: 0px 2px;
+            max-width: 130px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+
+        &_sessionSelect {
+            padding: 0px 2px;
+            max-width: 130px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+
+        &_buttonShell {
+            vertical-align: baseline;
+            padding: 0px 5px;
+
+            &_buttonPrimary {
+                &:extend(.buttonPrimary all);
+            }
+        }
+    }
+    // Session Setup Page
+    &_ss-table {
+        border-collapse: separate;
+
+        &_clientSelect {
+            width: 140px;
+            padding: 0px 2px;
+
+            select {
+                width: 100%;
+            }
+        }
+
+        &_meetingSelect {
+            padding: 0px 2px;
+            width: 430px;
+
+            &_select {
+                width: 100%;
+            }
+        }
+
+        &_area {
+            padding: 0px 20px 10px 0px;
+        }
+
+        &_title {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        &_result {
+            width: 150px;
+            padding: 0px 5px;
+        }
+
+        &_buttonShell {
+            vertical-align: baseline;
+            padding: 0px 5px;
+
+            &_buttonPrimary {
+                &:extend(.buttonPrimary all);
+            }
+        }
+    }
+    /* Document Management */
+    &_dm-table {
+        border-collapse: separate;
+
+        &_clientSelect {
+            width: 200px;
+            padding: 0px 5px 0px 20px;
+
+            &:before {
+                content: '*';
+                color: red;
+                position: absolute;
+                top: 72px;
+                left: 13px;
+            }
+
+            &__select {
+                width: 100%;
+            }
+        }
+
+        &_yearSelect {
+            width: 150px;
+            padding: 0px 5px;
+
+            &__select {
+                width: 100%;
+            }
+        }
+
+        &_programSelect {
+            width: 350px;
+            padding: 0px 5px;
+
+            &__select {
+                width: 100%;
+            }
+        }
+
+        &_buttonShell {
+            vertical-align: baseline;
+            padding: 0px 5px;
+
+            &_buttonPrimary {
+                &:extend(.buttonPrimary all);
+            }
+        }
+    }
+}
+
+.ss-large-filterBox {
+    &:extend(.ss-filterBox all);
+    width: 70%;
+}
+// Program Setup Filterset
+.ss-filterBox-NoBorder {
+    display: inline-block;
+    width: 55%;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+}
+
+.ss-smallFilterBox {
+    margin-top: 20px;
+    width: 350px;
+    display: inline-block;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    float: left;
+    padding: 5px 0 0px 5px;
+    height: 40px;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_linkArea {
+        padding: 10px;
+    }
+}
+
+.ss-smallFilterBoxTwo {
+    margin-top: 10px;
+    flex: 1;
+    width: 350px;
+    display: inline-block;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    float: left;
+    padding: 5px 0 5px 5px;
+    height: 50px;
+    position: absolute;
+    left: 682px;
+    top: 60px;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_selectArea {
+        padding: 10px;
+    }
+
+    &_link {
+    }
+}
+// Fee Schedule Upload Box
+.ss-feeBox {
+    display: inline-block;
+    width: 150px;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 3px 0px 3px 3px;
+    float: left;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_uploadedBox {
+        padding: 5px;
+        font-size: @fontSize12;
+
+        &_title {
+            text-align: right;
+            width: 40%;
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+
+        &_result {
+            text-align: left;
+            padding-left: 3px;
+            font-weight: normal;
+            padding-bottom: 5px;
+        }
+    }
+}
+// Fee Schedule Links Box
+.ss-feeLinksBox {
+    display: inline-block;
+    width: 100px;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_uploadedBox {
+        padding: 10px;
+        font-size: @fontSize12;
+
+        &_title {
+            text-align: right;
+            width: 40%;
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+
+        &_uploadButton {
+            float: left;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: none;
+            border: none;
+
+            &:focus {
+                border: none;
+                box-shadow: none;
+            }
+
+            enabled {
+                color: #08c;
+            }
+        }
+
+        &_removeButton {
+            float: left;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: none;
+            border: none;
+
+            &:focus {
+                border: none;
+                box-shadow: none;
+            }
+
+            enabled {
+                color: #08c;
+            }
+        }
+    }
+}
+// Tabs for Fee Schedule/Session Page
+.nav-tabs > .notActive a {
+    border-top: 1px solid #ddd !important;
+    padding-top: 8px !important;
+}
+/*#endregion */
+
+/*#region Applied Filters Box */
+.ss-appliedBox {
+    display: inline-block;
+    border: @solidBorder @lightGrey;
+    margin: 5px 0px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+    width: 40%;
+    flex: 1;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_table {
+        border-collapse: separate;
+        padding: 15px 0px;
+
+        &_client {
+            width: 150px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+
+        &_fy {
+            width: 130px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+
+        &_program {
+            width: 200px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+
+        &_active {
+            width: 120px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+    }
+
+    &_meeting-table {
+        padding: 15px 0px;
+
+        &_client {
+            width: 220px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+    }
+
+    &_ss-table {
+        border-collapse: separate;
+
+        &_client {
+            width: 370px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+
+        &_meeting {
+            width: 740px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+
+        &_mtg-type {
+            width: 480px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+
+        &_start {
+            width: 730px;
+            padding: 10px 5px;
+            word-break: break-all;
+            font-weight: bold;
+
+            &_result {
+                padding-left: 5px;
+                font-weight: normal;
+            }
+        }
+    }
+}
+/*#endregion */
+
+/* #region Edit Document Filters Box */
+.ss-ed-filterBox {
+    display: inline-block;
+    width: 100%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_table {
+        width: 100%;
+
+        &_clientSelect {
+            width: 24%;
+            padding: 0px 5px;
+            font-size: @fontSize12;
+
+            &_header {
+                width: 100px;
+                text-align: right;
+                font-weight: bold;
+                display: inline-block;
+                padding-right: 5px;
+            }
+
+            &_text {
+                font-weight: normal;
+            }
+
+            .ellipsisCell {
+                display: block;
+            }
+
+            &_select{
+                width: 40%;
+            }
+        }
+    }
+}
+
+.ss-ed-documents {
+    display: inline-block;
+    width: 50%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+
+    &_header {
+        padding-top: 5px;
+        font-size: @fontSize12;
+        padding-left: 15px;
+    }
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_table {
+        width: 100%;
+
+        &_clientSelect {
+            width: 24%;
+            padding: 0px 5px;
+            font-size: @fontSize12;
+
+            &_header {
+                width: 100px;
+                text-align: right;
+                font-weight: bold;
+                display: inline-block;
+                padding-right: 5px;
+            }
+
+            &_text {
+                font-weight: normal;
+            }
+
+            &_full {
+                width: 95%;
+            }
+        }
+    }
+}
+.ss-edit-document, .ss-dm-add {
+    &_button {
+        &:extend(.buttonPrimary all);
+        float: right;
+        margin-right: 10px;
+    }
+
+    #mtg .ui-icon, #mtg .ui-widget-content .ui-icon, #partype .ui-icon, #partype .ui-widget-content .ui-icon {
+        background-image: url("/Content/themes/base/images/ui-icons_222222_256x240.png");
+    }
+
+    .ss-ed-filterBox_table_clientSelect button {
+        width: 200px !important;
+        padding: 5px 0px 5px 10px;
+        background: white;
+        border-radius: 5px !important;
+        height: 30px;
+    }
+
+    .ss-ed-filterBox_table_clientSelect button:focus, .ss-ed-filterBox_table_clientSelect button:active {
+        border: 1px solid rgba(82,168,236,0.8) !important;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6) !important;
+    }
+
+    .k-upload {
+        width: 99%;
+    }
+
+    #formData {
+        width: 200px;
+        height: 40px;
+    }
+
+    .k-upload-files {
+        width: 900px;
+        display: inline-block;
+        margin-left: 30px;
+    }
+
+    .k-button {
+        text-transform: unset;
+        font-size: 12px;
+        width: 80px !important;
+    }
+
+    .k-dropzone .k-upload-status-total {
+        top: 50%;
+    }
+
+    .k-upload-status {
+        right: -10px;
+    }
+
+    .k-upload-status .k-button {
+        width: 30px !important;
+        margin-top: 12px;
+    }
+
+    .k-dropzone {
+        width: 140px;
+        display: inline-block;
+    }
+
+    .k-dropzone em {
+        display: none;
+    }
+
+    .k-progress {
+        height: 10px;
+        margin-top: 15px;
+        width: 400px !important;
+    }
+
+    .k-file-success .k-progress {
+        background-color: #03A9F4 !important;
+        margin-left: 475px;
+    }
+
+    .k-upload-pct {
+        position: absolute;
+        margin: 0px;
+        top: 10px;
+        left: -20px;
+    }
+
+    .k-filename {
+        max-width: unset;
+        width: 400px;
+        text-align: right;
+    }
+
+    .k-file.k-file-success, .k-upload-files.k-reset {
+        border: none !important;
+    }
+
+    .k-icon.k-i-html, .k-icon.k-i-zip, .k-icon.k-i-xlsx, .k-icon.k-i-xls, .k-icon.k-i-docx, .k-icon.k-i-doc {
+        display: none;
+    }
+
+    select#meetingTypeSelect, select#participantTypeLevel, select#methodTypeSelect, select#participantTypeLevelList {
+        width: 200px;
+    }
+
+    .ui-multiselect-menu {
+        padding: 0px;
+    }
+
+    .ellipsisCell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        font-size: 14px;
+    }
+
+    .ss-dm-add-filterBox_table_clientSelect .ui-icon, .ss-dm-add-filterBox_table_clientSelect .ui-widget-content .ui-icon {
+        background-image: url("/Content/themes/base/images/ui-icons_222222_256x240.png");
+    }
+
+    .ui-multiselect span.ui-icon {
+        margin-top: 3px;
+    }
+
+    &_upload-button {
+        &:extend(.buttonPrimary all);
+        float: right;
+    }
+}
+.main-header_title_back-to-staff, .errorModal {
+    color: #08c;
+    cursor: pointer;
+}
+
+.main-header_title_back-to-staff:hover {
+    text-decoration: underline;
+}
+/* #endregion */
+
+/* #region Add Document Filters Box */
+.ss-dm-add-filterBox {
+    display: inline-block;
+    width: 100%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+
+    &_header {
+        padding-top: 5px;
+        font-size: @fontSize12;
+        padding-left: 15px;
+    }
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_table {
+        width: 100%;
+
+        &_clientSelect {
+            width: 24%;
+            padding: 0px 5px;
+            font-size: @fontSize12;
+
+            &_header {
+                width: 100px;
+                text-align: right;
+                font-weight: bold;
+                display: inline-block;
+                padding-right: 5px;
+            }
+
+            &_text {
+                font-weight: normal;
+            }
+
+            &_button {
+                width: 200px !important;
+                margin-left: 5px;
+                padding: 5px 3px 5px 10px;
+                background: white;
+                border-radius: 5px !important;
+
+                &:focus, &:active {
+                    border: 1px solid rgba(82,168,236,0.8) !important;
+                    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6) !important;
+                }
+            }
+        }
+
+        &_file {
+            width: 65%;
+            padding-left: 10px;
+            padding-top: 5px;
+
+            &_input {
+                width: 40%;
+            }
+        }
+
+        &_link {
+            display: table-cell;
+
+            &_input {
+                width: 45%;
+                margin-left: 10px;
+                margin-top: 0px;
+            }
+        }
+
+        &_video {
+            display: table-cell;
+        }
+    }
+}
+/* #endregion */
+
+/*#region Grid Header */
+.ss-gridHeader {
+    display: none;
+    width: 100%;
+
+    &_no-records{
+        display: none;
+    } 
+    
+    &_title {
+        display: inline-block;
+    }
+
+    &_totalCount {
+        display: inline-block;
+        margin: 0px 15px;
+        font-size: @fontSize12;
+        font-weight: bold;
+    }
+
+    &_addAwardButton {
+        font-size: @fontSize14;
+        position: relative;
+
+        &_img {
+            padding-bottom: 25px;
+            padding-left: 25px;
+        }
+
+        &_text {
+            font-size: 10px;
+            position: absolute;
+            left: 0;
+            width: 70px;
+            bottom: -5px;
+        }
+    }
+
+    &_addProgramButton {
+        font-size: @fontSize14;
+        position: relative;
+
+        &_img {
+            padding-bottom: 25px;
+            padding-left: 25px;
+        }
+
+        &_text {
+            font-size: 10px;
+            position: absolute;
+            left: 0;
+            width: 70px;
+            bottom: -5px;
+        }
+    }
+
+    &_addMeetingButton {
+        font-size: @fontSize14;
+    }
+
+    &_addSessionButton {
+        font-size: @fontSize14;
+    }
+
+    &_exportButton {
+        float: right;
+        margin-right: 15px;
+
+        &__link {
+            font-size: @fontSize14;
+        }
+    }
+
+    &_dm-exportButton {
+        margin: 0px 0px 0px 35px;
+        display: inline-block;
+
+        &__link {
+            font-size: @fontSize14;
+        }
+    }
+
+    &_radio-buttons {
+        font-weight: bold;
+        text-align: right;
+        float: right;
+        margin: 10px 15px 0px 0px;
+
+        &_input {
+            vertical-align: top;
+        }
+    }
+
+    &_add-doc{
+        vertical-align: sub;
+        display: inline-block;
+    }
+}
+
+.ss-gridHeader-loaded {
+    width: 100%;
+
+    &_title {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    &_addCritButton {
+        font-size: @fontSize14;
+    }
+}
+
+.ss-awardModal_preAppChanges_appDue_input .k-picker-wrap.k-state-default {
+    width: 180px;
+}
+
+.ss-grid-meeting .k-grid-Destroy {
+    padding-left: 5px;
+}
+
+.ss-grid-meeting .k-grid-header th.k-header {
+    padding-left: 5px;
+    text-align: center;
+}
+
+.ss-grid-meeting .k-grid-content table td:nth-child(16) {
+    padding: 5px;
+}
+
+.ss-grid-meeting .k-grid-content.k-auto-scrollable {
+    max-height: 350px;
+    overflow: auto;
+}
+/*#endregion */
+
+/*#region Awards Page Kendo */
+.k-combobox input.k-input {
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    -ms-progress-appearance: menulist;
+    -o-appearance: menulist;
+    appearance: menulist;
+    height: 24px;
+    font-size: 12px;
+    padding-right: 26px;
+    font-family: Verdana,Arial,sans-serif;
+    color: black;
+    font-weight: normal;
+}
+
+.k-combobox .k-input:after {
+    content: " ";
+    /*\2193*/
+}
+
+.k-combobox {
+    height: 30px;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: Verdana,Arial,sans-serif;
+}
+
+.kendoGridAwardTable .k-dropdown-wrap.k-state-default {
+    margin: 0px;
+    padding-right: 26px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.k-dropdown-wrap.k-state-default:hover {
+    transition: none;
+    box-shadow: none;
+}
+
+input[type="text"]:focus {
+    transition: none;
+    box-shadow: none;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.k-combobox .k-select {
+    border: none;
+}
+
+:focus {
+    outline: none;
+}
+
+.k-datetimepicker .k-picker-wrap .k-icon {
+    margin-top: 7px;
+}
+
+.k-icon.k-i-calendar {
+    margin-top: 7px;
+}
+
+.k-grid-addPreAppAward {
+    cursor: pointer;
+}
+
+.k-grid-addPreAppAward img {
+    padding: 0px 0px 3px 5px;
+}
+/* #endregion */
+
+/*#region Meetings Page */
+.ss-meeting-text, .ss-grid-meeting {
+    display: none;
+}
+/*#endregion */
+
+/* #region Document Management */
+.noRecords {
+    display: none;
+    text-align: center;
+}
+.bold input {
+    vertical-align: sub;
+}
+
+/* #endregion */
+
+/* #region W9 Management */
+.ss-w9-filterBox {
+    display: inline-block;
+    width: 100%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 5px 0px 5px 5px;
+    float: left;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -15px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_activeText {
+        margin: 5px 0px 5px 8px;
+        display: inline-block;
+        vertical-align: super;
+        font-size: @fontSize14;
+
+        &__bold {
+            font-weight: bold;
+            font-size: @fontSize12;
+            padding: 5px;
+        }
+    }
+
+    &_text {
+        font-size: @fontSize12;
+    }
+
+    &_w9-table {
+        border-collapse: separate;
+        width: 99%;
+
+        &_row {
+
+            &_inner {
+            }
+        }
+    }
+}
+.ss-w9_buttonPrimary, .ss-rm_buttonPrimary {
+    &:extend(.buttonPrimary all);
+    float: right;
+    margin-right: 10px;
+}
+.ss-rm_buttonSecondary {
+    &:extend(.buttonSecondary all);
+    float: right;
+}
+.ss-w9-table-management {
+    max-height: 400px;
+    overflow: auto;
+
+    &_header {
+        background-color: #CFDEEA;
+        font-size: 12px;
+        padding: 5px;
+        border: 1px solid #BDBDBD;
+    }
+
+    td {
+        border: 1px solid #BDBDBD;
+        padding: 5px;
+        max-width: 150px;
+        word-break: break-all;
+
+        &:nth-child(1) {
+            width: 20px;
+        }
+    }
+}
+/* #endregion */
+
+/* #region Vimeo Page */
+.ss-vimeo {
+    &_heading {
+        font-size: 24px;
+        color: black;
+        display: block;
+        padding: 10px 0px;
+        vertical-align: top;
+        font-weight: bold;
+    }
+
+    &_description {
+        display: block;
+        color: #046B99;
+        font-weight: bold;
+        padding: 10px 0px;
+    }
+}
+/* #endregion */
+
+/* #region Criterion Page */
+#ss-criterion-grid {
+
+    .k-grid-content {
+        height: 325px !important;
+    }
+}
+/* #endregion */
+
+/* #region Referral Mapping */
+#referralMappingGrid{
+    height: 440px;    
+}
+
+#referralMappingGrid .k-grid-content{
+    min-height: 375px;    
+}
+
+.ss-rm-header {
+    display: inline-block;
+    margin: 10px 0px 0px 35px;
+    font-weight: bold;
+    position: relative;
+
+    &_title {
+        position: absolute;
+        background: white;
+        width: 200px;
+        height: auto;
+        top: -90px;
+        padding: 5px;
+        left: 150px;
+        z-index: 10000;
+        box-shadow: 1px 1px 8px 8px #ccc;
+        color: black;
+        font-weight: normal;
+        line-height: 16px;
+        text-align: left;
+        border-radius: 0px;
+        font-size: 14px;
+        display: none;
+
+        &:after {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            right: 97px;
+            top: 73px;
+            border: 10px solid;
+            z-index: 10000;
+            border-color: #fff transparent transparent;
+        }
+    }
+}
+
+.ss-history-modal {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+    &_cell {
+        float: left;
+        width: 45%;
+        border: 1px solid #E0E0E0;
+        background: #E0E0E0;
+        padding: 10px;
+    }
+
+    &_cell-table {
+        float: left;
+        width: 45%;
+        border: 1px solid #E0E0E0;
+        padding: 6px 10px;
+    }
+
+    &_li:nth-child(odd) {
+    }
+
+    &_li:nth-child(even) {
+        background: #F5F5F5;
+    }
+}
+
+.per-managementmodal-program button {
+    width: 200px !important;
+    padding: 5px 0px 5px 10px;
+    background: white;
+    border-radius: 5px !important;
+    height: 30px;
+    float: left;
+}
+
+/* #region Summary Setup Styles */
+.summaryContainer {
+    border: @solidBorder @lightGrey;
+    padding-top: 5px;
+    padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+.ss-setupfilterBox_title {
+    padding: 0px 3px;
+    background-color: #fff;
+    margin: -15px 0px 0px 10px;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 12px;
+    position: absolute;
+}
+.right-button-container {
+    text-align: right;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+}
+table.ss-grid-details {
+    margin-top: 15px;
+    margin-left: 10px;
+}
+/* #endregion */

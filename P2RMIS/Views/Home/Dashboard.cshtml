@@ -1,0 +1,81 @@
+﻿@model Sra.P2rmis.Web.UI.Models.LoginVerificationMessageViewModel
+@using Sra.P2rmis.Web.Common
+@{
+    ViewBag.Title = "Dashboard";
+    List<string> list = Model.VerificationMessages;
+}
+<style>    
+    #SplashImg {
+        width:900px;
+        margin-top:-35px
+    }
+    .splashExplTxt {
+        color:#17375E;
+    }
+    .splashExplTxt2nd {
+        font-style: italic;
+        font-weight: bold;
+        font-size:28px;
+        font-family:"Frutiger";
+    }
+    p {
+        padding-bottom:10px
+    }
+    .notificationMessage {
+        display: none;
+        position: absolute;
+        width: 800px;
+        margin-left: 200px;
+        font-size: 20px;
+        color: red;
+        line-height: 26px;
+    }
+</style>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span3">
+            <p><span class="splashExplTxt splashExplTxt2nd">Welcome!</span><br />
+            @if (list.Count > 0)
+            {
+                <div class="banner">
+                    @foreach (var x in list)
+                    {
+                        <p>@Html.Raw(x)</p>
+                    }
+                </div>
+            }
+            
+        </div>
+        <div class="span9">
+            <img alt="Splash" id="SplashImg" src="~/Content/img/Spashpage _image.jpg"/>
+        </div>
+    </div>
+</div>
+<script>
+    function openQuickReferenceGuideModal() {
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Quick Reference Guide</span>";
+        $.get("/ProgramRegistrationStatus/QuickReferenceGuide",
+            {},
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            }
+        );
+    }
+    function openInfoReferenceGuideModal() {
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Informational Reference Guide</span>";
+        $.get("/Home/InfoReferenceGuide",
+            {},
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            }
+        );
+    }
+</script>
+
+
+
+

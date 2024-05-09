@@ -1,0 +1,100 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+
+<div class="row-fluid pm-threshold-modal" id="threshold-modal">
+    <div class="pm-threshold-modal_explanatory-text">Reviewer Assignments</div><h6 class="pm-threshold-modal_exportButton" id="newExport"><a href="#" class="pm-threshold-modal_exportButton__link"><img src="/Content/img/icon_export_excel_labeled.png"></a></h6>
+    <div id="pm-threshold-grid" class="pm-threshold-grid"></div>
+</div>
+
+<script type="text/javascript">        
+    $(function () {
+        // Export link event handler
+        $("#newExport").click(function () {            
+            showFileDownloadWarning(showExportThresholdDialogAgain, true);
+        });        
+    // Popultate award data source for grid
+    function populateThresholdDataSource(dataJson) {
+        var dataSource = new kendo.data.DataSource({
+            type: "json",
+            data: dataJson,
+            batch: true,
+            serverPaging: true,
+            schema: {
+                model: {
+                    fields: {
+                        appId: { type: "string" },
+                        sr: { type: "number" },
+                        ac: { type: "number" },
+                        spr: { type: "number" },
+                    }
+                },
+            }
+        });
+        return dataSource;
+    }
+    // Set up kendo grid
+    $("#pm-threshold-grid").kendoGrid({
+        resizable: true,
+        toolbar: ["create"],
+        columns: [
+            { field: "isCompliant", filterable: false, title: "!", width: "20px", template: '# if (isCompliant == true) { #  # } else { # <div class="pm-threshold-grid_exclamation"></div> # } #' },
+            { field: "appId", filterable: { multi: true }, title: "App ID", width: "100px" },
+            { field: "sr", filterable: { multi: true }, title: "Scientist Reviewer" },
+            { field: "ac", filterable: { multi: true }, title: "Advocate Consumer" },
+            { field: "spr", filterable: { multi: true }, title: "Specialist Reviewer" },
+        ],
+        editable: { mode: "popup" },
+        scrollable: true,
+        groupable: true,
+        sortable: true,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "Starts with",
+                    eq: "Is equal to",
+                    neq: "Is not equal to"
+                }
+            }
+        },
+        filterMenuInit: function (e) {
+            if (e.field === "sr" || e.field === "ac" || e.field === "spr" || e.field === "appId") {
+                var filterMultiCheck = this.thead.find("[data-field=" + e.field + "]").data("kendoFilterMultiCheck")
+                filterMultiCheck.container.empty();
+                filterMultiCheck.checkSource.sort({ field: e.field, dir: "asc" });
+
+                filterMultiCheck.checkSource.data(filterMultiCheck.checkSource.view().toJSON());
+                filterMultiCheck.createCheckBoxes();
+            }
+        },
+    });
+    setThresholdGrid();
+
+    // Set threshold grid data
+    function setThresholdGrid() {
+        $("#pm-threshold-grid").data("kendoGrid").dataSource.data([]);
+        // Create Datasource
+        var scientistValue = "",
+            consumerValue = "";
+
+        $('.pm-thresholdBox_select').each(function (i, value) {
+            var selected = $(this).val(),
+                id = $(this).attr('id');
+            (id == 'scientistReviewer') ? scientistValue = selected : consumerValue = selected;
+        })
+
+        if (kendoGridDatasourceArray != "") {
+            console.log(kendoGridDatasourceArray);
+            var ds = populateThresholdDataSource(kendoGridDatasourceArray);
+            var grid = $("#pm-threshold-grid").data("kendoGrid");
+            ds.read();
+            grid.dataSource.data(ds.data());
+            grid.setDataSource(ds);
+            if ($("#CanSupportSpecialistReviewer").val().toLowerCase() === "false") {
+                grid.hideColumn("spr");
+            }
+        }
+    }
+});
+
+</script>

@@ -1,0 +1,87 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ProcessingViewModel
+
+<style type="text/css">
+    .k-icon.k-i-refresh:hover {
+        background-color: #fafafa;
+    }
+
+    #refresh {
+        vertical-align: sub;
+    }
+
+    .fa-search {
+        position: absolute;
+        right: 30px;
+        color: #0B4FF4;
+        padding-top: 5px;
+    }
+
+    .k-grid thead tr th:nth-child(7) .k-grid-filter, .k-grid thead tr th:nth-child(8) .k-grid-filter {
+        top: 33px;
+        padding-top: 0px;
+    }
+
+    .k-grid thead tr th:nth-child(7), .k-grid thead tr th:nth-child(8) {
+        position: relative;
+    }
+
+        .k-grid thead tr th:nth-child(7) .k-link, .k-grid thead tr th:nth-child(8) .k-link {
+            float: left;
+        }
+</style>
+@{
+    /**/
+
+    ViewBag.PageTitle = "Available Draft Summary Statements";
+    string checkoutFailureMessage = Sra.P2rmis.CrossCuttingServices.MessageServices.MessageService.CheckOutFailure;
+}
+
+<p class="formTitle">Summary Statements</p>
+<div class="row-fluid">
+    <div class="span12" id="mainContent" style="padding:20px">
+        @Html.Partial("_TabMenu")
+        @Html.Partial("../SummaryStatement/_SSFilterMenu")
+        @Html.Partial("_KendoHeader2016")
+
+        <div id="loading"></div>
+        <div>
+            @Html.Partial("_ShowHideInstructions")
+            <div id="instructions">
+                <p>
+                    Use the filters on top of the page to enter criteria for summary statement display. You may use the column filters to further refine your results. <br />Click the CHECKOUT button to download a copy of the summary statement and make changes. <br /><br />NOTE:  Please process the prioritized Draft Summary Statement First. Records for checked out summary statements are removed from this page and are available on 'My Draft Summary Statements' page. 
+                </p>
+            </div>
+            <div id="statementContents">
+                <table style="width: 100%">
+                    <tr>
+                        <td>Draft Summary Statements are available for checkout</td>
+                        <td style="text-align:right" id="dataLoaded"></td>
+                    </tr>
+                </table>
+                <div id="grid"></div>
+            </div>
+        </div>
+        <div id="hiddenDiv" style="display: none;">No results were found.</div>
+    </div>
+    <div id="checkout-failure-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header" style="text-align:center !important">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 id="myModalLabel">Notification</h4>
+        </div>
+        <div class="modal-body" style="text-align:center !important">
+            @checkoutFailureMessage
+        </div>
+        <div class="modal-footer" style="text-align:center !important">
+            <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="javascript:document.location.reload();">Close</button>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsWebBased" />
+<input type="hidden" id="IsClient" value="@Model.IsClient.ToString()" />
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-document.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-availDraft.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/adminNotes.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")

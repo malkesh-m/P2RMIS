@@ -1,0 +1,1 @@
+﻿Update [User] set Userlogin='JCuddi002' where UserId = 39891

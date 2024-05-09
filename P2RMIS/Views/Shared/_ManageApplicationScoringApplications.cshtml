@@ -1,0 +1,158 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@model Sra.P2rmis.Web.ViewModels.Shared.IManageApplicationScoringViewModel
+
+@if (Model.SelectedPanelId.GetValueOrDefault() > 0)
+{
+    <div class="align-center">
+        The data below was last updated <span class="refresh-date"></span> and is refreshed every 90 seconds.
+        If you would like to update the data below now click the
+        <a href="#" class="bold refresh-grid">Refresh</a> link.
+    </div>
+    <div id="applications" class="margin-bottom-10">
+        <div>
+            <span class="subtitle">Applications</span>
+            <span><a id="hideApplications" onclick="toggle_visibility('applicationsSection', 'hideApplications');" href="javaScript:void(0);">Hide Table</a></span>
+            <span style="padding-left:10px">Click the "View Scoring Details" link to add notes and view scoring details.</span>
+            <span id="applicationColumnFilter" style="padding-right: 10px; float: right;">
+                Show/Hide:&nbsp;
+                <span>
+                    <input type="checkbox" name="PI" class="check-box-margin" />
+                </span>
+                <span class="check-item-margin">PI/Org/Title</span>
+                <span>
+                    <input type="checkbox" name="Assignments" class="check-box-margin" />
+                </span>
+                <span class="check-item-margin">Assignments</span>
+                <span>
+                    <input type="checkbox" name="COIs" class="check-box-margin" />
+                </span>
+                <span class="check-item-margin">COIs</span>
+            </span>
+        </div>
+        <div id="applicationsSection">
+            <table class="table table-bordered table-striped tablesorter" id="tblApplications">
+                <thead>
+                    <tr>
+                        <td class="center-align">Order</td>
+                        <td class="center-align">Application ID</td>
+                        <td class="center-align"><img src="~/Content/img/NOTE_16px_enabled.png" alt="Notes" title="Notes" /><br />Notes</td>
+                        @if (Model.CanAccessAdminNote)
+                        {
+                            <td class="center-align"><img src="~/Content/img/NOTE_16px_enabled.png" alt="Notes" title="Notes" /><br />Admin</td>
+                        }
+                        <td class="center-align">Mechanism</td>
+                        <td class="center-align PI">PI/Org/Title</td>
+                        <td class="center-align Assignments">Assignments</td>
+                        <td class="center-align COIs">COIs</td>
+                        <td class="center-align">Status</td>
+                        <td class="center-align">Avg Overall Score</td>
+                        <td class="center-align">Scores Received</td>
+                        <td class="center-align">Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.PanelDetails.Any())
+                    {
+                        foreach (var app in Model.PanelDetails)
+                        {
+                            <tr>
+                            @if (!app.IsUserCoi)
+                            {
+                                <td class="right-align">@app.Order.ToString("#")</td>
+                                <td class="left-align">
+                                    <a href="#" class="applicationLogNumber" data-applicationid="@app.ApplicationIdentifier">@app.ApplicationId</a>
+                                </td>
+                                <td class="right-align">@app.CommentsCount</td>
+                                if (Model.CanAccessAdminNote)
+                                {
+                                    <td class="right-align">
+                                        <a href="#" class="admin-note-count" data-lognumber="@app.ApplicationId" data-applicationid="@app.ApplicationIdentifier">
+                                            @if(app.AdminNotesCount == 1)
+                                            {
+                                                <p>Edit</p>
+                                            }
+                                            @if(app.AdminNotesCount == 0)
+                                            {
+                                                <p>Add</p>
+                                            }
+
+                                        </a>
+                                    </td>
+                                }
+                                <td class="left-align">@app.AwardShortDescription</td>
+                                <td class="left-align PI">
+                                    <b>PI: </b>@app.PrincipalInvestigator<br />
+                                    <b>Organization: </b>@app.PIInstitution<br />
+                                    <b>Title: </b>@app.ApplicationTitle
+                                </td>
+                                <td class="left-align Assignments">
+                                    @for (var i = 0; i < app.AssignmentPartIds.Length; i++)
+                                    {
+                                        if (app.AssignmentCritiqueLinkAvailable[i] == "false")
+                                        {
+                                            @app.AssignmentSlots[i]@Html.Raw(" - ")@app.AssignmentNames[i]
+
+                                            @app.AssignmentTypes[i]
+
+                                        }
+                                        else
+                                        {
+                                            @app.AssignmentSlots[i]@Html.Raw(" - ")<a href="/MyWorkspace/Critique?panelApplicationId=@app.PanelApplicationId&sessionPanelId=@app.PanelId@Html.Raw(" #reviewer")@i">@app.AssignmentNames[i] @app.AssignmentTypes[i]</a>
+                                        }
+                                        <br />
+                                    }
+                                </td>
+                                <td class="left-align COIs">
+                                    @foreach (var coi in app.COIs.IfNullOrWhiteSpace(String.Empty).Split(';'))
+                                    {
+                                        @Html.Raw(coi)
+                                    }
+                                </td>
+                                <td class="left-align">
+                                    @if (app.ReviewStatusName == "Disapproved" || !Model.CanEditScoreStatus || !Model.CanShowLinks)
+                                    {
+                                        <span id="appStatus" panelappid="@app.PanelApplicationId" appstatusid="@app.ReviewStatusId" applicationid="@app.ApplicationId">@app.ReviewStatusName</span>
+                                    }
+                                    else
+                                    {
+                                        <a id="appStatus" panelappid="@app.PanelApplicationId" appstatusid="@app.ReviewStatusId" applicationid="@app.ApplicationId" href="#">@app.ReviewStatusName</a>
+                                    }
+                                </td>
+                                <td class="right-align" overall="@app.PanelApplicationId">@( app.AverageOE == 0 ? "N/A" : app.AverageOE.ToString("0.0") )</td>
+                                <td class="right-align" score="@app.PanelApplicationId">@app.ActualScores@Html.Raw("/")@app.PossibleScores</td>
+                                <td class="right-align"><a href="@Url.Action(Routing.ManageApplicationScoring.ApplicationDetails, Routing.P2rmisControllers.ManageApplicationScoring, new { panelApplicationId = app.PanelApplicationId, sessionPanelId = app.PanelId })">View Scoring Details</a></td>
+                            }
+                            else
+                            {
+                                <td class="right-align">@app.Order.ToString("#")</td>
+                                <td class="noDisplay left-align">@app.ApplicationId</td>
+                                <td class="noDisplay"></td>
+                                <td class="noDisplay"></td>
+                                <td class="noDisplay PI"></td>
+                                <td class="noDisplay Assignments"></td>
+                                <td class="noDisplay COIs"></td>
+                                <td class="noDisplay"></td>
+                                <td class="noDisplay"></td>
+                                <td class="noDisplay"></td>
+                                <td class="noDisplay"></td>
+                            }
+                            </tr>
+                            }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td style="text-align: center;" colspan="10">No Application Data</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // Update refresh date/time
+        $(".refresh-date").html(new Date().toLocaleDateString() + " at " + new Date().toLocaleTimeString());
+    </script>
+}

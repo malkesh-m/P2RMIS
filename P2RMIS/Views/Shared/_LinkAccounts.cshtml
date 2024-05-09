@@ -1,0 +1,18 @@
+﻿@{
+    string link = Request.QueryString["linkSuccess"];    
+}
+        @if (link == "False")
+        {
+        <p style="text-align: center; color: Red;">Accounts not linked. Please make sure Username and Password are correct.</p>
+        }
+    <table width="100%" align="center">
+        <tr>
+            <td style="text-align: right;">Current P2RMIS Username:</td>
+            <td><input type="text" name="oldUsername" id="oldUsername" /></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Current P2RMIS Password:</td>
+            <td><input type="password" name="oldPassword" id="oldPassword" /></td>
+        </tr>
+    </table>
+

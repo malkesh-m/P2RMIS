@@ -1,0 +1,129 @@
+﻿@model Sra.P2rmis.Web.UI.Models.AssignProgramsViewModel
+@using Newtonsoft.Json;
+@using Sra.P2rmis.Web.Controllers;
+
+<link rel="stylesheet" type="text/css" href="/Scripts/jquery-ui-multiselect/css/jquery.multiselect.css" />
+<div class="row-fluid ss-assignModal">
+    <div id="assignProgramsAlert" class="redColor"></div>
+    <div id="applicationInfo" class="ss-assignModal_info-filters">
+        <div class="ss-assignModal_info-filters_title">Details</div>
+        <table class="ss-assignModal_table">
+            <tr>
+                <td class="ss-assignModal_table_title">Client:<span id="clientName" class="ss-assignModal_table_result"></span></td>
+                <td class="ss-assignModal_table_title">Mtg:<span id="mtgName" class="ss-assignModal_table_result"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-assignModal_info-filters" style="max-height:130px;overflow-y:auto;overflow-x:hidden;">
+        <div class="ss-assignModal_info-filters_title">Assigned Programs</div>
+        @if (Model.AssignedPrograms != null && Model.AssignedPrograms.Count > 0)
+        {
+            <table class="ss-assignModal_table" id="panelTable">
+                @for (var i = 0; i < Model.AssignedPrograms.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.AssignedPrograms[i].Item2</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="ss-assignModal_text">There are no assigned programs.</div>
+        }
+    </div>
+    <div class="ss-assignModal_checkbox-div">
+        <input id="activeFy" type="checkbox" checked class="ss-assignModal_checkbox-div_checkbox" />&nbsp;Active Fiscal Years Only
+    </div>
+    <div class="ss-assignModal_select">
+        <select id="programSelection" name="ProgramYearIds" multiple="multiple"></select>
+    </div>
+</div>
+<input type="hidden" id="availablePrograms" value="@JsonConvert.SerializeObject(Model.AvailablePrograms)" />
+
+@Html.IncludeVersionedFiles("/Scripts/jquery-ui-multiselect/js/jquery.multiselect.js")
+
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+
+        var sessionClientMId = sessionStorage.getItem('sessionClientMId');
+        // Filter programs
+        function filterPrograms() {
+            var checked = $("#activeFy").prop("checked");
+            var programId = $("#programSelection").val();
+            var availablePrograms = $("#availablePrograms").val();
+            var listJson = JSON.parse(availablePrograms);
+            // List new options
+            $("#programSelection").find("option").remove();
+            for (var i = 0; i < listJson.length; i++) {
+                if (!checked || listJson[i].Item3) {
+                    $("#programSelection").append($("<option/>").val(listJson[i].Item1).html(listJson[i].Item2));
+                    // Set value if exists
+                    if (listJson[i].Item1 == programId) {
+                        $("#programSelection").val(programId);
+                    }
+                }
+            }
+            $("#programSelection").multiselect('refresh');
+        }
+        // Filter multi-select
+        $("#programSelection").multiselect({
+            noneSelectedText: 'Select Programs'
+        });
+        // Filter programs
+        filterPrograms();
+        // Fiscal year filter change event handler
+        $("#activeFy").on("change", function () {
+            filterPrograms();
+        });
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            var msg = "";
+            var programYearIds = $("#programSelection").val()
+            if (programYearIds === null || programYearIds.length == 0) {
+                msg = "Please select a program.";
+                $('#programSelection').addClass('input-validation-error');
+            } else {
+                $('#programSelection').removeClass('input-validation-error');
+            }
+            $("#assignProgramsAlert").html(msg);
+            if (msg == "") {
+                // Save AJAX call
+                var inputData = {
+                    "programYearIds": programYearIds, "clientMeetingId": sessionClientMId
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveAssignProgram',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#meetingWizardAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            repopulateHighlightParentGrid();
+                            var meetingName = $("#mtgName").html();
+                            $("#successMessage").text(programYearIds.length + " program(s) assigned to meeting " + meetingName +
+                                " successfully.").show();
+                            $('.ui-dialog-titlebar-close').click();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#meetingWizardAlert").html("Failed to save the meeting.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,45 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.WorkflowHistoryViewModel
+
+<h4>@Model.ApplicationDetail.Year @Model.ApplicationDetail.ProgramAbbreviation - @Model.ApplicationDetail.PanelName (@Model.ApplicationDetail.PanelAbbreviation) - @Model.ApplicationDetail.LogNumber</h4>
+
+@if (Model.WorkflowTransactions.Count > 0)
+{
+<table class="table table-bordered table-striped" style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Action</th>
+            <th>@Invariables.Labels.WorkflowPhaseName</th>
+            <th>Transaction Date</th>
+            <th>User</th>
+            <th>View File</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.WorkflowTransactions)
+    {
+        <tr>
+            <td>@item.Action</td>
+            <td>@item.PhaseName</td>
+            <td>@item.TransactionDate</td>
+            <td>@item.UserFirstName @item.UserLastName</td>
+            @if (item.BackupFileExists)
+            {
+                var filePath = string.Format("/SummaryStatement/RetrieveBackup?applicationWorkflowStepWorkLogId={0}&logAction={1}&stepName={2}",item.ApplicationWorkflowStepWorkLogId,item.Action,item.PhaseName);
+
+                <td style="text-align:center;">
+                    <a href="@filePath" class="view" target="_blank"><img src="~/Content/img/newView.png" alt="View" /></a>
+                </td>
+            }
+            else
+            {
+                <td>&nbsp;</td>
+            }
+        </tr>
+    }
+</table>
+}
+else
+{
+    <p>No history exists for this workflow</p>
+}
+

@@ -1,0 +1,628 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <edmx:Designer>
+    <edmx:Diagrams>
+      <edmx:Diagram Name="P2RMISModel" ZoomLevel="53">
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Client" Width="1.5" PointX="40.25" PointY="15.625" Height="1.9802864583333326" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.FileStore" Width="1.5" PointX="16.625" PointY="8.5" Height="4.2879036458333317" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.FileStoreMain" Width="1.5" PointX="15" PointY="45" Height="1.7879850260416674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.LookupTemplateCategory" Width="1.5" PointX="8.125" PointY="3.625" Height="1.5956835937500031" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.LookupTemplateStage" Width="1.5" PointX="16.375" PointY="4.75" Height="1.5956835937500031" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.LookupTemplateType" Width="1.5" PointX="14.125" PointY="4.25" Height="1.5956835937500031" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SystemTemplate" Width="1.5" PointX="12.125" PointY="5.75" Height="2.9417936197916674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SystemTemplateVersion" Width="1.5" PointX="20" PointY="5.375" Height="4.0956022135416674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.User" Width="1.875" PointX="0.5" PointY="3" Height="10.249248046875" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserAddress" Width="1.5" PointX="9.625" PointY="0.5" Height="6.4032194010416674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserClient" Width="1.5" PointX="2.375" PointY="5.875" Height="1.9802864583333388" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserEmail" Width="1.5" PointX="6.625" PointY="11.25" Height="2.9417936197916674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserInfo" Width="1.5" PointX="3.875" PointY="8.5" Height="5.8263151041666674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserPhone" Width="1.5" PointX="7.75" PointY="5.5" Height="3.326396484374996" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserSystemRole" Width="1.5" PointX="5.125" PointY="4.125" Height="2.9417936197916674" IsExpanded="true" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserClient_Client" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="3.21875" PointY="2.7302864583333326" />
+          <edmx:ConnectorPoint PointX="3.21875" PointY="5.875" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_FileStore_FileStoreMain" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="12.125" PointY="12.511495768229164" />
+          <edmx:ConnectorPoint PointX="16.625" PointY="12.511495768229164" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SystemTemplate_LookupTemplateCategory" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="9.625" PointY="4.6343489583333328" />
+          <edmx:ConnectorPoint PointX="12.21875" PointY="4.6343489583333328" />
+          <edmx:ConnectorPoint PointX="12.21875" PointY="5.75" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SystemTemplateVersion_LookupTemplateStage" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="17.875" PointY="5.5478417968750016" />
+          <edmx:ConnectorPoint PointX="18.203125" PointY="5.5478417968750016" />
+          <edmx:ConnectorPoint PointX="18.203125" PointY="12.157858072916667" />
+          <edmx:ConnectorPoint PointX="20.75" PointY="12.157858072916667" />
+          <edmx:ConnectorPoint PointX="20.75" PointY="9.4706022135416674" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SystemTemplate_LookupTemplateType" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="14.125" PointY="5.0478417968750016" />
+          <edmx:ConnectorPoint PointX="13.281252" PointY="5.0478417968750016" />
+          <edmx:ConnectorPoint PointX="13.281252" PointY="5.75" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SystemTemplateVersion_SystemTemplate" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="13.625" PointY="7.0790927968750017" />
+          <edmx:ConnectorPoint PointX="14.6875" PointY="7.0790927968750017" />
+          <edmx:ConnectorPoint PointX="14.6875" PointY="9.5138964843750031" />
+          <edmx:ConnectorPoint PointX="16.5625" PointY="9.5138964843750031" />
+          <edmx:ConnectorPoint PointX="16.5625" PointY="8.4375" />
+          <edmx:ConnectorPoint PointX="18.15625" PointY="8.4375" />
+          <edmx:ConnectorPoint PointX="18.15625" PointY="12.157858072916667" />
+          <edmx:ConnectorPoint PointX="20.343747999999998" PointY="12.157858072916667" />
+          <edmx:ConnectorPoint PointX="20.343747999999998" PointY="9.4706022135416674" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserClient_User" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="2" PointY="6.8651432291666694" />
+          <edmx:ConnectorPoint PointX="2.375" PointY="6.8651432291666694" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfo_User" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="2" PointY="11.0621240234375" />
+          <edmx:ConnectorPoint PointX="2.5" PointY="11.0621240234375" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserSystemRole_User" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="2" PointY="4.53125" />
+          <edmx:ConnectorPoint PointX="3.1354166666666665" PointY="4.5312499999999991" />
+          <edmx:ConnectorPoint PointX="3.3020833333333335" PointY="4.53125" />
+          <edmx:ConnectorPoint PointX="4.25" PointY="4.53125" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAddress_UserInfo" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="3.8130674249686796" PointY="8.875" />
+          <edmx:ConnectorPoint PointX="3.8130674249686796" PointY="8.6677864583333317" />
+          <edmx:ConnectorPoint PointX="5.9375" PointY="8.6677864583333317" />
+          <edmx:ConnectorPoint PointX="5.9375" PointY="7.1875" />
+          <edmx:ConnectorPoint PointX="7.6875" PointY="7.1875" />
+          <edmx:ConnectorPoint PointX="7.6875" PointY="8.888896484374996" />
+          <edmx:ConnectorPoint PointX="9.78125" PointY="8.888896484374996" />
+          <edmx:ConnectorPoint PointX="9.78125" PointY="5.9609355000000068" />
+          <edmx:ConnectorPoint PointX="9.875" PointY="5.9609355000000068" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserEmail_UserInfo" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="4" PointY="10.735341796875" />
+          <edmx:ConnectorPoint PointX="7.90625" PointY="10.735341796875" />
+          <edmx:ConnectorPoint PointX="7.90625" PointY="11.25" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserPhone_UserInfo" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="3.5636308499373595" PointY="8.875" />
+          <edmx:ConnectorPoint PointX="3.5636308499373595" PointY="8.75212" />
+          <edmx:ConnectorPoint PointX="5.85558" PointY="8.75212" />
+          <edmx:ConnectorPoint PointX="5.85558" PointY="7.16808" />
+          <edmx:ConnectorPoint PointX="7.62712" PointY="7.16808" />
+          <edmx:ConnectorPoint PointX="7.62712" PointY="6.3437505000000005" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="6.3437505000000005" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserApplicationComment" Width="1.5" PointX="4.625" PointY="16.375" Height="2.7494921874999818" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_User_ApplicationComment">
+          <edmx:ConnectorPoint PointX="0.65625" PointY="13.249248046875" />
+          <edmx:ConnectorPoint PointX="0.65625" PointY="18.458639322916667" />
+          <edmx:ConnectorPoint PointX="4.625" PointY="18.458639322916667" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Report" Width="2.125" PointX="15.375" PointY="17.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.LookupReportGroup" Width="1.5" PointX="13.25" PointY="18.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Report_ReportGroup" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.LookupReportParameter" Width="1.5" PointX="15.375" PointY="22.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReportParameter" Width="1.5" PointX="20.5" PointY="18" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReportPermission" Width="1.5" PointX="18.25" PointY="16.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReportParameter_LookupReportParameter" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Application" Width="1.5" PointX="4.375" PointY="26.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Workflow" Width="1.5" PointX="4.375" PointY="21.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.WorkflowStep" Width="1.5" PointX="7.625" PointY="25.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Workflow_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkflowStep_Workflow" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationReviewStatu" Width="1.5" PointX="10" PointY="27.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReviewStatu" Width="1.5" PointX="7.75" PointY="31" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationReviewStatus_ReviewStatus" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AccessLevel" Width="1.5" PointX="14.875" PointY="33.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationTemplate" Width="1.5" PointX="10.375" PointY="43.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationTemplateElement" Width="1.5" PointX="8.875" PointY="38.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflow" Width="1.5" PointX="12.625" PointY="27" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStep" Width="1.5" PointX="14.875" PointY="26.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStepAssignment" Width="1.5" PointX="21.125" PointY="21.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStepElement" Width="1.5" PointX="17.125" PointY="32.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStepElementComment" Width="1.5" PointX="23.375" PointY="20.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStepElementContent" Width="1.5" PointX="19.375" PointY="36.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStepElementContentHistory" Width="1.5" PointX="26.375" PointY="15.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowStepWorkLog" Width="1.5" PointX="24.125" PointY="15.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientElement" Width="1.5" PointX="4.375" PointY="38.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientScoringScale" Width="1.5" PointX="4.375" PointY="34" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientScoringScaleAdjectival" Width="1.5" PointX="6.625" PointY="34.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MechanismTemplate" Width="1.5" PointX="8.125" PointY="43.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MechanismTemplateElement" Width="1.5" PointX="6.625" PointY="38.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReviewStatusType" Width="1.5" PointX="6.25" PointY="31.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.StepType" Width="1.5" PointX="5.375" PointY="43.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElement_AccessLevel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationTemplate_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationTemplate_MechanismTemplate" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationTemplateElement_ApplicationTemplate" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflow_ApplicationTemplate" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationTemplateElement_MechanismTemplateElement" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElement_ApplicationTemplateElement" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflow_Workflow" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStep_ApplicationWorkflow" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStep_StepType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElement_ApplicationWorkflowStep" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_StepAssignment_ApplicationWorkflowStep" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkLog_ApplicationWorkflowStep" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_StepAssignment_User1" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElementComment_ApplicationWorkflowStepElement" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElementContent_ApplicationWorkflowStepElement" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElementComment_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkLog_User1" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientElement_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientScoringScale_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplateElement_ClientElement" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientScoringScaleAdjectival_ClientScoringScale" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplateElement_MechanismTemplate" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReportPermission_Report1" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReviewStatus_ReviewStatusType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkflowStep_StepType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplate_ReviewStatus" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ElementType" Width="1.5" PointX="7.375" PointY="18.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientElement_ElementType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElement_ClientScoringScale" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowStepElementContentHistory_ApplicationWorkflowStepWorkLog1" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationDefaultWorkflow" Width="1.5" PointX="6.625" PointY="22.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationDefaultWorkflow_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationDefaultWorkflow_Workflow" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.WorkflowMechanism" Width="1.5" PointX="10" PointY="23.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkflowMechanism_ToTable_2" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkflowMechanism_ToTable" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientDefaultWorkflow" Width="1.5" PointX="17.375" PointY="20.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AccountStatu" Width="1.5" PointX="2.25" PointY="26.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AddressType" Width="1.5" PointX="8.625" PointY="66.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationBudget" Width="1.5" PointX="7.625" PointY="51.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationInfo" Width="1.5" PointX="14.625" PointY="40.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationPersonnel" Width="1.5" PointX="11.625" PointY="37.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationSummaryLog" Width="3.25" PointX="18.125" PointY="31.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationText" Width="1.5" PointX="13.625" PointY="24.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientApplicationInfoType" Width="1.5" PointX="12.375" PointY="42.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientAwardType" Width="1.5" PointX="43.5" PointY="31.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientMeeting" Width="1.5" PointX="46.5" PointY="19.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientParticipantType" Width="1.5" PointX="43.5" PointY="22.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientProgram" Width="1.5" PointX="43.5" PointY="13.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientRole" Width="1.5" PointX="43.5" PointY="27.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Country" Width="1.5" PointX="8.625" PointY="69" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Degree" Width="1.5" PointX="4.5" PointY="56" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Ethnicity" Width="1.5" PointX="1.25" PointY="36.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Gender" Width="1.5" PointX="1.25" PointY="46.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingSession" Width="1.5" PointX="48.75" PointY="26.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingType" Width="1.5" PointX="44.25" PointY="19.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MilitaryRank" Width="1.5" PointX="1.25" PointY="41.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelApplication" Width="2.125" PointX="53.25" PointY="29.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelUserAssignment" Width="1.5" PointX="53.25" PointY="17" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PhoneType" Width="1.5" PointX="6.5" PointY="63.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Prefix" Width="1.5" PointX="1.25" PointY="38.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramMechanism" Width="1.5" PointX="49" PointY="22.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramPanel" Width="1.5" PointX="53.25" PointY="21.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramUserAssignment" Width="1.5" PointX="48" PointY="15.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramYear" Width="1.5" PointX="45.75" PointY="13.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.RecoveryQuestion" Width="1.5" PointX="1.5" PointY="33.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SessionPanel" Width="1.5" PointX="51" PointY="26.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.State" Width="1.5" PointX="8.625" PointY="71.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserAccountRecovery" Width="1.5" PointX="2.375" PointY="0.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserDegree" Width="1.5" PointX="6.75" PointY="0.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserResume" Width="1.5" PointX="5.75" PointY="59.375" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAddress_AddressTypeId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Application_ProgramMechanism" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationBudget_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationInfo_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationPersonnel_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationText_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplication_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationInfo_ClientApplicationInfoType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationSummaryLog_ApplicationWorkflowStep" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientAwardType_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientMeeting_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientParticipantType_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientProgram_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientRole_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanism_ClientAwardType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientMeeting_MeetingType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingSession_Meeting" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserAssignment_ClientParticipantType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramUserAssignment_ClientParticipantType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramPanel_ClientProgram" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramYear_ClientProgram" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserAssignment_ClientRole" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAddress_Country" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserDegree_Degree" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfo_Ethnicity" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfo_Gender" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SessionPanel_MeetingSession" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfo_MilitaryRank" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplication_Panel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserAssignment_SessionPanel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserAssignment_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserPhone_PhoneType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfo_Prefix" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanism_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramPanel_SessionPanel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramUserAssignment_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramUserAssignment_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountRecovery_RecoveryQuestion" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAddress_State" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountRecovery_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserDegree_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserResume_UserInfo" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationResearchCategory" Width="1.5" PointX="10.625" PointY="32.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientApplicationPersonnelType" Width="1.5" PointX="42.5" PointY="10.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientApplicationTextType" Width="1.5" PointX="42.5" PointY="7.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ResearchCategoryType" Width="1.5" PointX="12.125" PointY="47.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Application_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationResearchCategory_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationPersonnel_ApplicationPersonnelType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationResearchCategory_ResearchCategoryType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationSummaryLog_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationText_ClientApplicationTextType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientApplicationPersonnelType_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientApplicationTextType_Client" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientCoiType" Width="1.5" PointX="42.5" PointY="4.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientExpertiseRating" Width="1.5" PointX="42.5" PointY="36" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelApplicationReviewerCoiDetail" Width="1.5" PointX="57.75" PointY="15.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelApplicationReviewerExpertise" Width="2.375" PointX="55.5" PointY="26" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientCoiType_ClientId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientExpertiseRating_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerCoiDetail_ClientCoiType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerExpertise_ClientExpertiseRating" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerExpertise_PanelApplication" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerCoiDetail_PanelApplicationReviewerExpertise" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerExpertise_PanelUserAssignment" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ActionLog" Width="1.5" PointX="26.625" PointY="11.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ActionLogReason" Width="1.5" PointX="24.375" PointY="11.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.TransferReason" Width="1.5" PointX="12.375" PointY="21.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ActionLog_ActionLogReason" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationStage" Width="1.5" PointX="58.625" PointY="29.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AssignmentType" Width="1.5" PointX="19" PointY="28.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelApplicationReviewerAssignment" Width="3.375" PointX="57.875" PointY="20.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelStage" Width="1.5" PointX="56.375" PointY="30.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelStageStep" Width="1.5" PointX="58.625" PointY="36.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReviewStage" Width="1.5" PointX="54.125" PointY="34.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStage_PanelApplication" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStage_ReviewStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationTemplate_PanelApplicationStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflow_ApplicationStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_StepAssignment_AssignmentLookup" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplate_ProgramMechanism" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerAssignment_PanelApplication" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerAssignment_PanelUserAssignment" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelStage_Panel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelStage_ReviewStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelStageStep_PanelStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelStageStep_StepType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientAssignmentType" Width="1.5" PointX="46.5" PointY="24.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientAssignmentType_AssignmentTypeId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientAssignmentType_ClientId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationReviewerAssignment_ClientAssignmentType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationReviewStatus_PanelApplication" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientReviewerEvaluationGroup" Width="1.5" PointX="43" PointY="40.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReviewerEvaluation" Width="1.5" PointX="56" PointY="18.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReviewerEvaluationGroupGuidance" Width="1.5" PointX="45.25" PointY="40.5" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientReviewerRatingGuidance_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReviewerEvaluationGroupGuidance_ClientReviewerEvaluationGroup" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReviewerEvaluation_PanelUserAssignment" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramPanel_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplate_ReviewStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Workflow_ReviewStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflow_PanelUserAssignment" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelStage_Workflow" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.CommunicationLog" Width="1.5" PointX="53.25" PointY="38" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.CommunicationLogAttachment" Width="1.5" PointX="55.5" PointY="38.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.CommunicationLogRecipient" Width="1.5" PointX="58.5" PointY="24.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.CommunicationLogRecipientType" Width="1.5" PointX="56.25" PointY="12.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_CommunicationLog_SessionPanel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_CommunicationLogAttachment_CommunicationLog" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_CommunicationLogRecipient_CommunicationLog" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_CommunicationLogRecipient_CommunicationLogRecipientType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_CommunicationLogRecipient_PanelUserAssignment" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MechanismTemplateElementScoring" Width="1.5" PointX="13.875" PointY="36.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplateElementScoring_ClientScoringScale" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplateElementScoring_MechanismTemplateElement" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplateElementScoring_StepType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProfileType" Width="1.5" PointX="9.5" PointY="59.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserProfile" Width="1.5" PointX="11.625" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserWebsite" Width="1.5" PointX="17.75" PointY="26.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.WebsiteType" Width="1.5" PointX="15.5" PointY="49.5" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserProfile_ProfileType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserProfile_UserInfo" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserWebsite_UserInfo" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserWebsite_WebsiteType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AlternateContactType" Width="1.5" PointX="3.5" PointY="56.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserAlternateContact" Width="2.125" PointX="5.125" PointY="1.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserAlternateContactPhone" Width="2.375" PointX="21.75" PointY="36.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAlternateContact_AlternateType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAlternateContactPhone_PhoneType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAlternateContact_UserInfo" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAlternateContactPhone_UserAlternateContact" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.EmailAddressType" Width="1.5" PointX="4.75" PointY="52.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MilitaryStatusType" Width="1.5" PointX="0.75" PointY="23.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserEmail_EmailAddressType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfo_MilitaryStatusType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AccountStatusReason" Width="1.5" PointX="17.375" PointY="24.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserAccountStatu" Width="1.5" PointX="25.625" PointY="20.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatus_AccountStatusId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatus_AccountStatusReasonId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatus_UserId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_AccountStatusReason_AccountStatus" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserAccountStatusChangeLog" Width="1.5" PointX="21.625" PointY="26.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatusChangeLog_AccountStatus" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatusChangeLog_OldAccountStatus" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatusChangeLog_AccountStatusReason" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserAccountStatusChangeLog_OldAccountStatusReason" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProfileTypeRole" Width="1.5" PointX="26.375" PointY="26.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SystemRole" Width="1.5" PointX="24.375" PointY="26.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserSystemRole_SystemRole" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelApplicationSummary" Width="2.625" PointX="55.5" PointY="42.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelApplicationSummary_PanelApplication" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SummaryDocument" Width="1.5" PointX="5.875" PointY="66.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SummaryReviewerDescription" Width="1.5" PointX="51.375" PointY="23.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SummaryReviewerDescription_ClientParticipantType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SummaryReviewerDescription_ClientRole" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismTemplate_SummaryDocument" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SummaryReviewerDescription_ProgramMechanism" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientScoringScaleLegend" Width="1.5" PointX="28.375" PointY="15.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientScoringScaleLegendItem" Width="1.5" PointX="30.625" PointY="15.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientScoringScale_ClientScoringScaleLegend" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientScoringScaleLegendItem_ClientScoringScaleLegend" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.CommentType" Width="1.5" PointX="28.5" PointY="18.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserApplicationComment_LookupCommentType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserApplicationComment_PanelApplicationId" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientRegistration" Width="1.5" PointX="42.625" PointY="44.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientRegistrationDocument" Width="1.5" PointX="44.875" PointY="44.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelUserRegistration" Width="1.5" PointX="61.625" PointY="30.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelUserRegistrationDocument" Width="1.5" PointX="63.875" PointY="36.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelUserRegistrationDocumentItem" Width="1.5" PointX="66.125" PointY="36.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.RegistrationDocumentItem" Width="1.5" PointX="63.875" PointY="33.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientRegistration_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientRegistrationDocument_ClientRegistration" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistration_ClientRegistration" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistrationDocument_ClientRegistrationDocument" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistration_PanelUserAssignment" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistrationDocument_PanelUserRegistrationId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistrationDocumentItem_PanelUserRegistrationDocument" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistrationDocumentItem_RegistrationDocumentItem" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AcademicRank" Width="1.5" PointX="28.25" PointY="22.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProfessionalAffiliation" Width="1.5" PointX="28.375" PointY="24.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientRegistrationDocumentItem" Width="1.5" PointX="66.25" PointY="41.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientRegistrationDocumentItem_ClientRegistrationDocument" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientRegistrationDocumentItem_RegistrationDocumentItem" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.RegistrationDocumentType" Width="1.5" PointX="26.375" PointY="28.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientRegistrationDocument_RegistrationDocumentType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.TrainingCategory" Width="1.5" PointX="28.375" PointY="28.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.RoleTask" Width="1.5" PointX="32.625" PointY="18.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SystemOperation" Width="1.5" PointX="30.375" PointY="31.5" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SystemTask" Width="1.5" PointX="30.375" PointY="10.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.TaskOperation" Width="1.5" PointX="32.625" PointY="10.375" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_RoleTask_SystemRole" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_RoleTask_SystemTask" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_TaskOperation_SystemOperation" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_TaskOperation_SystemTask" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserInfoChangeLog" Width="1.5" PointX="3.25" PointY="1.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserInfoChangeType" Width="1.5" PointX="2.125" PointY="54.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfoChangeLog_UserInfo" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfoChangeLog_UserInfoChangeType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelUserPotentialAssignment" Width="1.5" PointX="53.25" PointY="12.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserPotentialAssignment_ClientParticipantType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserPotentialAssignment_ClientRole" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserPotentialAssignment_SessionPanel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserPotentialAssignment_User" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ParticipationMethod" Width="1.5" PointX="0.75" PointY="30.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserAssignment_ParticipationMethod" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserPotentialAssignment_ParticipationMethod" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserEvaluationLog" Width="1.5" PointX="4.75" PointY="69.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserEvaluationLog_UserInfo" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.CommunicationMethod" Width="1.5" PointX="0.875" PointY="53" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserCommunicationLog" Width="1.5" PointX="4" PointY="5.5" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserCommunicationLog_CommunicationMethod" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserCommunicationLog_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserAssignment_User_ClientApproval" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserPotentialAssignment_ClientApprovalBy" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationCompliance" Width="1.5" PointX="9.625" PointY="14.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ComplianceStatu" Width="1.5" PointX="7.375" PointY="16.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationCompliance_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationCompliance_ComplianceStatus" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationStageStep" Width="1.5" PointX="4.625" PointY="77.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationStageStepDiscussion" Width="1.5" PointX="6.875" PointY="77.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationStageStepDiscussionComment" Width="1.5" PointX="9.125" PointY="0.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStageStep_ApplicationStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStageStep_PanelStageStep" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStageStepDiscussion_ApplicationStageStepId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStageStepDiscussionComment_ApplicationStageStepDiscussion" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStageStepDiscussionComment_CreatedBy" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationStageStepDiscussionComment_ModifiedBy" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingRegistration" Width="1.5" PointX="55.5" PointY="5.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingRegistrationAttendance" Width="1.5" PointX="57.75" PointY="3.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingRegistrationHotel" Width="1.5" PointX="10.375" PointY="9.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.TravelMode" Width="1.5" PointX="12.375" PointY="13.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistration_PanelUserAssignment" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationAttendance_MeetingRegistrationId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationHotel_MeetingRegistration" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Hotel" Width="1.5" PointX="20.625" PointY="11" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientMeeting_Hotel" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationHotel_Hotel" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.StepTypeOperation" Width="1.5" PointX="32.625" PointY="38" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_StepTypeOperation_StepType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_StepTypeOperation_SystemOperation" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientConfiguration" Width="1.5" PointX="52.5" PointY="9.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SystemConfiguration" Width="1.5" PointX="50.25" PointY="4.375" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientConfiguration_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientConfiguration_SystemConfiguration" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramMeeting" Width="1.5" PointX="52.875" PointY="7.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMeeting_ClientMeeting" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMeeting_ProgramYear" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MechanismRelationshipType" Width="1.5" PointX="14.5" PointY="0.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanism_ParentProgramMechanism" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MechanismScoringTemplate" Width="1.5" PointX="60.375" PointY="12.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ScoringTemplate" Width="1.5" PointX="42.625" PointY="1.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ScoringTemplatePhase" Width="1.5" PointX="45.875" PointY="28.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ScoringTemplate_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ScoringTemplatePhase_CriteriaClientScoringScale" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ScoringTemplatePhase_OverallClientScoringScale" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismScoringTemplate_ProgramMechanism" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MechanismScoringTemplate_ScoringTemplate" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ScoringTemplatePhase_ScoringTemplateId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ScoringTemplatePhase_StepType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SessionPhase" Width="1.5" PointX="51" PointY="38" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SessionPhase_MeetingSession" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_StepType_ReviewStage" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SessionPhase_StepType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientAwardType_ClientAwardType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientAwardType_MechanismRelationshipType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationWorkflowSummaryStatement" Width="1.5" PointX="15.25" PointY="52.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramMechanismSummaryStatement" Width="1.5" PointX="60.625" PointY="17.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SummaryStatementMode" Width="1.5" PointX="0.75" PointY="14.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationWorkflowSummaryStatement_ApplicationWorkflow" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanismSummaryStatement_ProgramMechanism" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanismSummaryStatement_ReviewStatus" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Client_SummaryStatementMode" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfoChangeLog_User_CreatedBy" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserInfoChangeLog_User_ModifiedBy" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Notification" Width="1.5" PointX="18.375" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.RoleParticipantType" Width="1.5" PointX="48.75" PointY="19.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_RoleParticipantType_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_RoleParticipantType_ClientParticipantType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_RoleParticipantType_SystemRole" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientDataDeliverable" Width="1.5" PointX="50.75" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientServiceAccount" Width="1.5" PointX="42.5" PointY="48.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientTransferType" Width="1.5" PointX="42.5" PointY="50.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramCycleDeliverable" Width="1.5" PointX="53" PointY="2.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ServiceLog" Width="1.5" PointX="12.375" PointY="9.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientDataDeliverable_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientServiceAccount_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientTransferType_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramCycleDeliverable_ClientDataDeliverable" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramCycleDeliverable_Generate_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramCycleDeliverable_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramCycleDeliverable_QC_User" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PeerReviewContentType" Width="1.5" PointX="43.625" PointY="51.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PeerReviewDocument" Width="1.5" PointX="45.875" PointY="7.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PeerReviewDocumentAccess" Width="2.25" PointX="60.125" PointY="7.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PeerReviewDocumentType" Width="1.5" PointX="43.625" PointY="48.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserPeerReviewDocument" Width="1.5" PointX="53.125" PointY="2.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PeerReviewDocument_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PeerReviewDocument_ClientProgram" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PeerReviewDocument_PeerReviewContentType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PeerReviewDocument_PeerReviewDocumentType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PeerReviewDocument_TrainingCategory" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PeerReviewDocumentAccess_PeerReviewDocument" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserPeerReviewDocument_PeerReviewDocument" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserPeerReviewDocument_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserPeerReviewDocument_User" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserBlockLog" Width="1.5" PointX="23.875" PointY="3.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserBlockLogClient" Width="1.5" PointX="55.625" PointY="1.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserClientBlock" Width="1.5" PointX="45.625" PointY="3.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserBlockLogClient_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserClientBlock_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserBlockLog_EnteredByUserId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserBlockLog_UserInfoId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserBlockLogClient_UserBlockLogId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserClientBlock_UserInfo" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.VendorType" Width="1.5" PointX="12.875" PointY="50" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.AssignmentTypeThreshold" Width="1.5" PointX="53.25" PointY="43" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_AssignmentTypeThreshold_SessionPanelId" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.VendorIdAssigned" Width="1.5" PointX="0.75" PointY="17.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserVendor" Width="1.5" PointX="22.125" PointY="31.25" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserVendor_UserInfo" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserVendor_VendorType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_WorkLog_CheckInUser" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingRegistrationTravel" Width="1.5" PointX="60.75" PointY="2" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationTravel_MeetingRegistration" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationTravel_TravelMode" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientDefaultWorkflow_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientDefaultWorkflow_Workflow" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReferralMapping" Width="1.5" PointX="59" PointY="41.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ReferralMappingData" Width="1.5" PointX="61.25" PointY="25.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReferralMappingData_Application" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReferralMapping_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReferralMappingData_ReferralMapping" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ReferralMappingData_SessionPanel" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.EmploymentCategory" Width="1.5" PointX="12.375" PointY="8.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ImportLog" Width="1.5" PointX="44.75" PointY="54" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ImportLogItem" Width="1.5" PointX="47" PointY="54.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramMechanismImportLog" Width="1.5" PointX="51.25" PointY="42.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ImportLog_ClientTransferType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ImportLogItem_ImportLog" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanismImportLog_ImportLog" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanismImportLog_ProgramMechanism" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingRegistrationComment" Width="1.5" PointX="57.75" PointY="46" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.MeetingRegistrationTravelFlight" Width="1.5" PointX="57.5" PointY="1.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationComment_MeetingRegistration" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationTravelFlight_ToTable" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Airport" Width="1.5" PointX="14.375" PointY="13.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Carrier" Width="1.5" PointX="20.375" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.SessionUserAssignment" Width="1.5" PointX="51" PointY="12.5" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SessionUserAssignment_MeetingSessionId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_SessionUserAssignment_UserId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistrationTravelFlight_ModifiedBy" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_MeetingRegistration_SessionUserAssignment" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientFileConfiguration" Width="1.5" PointX="42.5" PointY="55.5" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientFileConfiguration_ClientId" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Nominee" Width="1.5" PointX="17" PointY="38.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NomineeAffected" Width="1.5" PointX="45.875" PointY="32.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NomineePhone" Width="1.5" PointX="19.25" PointY="50.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NomineeProgram" Width="1.5" PointX="48.125" PointY="31.625" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NomineeSponsor" Width="1.5" PointX="45.875" PointY="57.875" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NomineeSponsorPhone" Width="1.5" PointX="48.125" PointY="60.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NomineeType" Width="1.5" PointX="45.875" PointY="34.5" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Nominee_Country" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeSponsor_Country" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Nominee_Ethnicity" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Nominee_Gender" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Nominee_Prefix" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Nominee_State" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Nominee_User" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineePhone_Nominee" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeProgram_Nominee" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeProgram_Nominee_Affected" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineePhone_PhoneType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeProgram_NomineeSponsor" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeProgram_NomineeType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeProgram_ProgramYear" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeSponsor_State" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeSponsorPhone_NomineeSponsor" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeSponsorPhone_PhoneType" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ApplicationTopicCode" Width="1.5" PointX="6.75" PointY="82.375" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ApplicationTopicCodes_Application" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ClientSummaryTemplate" Width="1.5" PointX="42.5" PointY="59.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ClientSummaryTemplate_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanismSummaryStatement_ClientSummaryTemplateId" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.NominatingOrganization" Width="1.5" PointX="16.375" PointY="13.75" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_NomineeSponsor_NominatingOrganization" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramMechanism_SummarySetupLastUpdatedBy" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ProgramSessionPayRate" Width="1.5" PointX="63" PointY="17.125" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramSessionPayRate_ClientParticipantType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramSessionPayRate_EmploymentCategory" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramSessionPayRate_MeetingSessionId" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramSessionPayRate_MeetingType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_ProgramSessionPayRate_ProgramYear" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.ContractStatus" Width="1.5" PointX="66.875" PointY="34" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PanelUserRegistrationDocumentContract" Width="1.5" PointX="69.125" PointY="36.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistrationDocumentContract_ContractStatus" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PanelUserRegistrationDocumentContract_PanelUserRegistrationDocument" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.UserPassword" Width="1.5" PointX="3.125" PointY="60" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_UserPassword_User" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyRestrictionType" Width="1.5" PointX="9.375" PointY="18.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyType" Width="1.5" PointX="22.375" PointY="0.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.WeekDay" Width="1.5" PointX="22.375" PointY="7.75" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.Policy" Width="1.5" PointX="48.5" PointY="8.25" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyNetworkRange" Width="1.5" PointX="50.75" PointY="33.375" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyWeekDay" Width="1.5" PointX="57.75" PointY="8" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Policy_Client" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Policy_PolicyRestrictionType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_Policy_PolicyType" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyNetworkRange_Policy" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyWeekDay_Policy" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyWeekDay_WeekDay" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyHistory" Width="1.5" PointX="64.75" PointY="3.375" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyHistory_Policy" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyNetworkRangeHistory" Width="1.5" PointX="56.75" PointY="50.125" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyWeekDayHistory" Width="1.5" PointX="56.75" PointY="54.625" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyNetworkRangeHistory_PolicyHistory" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyWeekDayHistory_PolicyHistory" />
+        <edmx:EntityTypeShape EntityType="P2RMISNETModel.PolicyStatu" Width="1.5" PointX="24.375" PointY="7.875" />
+        <edmx:AssociationConnector Association="P2RMISNETModel.FK_PolicyHistory_PolicyStatus" />
+        </edmx:Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

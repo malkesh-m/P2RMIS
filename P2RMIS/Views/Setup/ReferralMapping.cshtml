@@ -1,0 +1,99 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@{
+    ViewBag.Title = "Add Document";
+    ViewBag.PageTitle = "Referral Assignments";
+    var errorMessageList = ViewBag.ErrorMessages;
+    @Html.Partial("_KendoHeader2016");
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<link href="/Scripts/jquery-ui-multiselect/css/jquery.multiselect.css" rel="stylesheet" />
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Application Management</span>
+</div>
+
+<!-- Main Body -->
+<!-- Select Filters -->
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox" style="width: 70%;">
+        <div class="ss-filterBox_title"><strong>Select Filters</strong></div>
+        <div class="ss-filterBox_required">All fields required.</div>
+        <table class="ss-filterBox_award-table">
+            <tr>
+                <td class="ss-filterBox_award-table_clientSelect"><select class="ss-filterBox_award-table_clientSelect__select"><option selected>Select Client</option></select></td>
+                <td class="ss-filterBox_award-table_yearSelect"><select class="ss-filterBox_award-table_yearSelect__select"><option selected>Select FY</option></select></td>
+                <td class="ss-filterBox_award-table_programSelect"><select class="ss-filterBox_award-table_programSelect__select"><option selected>Select Program</option></select></td>
+                <td class="ss-filterBox_award-table_cycleSelect"><select class="ss-filterBox_award-table_cycleSelect__select"><option selected>Select Cycle</option></select></td>
+                <td class="ss-filterBox_award-table_buttonShell" style="vertical-align: baseline; padding: 0px 5px;"><button class="ss-filterBox_award-table_buttonShell_buttonPrimary">Find</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="applications-nav">
+    @Html.Partial("_TabbedMenu")
+</div>
+<p class='afterComment'>Please select Client, Fiscal Year, Program and Cycle.</p>
+
+<div id="preText" class="main-header_failure"></div>
+<div id="successMessage"></div>
+<div id="failureMessage">
+    @ViewBag.ErrorMessages
+</div>
+<div id="mainContent">
+    <button id="uploadButton" type="button" class="ss-w9_buttonPrimary" disabled>Upload</button>
+    <div class="row-fluid">
+        <div class="ss-w9-filterBox">
+            <div class="ss-w9-filterBox_title">Add File</div>
+            <div class="ss-w9-filterBox_activeText__bold">&nbsp;Select a file and click Upload. <a id="fileTemplateDownloadLink" href="javascript:void(0);">View the Referral Mapping File Template.</a></div>
+            <div class="field-validation-error"></div>
+            <table class="ss-w9-filterBox_w9-table">
+                <tr>
+                    <td class="ss-w9-filterBox_w9-table_row" id="filePlace">
+                        <div class="ss-w9-filterBox_w9-table_row_inner k-content">
+                            <input name="fileBase" id="fileBase" type="file" placeholder="" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="ss-w9-filterBox_text" id="allowedFile">Allowed file formats: <span id="redColor">XLSX</span></div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<div id="uploadButtons" class="row margin-bottom-10 margin-top10">
+    <div class="ss-rm-header">Applications on Referral Upload File <img src="~/Content/img/info_20px_enabled.png" /><div class="ss-rm-header_title">Referred to Panel application count includes withdrawn, non-compliant and partnered applications.</div></div>
+    <button id="reset-rm-button" type="button" class="ss-rm_buttonSecondary" disabled>Reset Upload</button>
+    <button id="release-rm-button" type="button" class="ss-rm_buttonPrimary" disabled>Release</button>
+</div>
+
+<div id="referralMappingGrid"></div>
+<input type="hidden" value="" id="referralMappingId" />
+<input type="hidden" value="" id="fileLocation" />
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/referralMapping.js")
+
+<script type="text/javascript">
+    // Back button
+    $('#backButton, #backtoStaff').on('click', function () {
+        sessionStorage.setItem('successMessageDoc', '');
+        window.history.back();
+    });
+</script>
+
+
+
+
+

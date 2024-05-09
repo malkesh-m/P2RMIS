@@ -1,0 +1,42 @@
+﻿@{
+    string ShowHideText = (ViewBag.PageTitle == Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab5) ? "Rating Guidance" : "Instructions";
+}
+
+<style type="text/css">
+.activeLink  {
+    color: black; 
+    text-decoration: none;
+}
+</style>
+
+@if (ViewBag.HideFirst == true)
+{
+    <p style="text-align: right;">
+        <a href="#" id="show">Show</a> | 
+        <a href="#" class="activeLink" id="hide">Hide</a> @ShowHideText
+    </p>
+}
+else
+{ 
+<p style="text-align: right;">
+    <a href="#"  id="show">Show</a> | 
+    <a href="#" class="activeLink" id="hide" >Hide</a> @ShowHideText
+</p>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#hide").click(function () {
+            $("#instructions").hide();
+            $(this).css("color", "black").css("text-decoration", "none");
+            $("#show").css("color", "#08c").css("text-decoration", "underline");
+        });
+        $("#show").click(function () {
+            $("#instructions").show();
+            $(this).css("color", "black").css("text-decoration", "none");
+            $("#hide").css("color", "#08c").css("text-decoration", "underline");
+
+        });
+        $("#hide").click();
+    });
+</script>

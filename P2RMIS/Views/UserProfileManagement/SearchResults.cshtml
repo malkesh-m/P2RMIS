@@ -1,0 +1,132 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.WebModels.UserProfileManagement
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.SearchResultsViewModel
+
+
+@{
+    const string CreateContext = Sra.P2rmis.Web.Controllers.UserProfileManagement.UserProfileManagementBaseController.SearchContexts.CreateContext;
+    const string UpdateContext = Sra.P2rmis.Web.Controllers.UserProfileManagement.UserProfileManagementBaseController.SearchContexts.UpdateContext;
+}
+
+@Html.IncludeVersionedFiles("/Scripts/rr-custom.js")
+
+<style>
+    th {
+        white-space: nowrap !important;
+    }
+
+    .prefAddrCell {
+        line-height: 1.5em;
+        height: 3em; /* height is 2x line-height, so two lines will display */
+        overflow: hidden; /* prevents extra lines from being visible */
+        text-align: left !important;
+    }
+
+    .emailCell {
+        text-align: left !important;
+    }
+
+    .acctStatusCell {
+        text-align: left !important;
+    }
+
+    .nameCell {
+        width: 25ch;
+        text-align: left !important;
+    }
+</style>
+<div class="row-fluid">
+    <div class="span6 alignLeft">
+
+        <h2>Search Results</h2>
+        <br />
+        @*<a href="#" class="searchUser" data-context="@UpdateContext">Criteria: @Model.FormattedCriteria</a>*@
+        <a href="#" class="searchUser searchUserLink">Criteria: @Model.FormattedCriteria</a>
+        <br />
+        <br />
+    </div>
+
+    @if (Model.HasNoUsers)
+    {
+        <div class="span6 alignRight">
+            Desired record was not found. <a href="#" class="searchUser" data-context="@CreateContext">Create New User</a>.
+            <br />
+            <br />
+            <br />
+        </div>
+    }
+    else
+    {
+        <div class="span6 alignRight">
+            Desired record not found? @Html.ActionLink("Create New User", Routing.UserProfileManagement.ViewCreateNewUser, new { firstName = Model.FirstName, lastName = Model.LastName, email = Model.Email }, null)
+            <br />
+            <br />
+        </div>
+    }
+    <div class="span12">
+
+        <table id="searchResults" class="searchResults">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>User ID</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                    <th>Groups</th>
+                    <th>Preferred Address</th>
+                    <th>Account Status</th>
+                    <th>Active<br />Panel</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Users.Count(); i++)
+                {
+                    FoundUserModel user = Model.Users[i] as FoundUserModel;
+                    var rowNumber = i + 1;
+                    <tr>
+                        <td class="nameCell"><a href="/UserProfileManagement/ViewUser?userInfoId=@user.UserInfoId">@user.FormattedName</a></td>
+                        <td>@user.UserId</td>
+                        <td class="emailCell">@user.EmailAddress</td>
+                        <td>@ViewHelpers.FormatDate(user.CreateDate)</td>
+                        <td>@user.FormattedGroup</td>
+                        <td class="prefAddrCell">@user.FormattedAddress</td>
+                        <td class="acctStatusCell">@user.Status<br />@user.StatusReason</td>
+                        <td>
+                            @if (user.SessionPanelCount > 0)
+                            {
+                                <text>@user.SessionPanelCount</text>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@*Script for table sorting*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchResults").tablesorter({
+            headers:
+                {
+                    0: { sorter: true },
+                    1: { sorter: false },
+                    2: { sorter: false },
+                    2: { sorter: false },
+                    3: { sorter: false },
+                    4: { sorter: false },
+                    5: { sorter: false },
+                    6: { sorter: true },
+                    7: { sorter: false }
+                }
+        });
+
+        $('a.searchUserLink').on('click', function () {
+            var IsUpdateUserSearchValue = sessionStorage.getItem('newValueSearch');
+            (IsUpdateUserSearchValue == 'False') ? $(this).attr('data-context', '@CreateContext') : $(this).attr('data-context', '@UpdateContext');
+        })
+    }
+);
+</script>

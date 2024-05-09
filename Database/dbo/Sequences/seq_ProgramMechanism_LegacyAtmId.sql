@@ -1,0 +1,1 @@
+﻿create sequence seq_ProgramMechanism_LegacyAtmId as int start with 7000 increment by 1;

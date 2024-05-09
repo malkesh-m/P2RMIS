@@ -1,0 +1,15 @@
+﻿@model Sra.P2rmis.Web.ViewModels.Shared.TabMenuViewModel
+
+<ul class="nav nav-tabs">
+    @{ string active = ""; }
+    @foreach (var item in Model.Tabs)
+    {
+        if(ViewBag.PageTitle == "Import Application Data")
+        {
+            ViewBag.PageTitle = "Import Data";
+        }
+        if (ViewBag.PageTitle == item.TabName) { active = "active"; }
+        <li class="@active"><a href="@item.TabLink">@item.TabName</a></li>
+        active = "";
+    }
+</ul>

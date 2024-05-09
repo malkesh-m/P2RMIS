@@ -1,0 +1,372 @@
+﻿@import '../P2RMIS/variables.less';
+@import '../P2RMIS/global.less';
+
+// Filter Area
+.mm-fieldSet {
+    width: auto;
+    border: 1px solid #d3d3d3;
+    padding: 20px;
+
+    .nav {
+        width: 100%;
+    }    
+}
+
+/*#region Select Filters Box */
+.mm-filterBox {
+    display: block;
+    width: 99%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 10px 6px 5px 5px;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -20px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+    }
+
+    &_table {
+        padding: 10px;
+
+        &_search {
+
+            &_input {
+                border: 1px solid #e2e2e2;
+                padding: 4px 3px 3px 10px;
+                width: 150px;
+                margin-right: 5px;
+            }
+        }
+
+        &_programSelect, &_yearSelect, &_meetingSelect, &_sessionSelect, &_panelSelect {
+            &_select {
+                margin: 0px 5px;
+            }
+        }
+
+        &_buttonShell {
+            vertical-align: baseline;
+            padding: 0px 5px;
+
+            &_buttonPrimary {
+                &:extend(.buttonPrimary);
+            }
+
+            &_buttonSecondary {
+                &:extend(.buttonSecondary);
+            }
+        }
+    }
+
+    &_buttons {
+        text-align: right;
+
+        &_save {
+            &:extend(.buttonPrimary all);
+        }
+
+        &_cancel {
+            &:extend(.buttonSecondary all);
+            margin-left: 10px;
+        }
+    }
+}
+.mm-detailsBox {
+    display: inline-block;
+    width: 99%;
+    border: @solidBorder @lightGrey;
+    margin: 5px 10px 10px 0px;
+    padding: 10px 6px 5px 5px;
+    position: relative;
+
+    &_title {
+        padding: 0px 3px;
+        background-color: @whiteColor;
+        margin: -20px 0px 0px 10px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: @fontSize12;
+        position: absolute;
+        left: 0px;
+    }
+
+    &_table {
+
+        &_text {
+            font-weight: bold;
+            width: 200px;
+            text-align: right;
+            float: left;
+            padding: 10px 0px;
+            margin: 5px 0px;
+        }
+
+        &_result {
+            width: 300px;
+            float: left;
+            padding: 10px;
+            margin: 5px 0px;
+
+            &_textarea {
+                width: 600px;
+                height: 70px;
+            }
+
+            &_input {
+                margin: 0px;
+            }
+        }
+
+        &_date-picker {
+            width: 250px;
+            float: left;
+            margin: 5px 0px;
+            padding-left: 10px;
+
+            &_select{
+                height: 35px;
+                margin: 0px;
+            }
+
+            &_input{
+                height: 25px !important;
+                margin-bottom: 0px !important;
+            }
+        }
+    }
+}
+/* #endregion */
+.mm-main {
+    &:extend(.ss-gridHeader all);
+    display: block;
+
+    &_title {
+        display: none;
+    }
+
+    &-grid {
+        display: none;
+        height: 440px !important;
+
+        .k-grid-content {
+            height: 100%;
+            max-height: 390px !important;
+            min-height: 390px !important;
+        }
+
+        .k-grid-header th.k-header {
+            padding: .6em;
+        }
+    }
+}
+
+.mm-main-upload {
+
+    &_upload-button {
+        &:extend(.buttonPrimary all);
+        float: right;
+    }
+
+    &_filterBox {
+        display: inline-block;
+        width: 100%;
+        border: @solidBorder @lightGrey;
+        margin: 5px 10px 10px 0px;
+        padding: 5px 0px 5px 5px;
+        float: left;
+
+        &_header {
+            padding-top: 5px;
+            font-size: @fontSize12;
+            padding-left: 15px;
+        }
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+
+        &_table {
+            width: 99%;
+
+            &_file {
+                width: 65%;
+                padding-left: 10px;
+                padding-top: 5px;
+
+                &_input {
+                    width: 40%;
+                }
+            }
+        }
+    }
+
+    &_preview {
+        width: 100%;
+        float: left;
+        display: none;
+
+        tbody {
+            max-height: 400px;
+            overflow: auto;
+            height: 400px;
+            display: block;
+        }
+
+        &_header {
+            background-color: #CFDEEA;
+            font-size: 12px;
+
+            &_index {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 25px;
+            }
+
+            &_user-id {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 70px;
+            }
+
+            &_last-name {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 110px;
+            }
+
+            &_first-name {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 85px;
+            }
+
+            &_reservation {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 65px;
+            }
+
+            &_carrier {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 135px;
+            }
+
+            &_flight {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 45px;
+            }
+
+            &_dep-city {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 65px;
+            }
+
+            &_fare {
+                padding: 5px;
+                border: 1px solid #BDBDBD;
+                width: 45px;
+            }
+        }
+
+        tbody {
+
+            td:nth-child(1) {
+                width: 25px;
+            }
+
+            td:nth-child(9) {
+                width: 20px;
+            }
+
+            td:nth-child(2) {
+                width: 70px;
+            }
+
+            td:nth-child(3) {
+                width: 110px;
+            }
+
+            td:nth-child(4), td:nth-child(9), td:nth-child(12) {
+                width: 85px;
+            }
+            td:nth-child(6) {
+                width: 135px;
+            }
+
+            td:nth-child(7), td:nth-child(11), td:nth-child(14) {
+                width: 45px;
+            }
+
+            td:nth-child(5), td:nth-child(8), td:nth-child(10), td:nth-child(13) {
+                width: 65px;
+            }
+        }
+
+        td {
+            border: 1px solid #BDBDBD;
+            padding: 5px;
+            max-width: 150px;
+            word-break: break-all;
+
+            &:nth-child(1) {
+                width: 20px;
+            }
+        }
+    }
+
+    &_uploadMMData {
+        display: none;
+        float: left;
+        margin-bottom: 10px;
+        margin-top: 10px;
+
+        &_header {
+            font-weight: bold;
+            font-size: 16px;
+        }
+    }
+}
+
+.mm-informationBox {
+    margin: 0px auto;
+    padding: 0px;
+    list-style: none;
+    float: left;
+    width: 450px;
+
+    li {
+        margin-bottom: 10px;
+    }
+}
+
+.mm-link {
+    display: inline-block;
+    color: #08c;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.mm-travel-log-box {
+    width: 700px;
+    float: left;
+    border-right: #bdbdbd 1px solid;
+}
+
+.ulNone{
+    list-style: none;
+    margin: 0px;
+}

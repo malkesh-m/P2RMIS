@@ -1,0 +1,131 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.WebModels.SummaryStatement.ISSFilterMenuModel
+
+@{
+    const string ProgramSessionVar = SessionVariables.ClientProgramId;
+    const string FySessionVar = SessionVariables.ProgramYearId;
+    const string CycleSessionVar = SessionVariables.Cycle;
+    const string PanelSessionVar = SessionVariables.PanelId;
+    const string AwardSessionVar = SessionVariables.AwardTypeId;
+    const string UserIdSessionVar = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.UserIdSession;
+    const string UserNameSessionVar = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.UserNameSession;
+}
+<style>
+    #searchForm {
+        margin-bottom: 10px;
+    }
+
+        #searchForm select, input[type='submit'] {
+            font-size: 12px;
+            height: 28px;
+        }
+
+        #searchForm label {
+            font-size: 12px;
+            display: inline;
+            font-weight: bold;
+            vertical-align: super;
+        }
+
+    #SelectedReviewerName {
+        font-size: 12px;
+        height: 18px;
+        width: 110px
+    }
+
+    #searchForm .summaryMargin {
+        margin: -20px 0px 0px 10px;
+        color: black !important;
+    }
+
+    .validInstruction {
+        font-size: 12px;
+        color: black;
+    }
+
+    .bordered {
+        padding: 10px 0px;
+    }
+
+    #Search {
+        font-size: 12px;
+    }
+
+    select#panelList {
+        max-width: 150px;
+    }
+
+    #programList, #fyList, #cycleList, #panelList, #awardList {
+        margin-right: 10px;
+    }
+</style>
+<div id="searchForm" class="bordered alignLeft row-fluid">
+    <div class="textHeaderNotBold alignLeft select-filter-title summaryMargin">Select Filters</div>
+    <span class="span12" style="padding: 0px 10px;"><span class="required">*</span><span class="validInstruction"> Indicates a required field.</span></span>
+    <span style="padding-left: 10px; float: left;">
+        <span class="required">*</span>
+        @Html.DropDownListFor(m => m.SelectedProgram, new SelectList(Model.Programs, "ClientProgramId", "ProgramAbbreviation", Model.SelectedProgram), "Select Program", new { @id = "programList" })
+        <span class="required">*</span>
+        @if (Session[ProgramSessionVar] == null || (int)Session[ProgramSessionVar] == 0)
+        {
+            @Html.DropDownListFor(m => m.SelectedFy, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Year", new { @id = "fyList", @disabled = "disabled" })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.SelectedFy, new SelectList(Model.FiscalYears, "ProgramYearId", "Year", Session[FySessionVar]), "Select Year", new { @id = "fyList" })
+        }
+    </span>
+    @if (!Model.HideCycleCriteria)
+    {
+        <span style="padding-left: 10px; float: left;">
+            @if (Session[CycleSessionVar] == null && (Session[ProgramSessionVar] == null || (int)Session[ProgramSessionVar] == 0))
+            {
+                @Html.DropDownListFor(m => m.SelectedCycle, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Cycle", new { @id = "cycleList", @disabled = "disabled" })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.SelectedCycle, new SelectList(Model.Cycles, Session[CycleSessionVar]), "Select Cycle", new { @id = "cycleList" })
+            }
+        </span>
+    }
+    @if (!Model.HidePanelCriteria)
+    {
+        <span style="padding-left: 10px;">
+            @if (Model.IsPanelRequired)
+            {
+                @Html.Hidden("IsPanelRequired", Model.IsPanelRequired)
+                <span class="required">*</span>
+            }
+            @if (Session[PanelSessionVar] == null && (Session[ProgramSessionVar] == null || (int)Session[ProgramSessionVar] == 0))
+            {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Panel", new { @id = "panelList", @disabled = "disabled" })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.Panels, "SessionPanelId", "PanelAbbreviation", Session[PanelSessionVar]), "Select Panel", new { @id = "panelList" })
+            }
+        </span>
+    }
+    @if (!Model.HideAwardCriteria)
+    {
+        <span style="padding-left: 10px;">
+            @if (Session[PanelSessionVar] == null && Session[CycleSessionVar] == null)
+            {
+                @Html.DropDownListFor(m => m.SelectedAward, new SelectList(Enumerable.Empty<SelectListItem>()), "Select Award", new { @id = "awardList", @disabled = "disabled" })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.SelectedAward, new SelectList(Model.Awards, "AwardTypeId", "AwardAbbreviation", Session[AwardSessionVar]), "Select Award", new { @id = "awardList" })
+            }
+        </span>
+    }
+    <span style="margin-left: 10px !important; vertical-align: top; display: -webkit-inline-box;">
+        <input type="button" value="Find" name="Search" id="Search" class="btn btn-primary filterButton" />
+    </span>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/SummaryStatement/ss-filter.js")
+
+
+
+

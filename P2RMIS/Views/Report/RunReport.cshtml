@@ -1,0 +1,56 @@
+﻿@model Sra.P2rmis.Web.UI.Models.RunReportViewModel
+
+@{
+    ViewBag.Title = "RunReport";
+}
+
+<h2>RunReport</h2>
+<table>
+    <tr>
+        <td>The report id selected was:</td>
+        <td><b>@Model.ReportId</b></td>
+    </tr>
+    <tr>
+        <td>The report group id selected was: </td>
+        <td><b>@Model.ReportGroupId</b></td>
+    </tr>
+    <tr>
+        <td>The program(s) selected were:</td>
+        <td>
+            @foreach (var item in Model.ProgramList)
+            {
+                <b>@item</b><br />
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>The fy(s) selected were:</td>
+        <td>
+            @foreach (var item in Model.FyList)
+            {
+                <b>@item</b><br/>
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>The panel(s) selected was: </td>
+        <td>
+            @if (Model.PanelsList.Count() != 0)
+            { 
+                foreach (var item in Model.PanelsList)
+                {
+                    <b>@item</b>
+                }
+            }
+            else
+            {
+                <b>No panel selected</b>
+            }
+        </td>
+    </tr>
+</table>
+
+<iframe src="../Reports/ReportViewer.aspx" width="100%" height="1060px"></iframe>
+
+
+

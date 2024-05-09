@@ -1,0 +1,2089 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FE679180-9D87-4524-807F-1CA89A0AEACF}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sra.P2rmis.Web</RootNamespace>
+    <AssemblyName>P2RMISNet</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Contrib.Mvc, Version=2.1.5049.27528, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Elmah.Contrib.Mvc.2.1\lib\net45\Elmah.Contrib.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc">
+      <HintPath>..\packages\FluentValidation.MVC5.5.5.0.0\lib\Net45\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="IPAddressRange, Version=4.1.2.0, Culture=neutral, PublicKeyToken=578e3c3d17e7c751, processorArchitecture=MSIL">
+      <HintPath>..\packages\IPAddressRange.4.1.2\lib\net45\IPAddressRange.dll</HintPath>
+    </Reference>
+    <Reference Include="Kendo.Mvc, Version=2020.2.617.545, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\Kendo.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1404.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1404.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1404.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1404.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1404.0\lib\net40\Microsoft.ReportViewer.WebDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1404.0\lib\net40\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MvcSiteMapProvider">
+      <HintPath>..\packages\MvcSiteMapProvider.3.3.3.0\lib\net40\MvcSiteMapProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=2015.2.623.45, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleExtentions.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Common\ButtonAttributes.cs" />
+    <Compile Include="Common\AjaxableViewResult.cs" />
+    <Compile Include="Common\Cache.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\ExceptionMessage.cs" />
+    <Compile Include="Common\Interfaces\ICustomIdentity.cs" />
+    <Compile Include="Common\Interfaces\ITest.cs" />
+    <Compile Include="Common\LimitedProfileManagementAttribute.cs" />
+    <Compile Include="Common\ManageAccountStatus.cs" />
+    <Compile Include="Common\MenuBuilder.cs" />
+    <Compile Include="Common\P2rmisMessages.cs" />
+    <Compile Include="Common\ParametersMatchAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ReturnStatus.cs" />
+    <Compile Include="Common\Routing.cs" />
+    <Compile Include="Common\SecurityAttribute.cs" />
+    <Compile Include="Common\SecurityHelpers.cs" />
+    <Compile Include="Common\SessionVariables.cs" />
+    <Compile Include="Common\TheMessages.cs" />
+    <Compile Include="Common\UnityControllerFactory.cs" />
+    <Compile Include="Common\UnityDependencyApiResolver.cs" />
+    <Compile Include="Common\UnityDependencyResolver.cs" />
+    <Compile Include="Common\Utility.cs" />
+    <Compile Include="Controllers\AccountManagement\AccountBaseController.cs" />
+    <Compile Include="Controllers\AccountManagement\AccountController.cs" />
+    <Compile Include="Controllers\Api\DataServiceController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ConsumerManagement\ConsumerManagementBaseController.cs" />
+    <Compile Include="Controllers\ConsumerManagement\ConsumerManagementController.cs" />
+    <Compile Include="Controllers\Helpers\ControllerHelpers.cs" />
+    <Compile Include="Controllers\Helpers\ControllerHelpers.Summary.cs" />
+    <Compile Include="Controllers\ErrorPageController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Library\LibraryBaseController.cs" />
+    <Compile Include="Controllers\MeetingManagement\MeetingManagementBaseController.cs" />
+    <Compile Include="Controllers\MeetingManagement\MeetingManagementController.cs" />
+    <Compile Include="Controllers\MyWorkspace\MyWorkspaceController.HotelAndTravel.cs" />
+    <Compile Include="Controllers\Library\LibraryController.cs" />
+    <Compile Include="Controllers\ManageApplicationScoring\ManageApplicationScoringBaseController.cs" />
+    <Compile Include="Controllers\ManageApplicationScoring\ManageApplicationScoringController.cs" />
+    <Compile Include="Controllers\MyWorkspace\MyWorkspaceBaseController.cs" />
+    <Compile Include="Controllers\MyWorkspace\MyWorkspaceController.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.Reviewers.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.Communication.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementBaseController.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.Expertise.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.ApplicationAbstracts.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.PIInformation.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.OrderOfReview.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.ReviewerEvaluation.cs" />
+    <Compile Include="Controllers\PanelManagement\PanelManagementController.ManageCritiques.cs" />
+    <Compile Include="Controllers\ProgramRegistration\ProgramRegistrationBaseController.cs" />
+    <Compile Include="Controllers\ProgramRegistration\ProgramRegistrationController.cs" />
+    <Compile Include="Controllers\ProgramRegistration\ProgramRegistrationStatusController.cs" />
+    <Compile Include="Controllers\Report\ReportController.cs" />
+    <Compile Include="Controllers\Helpers\ReportControllerHelpers.cs" />
+    <Compile Include="Controllers\Reviewer\ReviewerBaseController.cs" />
+    <Compile Include="Controllers\Reviewer\ReviewerController.cs" />
+    <Compile Include="Controllers\Security\SecurityBaseController.cs" />
+    <Compile Include="Controllers\Security\SecurityController.cs" />
+    <Compile Include="Controllers\Setup\SetupController.cs" />
+    <Compile Include="Controllers\Setup\SetupBaseController.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementBaseController.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementController.ManageWorkflow.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementReviewController.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementReviewController.RequestReview.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementReviewController.ReviewStatements.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementController.Progress.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementController.Staged.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementProcessingController.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementController.CommandDraft.cs" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementController.cs" />
+    <Compile Include="Controllers\TaskTracking\TaskTrackingBaseController.cs" />
+    <Compile Include="Controllers\TaskTracking\TaskTrackingController.cs" />
+    <Compile Include="Controllers\UserProfileManagement\UserProfileManagementController.ManageAccount.cs" />
+    <Compile Include="Controllers\UserProfileManagement\UserProfileManagementBaseController.cs" />
+    <Compile Include="Controllers\VersionedFiles.cs" />
+    <Compile Include="Controllers\Worklist\WorklistBaseController.cs" />
+    <Compile Include="Controllers\Worklist\WorklistController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViewer.aspx.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViewer.aspx.designer.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CustomIdentity.cs" />
+    <Compile Include="Common\CustomPrincipal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Account\AccountLinkModel.cs" />
+    <Compile Include="ViewModels\Account\AccountLogOnModel.cs" />
+    <Compile Include="ViewModels\Account\AccountRegisterModel.cs" />
+    <Compile Include="ViewModels\Account\AccountReset2Model.cs" />
+    <Compile Include="ViewModels\Account\AccountResetModel.cs" />
+    <Compile Include="ViewModels\ConsumerManagement\ConsumerManagementViewModel.cs" />
+    <Compile Include="ViewModels\ConsumerManagement\ConsumerViewModel.cs" />
+    <Compile Include="ViewModels\ConsumerManagement\NomineeProgramUpdateViewModel.cs" />
+    <Compile Include="ViewModels\ConsumerManagement\NomineeSponsorUpdateViewModel.cs" />
+    <Compile Include="ViewModels\ConsumerManagement\NomineeUpdateViewModel.cs" />
+    <Compile Include="ViewModels\ConsumerManagement\NomineeViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingAssignmentModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingAttendanceViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingCommentViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingDetailsHeaderModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingHotelViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingManagementViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MeetingTravelViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MMTabsViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MMTabbedMenuViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\MMSubTabbedMenuViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\SessionAssignmentModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\TravelFlightImportViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\TravelFlightViewModel.cs" />
+    <Compile Include="ViewModels\MeetingManagement\TravelModeViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ReviewerScoringViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationManagement\OpenProgramListModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\ApplicationDetails.cs" />
+    <Compile Include="ViewModels\Home\NotificationMessageViewModel.cs" />
+    <Compile Include="ViewModels\Home\LoginVerificationMessageViewModel.cs" />
+    <Compile Include="ViewModels\Library\LibraryViewModel.cs" />
+    <Compile Include="ViewModels\Library\TrainingDocumentViewModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\AdminNoteViewModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\AlreadyActiveAppViewModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\AppStatusViewModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\ManageApplicationScoringViewModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\RevStatusViewModel.cs" />
+    <Compile Include="ViewModels\ManageApplicationScoring\ScoreboardViewModelNew.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ChairApplicationViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\FactSheetViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\HotelAndTravelViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ManageApplicationScoringViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\MeetingListViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\PreAssignmentApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ScorableApplicationViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\SessionAttendanceDetailsViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\MyWorkspaceTabsViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\OnLineDiscussions.cs" />
+    <Compile Include="ViewModels\MyWorkspace\AbstainedElementViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ApplicationInformationViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\AssignedReviewersScoresViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\CritiqueContentViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\CritiquePanelViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\CritiqueViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ExpertiseCoiViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\IncompleteCritiqueViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\MyWorkspaceViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\PostAssignmentApplicationViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\ScorecardViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\AbstractTextViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ApplicationCritquesOverviewViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ApplicationPIViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\DiscussionBoardViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\EditOverviewViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PanelAssignmentViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PanelCritiqueSummaryViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PanelStageStepViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ReviewerCommunicationLogViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PanelCritiqueSummariesViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ReviewerDestinationPanelViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ReviewersViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\CommunicationContentViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\CommunicationLogViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\CommunicationViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ConfirmCommunicationContentViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ExpertiseViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ManageCritiquesViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\OrderOfReviewUpdateViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\OrderOfReviewViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PanelManagementViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PanelTabsViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\PiInformationViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\RequestTransferViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ReviewerAssignmentViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ReviewerEvaluationViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\SearchForReviewersViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ApplicationModalViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\SearchForStaffsViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\SearchForStaffViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\StaffViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ViewApplicationViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ViewCoiListViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ViewCritiqueViewModel.cs" />
+    <Compile Include="ViewModels\PanelManagement\ViewReviewerEvaluationViewModel.cs" />
+    <Compile Include="ViewModels\MyWorkspace\PhaseStateConverter.cs" />
+    <Compile Include="ViewModels\PrivilegedTabItem.cs" />
+    <Compile Include="ViewModels\PrivilegedTabsViewModel.cs" />
+    <Compile Include="ViewModels\ProgramRegistration\BusinessCategoryLookup.cs" />
+    <Compile Include="ViewModels\ProgramRegistration\ProgramRegistrationStatusViewModel.cs" />
+    <Compile Include="ViewModels\ProgramRegistration\RegistrationCustomizeContractViewModel.cs" />
+    <Compile Include="ViewModels\ProgramRegistration\RegistrationFormViewModel.cs" />
+    <Compile Include="ViewModels\ProgramRegistration\RegistrationWizardViewModel.cs" />
+    <Compile Include="ViewModels\Report\ReportViewModel.cs" />
+    <Compile Include="ViewModels\Report\RunReportViewModel.cs" />
+    <Compile Include="ViewModels\Reviewer\ReviewersViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchViewModel.cs" />
+    <Compile Include="ViewModels\Security\PolicyGridViewModel.cs" />
+    <Compile Include="ViewModels\Security\SecurityPolicyHistoryLogViewModel.cs" />
+    <Compile Include="ViewModels\Security\SecurityPolicyViewModel.cs" />
+    <Compile Include="ViewModels\Security\PolicyViewModel.cs" />
+    <Compile Include="ViewModels\Setup\AddProgramViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ApplicationsManagementViewModel.cs" />
+    <Compile Include="ViewModels\Setup\DataTransferFilterMenuViewModel.cs" />
+    <Compile Include="ViewModels\Setup\DataTransferTabsViewModel.cs" />
+    <Compile Include="ViewModels\Setup\FeeScheduleSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\FeeScheduleViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ImportErrorViewModel.cs" />
+    <Compile Include="ViewModels\Setup\MechanismTransferDetailViewModel.cs" />
+    <Compile Include="ViewModels\Setup\PanelWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ProgramDataDeliverableViewModel.cs" />
+    <Compile Include="ViewModels\Setup\PeerReviewDocumentUpdateViewModel.cs" />
+    <Compile Include="ViewModels\Setup\PeerReviewDocumentViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ReferralMappingViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ReviewPhaseViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ScoringTemplatePhaseViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ScoringTemplateWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\SessionSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\SessionViewModel.cs" />
+    <Compile Include="ViewModels\Setup\SessionWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\Setup\SummarySetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\TransferDataViewModel.cs" />
+    <Compile Include="ViewModels\Setup\UnassignProgramsViewModel.cs" />
+    <Compile Include="ViewModels\Setup\AssignProgramsViewModel.cs" />
+    <Compile Include="ViewModels\Setup\MeetingWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\PreviewCriterionViewModel.cs" />
+    <Compile Include="ViewModels\Setup\PreviewCriteriaViewModel.cs" />
+    <Compile Include="ViewModels\Setup\MeetingViewModel.cs" />
+    <Compile Include="ViewModels\Setup\CriterionWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\CriterionViewModel.cs" />
+    <Compile Include="ViewModels\Setup\AwardWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\AwardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\AwardTypeViewModel.cs" />
+    <Compile Include="ViewModels\Setup\CriterionSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\MeetingSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ProgramYearViewModel.cs" />
+    <Compile Include="ViewModels\Setup\FiscalYearViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ClientViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ClientProgramViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ProgramWizardViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ProgramViewModel.cs" />
+    <Compile Include="ViewModels\Setup\ProgramSetupViewModel.cs" />
+    <Compile Include="ViewModels\Setup\UpdatePanelViewModel.cs" />
+    <Compile Include="ViewModels\Shared\IManageApplicationScoringViewModel.cs" />
+    <Compile Include="ViewModels\Shared\TabMenuViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementProcessing\AssignmentsViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementProcessing\ProcessingTabsViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementProcessing\EditSummaryStatementViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementProcessing\ProcessingViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementProcessing\WorkflowStepListViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementReview\RequestReviewApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementReview\RequestReviewApplicationViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatementReview\RequestReviewViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\AssignmentUpdateViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\CommentsViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\CompletedApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\CompletedApplicationViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\EditPrioritiesViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\ManageWorkflowViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\NotesViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\ProgressViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\RequiredIfAttribute.cs" />
+    <Compile Include="ViewModels\SummaryStatement\SSFilterMenuViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\SsTabMenuViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\StagedApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\StagedApplicationViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\SubTabbedMenuViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\SummaryStatementNewProgressViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\SummaryStatementProgressViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\SummaryStatementViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\TabbedMenuViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\WorkflowHistoryViewModel.cs" />
+    <Compile Include="ViewModels\SummaryStatement\WorkflowViewModel.cs" />
+    <Compile Include="ViewModels\TaskTracking\EditRequestViewModel.cs" />
+    <Compile Include="ViewModels\TaskTracking\TaskTrackingViewModel.cs" />
+    <Compile Include="ViewModels\TaskTracking\TaskTrackingViewModelBase.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\ParticipationHistoryViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\PasswordManagementViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\ProfileValidator.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\SearchResultsViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\SearchUserViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\UserClientBlockLogViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\UserProfileManagementViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\UserAddressUploadViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\UserProfileTabsViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileManagement\UserVendorViewModel.cs" />
+    <Compile Include="ViewModels\User\UserAutoCompleteModel.cs" />
+    <Compile Include="ViewModels\User\UserCVModel.cs" />
+    <Compile Include="ViewModels\User\UserEditModel.cs" />
+    <Compile Include="ViewModels\User\UserListModel.cs" />
+    <Compile Include="ViewModels\Worklist\ProfileUpdateViewModel.cs" />
+    <Compile Include="ViewModels\Worklist\WorklistViewModel.cs" />
+    <Compile Include="Views\Home\RadEditor.aspx.cs">
+      <DependentUpon>RadEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Home\RadEditor.aspx.designer.cs">
+      <DependentUpon>RadEditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\MyWorkspace\ReviewerCritiquesViewModel.cs" />
+    <Compile Include="Views\Home\RadEditorPro.aspx.cs">
+      <DependentUpon>RadEditorPro.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Home\RadEditorPro.aspx.designer.cs">
+      <DependentUpon>RadEditorPro.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\UserProfileManagement\UserProfileManagementController.cs" />
+    <Content Include="Assemblies\Kendo.Mvc.dll" />
+    <Content Include="Assemblies\Select.HtmlToPdf.dll" />
+    <Content Include="Assemblies\Telerik.Web.UI.dll" />
+    <Content Include="Content\apprise.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap-fixes.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\glyphicons.css" />
+    <Content Include="Content\iconMoonFonts.css" />
+    <Content Include="Content\img\16x16_add_disabled.png" />
+    <Content Include="Content\img\16x16_add_enabled.png" />
+    <Content Include="Content\img\abstain_20px_disabled.png" />
+    <Content Include="Content\img\abstain_20px_enabled.png" />
+    <Content Include="Content\img\addconsumer.png" />
+    <Content Include="Content\img\add_General_Comment_20px_enabled.png" />
+    <Content Include="Content\img\add_staff_icon.png" />
+    <Content Include="Content\img\appicon.png" />
+    <Content Include="Content\img\archive.png" />
+    <Content Include="Content\img\archiverefresh.png" />
+    <Content Include="Content\img\arrow switch.png" />
+    <Content Include="Content\img\backarrow_20px_enabled.png" />
+    <Content Include="Content\img\change_user_status_20px_disabled.png" />
+    <Content Include="Content\img\change_user_status_20px_enabled.png" />
+    <Content Include="Content\img\check-in.png" />
+    <Content Include="Content\img\chevron-left.png" />
+    <Content Include="Content\img\chevron-right.png" />
+    <Content Include="Content\img\coi_20px_enabled.png" />
+    <Content Include="Content\img\Critique_20px_disabled.png" />
+    <Content Include="Content\img\Critique_20px_enabled.png" />
+    <Content Include="Content\img\cross.png" />
+    <Content Include="Content\img\CSRA-logo-s.jpg" />
+    <Content Include="Content\img\csra-logo-with-tagline-s.png" />
+    <Content Include="Content\img\csra-logo-with-tagline.png" />
+    <Content Include="Content\img\CSRA-logo.jpg" />
+    <Content Include="Content\img\Delete_Icon.PNG" />
+    <Content Include="Content\img\discard.png" />
+    <Content Include="Content\img\Door_Icon.png" />
+    <Content Include="Content\img\Enable_Disable_Icon.png" />
+    <Content Include="Content\img\exit.png" />
+    <Content Include="Content\img\firefoxArrow.png" />
+    <Content Include="Content\img\gd_it_logo-color.jpg" />
+    <Content Include="Content\img\Graig_Signature.jpg" />
+    <Content Include="Content\img\home_icon.png" />
+    <Content Include="Content\img\icon_add_comment_18x18_disabled.png" />
+    <Content Include="Content\img\ie_arrow.jpg" />
+    <Content Include="Content\img\info.png" />
+    <Content Include="Content\img\info_20px_enabled.png" />
+    <Content Include="Content\img\loading-icon.gif" />
+    <Content Include="Content\img\long-signature.png" />
+    <Content Include="Content\img\MarkedAsComplete.png" />
+    <Content Include="Content\img\missing_critique_20px_disabled.png" />
+    <Content Include="Content\img\missing_critique_20px_enabled.png" />
+    <Content Include="Content\img\More_Icon.PNG" />
+    <Content Include="Content\img\MyWorkspace_CheatSheet_5_20_16.png" />
+    <Content Include="Content\img\newEdit.png" />
+    <Content Include="Content\img\newView.png" />
+    <Content Include="Content\img\NOTE_16px_disabled.png" />
+    <Content Include="Content\img\NOTE_16px_enabled.png" />
+    <Content Include="Content\img\panelicon.png" />
+    <Content Include="Content\img\panelicon_disabled.png" />
+    <Content Include="Content\img\pdf_icon_20px_disabled.png" />
+    <Content Include="Content\img\pdf_icon_20px_enabled.png" />
+    <Content Include="Content\img\playback-fast-forward.png" />
+    <Content Include="Content\img\playback-rewind.png" />
+    <Content Include="Content\img\plus_disabled.png" />
+    <Content Include="Content\img\rating_summary_20px_disabled.png" />
+    <Content Include="Content\img\rating_summary_20px_enabled.png" />
+    <Content Include="Content\img\refresh.jpg" />
+    <Content Include="Content\img\Reg Cheat Sheet_5_23_16.png" />
+    <Content Include="Content\img\restore.PNG" />
+    <Content Include="Content\img\revise_critique_20px_disabled.png" />
+    <Content Include="Content\img\revise_critique_20px_enabled.png" />
+    <Content Include="Content\img\rstone-sig.jpg" />
+    <Content Include="Content\img\scorecard_20px_disabled.png" />
+    <Content Include="Content\img\scorecard_20px_enabled.png" />
+    <Content Include="Content\img\abstain.png" />
+    <Content Include="Content\img\Add_Comment__16px_Disabled.png" />
+    <Content Include="Content\fonts\icomoon.svg" />
+    <Content Include="Content\img\asc.gif" />
+    <Content Include="Content\img\bg.gif" />
+    <Content Include="Content\img\book_icon_20x20_enabled.png" />
+    <Content Include="Content\img\border.png" />
+    <Content Include="Content\img\change-user-status.png" />
+    <Content Include="Content\img\change_user_status_enabled_one_line.png" />
+    <Content Include="Content\img\coi.png" />
+    <Content Include="Content\img\CommandSpritesMonoLight.png" />
+    <Content Include="Content\img\comments.png" />
+    <Content Include="Content\img\comments_18x18_enabled.png" />
+    <Content Include="Content\img\comments_disabled.png" />
+    <Content Include="Content\img\comment_20px_disabled.png" />
+    <Content Include="Content\img\comment_20px_enabled.png" />
+    <Content Include="Content\img\comment_add.png" />
+    <Content Include="Content\img\controls.png" />
+    <Content Include="Content\img\critique.png" />
+    <Content Include="Content\img\desc.gif" />
+    <Content Include="Content\img\discussion_board_16px_disabled.png" />
+    <Content Include="Content\img\discussion_board_16px_enabled.png" />
+    <Content Include="Content\img\discussion_board_20px_disabled.png" />
+    <Content Include="Content\img\discussion_board_20px_enabled.png" />
+    <Content Include="Content\img\edit_20px_delinquent_disabled.png" />
+    <Content Include="Content\img\edit_20px_delinquent_enabled.png" />
+    <Content Include="Content\img\edit_20px_disabled.png" />
+    <Content Include="Content\img\edit_20px_glow_enabled.png" />
+    <Content Include="Content\img\edit_20px_enabled.png" />
+    <Content Include="Content\img\edit_disabled_16px.png" />
+    <Content Include="Content\img\email-icon-16x16.gif" />
+    <Content Include="Content\img\excel.gif" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\img\icon_add_comment_18x18.png" />
+    <Content Include="Content\img\icon_blocked_user_16x16.png" />
+    <Content Include="Content\img\icon_blocked_user_16x16_labeled.png" />
+    <Content Include="Content\img\check_circle_20px_enabled.png" />
+    <Content Include="Content\img\icon_clean_version.png" />
+    <Content Include="Content\img\icon_client_approved.png" />
+    <Content Include="Content\img\icon_comm_log_20x20_disabled.png" />
+    <Content Include="Content\img\icon_comm_log_20x20_enabled.png" />
+    <Content Include="Content\img\icon_cv_launch_20x20.png" />
+    <Content Include="Content\img\icon_cv_launch_20x20_disabled.png" />
+    <Content Include="Content\img\icon_export_excel.png" />
+    <Content Include="Content\img\icon_export_excel_labeled.png" />
+    <Content Include="Content\img\globe_link_20px_enabled.png" />
+    <Content Include="Content\img\globe_link_20px_disabled.png" />
+    <Content Include="Content\img\icon_manage_columns_20x20.png" />
+    <Content Include="Content\img\icon_markup_version.png" />
+    <Content Include="Content\img\icon_potential_chair_opt2.png" />
+    <Content Include="Content\img\icon_prog_part_labeled.png" />
+    <Content Include="Content\img\icon_rating_disabled.png" />
+    <Content Include="Content\img\icon_rating_enabled.png" />
+    <Content Include="Content\img\icon_remove_16x16.png" />
+    <Content Include="Content\img\icon_spell_check_20x20.png" />
+    <Content Include="Content\img\icon_tick_mark_16x16.png" />
+    <Content Include="Content\img\icon_tick_mark_20x20.png" />
+    <Content Include="Content\img\information.png" />
+    <Content Include="Content\img\magnifier.png" />
+    <Content Include="Content\img\Minus.png" />
+    <Content Include="Content\img\edit_enabled_16px.png" />
+    <Content Include="Content\img\missing-critique.png" />
+    <Content Include="Content\img\note.png" />
+    <Content Include="Content\img\notes-disabled.png" />
+    <Content Include="Content\img\notes-enabled.png" />
+    <Content Include="Content\img\OLS_RO_Scoreboard_enabled.png" />
+    <Content Include="Content\img\page_white_acrobat.png" />
+    <Content Include="Content\img\page_white_edit.png" />
+    <Content Include="Content\img\page_white_error.png" />
+    <Content Include="Content\img\page_white_magnify.png" />
+    <Content Include="Content\img\Plus.png" />
+    <Content Include="Content\img\prs_cheat_sheet.png" />
+    <Content Include="Content\img\rating_summary_disabled.png" />
+    <Content Include="Content\img\Refresh_20 px_enabled.png" />
+    <Content Include="Content\img\revised-critique.png" />
+    <Content Include="Content\img\right_arrow.png" />
+    <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\loading_background.png" />
+    <Content Include="Content\img\left_arrow.png" />
+    <Content Include="Content\img\ScoreCard_enabled.png" />
+    <Content Include="Content\img\Search.png" />
+    <Content Include="Content\img\Spashpage _image.jpg" />
+    <Content Include="Content\img\sra-contract-logo.png" />
+    <Content Include="Content\img\sra-contract-signature.png" />
+    <Content Include="Content\img\Submitted_Critique_20px_disabled.png" />
+    <Content Include="Content\img\Submitted_Critique_20px_enabled.png" />
+    <Content Include="Content\img\submit_16px_enabled.png" />
+    <Content Include="Content\img\swigart-signature.png" />
+    <Content Include="Content\img\swigart-signature_new.png" />
+    <Content Include="Content\img\symbol_icon_18x18_enabled.png" />
+    <Content Include="Content\img\user-plus.png" />
+    <Content Include="Content\img\user.png" />
+    <Content Include="Content\img\view.jpg" />
+    <Content Include="Content\img\view.png" />
+    <Content Include="Content\img\view_20px_abnormal_disabled.png" />
+    <Content Include="Content\img\view_20px_disabled.png" />
+    <Content Include="Content\img\view_20px_enabled.png" />
+    <Content Include="Content\jquery.tablesorter\theme.default.css" />
+    <Content Include="Content\kendo.bootstrap-v4.min.css" />
+    <Content Include="Content\LESS\kendo-fixes.css">
+      <DependentUpon>kendo-fixes.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\kendo-fixes.less" />
+    <Content Include="Content\LESS\kendo-fixes.min.css">
+      <DependentUpon>kendo-fixes.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\kendo-fixes2020.css">
+      <DependentUpon>kendo-fixes2020.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\kendo-fixes2020.min.css">
+      <DependentUpon>kendo-fixes2020.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\less.js" />
+    <Content Include="Content\LESS\ManageApplicationScoring\mas-main.css">
+      <DependentUpon>mas-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\ManageApplicationScoring\mas-main.min.css">
+      <DependentUpon>mas-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MeetingManagment\mm-main.css">
+      <DependentUpon>mm-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MeetingManagment\mm-main.min.css">
+      <DependentUpon>mm-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MeetingManagment\Partials\mm-partials.css">
+      <DependentUpon>mm-partials.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MeetingManagment\Partials\mm-partials.min.css">
+      <DependentUpon>mm-partials.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MyWorkspace\mw-main.css">
+      <DependentUpon>mw-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MyWorkspace\mw-main.min.css">
+      <DependentUpon>mw-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MyWorkspace\Partials\mw-partials.css">
+      <DependentUpon>mw-partials.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\MyWorkspace\Partials\mw-partials.min.css">
+      <DependentUpon>mw-partials.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\P2RMIS\global.css">
+      <DependentUpon>global.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\P2RMIS\global.min.css">
+      <DependentUpon>global.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\P2RMIS\variables.css">
+      <DependentUpon>variables.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\P2RMIS\variables.min.css">
+      <DependentUpon>variables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\PanelManagement\Partials\pm-partials.css">
+      <DependentUpon>pm-partials.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\PanelManagement\Partials\pm-partials.min.css">
+      <DependentUpon>pm-partials.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\PanelManagement\pm-main.css">
+      <DependentUpon>pm-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\PanelManagement\pm-main.min.css">
+      <DependentUpon>pm-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\Security\security-main.css">
+      <DependentUpon>security-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\Security\security-main.min.css">
+      <DependentUpon>security-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\sticky-header.css">
+      <DependentUpon>sticky-header.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\sticky-header.min.css">
+      <DependentUpon>sticky-header.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\SystemSetup\Partials\ss-awardModals.css">
+      <DependentUpon>ss-awardModals.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\SystemSetup\Partials\ss-awardModals.min.css">
+      <DependentUpon>ss-awardModals.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\SystemSetup\ss-main.css">
+      <DependentUpon>ss-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\SystemSetup\ss-main.min.css">
+      <DependentUpon>ss-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\UserProfileManagement\upm-main.css">
+      <DependentUpon>upm-main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\LESS\UserProfileManagement\upm-main.min.css">
+      <DependentUpon>upm-main.css</DependentUpon>
+    </Content>
+    <Content Include="Content\MyWorkspace.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\RegistrationStatus.css" />
+    <Content Include="Content\telerik\2016.1.412\Default\editor.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\imagebrowser.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\indeterminate.gif" />
+    <Content Include="Content\telerik\2016.1.412\Default\loading-image.gif" />
+    <Content Include="Content\telerik\2016.1.412\Default\loading.gif" />
+    <Content Include="Content\telerik\2016.1.412\Default\loading_2x.gif" />
+    <Content Include="Content\telerik\2016.1.412\Default\markers.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\markers_2x.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\slider-h.gif" />
+    <Content Include="Content\telerik\2016.1.412\Default\slider-v.gif" />
+    <Content Include="Content\telerik\2016.1.412\Default\sprite.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\sprite_2x.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\sprite_kpi.png" />
+    <Content Include="Content\telerik\2016.1.412\Default\sprite_kpi_2x.png" />
+    <Content Include="Content\telerik\2016.1.412\kendo.common-material.min.css" />
+    <Content Include="Content\telerik\2016.1.412\kendo.common.min.css" />
+    <Content Include="Content\telerik\2016.1.412\kendo.default.min.css" />
+    <Content Include="Content\telerik\2016.1.412\kendo.material.min.css" />
+    <Content Include="Content\telerik\2016.1.412\kendofixes.css" />
+    <Content Include="Content\telerik\2016.1.412\Material\editor.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\imagebrowser.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\indeterminate.gif" />
+    <Content Include="Content\telerik\2016.1.412\Material\loading-image.gif" />
+    <Content Include="Content\telerik\2016.1.412\Material\loading.gif" />
+    <Content Include="Content\telerik\2016.1.412\Material\loading_2x.gif" />
+    <Content Include="Content\telerik\2016.1.412\Material\markers.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\markers_2x.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\slider-h.gif" />
+    <Content Include="Content\telerik\2016.1.412\Material\slider-v.gif" />
+    <Content Include="Content\telerik\2016.1.412\Material\sprite.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\sprite_2x.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\sprite_kpi.png" />
+    <Content Include="Content\telerik\2016.1.412\Material\sprite_kpi_2x.png" />
+    <Content Include="Content\telerik\2020.R2\Default\editor.png" />
+    <Content Include="Content\telerik\2020.R2\Default\imagebrowser.png" />
+    <Content Include="Content\telerik\2020.R2\Default\indeterminate.gif" />
+    <Content Include="Content\telerik\2020.R2\Default\loading-image.gif" />
+    <Content Include="Content\telerik\2020.R2\Default\loading.gif" />
+    <Content Include="Content\telerik\2020.R2\Default\loading_2x.gif" />
+    <Content Include="Content\telerik\2020.R2\Default\markers.png" />
+    <Content Include="Content\telerik\2020.R2\Default\markers_2x.png" />
+    <Content Include="Content\telerik\2020.R2\Default\slider-h.gif" />
+    <Content Include="Content\telerik\2020.R2\Default\slider-v.gif" />
+    <Content Include="Content\telerik\2020.R2\Default\sprite.png" />
+    <Content Include="Content\telerik\2020.R2\Default\sprite_2x.png" />
+    <Content Include="Content\telerik\2020.R2\Default\sprite_kpi.png" />
+    <Content Include="Content\telerik\2020.R2\Default\sprite_kpi_2x.png" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\LICENSE.txt" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\KendoUIGlyphs.svg" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\WebComponentsIcons.svg" />
+    <Content Include="Content\telerik\2020.R2\images\back.png" />
+    <Content Include="Content\telerik\2020.R2\images\kendoui.svg" />
+    <Content Include="Content\telerik\2020.R2\images\wp8_icons.png" />
+    <Content Include="Content\telerik\2020.R2\images\wp8_inverseicons.png" />
+    <Content Include="Content\telerik\2020.R2\kendo.common-material.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.common.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.dataviz.default.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.dataviz.material.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.dataviz.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.default-v2.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.default.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.material-v2.min.css" />
+    <Content Include="Content\telerik\2020.R2\kendo.material.min.css" />
+    <Content Include="Content\telerik\2020.R2\Material\editor.png" />
+    <Content Include="Content\telerik\2020.R2\Material\imagebrowser.png" />
+    <Content Include="Content\telerik\2020.R2\Material\indeterminate.gif" />
+    <Content Include="Content\telerik\2020.R2\Material\loading-image.gif" />
+    <Content Include="Content\telerik\2020.R2\Material\loading.gif" />
+    <Content Include="Content\telerik\2020.R2\Material\loading_2x.gif" />
+    <Content Include="Content\telerik\2020.R2\Material\markers.png" />
+    <Content Include="Content\telerik\2020.R2\Material\markers_2x.png" />
+    <Content Include="Content\telerik\2020.R2\Material\slider-h.gif" />
+    <Content Include="Content\telerik\2020.R2\Material\slider-v.gif" />
+    <Content Include="Content\telerik\2020.R2\Material\sprite.png" />
+    <Content Include="Content\telerik\2020.R2\Material\sprite_2x.png" />
+    <Content Include="Content\telerik\2020.R2\Material\sprite_kpi.png" />
+    <Content Include="Content\telerik\2020.R2\Material\sprite_kpi_2x.png" />
+    <Content Include="Content\telerik\2020.R2\textures\brushed-metal.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots1.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots10.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots11.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots12.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots13.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots2.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots3.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots4.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots5.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots6.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots7.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots8.png" />
+    <Content Include="Content\telerik\2020.R2\textures\dots9.png" />
+    <Content Include="Content\telerik\2020.R2\textures\glass-lighter.png" />
+    <Content Include="Content\telerik\2020.R2\textures\glass.png" />
+    <Content Include="Content\telerik\2020.R2\textures\highlight.png" />
+    <Content Include="Content\telerik\2020.R2\textures\hsv-gradient.png" />
+    <Content Include="Content\telerik\2020.R2\textures\hue.png" />
+    <Content Include="Content\telerik\2020.R2\textures\image-default.png" />
+    <Content Include="Content\telerik\2020.R2\textures\leather1.png" />
+    <Content Include="Content\telerik\2020.R2\textures\leather2.png" />
+    <Content Include="Content\telerik\2020.R2\textures\noise.png" />
+    <Content Include="Content\telerik\2020.R2\textures\stripe1.png" />
+    <Content Include="Content\telerik\2020.R2\textures\stripe2.png" />
+    <Content Include="Content\telerik\2020.R2\textures\stripe3.png" />
+    <Content Include="Content\telerik\2020.R2\textures\stripe4.png" />
+    <Content Include="Content\telerik\2020.R2\textures\stripe5.png" />
+    <Content Include="Content\telerik\2020.R2\textures\stripe6.png" />
+    <Content Include="Content\telerik\2020.R2\textures\transparency-reversed.png" />
+    <Content Include="Content\telerik\2020.R2\textures\transparency.png" />
+    <Content Include="Content\telerik\2020.R2\textures\transtexture.png" />
+    <Content Include="Content\telerik\custom\img\rwzCallout.png" />
+    <Content Include="Content\telerik\custom\img\rwzCalloutSelect.png" />
+    <Content Include="Content\telerik\custom\img\rwzShadow.png" />
+    <Content Include="Content\telerik\custom\img\rwzShadowSelect.png" />
+    <Content Include="Content\telerik\custom\img\rwzTab.png" />
+    <Content Include="Content\telerik\custom\img\rwzTabSelect.png" />
+    <Content Include="Content\telerik\custom\wizard.css" />
+    <Content Include="Content\telerik\editor.markup.css" />
+    <Content Include="Content\telerik\editortoolbar.evaluation.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\telerik\editortoolbar.basic.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\telerik\editortoolbar.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\themes\base\images\Add.png" />
+    <Content Include="Content\themes\base\images\Add_Small.png" />
+    <Content Include="Content\themes\base\images\AllPanels.png" />
+    <Content Include="Content\themes\base\images\ArrowDown.png" />
+    <Content Include="Content\themes\base\images\ArrowDown_Small.png" />
+    <Content Include="Content\themes\base\images\ArrowLeft.png" />
+    <Content Include="Content\themes\base\images\ArrowLeft_Small.png" />
+    <Content Include="Content\themes\base\images\ArrowRight.png" />
+    <Content Include="Content\themes\base\images\ArrowRight_Small.png" />
+    <Content Include="Content\themes\base\images\ArrowUp.png" />
+    <Content Include="Content\themes\base\images\ArrowUp_Small.png" />
+    <Content Include="Content\themes\base\images\AssignedPanel.png" />
+    <Content Include="Content\themes\base\images\AssignToPanel.png" />
+    <Content Include="Content\themes\base\images\backTop.png" />
+    <Content Include="Content\themes\base\images\blueCircle.png" />
+    <Content Include="Content\themes\base\images\breadcrumbArrow.png" />
+    <Content Include="Content\themes\base\images\cdmrplogo.png" />
+    <Content Include="Content\themes\base\images\ChooseSynthesizer.png" />
+    <Content Include="Content\themes\base\images\CloseModal.png" />
+    <Content Include="Content\themes\base\images\COI.png" />
+    <Content Include="Content\themes\base\images\Collapsed.png" />
+    <Content Include="Content\themes\base\images\Comment.png" />
+    <Content Include="Content\themes\base\images\Confirmed.png" />
+    <Content Include="Content\themes\base\images\Confirmed_Small.png" />
+    <Content Include="Content\themes\base\images\CPRITLogo.png" />
+    <Content Include="Content\themes\base\images\Critique.png" />
+    <Content Include="Content\themes\base\images\CritiqueMissing.png" />
+    <Content Include="Content\themes\base\images\darkGrayCircle.png" />
+    <Content Include="Content\themes\base\images\DatePicker.png" />
+    <Content Include="Content\themes\base\images\Delete.png" />
+    <Content Include="Content\themes\base\images\Delete_Small.png" />
+    <Content Include="Content\themes\base\images\Documents.png" />
+    <Content Include="Content\themes\base\images\downArrow.png" />
+    <Content Include="Content\themes\base\images\downArrowWhite.png" />
+    <Content Include="Content\themes\base\images\dropDownArrow.gif" />
+    <Content Include="Content\themes\base\images\Edit.png" />
+    <Content Include="Content\themes\base\images\Expanded.png" />
+    <Content Include="Content\themes\base\images\help.gif" />
+    <Content Include="Content\themes\base\images\Help.png" />
+    <Content Include="Content\themes\base\images\Help_Small.png" />
+    <Content Include="Content\themes\base\images\icon_home.png" />
+    <Content Include="Content\themes\base\images\lightGrayCircle.png" />
+    <Content Include="Content\themes\base\images\LoginSent.png" />
+    <Content Include="Content\themes\base\images\logout.gif" />
+    <Content Include="Content\themes\base\images\Logout.png" />
+    <Content Include="Content\themes\base\images\Logout_Small.png" />
+    <Content Include="Content\themes\base\images\MeetNotOccur.png" />
+    <Content Include="Content\themes\base\images\MeetOccur.png" />
+    <Content Include="Content\themes\base\images\MyAccount.png" />
+    <Content Include="Content\themes\base\images\myAccountgif.gif" />
+    <Content Include="Content\themes\base\images\MyAccount_Small.png" />
+    <Content Include="Content\themes\base\images\opt6.png" />
+    <Content Include="Content\themes\base\images\P2RMIS Client Access Icons.png" />
+    <Content Include="Content\themes\base\images\P2rmisLogo.png" />
+    <Content Include="Content\themes\base\images\P2rmis_default.gif" />
+    <Content Include="Content\themes\base\images\Panel.png" />
+    <Content Include="Content\themes\base\images\PIVerified.png" />
+    <Content Include="Content\themes\base\images\PMAReceived.png" />
+    <Content Include="Content\themes\base\images\PRIMOLogo.png" />
+    <Content Include="Content\themes\base\images\Print.png" />
+    <Content Include="Content\themes\base\images\PRMIS R2 03.png" />
+    <Content Include="Content\themes\base\images\PRMIS R2 04.png" />
+    <Content Include="Content\themes\base\images\RevisedCrit.png" />
+    <Content Include="Content\themes\base\images\SetFundingStatus.png" />
+    <Content Include="Content\themes\base\images\SetStatus.png" />
+    <Content Include="Content\themes\base\images\star-off.png" />
+    <Content Include="Content\themes\base\images\star-on.png" />
+    <Content Include="Content\themes\base\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\themes\base\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\images\View.png" />
+    <Content Include="Content\themes\base\images\Warning.png" />
+    <Content Include="Content\themes\base\images\wizardArrow.png" />
+    <Content Include="Content\themes\base\images\worldLink.png" />
+    <Content Include="Content\themes\base\images\worldLinkDisabled.png" />
+    <Content Include="Content\_Contract.css" />
+    <Content Include="Content\_ContractCprit.css" />
+    <Content Include="robots.txt" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\common\editor.js" />
+    <Content Include="Scripts\common\kendo.global.js" />
+    <Content Include="Scripts\common\messages.js" />
+    <Content Include="Scripts\common\panel-selection.js" />
+    <Content Include="Scripts\Custom\ConsumerManagement\consumer.js" />
+    <Content Include="Scripts\Custom\ConsumerManagement\consumerSetup.js" />
+    <Content Include="Scripts\Custom\fileDownload.js" />
+    <Content Include="Scripts\Custom\FileSaver.min.js" />
+    <Content Include="Scripts\Custom\MeetingManagement\hotelandTravel.js" />
+    <Content Include="Scripts\Custom\MeetingManagement\nonReviewerAssignment.js" />
+    <Content Include="Scripts\Custom\MyWorkspace\mw-currentAssignments.js" />
+    <Content Include="Scripts\Custom\PanelManagement\multiselect.min.js" />
+    <Content Include="Scripts\Custom\PanelManagement\manageCritiques.js" />
+    <Content Include="Scripts\Custom\PanelManagement\pm-abstracts.js" />
+    <Content Include="Scripts\Custom\PanelManagement\programRegistrationStatus.js" />
+    <Content Include="Scripts\Custom\PanelManagement\SearchForStaffResults.js" />
+    <Content Include="Scripts\Custom\regcustomizecontract.js" />
+    <Content Include="Scripts\Custom\Security\SecurityPolicy.js" />
+    <Content Include="Scripts\Custom\Setup\applications.js" />
+    <Content Include="Scripts\Custom\Setup\cycleSetup.js" />
+    <Content Include="Scripts\Custom\Setup\awardSetup.js" />
+    <Content Include="Scripts\Custom\Setup\criterionSetup.js" />
+    <Content Include="Scripts\Custom\Setup\generateData.js" />
+    <Content Include="Scripts\Custom\Setup\documentDownload.js" />
+    <Content Include="Scripts\Custom\Setup\feeScheduleUpload.js" />
+    <Content Include="Scripts\Custom\Setup\mmUpload.js" />
+    <Content Include="Scripts\Custom\Setup\referralMapping.js" />
+    <Content Include="Scripts\Custom\Setup\summarySetup.js" />
+    <Content Include="Scripts\Custom\Setup\w9management.js" />
+    <Content Include="Scripts\Custom\Setup\meetingSetup.js" />
+    <Content Include="Scripts\Custom\Setup\feeScheduleSetup.js" />
+    <Content Include="Scripts\Custom\Setup\documentManagement.js" />
+    <Content Include="Scripts\Custom\Setup\sessionSetup.js" />
+    <Content Include="Scripts\Custom\Setup\programSetup.js" />
+    <Content Include="Scripts\Custom\Setup\transfer-filter.js" />
+    <Content Include="Scripts\Custom\Setup\transferData.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\adminNotes.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-completed.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-filter.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-myDraft.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-availDraft.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-priorities.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-Progress.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-Staged.js" />
+    <Content Include="Scripts\Custom\SummaryStatement\ss-document.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\academic-education.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\addresses.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\alternate-contacts.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\clients.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\email-addresses.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\military.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\general-info.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\notification.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\phone-numbers.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\recruitmentStatus.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\resume.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\table2excel.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\type-role.js" />
+    <Content Include="Scripts\Custom\PanelManagement\DiscussionBoard.js" />
+    <Content Include="Scripts\Custom\jquery.wordexport.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\vendor-management.js" />
+    <Content Include="Scripts\jquery-chosen\css\chosen-sprite%402x.png" />
+    <Content Include="Scripts\jquery-chosen\css\chosen-sprite.png" />
+    <Content Include="Scripts\jquery-chosen\css\chosen.css" />
+    <Content Include="Scripts\jquery-chosen\js\chosen.jquery.js" />
+    <Content Include="Scripts\colResizable-1.5.min.js" />
+    <Content Include="Scripts\common\common-globalnamespace.js" />
+    <Content Include="Scripts\Custom\MyWorkspace\ApplicationComments.js" />
+    <Content Include="Scripts\Custom\MyWorkspace\ApplicationScoring.js" />
+    <Content Include="Scripts\Custom\dirtycheck.js" />
+    <Content Include="Scripts\Custom\PanelManagement\Communication.js" />
+    <Content Include="Scripts\Custom\PanelManagement\SearchForReviewers.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\manage-account.js" />
+    <Content Include="Scripts\common\common.js" />
+    <Content Include="Scripts\common\commentwidget.js" />
+    <Content Include="Scripts\Custom\UserProfileManagement\Profile.js" />
+    <Content Include="Scripts\datejs\date.js" />
+    <Content Include="Scripts\jquery-custom-modal\css\jquery-custom-modal.css" />
+    <Content Include="Scripts\jquery-custom-modal\js\jquery-custom-modal.js" />
+    <Content Include="Scripts\jquery-custom-modal\templates\largeCustomDialog\_largeCustomDialog_cancelSaveFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\largeCustomDialog\_largeCustomDialog_cancelSubmitFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\largeCustomDialog\_largeCustomDialog_closeFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\largeCustomDialog\_largeCustomDialog_wizardFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\mediumCustomDialog\_mediumCustomDialog_cancelSaveFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\mediumCustomDialog\_mediumCustomDialog_cancelSubmitFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\mediumCustomDialog\_mediumCustomDialog_closeFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\mediumCustomDialog\_mediumCustomDialog_wizardFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\smallCustomDialog\_smallCustomDialog_cancelSaveFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\smallCustomDialog\_smallCustomDialog_cancelSubmitFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\smallCustomDialog\_smallCustomDialog_closeFooter.html" />
+    <Content Include="Scripts\jquery-custom-modal\templates\smallCustomDialog\_smallCustomDialog_wizardFooter.html" />
+    <Content Include="Scripts\jquery-ui-multiselect\css\jquery.multiselect.css" />
+    <Content Include="Scripts\jquery-ui-multiselect\css\jquery.multiselect.filter.css" />
+    <Content Include="Scripts\jquery-ui-multiselect\js\jquery.multiselect.filter.js" />
+    <Content Include="Scripts\jquery-ui-multiselect\js\jquery.multiselect.js" />
+    <Content Include="Content\themes\base\jquery-ui-1.11.4.css" />
+    <Content Include="Scripts\jquery-ui\jquery-ui-1.11.4.js" />
+    <Content Include="Content\themes\base\jquery-ui-1.11.4.min.css" />
+    <Content Include="Scripts\jquery-ui\jquery-ui-1.11.4.min.js" />
+    <Content Include="Content\themes\base\jquery-ui-1.11.4.smoothness.css" />
+    <Content Include="Content\themes\base\jquery-ui-1.11.4.smoothness.min.css" />
+    <Content Include="Scripts\jquery.ba-throttle-debounce.min.js" />
+    <Content Include="Scripts\jquery.ellipsis.min.js" />
+    <Content Include="Scripts\jquery.maskedinput.min.js" />
+    <Content Include="Scripts\jquery.numeric.js" />
+    <Content Include="Scripts\jquery.numeric.min.js" />
+    <Content Include="Scripts\jquery.stickyheader.js" />
+    <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Scripts\apprise-1.5.full.js" />
+    <Content Include="App_Data\RadSpell\en-US.tdf" />
+    <Compile Include="Controllers\SummaryStatement\SummaryStatementController.Assignments.cs" />
+    <Content Include="Content\fonts\icomoon.eot" />
+    <Content Include="Content\fonts\icomoon.ttf" />
+    <Content Include="Content\fonts\icomoon.woff" />
+    <Content Include="Assemblies\Select.Html.dep">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JSLintNet.json" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\font-awesome\less\animated.less" />
+    <Content Include="Content\font-awesome\less\bordered-pulled.less" />
+    <Content Include="Content\font-awesome\less\core.less" />
+    <Content Include="Content\font-awesome\less\fixed-width.less" />
+    <Content Include="Content\font-awesome\less\font-awesome.less" />
+    <Content Include="Content\font-awesome\less\icons.less" />
+    <Content Include="Content\font-awesome\less\larger.less" />
+    <Content Include="Content\font-awesome\less\list.less" />
+    <Content Include="Content\font-awesome\less\mixins.less" />
+    <Content Include="Content\font-awesome\less\path.less" />
+    <Content Include="Content\font-awesome\less\rotated-flipped.less" />
+    <Content Include="Content\font-awesome\less\screen-reader.less" />
+    <Content Include="Content\font-awesome\less\stacked.less" />
+    <Content Include="Content\font-awesome\less\variables.less" />
+    <Content Include="Content\font-awesome\scss\font-awesome.scss" />
+    <Content Include="Content\font-awesome\scss\_animated.scss" />
+    <Content Include="Content\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="Content\font-awesome\scss\_core.scss" />
+    <Content Include="Content\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="Content\font-awesome\scss\_icons.scss" />
+    <Content Include="Content\font-awesome\scss\_larger.scss" />
+    <Content Include="Content\font-awesome\scss\_list.scss" />
+    <Content Include="Content\font-awesome\scss\_mixins.scss" />
+    <Content Include="Content\font-awesome\scss\_path.scss" />
+    <Content Include="Content\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="Content\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="Content\font-awesome\scss\_stacked.scss" />
+    <Content Include="Content\font-awesome\scss\_variables.scss" />
+    <Content Include="Content\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\W9_File_Sample.xlsx" />
+    <Content Include="Content\LESS\P2RMIS\variables.less" />
+    <Content Include="Content\LESS\SystemSetup\Partials\ss-awardModals.less" />
+    <Content Include="Content\LESS\P2RMIS\global.less" />
+    <Content Include="Content\LESS\SystemSetup\ss-main.less" />
+    <Content Include="Content\LESS\MyWorkspace\mw-main.less" />
+    <Content Include="Content\LESS\MyWorkspace\Partials\mw-partials.less" />
+    <Content Include="Content\Fee_Schedule_Spreadsheet.xlsx" />
+    <Content Include="Content\LESS\sticky-header.less" />
+    <Content Include="Content\LESS\PanelManagement\pm-main.less" />
+    <Content Include="Content\LESS\PanelManagement\Partials\pm-partials.less" />
+    <Content Include="Content\LESS\ManageApplicationScoring\mas-main.less" />
+    <Content Include="Content\LESS\UserProfileManagement\upm-main.less" />
+    <Content Include="Content\Referral_Mapping_Template.xlsx" />
+    <Content Include="Content\LESS\MeetingManagment\mm-main.less" />
+    <Content Include="Content\LESS\MeetingManagment\Partials\mm-partials.less" />
+    <Content Include="compilerconfig.json" />
+    <None Include="bundleconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="Content\World_Travel_Data_Upload_Sample.xlsx" />
+    <Content Include="Content\telerik\2020.R2\kendo.common-material.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.common.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.dataviz.default.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.dataviz.material.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.dataviz.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.default-v2.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.default.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.material-v2.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\kendo.material.min.css.map" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSans-Bold.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSans-BoldOblique.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSans-ExtraLight.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSans-Oblique.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSans.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSansMono-Bold.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSansMono-BoldOblique.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSansMono-Oblique.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSansMono.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSerif-Bold.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSerif-BoldItalic.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSerif-Italic.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\DejaVu\DejaVuSerif.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\KendoUIGlyphs.eot" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\KendoUIGlyphs.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\KendoUIGlyphs.woff" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\WebComponentsIcons.eot" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\WebComponentsIcons.ttf" />
+    <Content Include="Content\telerik\2020.R2\fonts\glyphs\WebComponentsIcons.woff" />
+    <Content Include="Content\telerik\2020.R2\images\kendoui.ttf" />
+    <Content Include="Content\telerik\2020.R2\images\kendoui.woff" />
+    <Content Include="Content\LESS\kendo-fixes2020.less" />
+    <Content Include="Content\LESS\Security\security-main.less" />
+    <None Include="Properties\PublishProfiles\ProductionDeployment.pubxml" />
+    <None Include="Properties\PublishProfiles\TestDeployment.pubxml" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.raty.js" />
+    <Content Include="Scripts\jquery.tablesorter.min.js" />
+    <Content Include="Scripts\jquery.tablesorter.widgets.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.uuid.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery\jquery-1.12.1.js" />
+    <Content Include="Scripts\jquery\jquery-1.12.1.min.js" />
+    <Content Include="Scripts\jquery\jquery-migrate-1.2.1.js" />
+    <Content Include="Scripts\jquery\jquery-migrate-1.2.1.min.js" />
+    <Content Include="Scripts\jtimeout\jTimeout.js" />
+    <Content Include="Scripts\jtimeout\jTimeout.min.js">
+      <DependentUpon>jTimeout.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\build\pdf.js" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\build\pdf.min.js">
+      <DependentUpon>pdf.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\build\pdf.worker.js" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\build\pdf.worker.min.js">
+      <DependentUpon>pdf.worker.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\debugger.js" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-check.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-comment.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-help.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-insert.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-key.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-newparagraph.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-noicon.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-note.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\annotation-paragraph.svg" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-next%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-next-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-next-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-next.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-previous%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-previous-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-previous-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\findbarButton-previous.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\grab.cur" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\grabbing.cur" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\loading-icon.gif" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\loading-small%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\loading-small.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-documentProperties%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-documentProperties.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-firstPage%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-firstPage.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-handTool%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-handTool.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-lastPage%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-lastPage.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-rotateCcw%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-rotateCcw.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-rotateCw%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-rotateCw.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-scrollHorizontal%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-scrollHorizontal.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-scrollVertical%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-scrollVertical.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-scrollWrapped%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-scrollWrapped.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-selectTool%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-selectTool.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-spreadEven%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-spreadEven.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-spreadNone%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-spreadNone.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-spreadOdd%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\secondaryToolbarButton-spreadOdd.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\shadow.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\texture.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-bookmark%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-bookmark.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-download%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-download.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-menuArrows%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-menuArrows.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-openFile%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-openFile.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageDown%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageDown-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageDown-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageDown.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageUp%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageUp-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageUp-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-pageUp.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-presentationMode%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-presentationMode.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-print%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-print.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-search%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-search.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-secondaryToolbarToggle%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-secondaryToolbarToggle-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-secondaryToolbarToggle-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-secondaryToolbarToggle.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-sidebarToggle%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-sidebarToggle-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-sidebarToggle-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-sidebarToggle.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewAttachments%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewAttachments.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewOutline%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewOutline-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewOutline-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewOutline.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewThumbnail%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-viewThumbnail.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-zoomIn%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-zoomIn.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-zoomOut%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\toolbarButton-zoomOut.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\treeitem-collapsed%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\treeitem-collapsed-rtl%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\treeitem-collapsed-rtl.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\treeitem-collapsed.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\treeitem-expanded%402x.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\images\treeitem-expanded.png" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\viewer.css" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\viewer.js" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\viewer.min.css">
+      <DependentUpon>viewer.css</DependentUpon>
+    </Content>
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\viewer.min.js">
+      <DependentUpon>viewer.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Placeholders.min.js" />
+    <Content Include="Scripts\rangy\rangy-core.js" />
+    <Content Include="Scripts\report-viewer\report-viewer.js" />
+    <Content Include="Scripts\ResponsiveDropDown.js" />
+    <Content Include="Scripts\rr-custom.js" />
+    <Content Include="Scripts\ScrollTop.js" />
+    <Content Include="Scripts\jquery.widget-scroller.js" />
+    <Content Include="Scripts\telerik\2016.1.412\jszip.min.js" />
+    <Content Include="Scripts\telerik\2016.1.412\kendo.all.min.js" />
+    <Content Include="Scripts\telerik\2020.R2\jquery.min.js" />
+    <Content Include="Scripts\telerik\2020.R2\jszip.min.js" />
+    <Content Include="Scripts\telerik\2020.R2\kendo.all.min.js" />
+    <Content Include="Scripts\telerik\telerikcommentwidget.js" />
+    <Content Include="Views\Account\Reset2.cshtml" />
+    <Content Include="Views\Account\Reset3.cshtml" />
+    <Content Include="Views\Home\RadEditor.aspx" />
+    <Content Include="Scripts\jquery.scrollTableBody-1.0.0.js" />
+    <Content Include="Views\Home\RadEditorPro.aspx" />
+    <Content Include="Views\ProgramRegistrationStatus\_CustomizeContract.cshtml" />
+    <Content Include="Views\SummaryStatement\_SummaryPreview.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Home\Copyright.cshtml" />
+    <Content Include="Views\Shared\_SearchResults.cshtml" />
+    <Content Include="Views\ErrorPage\NoAccess.cshtml" />
+    <Content Include="Views\Shared\_LinkAccounts.cshtml" />
+    <None Include="MvcSiteMapSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Shared\Boolean.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Shared\_WelcomePartial.cshtml" />
+    <Content Include="Views\Home\PrivacyPolicy.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\RunReport.cshtml" />
+    <Content Include="Views\SummaryStatement\Index.cshtml" />
+    <Content Include="Views\SummaryStatement\_SSFilterMenu.cshtml" />
+    <Content Include="Views\Shared\_TabbedMenu.cshtml" />
+    <Content Include="Views\SummaryStatement\Progress.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\Assignments.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\EditSummaryStatement.cshtml" />
+    <Content Include="Views\SummaryStatement\_WorkflowHistory.cshtml" />
+    <Content Include="Views\Shared\_TabbedSubMenu.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_WorkflowWidget.cshtml" />
+    <Content Include="Views\SummaryStatement\Completed.cshtml" />
+    <Content Include="Views\SummaryStatement\_Notes.cshtml" />
+    <Content Include="Views\Shared\_ShowHideInstructions.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\Index.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_ViewApplicationModal.cshtml" />
+    <Content Include="Views\SummaryStatement\AssignmentUpdate.cshtml" />
+    <Content Include="Views\SummaryStatement\ManageWorkflow.cshtml" />
+    <Content Include="Views\SummaryStatementReview\RequestReview.cshtml" />
+    <Content Include="Views\SummaryStatement\_ViewApplication.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_SummaryStatement.cshtml" />
+    <Content Include="Views\SummaryStatementReview\ReviewSummaryStatement.cshtml" />
+    <Content Include="Views\PanelManagement\Index.cshtml" />
+    <Content Include="Views\PanelManagement\_PanelSelection.cshtml" />
+    <Content Include="Views\PanelManagement\Expertise.cshtml" />
+    <Content Include="Views\PanelManagement\_CoiList.cshtml" />
+    <Content Include="Views\PanelManagement\_RequestTransfer.cshtml" />
+    <Content Include="Views\PanelManagement\_PIInformation.cshtml" />
+    <Content Include="Views\PanelManagement\OrderOfReview.cshtml" />
+    <Content Include="Views\PanelManagement\ReviewerEvaluation.cshtml" />
+    <Content Include="Views\PanelManagement\Communication.cshtml" />
+    <Content Include="Views\PanelManagement\ManageCritiques.cshtml" />
+    <Content Include="Views\PanelManagement\_ReviewerAssignment.cshtml" />
+    <Content Include="Views\PanelManagement\ViewCritique.cshtml" />
+    <Content Include="Views\PanelManagement\CommunicationLog.cshtml" />
+    <Content Include="Views\PanelManagement\_RequestReviewerTransfer.cshtml" />
+    <Content Include="Views\PanelManagement\_ApplicationCritiquesOverview.cshtml" />
+    <Content Include="Views\UserProfileManagement\_SearchUser.cshtml" />
+    <Content Include="Views\UserProfileManagement\Profile.cshtml" />
+    <Content Include="Views\UserProfileManagement\SearchResults.cshtml" />
+    <Content Include="Views\Shared\_PrivilegedTabMenu.cshtml" />
+    <Content Include="Views\UserProfileManagement\_AddResume.cshtml" />
+    <Content Include="Views\UserProfileManagement\_UserClients.cshtml" />
+    <Content Include="Views\UserProfileManagement\ParticipationHistory.cshtml" />
+    <Content Include="Views\UserProfileManagement\PasswordManagement.cshtml" />
+    <Content Include="Views\UserProfileManagement\_ManageAccount.cshtml" />
+    <Content Include="Views\Shared\_IconMenu.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_EditSubMenu.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_EditToolbar.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\PanelManagement\_ViewCommunication.cshtml" />
+    <Content Include="Views\ProgramRegistration\Index.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\Index.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\ApplicationDetails.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\_AppStatus.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\AlreadyActiveApp.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\Scoreboard.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\_Scoreboard.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\_RevStatus.cshtml" />
+    <Content Include="Views\ProgramRegistrationStatus\Index.cshtml" />
+    <Content Include="Views\ProgramRegistration\_RegistrationWizard.cshtml" />
+    <Content Include="Views\ProgramRegistration\_AcknowledgeNda.cshtml" />
+    <Content Include="Views\ProgramRegistration\_BiasCoi.cshtml" />
+    <Content Include="Views\ProgramRegistration\_Contract.cshtml" />
+    <Content Include="Views\ProgramRegistration\_ConfirmSign.cshtml" />
+    <Content Include="Views\PanelManagement\_ConfirmEmail.cshtml" />
+    <Content Include="Views\PanelManagement\_SelectReviewersEmailAddress.cshtml" />
+    <Content Include="Views\ProgramRegistration\_FormHeader.cshtml" />
+    <Content Include="Views\ProgramRegistration\_BiasCoiCprit.cshtml" />
+    <Content Include="Views\ProgramRegistration\_AcknowledgeNdaCprit.cshtml" />
+    <Content Include="Views\ProgramRegistration\_ContractCprit.cshtml" />
+    <Content Include="Views\MyWorkspace\_ScorecardModal.cshtml" />
+    <Content Include="Views\MyWorkspace\Index.cshtml" />
+    <Content Include="Views\MyWorkspace\ReviewerScoreboard.cshtml" />
+    <Content Include="Views\MyWorkspace\Scorecard.cshtml" />
+    <Content Include="Views\MyWorkspace\_ReviewerAssignment.cshtml" />
+    <Content Include="Views\ErrorPage\FileNotFound.cshtml" />
+    <Content Include="Views\MyWorkspace\Critique.cshtml" />
+    <Content Include="Views\MyWorkspace\_PostAssignmentGrid.cshtml" />
+    <Content Include="Views\MyWorkspace\_PreAssignmentGrid.cshtml" />
+    <Content Include="Views\MyWorkspace\_ApplicationScoringGrid.cshtml" />
+    <Content Include="Views\MyWorkspace\_ApplicationCommentModal.cshtml" />
+    <Content Include="Views\MyWorkspace\_SessionPanelList.cshtml" />
+    <Content Include="Views\MyWorkspace\_EditCritiqueModal.cshtml" />
+    <Content Include="Views\MyWorkspace\_CritiqueToolbar.cshtml" />
+    <Content Include="Views\MyWorkspace\_EditCritique.cshtml" />
+    <Content Include="Views\MyWorkspace\_AssignedReviewersScores.cshtml" />
+    <Content Include="Views\MyWorkspace\_NotificationOfSubmitModal.cshtml" />
+    <Content Include="Views\MyWorkspace\_IncompleteOverallWarningModal.cshtml" />
+    <Content Include="Views\MyWorkspace\_IncompleteCritiqueWarningModal.cshtml" />
+    <Content Include="Views\MyWorkspace\_ConfirmationOfSuccessModal.cshtml" />
+    <Content Include="Views\MyWorkspace\CritiquePanel.cshtml" />
+    <Content Include="Views\MyWorkspace\_ApplicationInformation.cshtml" />
+    <Content Include="Views\MyWorkspace\_ReviewerCritiques.cshtml" />
+    <Content Include="Views\MyWorkspace\_NoDataAvailable.cshtml" />
+    <Content Include="Views\Library\Index.cshtml" />
+    <Content Include="Views\Library\_ProgramList.cshtml" />
+    <Content Include="Views\Library\_TrainingDocumentGrid.cshtml" />
+    <Content Include="Views\PanelManagement\Reviewers.cshtml" />
+    <Content Include="Views\Worklist\Index.cshtml" />
+    <Content Include="Views\Worklist\_ProfileUpdateModal.cshtml" />
+    <Content Include="Views\PanelManagement\SearchForReviewers.cshtml" />
+    <Content Include="Views\PanelManagement\_CommunicationLog.cshtml" />
+    <Content Include="Views\PanelManagement\_PanelAssignment.cshtml" />
+    <Content Include="Views\PanelManagement\_RatingEvaluation.cshtml" />
+    <Content Include="Views\PanelManagement\_PersonSearchNoRecordsFound.cshtml" />
+    <Content Include="Views\PanelManagement\_PersonSearchNotEnoughChars.cshtml" />
+    <Content Include="Views\PanelManagement\_AssignWarning.cshtml" />
+    <Content Include="Views\PanelManagement\_PanelListRemoveReviewerWarning.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_WorkflowStepSelection.cshtml" />
+    <Content Include="Views\Home\_ProfileCompletion.cshtml" />
+    <Content Include="Views\ManageApplicationScoring\_AdminNotes.cshtml" />
+    <Content Include="Views\ErrorPage\NoAjaxAuthentication.cshtml" />
+    <Content Include="Views\ErrorPage\NoAjaxAccess.cshtml" />
+    <Content Include="Views\UserProfileManagement\_GeneralInfo.cshtml" />
+    <Content Include="Views\UserProfileManagement\_EmailAddresses.cshtml" />
+    <Content Include="Views\UserProfileManagement\_PhoneNumbers.cshtml" />
+    <Content Include="Views\UserProfileManagement\_AlternateContacts.cshtml" />
+    <Content Include="Views\UserProfileManagement\_ProfessionalAffiliation.cshtml" />
+    <Content Include="Views\UserProfileManagement\_Addresses.cshtml" />
+    <Content Include="Views\UserProfileManagement\_GenderEthinicity.cshtml" />
+    <Content Include="Views\UserProfileManagement\_AcademicEducation.cshtml" />
+    <Content Include="Views\UserProfileManagement\_Clients.cshtml" />
+    <Content Include="Views\UserProfileManagement\_Resume.cshtml" />
+    <Content Include="Views\UserProfileManagement\_Military.cshtml" />
+    <Content Include="Views\UserProfileManagement\_Expertise.cshtml" />
+    <Content Include="Views\UserProfileManagement\_TypeRole.cshtml" />
+    <Content Include="Views\UserProfileManagement\_Notification.cshtml" />
+    <Content Include="Views\PanelManagement\DiscussionBoard.cshtml" />
+    <Content Include="Views\PanelManagement\_AddDBComment.cshtml" />
+    <Content Include="Views\Shared\_KendoHeader2016.cshtml" />
+    <Content Include="Views\PanelManagement\_CanNotStartModWarning.cshtml" />
+    <Content Include="Views\MyWorkspace\HotelAndTravel.cshtml" />
+    <Content Include="Views\MyWorkspace\_SessionAttendanceDetails.cshtml" />
+    <Content Include="Views\ProgramRegistrationStatus\_QuickReferenceGuide.cshtml" />
+    <Content Include="Views\Home\_InfoReferenceGuide.cshtml" />
+    <Content Include="Views\TaskTracking\Index.cshtml" />
+    <Content Include="Views\TaskTracking\EditRequest.cshtml" />
+    <Content Include="Views\Setup\Index.cshtml" />
+    <Content Include="Views\Setup\AwardSetup.cshtml" />
+    <Content Include="Views\Setup\MeetingSetup.cshtml" />
+    <Content Include="Views\Setup\SessionSetup.cshtml" />
+    <Content Include="Views\Setup\FeeScheduleSetup.cshtml" />
+    <Content Include="Views\Setup\_ProgramWizard.cshtml" />
+    <Content Include="Views\Setup\_AwardWizard.cshtml" />
+    <Content Include="Views\Setup\_RemoveWarning.cshtml" />
+    <Content Include="Views\Setup\_RemoveDisallowed.cshtml" />
+    <Content Include="Views\Setup\CriterionSetup.cshtml" />
+    <Content Include="Views\Setup\_CriterionWizard.cshtml" />
+    <Content Include="Views\Setup\_UploadScoringTemplate.cshtml" />
+    <Content Include="Views\Setup\_MeetingWizard.cshtml" />
+    <Content Include="Views\Setup\_AssignPrograms.cshtml" />
+    <Content Include="Views\Setup\_UnassignPrograms.cshtml" />
+    <Content Include="Views\Setup\_SessionWizard.cshtml" />
+    <Content Include="Views\Setup\_PreviewCriteria.cshtml" />
+    <Content Include="Views\Setup\_PanelWizard.cshtml" />
+    <Content Include="Views\Setup\_UpdatePanel.cshtml" />
+    <Content Include="Views\Setup\_AddPanelNoPrograms.cshtml" />
+    <Content Include="Views\Setup\_UploadFeeSchedule.cshtml" />
+    <Content Include="Views\PanelManagement\_EditOverview.cshtml" />
+    <Content Include="Views\SummaryStatementProcessing\_UploadFile.cshtml" />
+    <Content Include="Views\PanelManagement\_ManageCritiqueModal.cshtml" />
+    <Content Include="Views\Shared\_TabMenu.cshtml" />
+    <Content Include="Views\Home\_NotificationMessage.cshtml" />
+    <Content Include="Views\Shared\_Maintenance.cshtml" />
+    <Content Include="Views\PanelManagement\_ApplicationModal.cshtml" />
+    <Content Include="Views\PanelManagement\SearchForStaff.cshtml" />
+    <Content Include="Views\PanelManagement\_NewRequestReviewerTransfer.cshtml" />
+    <Content Include="Views\MyWorkspace\_CPRITChair.cshtml" />
+    <Content Include="Views\MyWorkspace\_RequestTransfer.cshtml" />
+    <Content Include="Views\MyWorkspace\_ReviewerAssignmentCPRIT.cshtml" />
+    <Content Include="Views\MyWorkspace\ManageApplicationScoring.cshtml" />
+    <Content Include="Views\Shared\_ManageApplicationScoringApplications.cshtml" />
+    <Content Include="Views\Setup\ImportData.cshtml" />
+    <Content Include="Views\Setup\_DataTransferFilterMenu.cshtml" />
+    <Content Include="Views\Setup\GenerateData.cshtml" />
+    <Content Include="Views\Setup\DocumentManagement.cshtml" />
+    <Content Include="Views\Setup\AddDocument.cshtml" />
+    <Content Include="Views\Setup\EditDocument.cshtml" />
+    <Content Include="Views\Setup\VimeoPage.cshtml" />
+    <Content Include="Views\UserProfileManagement\_RecruitmentStatus.cshtml" />
+    <Content Include="Views\Setup\_VimeoModal.cshtml" />
+    <Content Include="Views\UserProfileManagement\_ManageBlock.cshtml" />
+    <Content Include="Views\Setup\W9AddressManagement.cshtml" />
+    <Content Include="Views\UserProfileManagement\_VendorManagement.cshtml" />
+    <Content Include="Views\UserProfileManagement\_VendorManagementModal.cshtml" />
+    <Content Include="Views\PanelManagement\_ThresholdModal.cshtml" />
+    <Content Include="Views\ProgramRegistration\_EmContact.cshtml" />
+    <Content Include="Views\Shared\_MMTabbedMenu.cshtml" />
+    <Content Include="Views\Shared\_MMSubTabbedMenu.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Setup\ReferralMapping.cshtml" />
+    <Content Include="Views\Setup\_ErrorMessage.cshtml" />
+    <Content Include="Views\Reviewer\Index.cshtml" />
+    <Content Include="Views\Reviewer\_PanelSelection.cshtml" />
+    <Content Include="Views\MyWorkspace\_AlreadySubmittedCritique.cshtml" />
+    <Content Include="Views\Setup\Applications.cshtml" />
+    <Content Include="Views\Setup\_WithdrawApplication.cshtml" />
+    <Content Include="Views\Setup\_ResetWithdraw.cshtml" />
+    <Content Include="Views\Setup\_ImportErrorMessages.cshtml" />
+    <Content Include="Views\MeetingManagement\Index.cshtml" />
+    <Content Include="Views\MeetingManagement\Upload.cshtml" />
+    <Content Include="Views\MeetingManagement\EditHotel.cshtml" />
+    <Content Include="Views\MeetingManagement\EditComments.cshtml" />
+    <Content Include="Views\MeetingManagement\EditTravel.cshtml" />
+    <Content Include="Views\Shared\_MMSubTabbedMenu.cshtml" />
+    <Content Include="Views\MeetingManagement\_TravelLeg.cshtml" />
+    <Content Include="Views\MeetingManagement\NonReviewerAttendees.cshtml" />
+    <Content Include="Views\MeetingManagement\_UpdateAssignment.cshtml" />
+    <Content Include="Views\Setup\PreviewCriteriaLayout.cshtml" />
+    <Content Include="Views\Shared\_LayoutHeadless.cshtml" />
+    <Content Include="Views\ConsumerManagement\Index.cshtml" />
+    <Content Include="Views\ConsumerManagement\Consumer.cshtml" />
+    <Content Include="Views\SummaryStatement\EditPriorities.cshtml" />
+    <Content Include="Views\PanelManagement\_ElevatedChairpersonAssignment.cshtml" />
+    <Content Include="Views\Setup\SummarySetup.cshtml" />
+    <Content Include="Views\Shared\_KendoHeader2020.cshtml" />
+    <Content Include="Scripts\telerik\2020.R2\jquery.min.map" />
+    <Content Include="Scripts\telerik\2020.R2\kendo.all.min.js.map" />
+    <Content Include="Views\Shared\_DownloadFileWarning.cshtml" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\build\pdf.js.map" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\build\pdf.worker.js.map" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\LICENSE" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78ms-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\78ms-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\83pv-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\90ms-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\90ms-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\90msp-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\90msp-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\90pv-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\90pv-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Add-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Add-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Add-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Add-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-0.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-1.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-3.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-4.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-5.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-6.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-CNS1-UCS2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-0.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-1.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-3.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-4.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-5.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-GB1-UCS2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-0.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-1.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-3.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-4.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-5.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-6.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Japan1-UCS2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Korea1-0.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Korea1-1.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Korea1-2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Adobe-Korea1-UCS2.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\B5pc-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\B5pc-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\CNS-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\CNS-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\CNS1-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\CNS1-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\CNS2-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\CNS2-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\ETen-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\ETen-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\ETenms-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\ETenms-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\ETHK-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\ETHK-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Ext-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Ext-RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Ext-RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Ext-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GB-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GB-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GB-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GB-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBK-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBK-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBK2K-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBK2K-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBKp-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBKp-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBpc-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBpc-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBT-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBT-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBT-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBT-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBTpc-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\GBTpc-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Hankaku.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Hiragana.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKdla-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKdla-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKdlb-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKdlb-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKgccs-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKgccs-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKm314-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKm314-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKm471-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKm471-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKscs-B5-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\HKscs-B5-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Katakana.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSC-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSC-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSC-Johab-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSC-Johab-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSCms-UHC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSCms-UHC-HW-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSCms-UHC-HW-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSCms-UHC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSCpc-EUC-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\KSCpc-EUC-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\LICENSE" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\NWP-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\NWP-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\RKSJ-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\RKSJ-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\Roman.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UCS2-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UCS2-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UTF16-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UTF16-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UTF8-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniCNS-UTF8-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UCS2-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UCS2-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UTF16-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UTF16-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UTF8-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniGB-UTF8-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UCS2-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UCS2-HW-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UCS2-HW-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UCS2-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UTF16-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UTF16-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UTF8-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS-UTF8-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS2004-UTF16-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS2004-UTF16-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS2004-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS2004-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS2004-UTF8-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJIS2004-UTF8-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISPro-UCS2-HW-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISPro-UCS2-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISPro-UTF8-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISX0213-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISX0213-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISX02132004-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniJISX02132004-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UCS2-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UCS2-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UTF16-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UTF16-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UTF32-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UTF32-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UTF8-H.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\UniKS-UTF8-V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\V.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\cmaps\WP-Symbol.bcmap" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ach\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\af\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\an\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ar\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ast\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\az\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\be\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\bg\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\bn\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\bo\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\brx\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\br\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\bs\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\cak\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ca\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\cs\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\cy\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\da\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\de\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\dsb\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\el\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\en-CA\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\en-GB\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\en-US\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\eo\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\es-AR\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\es-CL\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\es-ES\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\es-MX\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\et\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\eu\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\fa\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ff\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\fi\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\fr\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\fy-NL\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ga-IE\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\gd\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\gl\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\gn\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\gu-IN\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\he\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\hi-IN\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\hr\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\hsb\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\hu\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\hy-AM\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ia\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\id\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\is\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\it\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ja\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\kab\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ka\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\kk\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\km\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\kn\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ko\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\lij\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\locale.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\lo\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ltg\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\lt\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\lv\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\mk\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\mr\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ms\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\my\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\nb-NO\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ne-NP\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\nl\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\nn-NO\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\oc\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\pa-IN\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\pl\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\pt-BR\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\pt-PT\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\rm\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ro\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ru\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\scn\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\si\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\sk\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\sl\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\son\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\sq\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\sr\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\sv-SE\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ta\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\te\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\th\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\tl\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\trs\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\tr\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\uk\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\ur\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\uz\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\vi\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\wo\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\xh\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\zh-CN\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\locale\zh-TW\viewer.properties" />
+    <Content Include="Scripts\pdfjs-2.4.456-es5-dist\web\viewer.js.map" />
+    <Content Include="Views\Shared\PdfJs.cshtml" />
+    <Content Include="Views\Shared\_Timeout.cshtml" />
+    <Content Include="Views\Security\SecurityPolicy.cshtml" />
+    <Content Include="Views\Security\UserPolicy.cshtml" />
+    <Content Include="Views\Security\_PolicyManagementHeader.cshtml" />
+    <Content Include="Views\Security\SecurityPolicyHistoryLog.cshtml" />
+    <Content Include="Views\Security\_Policy.cshtml" />
+    <None Include="Web.Dev-Cloud.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Prod-Cloud.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Staging-Cloud.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test-Cloud.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test2-Cloud.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.UA-Cloud.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\themes\base\images\background.gif" />
+    <Content Include="Content\themes\base\images\spriteSheet.gif" />
+    <Content Include="Content\themes\base\images\transparent.gif" />
+    <Content Include="Global.asax" />
+    <Content Include="JS\site.js" />
+    <Content Include="Scripts\jquery-multiselect\css\jquery.multiselect2side.css" />
+    <Content Include="Scripts\jquery-multiselect\js\jquery.multiselect2side.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\LogOn.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\" />
+    <Folder Include="Content\LESS\UserProfileManagement\Partials\" />
+    <Folder Include="ViewModels\ApplicationDetails\" />
+    <Folder Include="_bin_deployableAssemblies\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{0F653AD2-2585-40E0-A533-31AFE3F5D221}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrossCuttingServices\CrossCuttingServices.csproj">
+      <Project>{317E285D-26A0-4230-B1D0-1A845BE7C658}</Project>
+      <Name>CrossCuttingServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{f179916b-288a-48f5-bcd8-fb713c2b15e7}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebModels\WebModels.csproj">
+      <Project>{f1059e19-b33b-48f6-8afa-ca31caf41cc9}</Project>
+      <Name>WebModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Reset.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Mvc.sitemap">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UA-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod-Cloud|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test2-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59840</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != '' And Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')" />
+  <Import Project="$(SolutionDir)\packages\MSBuild.Microsoft.VisualStudio.Web.targets.12.0.4\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets" Condition="('$(VSToolsPath)' == '' Or !Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')) And Exists('$(SolutionDir)\packages\MSBuild.Microsoft.VisualStudio.Web.targets.12.0.4\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BuildWebCompiler.1.11.326\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildWebCompiler.1.11.326\build\BuildWebCompiler.targets'))" />
+  </Target>
+  <Import Project="..\packages\BuildWebCompiler.1.11.326\build\BuildWebCompiler.targets" Condition="Exists('..\packages\BuildWebCompiler.1.11.326\build\BuildWebCompiler.targets')" />
+</Project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-3.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-3.0 MvcSiteMapSchema.xsd"
+            enableLocalization="true">
+
+	<mvcSiteMapNode title="Home" controller="Home" action="Index">
+
+		<mvcSiteMapNode title="Account Mgmt" controller="UserProfileManagement" action="SearchUser" >
+			<mvcSiteMapNode title="Create User" />
+			<mvcSiteMapNode title="Update User" />
+		</mvcSiteMapNode>
+
+		<mvcSiteMapNode title="Scoring" controller="ManageApplicationScoring" action="Index"></mvcSiteMapNode>
+
+		<mvcSiteMapNode title="Summary Statements" controller="SummaryStatementProcessing" action="Index"></mvcSiteMapNode>
+
+		<mvcSiteMapNode title="Reviewer Info" controller="Reviewer" action="Index"></mvcSiteMapNode>
+
+		<mvcSiteMapNode title="My Workspace" controller="MyWorkspace" action="Index"></mvcSiteMapNode>
+
+		<mvcSiteMapNode title="Panel Mgmt" controller="PanelManagement" action="Menu">
+			<mvcSiteMapNode title="Overview" controller="PanelManagement" action="Index"/>
+			<mvcSiteMapNode title="Registration Status" controller="ProgramRegistrationStatus" action="Index"/>
+			<mvcSiteMapNode title="Work List" controller="WorkList" action="Index"/>
+		</mvcSiteMapNode>
+		<mvcSiteMapNode title="Meeting Mgmt" controller="MeetingManagement" action="Index"></mvcSiteMapNode>
+		<mvcSiteMapNode title="Consumer Mgmt" controller="ConsumerManagement" action="Index"></mvcSiteMapNode>
+		<mvcSiteMapNode title="Library" controller="Library" action="Index"></mvcSiteMapNode>
+		<mvcSiteMapNode title="Reporting" controller="Report" action="Index"></mvcSiteMapNode>
+		<mvcSiteMapNode title="System Setup" controller="Setup" action="Menu">
+			<mvcSiteMapNode title="Program Setup" controller="Setup" action="Index"/>
+			<mvcSiteMapNode title="Award Setup" controller="Setup" action="AwardSetup"/>
+			<mvcSiteMapNode title="Meeting Setup" controller="Setup" action="MeetingSetup"/>
+			<mvcSiteMapNode title="Session Setup" controller="Setup" action="SessionSetup"/>
+			<mvcSiteMapNode title="Fee Schedule Setup" controller="Setup" action="FeeScheduleSetup"/>
+			<mvcSiteMapNode title="Data Transfer" controller="Setup" action="TransferData" />
+			<mvcSiteMapNode title="Document Managment" controller="Setup" action="DocumentManagement"/>
+			<mvcSiteMapNode title="W-9 Address Management" controller="Setup" action="W9AddressManagement" />
+			<mvcSiteMapNode title="Application Management" controller="Setup" action="Applications" />
+		</mvcSiteMapNode>
+		<mvcSiteMapNode title="Security" controller="Security" action="Menu">
+			<mvcSiteMapNode title="Security Policy Management" controller="Security" action="SecurityPolicy" />
+			<mvcSiteMapNode title="User Security Policy" controller="Security" action="UserPolicy" />
+		</mvcSiteMapNode>
+	</mvcSiteMapNode>
+</mvcSiteMap>

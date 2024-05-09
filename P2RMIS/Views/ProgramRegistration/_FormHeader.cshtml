@@ -1,0 +1,61 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+@{ 
+    var FormattedSignedDateTimeEt = ViewHelpers.FormatEtDateTime(Model.Form.DocumentSignedDateTime);
+    var FormattedSignedDate = ViewHelpers.FormatDate(Model.Form.DocumentSignedDateTime);
+}
+<input type="hidden" id="panelRegistrationDocumentId" value="@Model.Form.DocumentId" />
+<section id="documentFormHeader" role="region">
+    <div class="upm-header-container">
+        <label for="form-header-panel"><strong>Panel:</strong></label>
+        <div class="displayInline"><strong>@Model.Form.FiscalYear @Model.Form.ProgramAbbreviation @Model.Form.PanelAbbreviation</strong></div>
+    </div>
+    <div class="upm-header-container">
+        <label for="form-header-docid">Doc ID:</label>
+        <span class="marginRight15" id="form-header-docid">@Model.Form.DocumentId</span>
+        <label for="form-header-version">Version:</label>
+        <span class="marginRight15" id="form-header-version">@Model.Form.DocumentVersion</span>
+        <div>
+            <label for="signatureSection">Signed:</label>
+            @if (Model.Form.DocumentSigned)
+            {
+                if (Model.Form.SignedOffLine.HasValue && Model.Form.SignedOffLine.Value)
+                {
+                    <span id="signatureSection">
+                        The contract has been signed off-line and verified on &nbsp;@FormattedSignedDateTimeEt
+                    </span>
+                }
+                else if (Model.Form.ContractData.IsContractBypassed)
+                {
+                    <span id="signatureSection">
+                        The contract has been Bypassed on @FormattedSignedDate<text>.</text> No signature required.
+                    </span>
+                }
+                else
+                {
+                    <span id="signatureSection">
+                        @Model.Form.SignedByName&nbsp;@FormattedSignedDateTimeEt
+                    </span>
+                }
+            }
+            else
+            {
+                <span id="signatureSection">Not signed</span>
+            }
+        </div>
+    </div>
+    @if (Model.DisplayPayRateMessageOnContractualAgreement & !Model.Form.DocumentSigned)
+    {
+        <div class="document-status alert-message padding main-header_failure" role="alert" tabindex="-1" id="document-status">
+            <span>@Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel.PayRateNotUploadedMessage</span>
+        </div>
+    }
+    <div class="registrationCaution">
+        <span>@MessageService.RegistrationFormHelpText</span>
+    </div>
+</section>
+<script type="text/javascript">
+    var documentStatus = '#document-status';
+    isVisibleFocus(documentStatus);
+</script>

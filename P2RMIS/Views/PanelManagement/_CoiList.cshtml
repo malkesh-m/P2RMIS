@@ -1,0 +1,41 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ViewCoiListViewModel
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div>
+                List of all individuals who may have a conflict of interest in the review of this proposal.
+            </div>
+            @if ((Model.Personnels != null) && (Model.Personnels.Count() > 0))
+            {
+                <div id="coiContents" class="clearfix">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>@Invariables.Labels.Name</th>
+                                <th>@Invariables.Labels.Organization</th>
+                                <th>@Invariables.Labels.CoiType</th>
+                                <th>@Invariables.Labels.CoiSourceName</th>
+                            </tr>
+                        </thead>
+                        <tbody id="coiBody">
+                            @for (var i = 0; i < Model.Personnels.Count(); i++)
+                            {
+                                var item = Model.Personnels[i];
+                                <tr class="applicationRow">
+                                    <td>@item.LastName, @item.FirstName</td>
+                                    <td>@item.Organization</td>
+                                    <td>@item.CoiType</td>
+                                    <td>@item.CoiSource</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    @*<div class="modal-footer"></div>*@
+</div>
+

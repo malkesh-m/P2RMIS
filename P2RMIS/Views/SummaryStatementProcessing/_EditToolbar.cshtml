@@ -1,0 +1,297 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.EditSummaryStatementViewModel
+
+<input type="hidden" id="applicationId" value="@Model.ApplicationDetails.ApplicationId" />
+<input type="hidden" id="workflowId" value="@Model.ApplicationDetails.WorkflowId" />
+<input type="hidden" id="workflowStepId" value="@Model.ActiveWorkflowStep" />
+<input type="hidden" id="checkoutUserId" value="@Model.CheckoutUserId" />
+<input type="hidden" id="canModifyGeneralComments" value="@Html.AttributeEncode(Model.CanModifyGeneralComments)" />
+<input type="hidden" id="canViewEditorComments" value="@Html.AttributeEncode(Model.CanViewEditorComments)" />
+<input type="hidden" id="generalCommentMaxCharLimit" value="@Model.GeneralCommentMaximum" />
+<input type="hidden" id="canCheckIntoAnyPhase" value="@Html.AttributeEncode(Model.CanCheckIntoAnyPhase)" />
+<input type="hidden" id="panelApplicationId" value="@Model.ApplicationDetails.PanelApplicationId" />
+<div id="summaryStatementToolbar">
+    <span class="padding10">
+        <span>Mode:</span>
+        <select id="viewContentMode">
+            <option value="0" selected>Markup</option>
+            <option value="1">Final</option>
+            <option value="2">Original</option>
+        </select>
+    </span>
+    <span class="padding10">
+        <span>Section:</span>
+        <select id="sectionNav">
+            @for (var iSection = 0; iSection < Model.Criteria.Count; iSection++)
+            {
+                var item = Model.Criteria.ToList()[iSection];
+                if (!string.IsNullOrEmpty(item.Key))
+                {
+                    var sectionAnchor = "section" + iSection;
+                    <option value="@sectionAnchor">@item.Key</option>
+                }
+            }
+        </select>
+    </span>
+    <span>
+        <span class="padding10"><a href="#" id="addGeneralComment"><img src="/Content/img/add_General_Comment_20px_enabled.png" alt="General Comment" title="Add a general comment for this Summary Statement" border="0" /></a></span>
+        <span class="padding10"><a href="#" id="submitSummaryStatement"><img src="~/Content/img/check_circle_20px_enabled.png" alt="Submit" title="Submit" border="0" /></a></span>
+    </span>
+</div>
+<div id="generalCommentsModal">
+    <div id="displayGeneralComments"></div>
+    <div id="saveGeneralCommentSection">
+        <h5 id="addGeneralCommentTitle">Add a general comment (max char limit is <span class="generalCommentMaxCharLimitInstruction"></span>):</h5>
+        <h5 id="editGeneralCommentTitle" class="hide">Edit a general comment (max char limit is <span class="generalCommentMaxCharLimitInstruction"></span>):</h5>
+        <input type="hidden" id="generalCommentId" value="" />
+        <textarea id="generalComment"></textarea>
+        @*<div id="saveGeneralCommentButtons">
+                <button id="saveGeneralComment">Save</button>
+                <button id="cancelSaveGeneralComment" class="hide">Cancel</button>
+            </div>*@
+    </div>
+</div>
+<div id="commentEntryTemplate" class="commentEntry">
+    <span class="commentEntryComment"></span><br />
+    <span class="commentEntryAuthor"></span><br />
+    <span class="commentEntryPublishedDate"></span><br />
+    <a class="commentEntryEdit" href="#">Edit</a>
+    <a class="commentEntryDelete" href="#">Delete</a>
+</div>
+<!-- Comment Widget -->
+@Html.IncludeVersionedFiles("/Scripts/datejs/date.js")
+@Html.IncludeVersionedFiles("/Scripts/common/commentwidget.js")
+@* Script for general comments *@
+< script type = "text/javascript" >
+    // Assign id and class names
+    var UserId = parseInt($("#checkoutUserId").val());
+var CanModifyGeneralComments = $.toBoolean($("#canModifyGeneralComments").val());
+var ElementKeys = {
+displayComments: "displayGeneralComments",
+saveCommentSection: "saveGeneralCommentSection",
+saveCommentSectionId: "generalCommentId",
+saveCommentSectionComment: "generalComment",
+addCommentTitle: "addGeneralCommentTitle",
+editCommentTitle: "editGeneralCommentTitle",
+cancelSaveCommentButton: "cancelSaveGeneralComment",
+commentEntryTemplate: "commentEntryTemplate",
+commentEntrySectionClass: "commentEntry",
+commentEntryCommentClass: "commentEntryComment",
+commentEntryAuthorClass: "commentEntryAuthor",
+commentEntryPublishedDateClass: "commentEntryPublishedDate",
+commentEntryEditLinkClass: "commentEntryEdit",
+commentEntryDeleteLinkClass: "commentEntryDelete",
+}
+var ValidationRules = {
+maxCommentLength: GetGeneralCommentMaxCharLimit(), // -1 means disabled
+canModify: CanModifyGeneralComments,
+noCommentsMessage: "No general comments have been submitted.",
+invalidCommentLengthMessage: "You have exceeded the maximum character limit of " + GetGeneralCommentMaxCharLimit() +
+". Please reduce the number of characters to " + GetGeneralCommentMaxCharLimit() + "."
+};
+$(".generalCommentMaxCharLimitInstruction").html(GetGeneralCommentMaxCharLimit());
+// Initialize comment widget
+var commentWidget = new CommentWidget(UserId, ElementKeys, ValidationRules, true);
+
+// Get max char limit
+function GetGeneralCommentMaxCharLimit()
+{
+return parseInt($("#generalCommentMaxCharLimit").val());
+}
+@*scripts for view mode*@
+    $("#viewContentMode").on("change", function () {
+            // Set content
+            fnSetContentByDisplayMode($(this).val());
+            // Show or hide original
+            fnShowOrHideOriginal($(this).val());
+        // Initialize section navigation menu
+        $("#sectionNav option:eq(0)").prop('selected', true);
+        });
+@*script for section navigation*@
+    $("#sectionNav").on("change", function () {
+            var hash = $(this).val();
+            location.hash = "#" + hash;
+            window.scrollBy(0, -125);
+        });
+@*script for general comments*@
+    $('#generalCommentsModal').dialog({
+            autoOpen: false,
+        width: 990,
+        height: 555,
+        modal: true,
+        resizable: false,
+        title: "General Comments",
+        open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide(); },
+        buttons: { "Close": function() { $(this).dialog("close"); } }
+        });
+    // Add general comment button in tool bar
+    $("#addGeneralComment").on("click", function (e) {
+            e.preventDefault();
+            fnLoadGeneralComments();
+        });
+    // Load general comments
+    var fnLoadGeneralComments = function() {
+        var applicationId = $("#applicationId").val();
+        var panelApplicationId = $("#panelApplicationId").val();
+        $.ajax({
+            cache: false,
+            type: 'GET',
+            url: '/SummaryStatementProcessing/ViewComments',
+            data: { "panelApplicationId": panelApplicationId }
+        }).done(function (data) {
+            // Display comments
+            var commentJsonArray = [];
+            for (var i = 0; i < data.Notes.length; i++)
+            {
+                var commentJson = {
+                    commentId: data.Notes[i].CommentID,
+                    comment: data.Notes[i].Comment,
+                    userId: data.Notes[i].UserId,
+                    firstName: data.Notes[i].FirstName,
+                    lastName: data.Notes[i].LastName,
+                    timeStamp: data.Notes[i].CommentDate
+                };
+            commentJsonArray.push(commentJson);
+        }
+        commentWidget.addCommentsToBody(commentJsonArray);
+            // Open the dialog
+            $('#generalCommentsModal').dialog("open");
+    }).fail(function (xhr, ajaxOptions, thrownError) {
+        alert($.defaultFailureMessage);
+    });
+    };
+    // Save general comment button
+    $("#saveGeneralComment").on("click", function (e) {
+    e.preventDefault();
+    var applicationId = $("#applicationId").val();
+    var comment = $.trim($("#generalComment").val());
+    var commentId = $.trim($("#generalCommentId").val());
+    var panelApplicationId = $("#panelApplicationId").val();
+
+    if (commentWidget.canSaveComment(comment))
+    {
+        if (commentId === "")
+        {
+                $.ajax({
+                cache: false,
+                    type: 'GET',
+                    url: '/SummaryStatementProcessing/AddComment',
+                    data: { "comment": comment, "applicationId": applicationId, "panelApplicationId": panelApplicationId }
+            }).done(function(data) {
+                // Re-load comments
+                fnLoadGeneralComments();
+            }).fail(function(xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        }
+        else
+        {
+                $.ajax({
+                cache: false,
+                    type: 'GET',
+                    url: '/SummaryStatementProcessing/EditComment',
+                    data: { "comment": comment, "commentId": commentId }
+            }).done(function(data) {
+                // Re-load comments
+                fnLoadGeneralComments();
+            }).fail(function(xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        }
+    }
+});
+    // Cancel save general comment button
+    $("#cancelSaveGeneralComment").on("click", function (e) {
+    e.preventDefault();
+    commentWidget.cancelSaveComment(this);
+    // Re-load general comments
+    fnLoadGeneralComments();
+});
+    // Edit comment
+    $(document).on("click", ".commentEntryEdit", function (e) {
+    e.preventDefault();
+    commentWidget.editComment(this);
+});
+    // Delete comment
+    $(document).on("click", ".commentEntryDelete", function (e) {
+    e.preventDefault();
+    var entry = $(this).closest(".commentEntry");
+    var commentId = parseInt(entry.attr("data-id"));
+
+    if (commentId !== undefined && commentId > 0 && CanModifyGeneralComments)
+    {
+            $.ajax({
+            cache: false,
+                type: 'GET',
+                url: '/SummaryStatementProcessing/DeleteComment',
+                data: { "commentId": commentId }
+        }).done(function(data) {
+            // Re-load comments
+            fnLoadGeneralComments();
+        }).fail(function(xhr, ajaxOptions, thrownError) {
+            alert($.defaultFailureMessage);
+        });
+    }
+});
+</script>
+@* Script for submit *@
+<script type="text/javascript">
+    $("#submitSummaryStatement").on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // Save unsaved data first
+        if (fnHasContentChangesInAnyEditor()) {
+            // Save unsaved data first
+            fnSaveAll();
+        }
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Select Phase</span>";
+        var workflowId = $("#workflowId").val();
+        var workflowStepId = $("#workflowStepId").val();
+        var displayModal = $.toBoolean($("#canCheckIntoAnyPhase").val());
+        //
+        // if the user has the correct permissions they are presented with a modal
+        // that they can check in to any phase.  Otherwise they (clients) check in to the next.
+        //
+        if (displayModal)
+        {
+           fnCheckInToStepAction(workflowId, workflowStepId);
+        }
+        else {
+            fnCheckInAction(workflowId);
+        }
+    });
+    // Check in via AJAX for the client
+    var fnCheckInAction = function (workflowId) {
+        if (workflowId != "") {
+            if (!fnHasContentChangesInAnyEditor()) {
+                $.ajax({
+                    cache: false,
+                    url: '@Url.Action("CheckinAction", "SummaryStatementReview")',
+                    data: { "workflowId": workflowId }
+                }).done(function (data) {
+                    // Redirect to review page if successful
+                    window.location.href = "/SummaryStatementReview/Review";
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert($.defaultFailureMessage);
+                });
+            } else {
+                // In case the "Save" action takes very long time
+                setTimeout(function () {
+                    fnCheckInAction(workflowId);
+                }, 1000);
+            }
+        }
+    };
+    // Check in via AJAX  fnCheckInToStepAction
+    var fnCheckInToStepAction = function (workflowId, workflowStepId) {
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Select Phase</span>";
+
+        if (!fnHasContentChangesInAnyEditor()) {
+            $.get('/SummaryStatementProcessing/ListWorkflowSteps',
+                { "workflowId": workflowId, "workflowStepId": workflowStepId },
+                function (data) {
+                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, dialogTitle);
+            });
+        }
+    };
+</script>

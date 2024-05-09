@@ -1,0 +1,48 @@
+﻿@model Sra.P2rmis.Web.UI.Models.EditSummaryStatementViewModel
+
+@section HeaderExtension
+{
+    <link href="@Url.Content("~/Content/telerik/editor.markup.css")" id="markupStyles" rel="stylesheet" type="text/css" />
+}
+<div id="editSummaryStatementMain">
+    <h3>
+        <span><a id="backButton" href="#"><img src="~/Content/img/backarrow_20px_enabled.png" border="0" alt="Go Back to Previous Page" title="Back" /></a></span>
+        <span>Summary Statement for @Model.ApplicationDetails.LogNumber</span>
+        @if (Model.ApplicationDetails.Priority1 && Model.ApplicationDetails.Priority2)
+        {
+            <span class="priorityTitle">(Priority 1 & Priority 2)</span>
+        }
+        else if (Model.ApplicationDetails.Priority1)
+        {
+            <span class="priorityTitle">(Priority 1)</span>
+        }
+        else if (Model.ApplicationDetails.Priority2)
+        {
+            <span class="priorityTitle">(Priority 2)</span>
+        }
+    </h3>
+
+    @Html.Partial("_EditSubMenu")
+    @Html.Partial("_EditToolbar")
+    @Html.Partial("_SummaryStatement")
+</div>
+<div id="editSummaryStatementSide">
+    Checkout: @Model.CheckoutName<br />
+    On: @Model.ApplicationDetails.CheckoutDateTime<br />
+    Workflow ID: @Model.ApplicationDetails.WorkflowId<br />
+    Program: @Model.ApplicationDetails.ProgramAbbreviation<br />
+    Fiscal Yr: @Model.ApplicationDetails.Year<br />
+    Panel: @Model.ApplicationDetails.PanelAbbreviation<br />
+    Cycle: @Model.ApplicationDetails.Cycle<br />
+    Award: @Model.ApplicationDetails.MechanismName<br />
+</div>
+@*scripts for back button*@
+<script type="text/javascript">
+    $("#backButton").on("click", function (e) {
+        e.preventDefault();
+        // Navigator to the previous page
+        if (document.referrer !== "") {
+            window.location.href = document.referrer;
+        }
+    });
+</script>

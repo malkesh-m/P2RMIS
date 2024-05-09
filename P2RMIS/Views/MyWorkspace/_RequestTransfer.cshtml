@@ -1,0 +1,77 @@
+﻿@model Sra.P2rmis.Web.ViewModels.PanelManagement.RequestTransferViewModel
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <p>
+                            Request Transfer&nbsp;&nbsp;&nbsp;@Model.ApplicationLogNumber&nbsp;&nbsp;&nbsp;from&nbsp;&nbsp;&nbsp;@Model.CurrentPanel
+                        </p>
+                        <p>
+                            To:&nbsp;@Html.DropDownListFor(m => m.SelectedPanel, new SelectList(Model.AvailablePanels, "panelId", "Name", Model.SelectedPanel), "Please select the desired destination panel", new { id = "targetPanel" })
+                        </p>
+                        <p>
+                            Request transfer reason:&nbsp;@Html.DropDownListFor(m => m.SelectedReason, new SelectList(Model.TransferReasons, "ReasonId", "Reason", Model.SelectedReason), "Please select the reason for transfer", new { id = "transferReason" })
+                        </p>
+                        <p>
+                            Comments:<br />
+                            @Html.TextAreaFor(m => m.Comment, new { id = "comment", style = "display: block; width:100%; height:125px;" })
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*script for ajax calls to check out*@
+<script type="text/javascript">
+    $('body').on('click', '#submitDialog', function () {
+        //
+        // Get the parameters to pass
+        //
+        var errorMsg = "Sorry, there was a problem processing your request.";
+        var comment = document.getElementById('comment').value;
+        var sourcePanelName = '@Model.CurrentPanel';
+        var reason = $("#transferReason option:selected").text();
+        var applicationLogNumber = '@Model.ApplicationLogNumber';
+        var targetPanelName = $("#targetPanel option:selected").text();
+        var fullPanelName = $("#selectedPanel option:selected").text();
+        //
+        // Test to ensure the user selected something.  Comments do not matter.
+        //
+        var targetPanelSelection = $("#targetPanel option:selected").val();
+        if ($("#targetPanel option:selected").val().length == 0) {
+            alert("Please select a panel to transfer the current panel to.");
+        }
+        else if (($("#transferReason option:selected").val().length == 0)) {
+            alert("Please select a reason for the transfer.");
+        }
+        else {
+            //
+            //  Tell the controller to request the transfer
+            //
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: '/PanelManagement/RequestApplicationTransfer',
+                data: { "comment": comment, "sourcePanelName": sourcePanelName, "reason": reason, "applicationLogNumber": applicationLogNumber, "targetPanelName": targetPanelName, "fullPanelName": fullPanelName },
+                success: function (data) {
+                    if (!data.flag) {
+
+                    } else {
+                        $('.ui-dialog-titlebar-close').click();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#warningAlert").html("Failed to remove application.");
+                    console.log(xhr);
+                },
+                complete: function (data) {
+                    console.log('made it');
+                }
+            });
+        }
+    });
+</script>

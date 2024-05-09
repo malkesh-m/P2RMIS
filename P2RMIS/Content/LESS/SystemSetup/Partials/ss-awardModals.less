@@ -1,0 +1,1740 @@
+﻿@import '../../P2RMIS/variables.less';
+@import '../../P2RMIS/global.less';
+
+/* #region Award Add/Edit/Pre-App Modals */
+.ss-awardModal {
+    padding-bottom: 10px;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_explanatory-text {
+        float: left;
+        vertical-align: super;
+    }
+
+    &_applied-filters {
+        border: @solidBorder @lightGrey;
+        float: left;
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center;
+        font-family: @verdanaFont;
+
+        &_table {
+            border-collapse: separate;
+            /* Add and Edit Award */
+            &_client {
+                width: 140px;
+                padding: 10px 5px;
+                word-break: break-all;
+                font-weight: bold;
+
+                &_result {
+                    padding-left: 5px;
+                    font-weight: normal;
+                }
+            }
+
+            &_program {
+                width: 260px;
+                padding: 10px 5px;
+                word-break: break-all;
+                font-weight: bold;
+
+                &_result {
+                    padding-left: 5px;
+                    font-weight: normal;
+                }
+            }
+
+            &_active {
+                width: 120px;
+                padding: 10px 5px;
+                word-break: break-all;
+                font-weight: bold;
+
+                &_result {
+                    padding-left: 5px;
+                    font-weight: normal;
+                }
+            }
+        }
+        /* Pre-app Award */
+        &_middle {
+            display: block;
+            width: 442px;
+            height: 25px;
+
+            &_receipt-cycle {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+
+            &_award {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+
+            &_awardAbbr {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                width: 247px;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+
+            &_blinded {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                width: 147px;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+
+            &_pi {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                width: 147px;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin: 0px 5px 0px 10px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+
+            &_oppId {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+
+            &_appDue {
+                word-break: break-all;
+                font-weight: bold;
+                float: left;
+                text-align: left;
+
+                &_title {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+
+    &_middle-container {
+        border: @solidBorder @lightGrey;
+        float: left;
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center;
+        font-family: @verdanaFont;
+        width: 442px;
+
+        &_table {
+            border-collapse: separate;
+        }
+    }
+
+    &_award-container {
+        border: @solidBorder @lightGrey;
+        float: left;
+        margin-top: 10px;
+        padding: 10px;
+        /*text-align: center;*/
+        font-family: @verdanaFont;
+        width: 458px;
+        position: relative;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -20px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+            left: 60px;
+        }
+
+        &_table {
+            border-collapse: separate;
+            margin-top: 10px;
+            width: 100%;
+
+            &_oppId {
+
+                &_text {
+                    width: 121px;
+                    font-weight: bold;
+                    padding-top: 15px;
+                    display: inline-block;
+                    font-size: 12px;
+                    text-align: right;
+                }
+
+                &_input {
+                    margin: 0px 0px 0px 16px;
+                    width: 44%;
+                    height: 25px;
+                    border: @solidBorder @lightGrey;
+                    padding-left: 5px;
+                }
+
+                &_baseline {
+                    width: 88px;
+                    display: inline-block;
+                    margin-top: 0px;
+                    vertical-align: middle;
+                    font-size: 12px;
+                    padding-top: 5px;
+                }
+            }
+
+
+
+            &_select-award {
+                padding-top: 15px;
+
+                &_text {
+                    font-weight: bold;
+                    font-size: 12px;
+                    display: inline-block;
+                    width: 121px;
+                    margin-top: 5px;
+                    vertical-align: middle;
+                    text-align: right;
+                }
+
+                &__error {
+                    color: @errorRed;
+                    display: none;
+                    font-weight: normal;
+                }
+
+                &_input {
+                    display: none;
+                }
+
+                &_select {
+                    background: @whiteColor;
+                    font-weight: bold;
+                    margin-left: 16px;
+                    width: 67%;
+                }
+            }
+
+            &_award-abbr {
+                &_text {
+                    width: 121px;
+                    font-weight: bold;
+                    padding-top: 15px;
+                    display: inline-block;
+                    font-size: 12px;
+                    text-align: right;
+                }
+
+
+                &_input {
+                    width: 80px;
+                    text-align: left;
+                    border: @solidBorder @lightGrey;
+                    border-radius: 4px;
+                    padding-left: 5px;
+                    margin: 0px 0px 0px 16px;
+                    height: 25px;
+                }
+            }
+
+            &_partnering {
+                font-weight: bold;
+                padding-top: 15px;
+
+                &_text {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    width: 121px;
+                    text-align: right;
+                }
+
+                &_select {
+                    margin: 0px 0px 0px 16px;
+                    width: 56px;
+                }
+            }
+
+            &_receipt-cycle {
+                font-weight: bold;
+
+
+                &_text {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    width: 121px;
+                    text-align: right;
+                }
+
+                &_input {
+                    width: 35px;
+                    margin-left: 20px;
+                    border-radius: 4px;
+                }
+            }
+
+            &_blinded {
+                font-weight: bold;
+                padding-top: 15px;
+
+                &_text {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    width: 121px;
+                    text-align: right;
+                }
+
+                &_select {
+                    width: 56px;
+                    margin: 0px 0px 0px 16px;
+                }
+            }
+
+            &_appDue {
+                padding-top: 15px;
+                font-weight: bold;
+
+                &_text {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    width: 121px;
+                    text-align: right;
+                }
+
+                &_datepicker {
+                    margin-left: 16px;
+                    font-weight: normal;
+                    width: 13.2em;
+                }
+            }
+
+            &_preApp {
+                font-weight: bold;
+                padding-top: 15px;
+
+                &_text {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    width: 121px;
+                    text-align: right;
+                }
+
+                &_select {
+                    width: 56px;
+                    margin: 0px 0px 0px 16px;
+                }
+            }
+
+            &_preAppDue {
+                padding-top: 15px;
+                font-weight: bold;
+
+                &_text {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    font-weight: bold;
+                    width: 121px;
+                    text-align: right;
+                }
+
+                &_datepicker {
+                    margin-left: 16px;
+                    font-weight: normal;
+                    width: 13.2em;
+                }
+            }
+        }
+    }
+    /* Pre-app Modal */
+    &_preAppChanges {
+        border: @solidBorder @lightGrey;
+        float: left;
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center;
+        font-family: @verdanaFont;
+        position: relative;
+        width: 458px;
+
+        &_receipt-cycle {
+            word-break: break-all;
+            font-weight: bold;
+            display: block;
+            float: left;
+            width: 442px;
+            text-align: center;
+            margin-bottom: 10px;
+
+            &_title {
+                display: inline-block;
+                float: left;
+                padding-top: 5px;
+            }
+
+            &_input {
+                margin: 0px 0px 0px 10px;
+                width: 50px;
+                float: left;
+                height: 25px;
+                border: @solidBorder @lightGrey;
+                padding-left: 5px;
+                margin-right: 15px;
+            }
+
+            &_title_blinded {
+                display: inline-block;
+                float: left;
+                padding-top: 5px;
+                margin-left: 15px;
+            }
+        }
+
+        &_blinded {
+            font-weight: bold;
+            float: right;
+            text-align: left;
+
+            &_text {
+                vertical-align: super;
+                display: inline-block;
+                margin-top: 5px;
+            }
+
+            &_select {
+                float: right;
+                margin: 0px 0px 0px 10px;
+            }
+        }
+
+        &_appDue {
+            word-break: break-all;
+            font-weight: bold;
+            display: block;
+            float: left;
+            margin-bottom: 10px;
+
+            &_title {
+                display: inline-block;
+                padding-top: 5px;
+                float: left;
+            }
+
+            &_input {
+                width: 300px;
+                text-align: center;
+                border: @solidBorder @lightGrey;
+                border-radius: 4px;
+                padding-left: 5px;
+                margin: 0px 0px 0px 10px;
+                height: 25px;
+            }
+        }
+    }
+}
+/* #endregion*/
+
+/* #region Add Meeting Modal */
+.ss-addMeeting {
+    padding-bottom: 10px;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_explanatory-text {
+        float: left;
+        vertical-align: super;
+    }
+
+    &_table {
+        width: 100%;
+
+        &_title {
+            text-align: right;
+            font-weight: bold;
+            width: 200px;
+            padding: 5px 0px;
+        }
+
+        &_date-title {
+            text-align: right;
+            font-weight: bold;
+            width: 200px;
+            padding: 8px 0px;
+            vertical-align: bottom;
+        }
+
+        &_result {
+            text-align: left;
+            font-weight: normal;
+            padding: 10px 0px 10px 10px;
+        }
+
+        &_input {
+            padding: 10px 0px 10px 10px;
+
+            &_area {
+                width: 30%;
+                height: 25px;
+                border: @solidBorder @lightGrey;
+                border-radius: 4px;
+                padding-left: 5px;
+            }
+
+            &_text {
+                padding-left: 10px;
+            }
+        }
+
+        &_inputMeet {
+            width: 400px;
+            padding: 10px 0px 10px 10px;
+
+            &_area {
+                width: 70%;
+                height: 25px;
+                border: @solidBorder @lightGrey;
+                border-radius: 4px;
+                padding-left: 5px;
+            }
+
+            &_text {
+                padding-left: 10px;
+            }
+        }
+
+        &_inputDate {
+            padding: 10px 0px 10px 10px;
+
+            &_input {
+                width: 30%;
+                height: 25px;
+                border: @solidBorder @lightGrey;
+                border-radius: 4px;
+                padding-left: 5px;
+            }
+        }
+    }
+}
+/* #endregion */
+
+/* #region Assign Programs Modal */
+.ss-assignModal {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &_info-filters {
+        border: @solidBorder @lightGrey;
+        margin: 10px 0px;
+        padding: 5px 8px;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+
+        &_text{
+            padding: 5px;
+        }
+    }
+
+    &_table {
+        border-collapse: separate;
+        padding: 10px;
+
+        &_title {
+            font-weight: bold;
+            width: 200px;
+            padding: 5px 0px;
+        }
+
+        &_result {
+            text-align: left;
+            font-weight: normal;
+            padding: 10px 0px 10px 10px;
+        }
+
+        &_input{
+            vertical-align: top;
+        }
+    }
+
+    &_checkbox-div {
+        margin-left: 40px;
+
+        &_checkbox {
+            vertical-align: text-bottom;
+        }
+    }
+
+    &_select {
+        margin-left: 40px;
+        padding-top: 10px;
+
+        select {
+            width: 400px;
+            text-align: left;
+        }
+    }
+
+    &_text{
+        padding: 5px;
+        font-size: @fontSize12;
+        width: 100%;
+    }
+}
+/* #endregion */
+
+/* #region Add/Edit Programs Modal */
+.ss-add-program {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_table {
+        border-collapse: separate;
+        margin-top: 10px;
+
+        &_gridTitles {
+            width: 25%;
+            text-align: right;
+            float: left;
+            padding-right: 5px;
+            line-height: 28px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        &_gridTitles-abbr {
+            width: 25%;
+            text-align: right;
+            float: left;
+            padding-top: 5px;
+            padding-right: 5px;
+            line-height: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        &_baseline {
+            display: inline-block;
+            margin-top: 0px;
+            vertical-align: text-bottom;
+            font-size: 12px;
+            padding-top: 5px;
+        }
+
+        &_maxText {
+            display: inline-block;
+            margin-top: 0px;
+            vertical-align: text-bottom;
+        }
+    }
+
+    &_checkbox-div {
+        margin-left: 40px;
+
+        &_checkbox {
+            vertical-align: text-bottom;
+        }
+    }
+
+    &_select {
+        margin-left: 40px;
+        padding-top: 10px;
+
+        select {
+            width: 400px;
+            text-align: left;
+        }
+    }
+}
+/* #endregion */
+
+/* #region Session No Panel Modal */
+.ss-session-no-panel {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_info {
+        margin: 20px 0px 10px 0px;
+        width: 96%;
+        border: @modalPanelBorder;
+        float: left;
+        padding: 10px 8px;
+
+        &_table {
+            border-collapse: separate;
+            padding: 10px;
+
+            &_text {
+                width: 300px;
+                font-weight: bold;
+
+                &_result {
+                    font-weight: normal;
+                }
+            }
+        }
+
+        &_title {
+            padding: 0px 5px;
+            background-color: @whiteColor;
+            margin-top: -20px;
+            position: absolute;
+            font-size: @fontSize12;
+            font-weight: bold;
+        }
+    }
+
+    &_table{
+        margin-left: 40px;
+        padding-top: 10px;
+        max-width: 100%;
+        background-color: transparent;
+        border-collapse: separate;
+
+        &_header{
+            width: 20%;
+            text-align: right;
+            font-weight: bold;
+            font-size: @fontSize12;
+        }
+
+        &_result{
+            width: 70%;
+            text-align: left;
+            padding-left: 10px;
+
+            &_select{
+                margin: 0px;
+                width: 100%;
+            }
+        }
+    }
+}
+/* #endregion */
+
+/* #region Update Panel for a Session Modal */
+.ss-update-panel {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+        margin-left: 20px;
+    }
+
+    &_filter {
+        margin: 20px 0px 10px 0px;
+        width: 100%;
+        display: inline-block;
+        border: @modalPanelBorder;
+        padding: 0px;
+        float: left;
+
+        &_table {
+            width: 100%;
+            border-collapse: separate;
+
+            &_row {
+                text-align: center;
+
+                &_cell {
+                    padding: 10px 0px 10px 20px;
+                    text-align: left;
+                    width: 10px;
+                    font-weight: bold;
+
+                    &_result {
+                        padding-left: 5px;
+                        font-weight: normal;
+                    }
+                }
+
+                &_mtg {
+                    padding: 10px;
+                    width: 150px;
+                    font-weight: bold;
+                    text-align: center;
+
+                    &_result {
+                        padding-left: 5px;
+                        font-weight: normal;
+                    }
+
+                    &_input {
+                        height: 25px;
+                        border: @solidBorder #ccc;
+                        border-radius: 4px;
+                        width: 150px;
+                        float: left;
+                        margin: 0px !important;
+
+                        &_max-text {
+                            float: left;
+                            display: inline-block;
+                            padding: 5px 0px 0px 10px;
+                        }
+                    }
+
+                    &_session-select {
+                        border: @solidBorder #ccc;
+                        border-radius: 4px;
+                        width: 350px;
+                        float: left;
+                        margin: 0px !important;
+                    }
+                }
+
+                &_session {
+                    padding: 10px;
+                    text-align: left;
+                    font-weight: bold;
+
+                    &_text {
+                        width: 100%;
+                    }
+                }
+            }
+
+            &_text {
+                padding: 20px;
+            }
+        }
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 0px;
+            /*position: absolute;*/
+            font-size: @fontSize12;
+            font-weight: bold;
+            display: inline-block;
+
+            &_input {
+                vertical-align: text-bottom;
+            }
+        }
+    }
+}
+/* #endregion */
+
+/* #region Add Panel for a Session Modal */
+.ss-add-panel {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+        margin-left: 20px;
+    }
+
+    &_filter {
+        margin: 20px 0px 10px 0px;
+        width: 100%;
+        display: inline-block;
+        border: @modalPanelBorder;
+        padding: 0px;
+        float: left;
+
+        &_table {
+            width: 100%;
+            border-collapse: separate;
+
+            &_row {
+                text-align: center;
+
+                &_cell {
+                    padding: 10px 0px 10px 10px;
+                    text-align: left;
+                    width: 100px;
+                    font-weight: bold;
+
+                    &_result {
+                        padding-left: 5px;
+                        font-weight: normal;
+                    }
+                }
+
+                &_mtg {
+                    padding: 10px;
+                    width: 150px;
+                    font-weight: bold;
+                    text-align: center;
+
+                    &_result {
+                        padding-left: 5px;
+                        font-weight: normal;
+                    }
+
+                    &_input {
+                        height: 25px;
+                        border: @solidBorder #ccc;
+                        border-radius: 4px;
+                        width: 150px;
+                        float: left;
+                        margin: 0px !important;
+
+                        &_max-text {
+                            float: left;
+                            display: inline-block;
+                            padding: 5px 0px 0px 10px;
+                        }
+                    }
+
+                    &_session-select {
+                        border: @solidBorder #ccc;
+                        border-radius: 4px;
+                        width: 350px;
+                        float: left;
+                        margin: 0px !important;
+                    }
+                }
+
+                &_session {
+                    padding: 10px;
+                    text-align: left;
+                    font-weight: bold;
+
+                    &_text {
+                        width: 100%;
+                    }
+                }
+            }
+
+            &_text {
+                padding: 20px;
+            }
+        }
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -15px 0px 0px 0px;
+            font-size: @fontSize12;
+            font-weight: bold;
+            display: inline-block;
+
+            &_input {
+                vertical-align: text-bottom;
+            }
+        }
+    }
+
+    &_table {
+        border: @modalPanelBorder;
+        width: 100%;
+        height: 150px;
+        overflow: auto;
+        display: block;
+
+        &_body {
+            display: block;
+
+            &_row {
+                display: block;
+                overflow-x:hidden;
+                
+                &:nth-child(odd) {
+                    background: #fafafa;
+                }
+
+                &_header {
+                    font-weight: bold;
+                    padding: 5px;
+                    width: 98%;
+                    display: block;
+                    word-wrap: break-word;
+                }
+
+                &_cell {
+                    font-weight: normal;
+                    padding: 5px;
+                    width: 98%;
+                    display: block;
+                    word-wrap: break-word;
+                }
+            }
+        }
+    }
+
+    &_table-select {
+        width: 100%;
+        margin-top: 10px;
+
+        &_panel {
+            width: 150px;
+            text-align: right;
+            padding: 0px 10px 0px 0px;
+            font-weight: bold;
+
+            &_result {
+                width: 350px;
+                padding-top: 10px;
+
+                &_select {
+                    margin-top: 10px;
+                    width: 100%;
+                }
+
+                &_input {
+                    width: 150px;
+                    vertical-align: initial;
+                    height: 25px;
+                    border: @modalPanelBorder;
+                    border-radius: 4px;
+                }
+            }
+
+            &_select {
+                width: 350px;
+                padding-top: 5px;
+            }
+        }
+
+        &_name {
+            width: 300px;
+            padding-top: 10px;
+        }
+    }
+
+    &_panel {
+        text-align: center;
+        padding-top: 10px;
+
+        &_input {
+            margin-right: 5px;
+            vertical-align: top;
+        }
+    }
+}
+/* #endregion */
+
+/* #region Add Session Modal */
+.ss-add-session {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+        margin-left: 20px;
+    }
+
+    &_filter {
+        width: 97%;
+        display: inline-block;
+        border: @modalPanelBorder;
+        padding: 10px;
+        margin: 10px 0px;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            font-size: @fontSize12;
+            margin: -20px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        &_table {
+            width: 100%;
+            border-collapse: separate;
+            text-align: center;
+
+            &_short-cell {
+                width: 200px;
+                display: inline-block;
+                text-align: left;
+                font-weight: bold;
+
+                &_result {
+                    font-weight: normal;
+                    padding-left: 5px;
+                }
+            }
+
+            &_long-cell {
+                width: 300px;
+                display: inline-block;
+                word-break: break-all;
+                text-align: left;
+                font-weight: bold;
+
+                &_result {
+                    font-weight: normal;
+                    padding-left: 5px;
+                }
+            }
+
+            &_abbr {
+                padding: 10px;
+
+                &_input {
+                    margin: 0px 0px 0px 10px;
+                    height: 25px;
+                    border: @modalPanelBorder;
+                    border-radius: 4px;
+                    padding-left: 5px;
+                    width: 130px;
+                }
+            }
+
+            &_name {
+                padding: 10px;
+
+                &_input {
+                    margin: 0px 0px 0px 10px;
+                    height: 25px;
+                    border: @modalPanelBorder;
+                    border-radius: 4px;
+                    padding-left: 5px;
+                    width: 250px;
+                }
+            }
+        }
+
+
+        &_table-meeting {
+            width: 98%;
+            border-collapse: separate;
+            border: @modalPanelBorder;
+            margin: 7px;
+            table-layout: fixed;
+
+            &_phase-review {
+                padding: 10px;
+                width: 20%;
+                background: #fafafa;
+                border: @modalPanelBorder;
+                border-top: none;
+                font-weight: bold;
+
+                &:nth-child(1), :nth-child(3) {
+                    border-left: none;
+                    border-right: none;
+                }
+            }
+
+            &_phase {
+                padding: 10px;
+                width: 33%;
+                background: #fafafa;
+                border: @modalPanelBorder;
+                border-top: none;
+                font-weight: bold;
+            }
+
+            &_date-row {
+                &_cell {
+                    padding: 10px;
+                    margin-right: 5px;
+
+                    &_input {
+                        background: @whiteColor;
+                        border: @modalPanelBorder;
+                        border-radius: 4px;
+                        color: black;
+                        font-family: Verdana, Arial, sans-serif;
+                        font-weight: normal;
+                        width: 100%;
+                        margin-left: 5px;
+                    }
+                }
+
+                &_cell-middle {
+                    padding: 10px;
+                    border-left: @modalPanelBorder;
+                    border-right: @modalPanelBorder;
+
+                    &_input {
+                        background: @whiteColor;
+                        border: @modalPanelBorder;
+                        border-radius: 4px;
+                        color: black;
+                        font-family: Verdana, Arial, sans-serif;
+                        font-weight: normal;
+                        width: 100%;
+                    }
+                }
+            }
+
+            &_table-final {
+                width: 100%;
+                border-collapse: separate;
+                text-align: center;                
+            }
+        }
+    }
+}
+/* #endregion */
+/* #region Add/Edit Evaluation Modal */
+.ss-add-eval {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+    }
+
+    &_select {
+        margin-top: 10px;
+        width: 550px;
+    }
+
+    &_checkbox {
+        margin: 0px 10px 0px 5px;
+        vertical-align: sub;
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_header {
+        font-weight: bold;
+        font-size: @fontSize12;
+    }
+
+    &_result {
+        margin-left: 10px;
+    }
+
+    &_score-box {
+        border: @modalPanelBorder;
+        margin: 5px 0px 10px 0px;
+        padding: 0px;
+        float: left;
+        width: 100%;
+        position: relative;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -10px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+    }
+
+    &_table {
+        border-collapse: separate;
+        position: relative;
+
+        &_required {
+            padding: 20px;
+
+            &_checkbox {
+                margin-right: 5px;
+                vertical-align: sub;
+            }
+
+            &_input {
+                margin-left: 10px;
+                padding-left: 10px;
+                width: 100px;
+            }
+        }
+
+        &_max {
+            font-weight: bold;
+            padding: 10px;
+
+            &_input {
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    &_crit-order {
+        margin: 20px 10px 10px 0px;
+        width: 45%;
+        display: inline-block;
+        float: left;
+        position: relative;
+        border: @modalPanelBorder;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -10px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+
+        &_select {
+            float: left;
+            margin: 10px 0px 10px 30px;
+        }
+    }
+
+    &_ss {
+        height: 50px;
+        float: left;
+        margin: 20px 10px 10px 0px;
+        border: @modalPanelBorder;
+        display: inline-block;
+        width: 50%;
+        position: relative;
+
+        &_title {
+            padding: 0px 3px;
+            background-color: @whiteColor;
+            margin: -10px 0px 0px 10px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: @fontSize12;
+            position: absolute;
+        }
+
+        &_table {
+            width: 100%;
+
+            &_box {
+                padding: 5px 5px 0px 5px;
+
+                &_checkbox {
+                    vertical-align: sub;
+                    margin: 15px 5px 15px 15px !important;
+                }
+
+                &_selectbox {
+                    padding-top: 5px;
+                    margin-right: 10px;
+                    float: right;
+                    font-weight: bold;
+                }
+
+                &_select {
+                    vertical-align: inherit;
+                }
+            }
+        }
+    }
+
+    &_text {
+        float: left;
+        font-weight: bold;
+    }
+
+    &_editor {
+        height: 480px;
+
+        &_Iframe {
+            width: 100%;
+            height: 350px;
+        }
+    }
+}
+/* #endregion */
+/* #region Preview Criteria Modal */
+.ss-preview-crit {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &_text {
+        font-weight: bold;
+        width: 100%;
+        padding: 5px;
+    }
+
+    &_description {
+        padding: 10px;
+        border: @modalPanelBorder;
+        height: 130px;
+        overflow: auto;
+        margin: 0px 10px;
+        text-align: left;
+    }
+
+    &_input-box {
+        display: inline-block;
+        font-size: @fontSize12;
+        margin: 15px 0px 10px 15px;
+
+        &_checkbox {
+            margin: 15px 5px 10px 10px;
+            vertical-align: initial;
+            padding-top: 5px;
+        }
+    }
+
+    &_rating {
+        display: none;
+        padding: 0px 10px;
+
+        &_select {
+            color: black;
+            margin-top: 10px;
+            display: none;
+        }
+
+        &_text {
+        }
+    }
+
+    &_required {
+        vertical-align: super;
+        font-size: @fontSize12;
+    }
+
+    &_limit {
+        float: right;
+        margin-top: 15px;
+    }
+
+    &_iframe {
+        width: 100%;
+        height: 250px;
+    }
+}
+
+.ss-preview-crit-data {
+    display: none;
+    visibility: hidden;
+}
+/* #endregion */
+/* #region Upload Template */
+.ss-upload-template {
+    width: 100%;
+    font-size: @fontSize12;
+
+    &__error {
+        color: @errorRed;
+        margin: 10px 0px 0px 0px;
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    &_title {
+        margin-bottom: 10px;
+        width: 100%;
+        float: left;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    &_table {
+        width: 100%;
+        border: @solidBorder black;
+
+        &_row:nth-child(even) {
+            background: #ccc;
+        }
+
+        &_cell {
+            font-weight: bold;
+            width: 20%;
+            padding-left: 10px;
+        }
+    }
+
+    &_text {
+        width: 100%;
+        margin-top: 10px;
+        text-align: center;
+    }
+}
+/* #endregion */
+/* #region Add Program Modal - Kendo Fixes */
+.ss-add-program-modal {
+    .k-dropdown-wrap .k-icon:not(.k-loading) {
+        background-image: none;
+    }
+
+   .k-combobox {
+        height: 30px;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: Verdana,Arial,sans-serif;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+    .kendoGridTable .k-dropdown-wrap.k-state-default {
+        margin: 0px;
+        padding-right: 26px;
+        background: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .k-dropdown-wrap.k-state-default:hover {
+        transition: none;
+        box-shadow: none;
+    }
+
+    input[type="text"]:focus {
+        transition: none;
+        box-shadow: none;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+    }
+
+    .k-combobox .k-select {
+        border: none;
+    }
+
+    :focus {
+        outline: none;
+    }
+
+    .k-combobox input.k-input {
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
+        -ms-progress-appearance: menulist;
+        -o-appearance: menulist;
+        appearance: menulist;
+        height: 24px;
+        font-size: 12px;
+        padding-right: 26px;
+        color: black;
+    }
+
+    .k-combobox .k-input:after {
+        content: " ";
+        /*content: " \2193"; */
+    }
+
+    .kendoGridTable .gridOptions .k-combobox {
+        background: white;
+    }
+
+    select[disabled] {
+        color: #555 !important;
+    }
+
+    .newWidth {
+        width: 60%;
+    }
+
+    .k-popup.k-list-container {
+        width: 325px !important;
+    }
+}
+
+.ss-add-eval-modal {
+    &:extend(.ss-add-program-modal);
+
+    [contentEditable=true]:empty:not(:focus):before {
+        content: attr(data-text);
+    }
+
+    .k-editor-toolbar .k-button-group .k-tool {
+        width: 38px;
+        margin-top: 7px;
+    }
+
+    .k-editor-inline {
+        width: 97%;
+    }
+
+    #editor p {
+        text-align: left;
+    }
+
+    .k-editor-toolbar .k-button-group .k-tool {
+        height: 28px;
+    }
+}
+
+@media screen {
+    .ss-add-program-modal .k-dropdown-wrap :not(.k-loading).k-icon {
+        background-repeat: no-repeat;
+        height: 30px;
+        width: 30px;
+        margin-top: 2px;
+    }
+
+    @media (-ms-high-contrast: active) {
+        .ss-add-program-modal .k-dropdown-wrap :not(.k-loading).k-icon {
+            background-repeat: no-repeat;
+            height: 30px;
+            width: 30px;
+            margin-top: 2px;
+        }
+    }
+
+    @media (-ms-high-contrast: none) {
+        .ss-add-program-modal .k-dropdown-wrap :not(.k-loading).k-icon {
+            background-repeat: no-repeat;
+            height: 30px;
+            width: 30px;
+            margin-top: 2px;
+        }
+    }
+}
+/* #endregion */
+/* #region Kendo fixes */
+.ss-awardModal_award-container_table_select-award .k-combobox {
+    background: white;
+    width: 79%;
+    height: 31px;
+}
+
+.k-widget.k-datepicker.k-header.ss-addMeeting_table_inputDate_input {
+    padding: 0px;
+}
+
+.k-combobox input.k-input {
+    -webkit-appearance: none;
+}
+
+.ss-awardModal_middle-container_table_appDue_datepicker .k-picker-wrap.k-state-default {
+    display: flex;
+}
+
+.ss-awardModal_award-container_table_select-award_select {
+    .k-dropdown-wrap .k-icon:not(.k-loading) {
+        display: block;
+    }
+
+    .k-icon.k-i-arrow-s {
+        margin-top: 8px;
+        margin-left: 3px;
+    }
+}
+
+.kendoModalUpload {
+    .k-progress {
+        top: 18px;
+        width: 150px !important;
+        display: block !important;
+    }
+
+    .k-widget.k-upload.k-header.k-upload-empty, .k-file {
+        border: none;
+    }
+}
+/* #endregion */

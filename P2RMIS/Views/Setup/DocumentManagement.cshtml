@@ -1,0 +1,59 @@
+﻿@using Newtonsoft.Json;
+@using Sra.P2rmis.Web.Controllers
+
+@{
+    ViewBag.PageTitle = "Document Management";
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Document Management</span>
+</div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+
+<!-- Select Filters -->
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox">
+        <div class="ss-filterBox_title">Select Filters</div>
+        <div class="ss-filterBox_activeText">Select Client in order to add a new document.</div>
+        <div class="ss-filterBox_required-field"><span class="asterisk">*</span>Indicates a required field.</div>
+        <table class="ss-filterBox_dm-table">
+            <tr>
+                <td class="ss-filterBox_dm-table_clientSelect"><select class="ss-filterBox_dm-table_clientSelect__select"><option selected>Select Client</option></select></td>
+                <td class="ss-filterBox_dm-table_yearSelect"><select class="ss-filterBox_dm-table_yearSelect__select"><option selected>Select Year</option></select></td>
+                <td class="ss-filterBox_dm-table_programSelect"><select class="ss-filterBox_dm-table_programSelect__select"><option selected>Select Program</option></select></td>
+                <td class="ss-filterBox_dm-table_buttonShell" style="vertical-align: baseline; padding: 0px 5px;"><button class="ss-filterBox_dm-table_buttonShell_buttonPrimary">Find</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<p class="noRecords">No documents were found. To add a document, please select <a href="#" id="addNewDoc">Add Document</a></p>
+
+<!-- Grid Header -->
+<div class="ss-gridHeader">
+    <h4 class="ss-gridHeader_title">Document List</h4>&nbsp;&nbsp;<div class="ss-gridHeader_add-doc"><a href="/Setup/AddDocument" class="ss-gridHeader_addAwardButton" id="addApplication"><img src="~/Content/img/appicon.png" class="ss-gridHeader_addAwardButton_img" /><span class="ss-gridHeader_addAwardButton_text">Add Document</span></a></div>
+    <h6 class="ss-gridHeader_dm-exportButton"><a href="#" class="ss-gridHeader_exportButton__link" id="newExport"><img src="/Content/img/icon_export_excel_labeled.png" /></a>Export to Excel</h6>
+    <span class="ss-gridHeader_radio-buttons">
+        <input type="radio" id="inUse" name="radioButton" value="1" checked="checked" class="ss-gridHeader_radio-buttons_input" /> In Use
+        <input type="radio" id="archived" name="radioButton" value="2" class="ss-gridHeader_radio-buttons_input" /> Archived
+    </span>
+</div>
+
+<div id="ss-grid-dm" class="ss-grid-dm"></div>
+<div id="ss-grid-dmArchive" class="ss-grid-dmArchive"></div>
+<div id="emptyMessage" class="emptyMessage">No Records Found.</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/documentManagement.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/documentDownload.js")
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")

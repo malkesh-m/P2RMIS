@@ -1,0 +1,48 @@
+﻿@using Microsoft.Ajax.Utilities
+@model Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel
+
+@if (Model.SessionPanels.Count() == 0)
+{
+    <h4 class="textCenter">@Model.NoActivePanels</h4>
+}
+else
+{
+    <section role="region" class="mw_filter_container">
+        <div class="p2rmis-filterset">
+            <h6 class="p2rmis-filterset_title">Filters</h6>
+            @if (Model.SessionPanelId != 0 && !Model.IsReleased)
+            {
+                <div style="float:right;" role='alert' tabindex="-1" id="released-assignments">
+                    Application assignments have not been released.
+                </div>
+            }
+            <div class="p2rmis-filterset_container">
+                <div class="p2rmis-filterset_required">A panel selection is required.</div>
+                @if (Model.IsReleased)
+                {
+                    <span class="critique-due-date" role="alert" tabindex="-1" id="released-assignments-date">@Model.PhaseName Critiques are due @Model.PhaseEndDate<br />@Model.ParticipantTypeAndRole</span>
+                }
+            </div>
+
+            <div id="filterTableOpts" class="p2rmis-filterset_container form-inline">
+                <div class="form-group margin-top10">
+                    <label for="selectedSessionPanel" class="p2rmis-filterset_container_title col-sm-2 control-label">Panel</label>
+                    @Html.HiddenFor(m => m.SessionPanelId, new { id = "originalSessionPanelId" })
+                    @Html.DropDownListFor(m => m.SessionPanelId, new SelectList(Model.SessionPanels, "Index", "Value", Model.SessionPanelId), "Select", new { @id = "selectedSessionPanel", @class = "form-control" })
+                    <div class="critique-overdue">
+                        <img src="~/Content/img/edit_20px_glow_enabled.png" alt="Overdue Critique" /> = Overdue Critique
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<script type="text/javascript">
+    var released = '#released-assignments';
+    isVisibleFocus(released);
+    setTimeout(function () {
+        var releasedDate = '#released-assignments-date';
+        var notRegistered = '#notRegistered';
+        ($('#notRegistered').is(':visible')) ? isVisibleFocus(notRegistered) : isVisibleFocus(releasedDate);
+    }, 100);
+</script>

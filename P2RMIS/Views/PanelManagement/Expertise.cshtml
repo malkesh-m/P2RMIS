@@ -1,0 +1,1249 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ExpertiseViewModel
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab4;
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab4;
+}
+<link rel="stylesheet" media="print" href="/Content/Site.css" type="text/css">
+<style type="text/css">
+    #footer {
+        width: 1215px;
+        top: 1125px !important;
+        position: absolute;
+        top: auto;
+    }
+
+    table {
+        font-size: 10px;
+        border-collapse: collapse;
+    }
+</style>
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Expertise / Assignments </span>
+</div>
+
+<!-- Main Content -->
+<div class="row-fluid pm-main-container">
+    <div id="mainContent" class="span12 pm-fieldSet">
+        @using (Html.BeginForm("Expertise", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+        {
+            @Html.Partial("_PanelSelection")
+        }
+        @Html.Partial("_PrivilegedTabMenu")
+        @if (Model.CanAccessPanel)
+        {
+            <input type="hidden" id="SessionPanelId" value="@Model.SelectedPanel" />
+            <input type="hidden" id="SessionPanelName" value="@Model.SessionPanelName" />
+            <input type="hidden" id="SessionPanelAbbr" value="@Model.SessionPanelAbbr" />
+            <div class="pm-fieldSet_links">
+                @if (Model.HasManageReviewerAssignmentExpertisePermission)
+                {
+                    <a id="RequestReviewerTransfer" href="#">Request Adding/Transferring/Releasing </a><br />
+                }
+                <span id="showGrid" class="">Show</span> | <span id="hideGrid" class="pm-fieldSet_links_show">Hide</span> Grid Options<br />
+            </div>
+            <div class="pm-filterBox">
+                <div class="pm-filterBox_title-hover">For quick assignment of this panel, please click colored cell in grid, then pick assignment type and presentation order to complete the assignment. <br />To update reviewer expertise or COI, please click colored cell, then specify expertise or COI.</div>
+                <div class="pm-filterBox_title">Expertise Legend<img src="~/Content/img/info_20px_enabled.png" class="pm-filterBox_title_img" id="expertiseTitle" /></div>
+                <table class="pm-filterBox_legend">
+                    <tr>
+                        <td class="pm-filterBox_legend_color-green"></td>
+                        <td class="pm-filterBox_legend_text">High</td>
+                        <td class="pm-filterBox_legend_color-red"></td>
+                        <td class="pm-filterBox_legend_text">None</td>
+                    </tr>
+                    <tr>
+                        <td class="pm-filterBox_legend_color-yellow"></td>
+                        <td class="pm-filterBox_legend_text">Medium</td>
+                        <td class="pm-filterBox_legend_color-black"></td>
+                        <td class="pm-filterBox_legend_text">COI</td>
+                    </tr>
+                    <tr>
+                        <td class="pm-filterBox_legend_color-blue"></td>
+                        <td class="pm-filterBox_legend_text">Low</td>
+                        <td class="pm-filterBox_legend_color-white"><div class="pm-filterBox_legend_color-white_border"></div></td>
+                        <td class="pm-filterBox_legend_text">No Selection</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="pm-displayBox">
+                <div class="pm-filterBox_title-hover--display">View Count - Displays number of assignments at ‘High, Medium, Low’ expertise level for each application. <br />View Tooltip - Displays details for each cell on hover over.</div>
+                <div class="pm-displayBox_title">Display Options<img src="~/Content/img/info_20px_enabled.png" class="pm-displayBox_title_img" id="displayTooltip" /></div>
+                <div class="pm-displayBox_view-count">
+                    <label class="checkbox inline">
+                        <input type="checkbox" id="ExpertiseCount" name="ExpertiseToggle" checked />View Count &nbsp;
+                    </label>
+                </div>
+                <div class="pm-displayBox_view-group">
+                    <label class="checkbox inline">
+                        <input type="checkbox" id="toolTip" name="ExpertiseToggle" checked class="pm-displayBox_view-group_tooltip" data-toggle="true" />View ToolTip&nbsp;
+                    </label>
+                </div>
+            </div>
+            if (Model.HasManageReviewerAssignmentExpertisePermission)
+            {
+                <div class="pm-thresholdBox">
+                    <div class="pm-filterBox_title-hover--assignment">Set a threshold  for one or more assignment types by entering a number (0-15) and clicking the 'Apply' button. The default threshold is set to 'Any'. Applications that don't meet the threshold are indicated with a red exclamation mark. Selecting 'Hide Compliant Records' checkbox hides applications that meet the threshold.<br /><br /> Clicking on the 'View All Application Assignments' link opens a modal window with assignments by assignment type for each application.</div>
+                    <div class="pm-thresholdBox_title">Assignment Type Threshold<img src="~/Content/img/info_20px_enabled.png" class="pm-thresholdBox_title_img" id="displayAssignment" /></div>
+                    <div class="pm-thresholdBox_activeText"><input id="activeCheckbox" class="pm-thresholdBox_activeText_checkbox" type="checkbox" disabled />&nbsp;Hide Compliant Records</div>
+                    <div class="pm-thresholdBox_participant">
+                        <div class="pm-thresholdBox_text">Scientist Reviewer</div>
+                        @Html.DropDownListFor(m => m.ScientistReviewerSortOrder, new SelectList(Model.ThresholdRange), "Any", new { @id = "scientistReviewer", @class = "pm-thresholdBox_select" })
+                    </div>
+                    <div class="pm-thresholdBox_participant">
+                        <div class="pm-thresholdBox_text">Advocate/Consumer</div>
+                        @Html.DropDownListFor(m => m.AdvocateConsumerSortOrder, new SelectList(Model.ThresholdRange), "Any", new { @id = "consumerReviewer", @class = "pm-thresholdBox_select" })
+                    </div>
+                    @if (Model.CanSupportSpecialistReviewer)
+                    {
+                        <div class="pm-thresholdBox_participant">
+                            <div class="pm-thresholdBox_text">Specialist Reviewer</div>
+                            @Html.DropDownListFor(m => m.SpecialistReviewerSortOrder, new SelectList(Model.ThresholdRange), "Any", new { @id = "specialistReviewer", @class = "pm-thresholdBox_select" })
+                        </div>
+                    }
+                    <div class="align-right">
+                        <a href="#" class="pm-thresholdBox_link" id="thresholdModal">View All Application Assignments</a>
+                    </div>
+                    <button class="pm-thresholdBox_apply-button" id="applyButton">Apply</button>
+                </div>
+            }
+            if (Model.HasManageReviewerAssignmentExpertisePermission)
+            {
+                <div class="pm-release-box">
+                    @if (!Model.IsReleased & Model.IsScoringSetUp)
+                    {
+                        <span class="pm-release-box_outer">
+                            <button class="pm-release-box_release-button" id="ReleaseApplications" data-sessionPanelId="@Model.SelectedPanel">Release</button>
+                        </span>
+                    }
+                    else if (!Model.IsReleased & !Model.IsScoringSetUp)
+                    {
+                        <span class="pm-release-box_outer">
+                            <button class="pm-release-box_release-button" id="ReleaseApplications" data-sessionPanelId="@Model.SelectedPanel" disabled>Release</button>
+                        </span>
+                    }
+                </div>
+            }
+            if ((Model.ExpertiseGrid != null) && (Model.ExpertiseGrid.Count() > 0))
+            {
+                <div class="alert-message" id="releaseMessage">
+                    @Model.ReleaseMessage()
+                </div>
+                <div class="pm-filterBox_hover-effect"></div>
+                <div class="pm-filterBox_component">
+                    <table id="expertiseTable" class="overflow-y" border="1">
+                        <thead>
+                            <tr>
+                                <th id="ExpertiseToggle"></th>
+                                <th class="block-stat assignedHeader">Assigned:</th>
+                                <th class="block-stat assignedHeader"></th>
+                                @foreach (var item in Model.ExpertiseGrid.Values.ToList()[0])
+                                {
+                                    <th class="block-stat">@Model.FormatPresentationOrder(item.UserId, item.ScientistFlag)</th>
+                                }
+                            </tr>
+                            <tr>
+                                <th id="ExpertiseToggle" class="block-stat"><div>H/M/L</div></th>
+                                <th class="reviewer-name"><div id="log-num">Log #</div></th>
+                                <th class="reviewer-name"><div id="award-num"><span title="Award Mechanism">Award Mechanism</span></div></th>
+                                @foreach (var item in Model.ExpertiseGrid.Values.ToList()[0])
+                                {
+
+                                    <th id="@item.FormattedReviewerColor" class="reviewer-name" rev-expertise="@item.ReviewerExpertiseText" rev-name="@item.ReviewerFirstName @item.ReviewerLastName"><div><span> @Model.FormatReviewerName(item)</span></div></th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var key in Model.ExpertiseGrid.Keys)
+                            {
+                                var list = Model.ExpertiseGrid[key];
+                                <tr>
+                                    <th class="block-stat" id="ExpertiseToggle">@Model.FormatExpertise(list)</th>
+                                    @if (Model.HasManageReviewerAssignmentExpertisePermission)
+                                    {
+                                        <th class="log-number expertiseLogNum" panel-app-id="@list.FirstOrDefault().PanelApplicationId" app-id="@list.FirstOrDefault().ApplicationId"><a><b>@key</b></a></th>
+                                    }
+                                    else
+                                    {
+                                        <th class="log-number expertiseLogNum"><b>@key</b></th>
+                                    }
+                                    <td class="expertiseAppAward" id="AwardAbbrev">@list.FirstOrDefault().AwardAbbrev</td>
+                                    @foreach (var subitem in list)
+                                    {
+                                        var tdClass = "reviewer-assignment";
+                                        if (subitem.ElevatedChairpersonFlag)
+                                        {
+                                            tdClass += " elevated-chairperson";
+                                        }
+                                        <td id="@subitem.FormattedExpertise" class="@tdClass" panel-app-id="@subitem.PanelApplicationId" participant-id="@subitem.ParticipantId" reviewer-name="@subitem.ReviewerFirstName @subitem.ReviewerLastName" log-number="@subitem.LogNumber" is-user-coi="@Json.Encode(subitem.IsCurrentUserCoi)">
+                                            @Model.FormatExpertise(subitem.ParticipationRoleAbbrev, subitem.ReviewOrderValue, subitem.AssignmentTypeId)
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p style="text-align:center; float: left;" id="textNoResults">@Model.NoResultsMessage</p>
+            }
+        }
+        else
+        {
+            foreach (var message in Model.PanelAccessErrors)
+            {
+                <p><span class="failureMessage">@message</span></p>
+            }
+        }
+    </div>
+</div>
+<input type="hidden" id="CanSupportSpecialistReviewer" value="@Model.CanSupportSpecialistReviewer.ToString()" />
+<script type="text/javascript">
+    $(function ($) {
+        sessionStorage.setItem('scrolledWidth', 0);
+
+        if ($('#textNoResults').is(":visible")) {
+            $('#ReleaseApplications').hide();
+            $('#RequestReviewerTransfer').hide();
+            $('#toolTip').hide();
+        } else {
+            $('#ReleaseApplications').show();
+            $('#RequestReviewerTransfer').show();
+            $('#toolTip').show();
+        }
+
+        var selectedPanel = $('#selectedPanel option:selected').text(),
+            selected = selectedPanel.indexOf('select');
+
+        (selected > 0) ? $('#scientistReviewer, #consumerReviewer, #specialistReviewer, .pm-thresholdBox_apply-button').attr('disabled', 'disabled') : $('#scientistReviewer, #consumerReviewer, #specialistReviewer, #applyButton').attr('disabled', false);
+
+
+        $('#selectedPanel').on('change', function () {
+            var selectedPanel = $('#selectedPanel option:selected').text(),
+                selected = selectedPanel.indexOf('select');
+
+            (selected > 0) ? $('#scientistReviewer, #consumerReviewer, #specialistReviewer, .pm-thresholdBox_apply-button').attr('disabled', 'disabled') : $('#scientistReviewer, #consumerReviewer, #specialistReviewer, #applyButton').attr('disabled', false);
+        });
+
+        // This adds pixels if there is horizontal scrolling for the tooltip
+        $('.sticky-wrap').scroll(function () {
+            var screenheight = parseInt($(document).width());
+            var scrolledpx = parseInt($("div.sticky-wrap").scrollLeft());
+            var sum = screenheight + scrolledpx;
+            sessionStorage.setItem('scrolledWidth', scrolledpx);
+        });
+
+        $('#applyButton').click();
+    });
+
+    $('#thresholdModal').on('click', function () {
+        var dropdownValue = $('#selectedProgramYear option:selected').text(),
+            dropdownPanel = $('#selectedPanel option:selected').text(),
+            finalProgram = dropdownValue.substr(dropdownValue.indexOf("(") + 1),
+            firstSlice = finalProgram.substr(0, finalProgram.indexOf(')')),
+            finalYear = dropdownValue.slice(0, 4);
+
+        $('#applyButton').click();
+        var title = 'Application Assignments (' + firstSlice + ' ' + finalYear + ' ' + dropdownPanel + ')';
+        $.get("/PanelManagement/ThresholdAssignmentModal", function (data) {
+            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, title);
+            $(document).on('click', '#closeDialogBtn', function () { $('.ui-dialog-titlebar-close').click(); });
+            $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+            $('.k-pager-wrap').remove();
+        });
+    });
+    // Update assignment to grid
+    function UpdateAssignmentToGrid(clientAssignmentType, presentationOrder, clientExpertiseRating, panelApplicationId, panelUserAssignmentId) {
+        var element = $("td.reviewer-assignment").filter("[participant-id='" + panelUserAssignmentId + "']").filter("[panel-app-id='" + panelApplicationId + "']");
+        // Head counts
+        UpdateHeadCounts(element, presentationOrder);
+        // Side counts
+        UpdateSideCounts(element, clientExpertiseRating);
+        // Change assignment text
+        UpdateElementDisplay(element, clientAssignmentType, presentationOrder, clientExpertiseRating);
+    }
+    // Update element display
+    function UpdateElementDisplay(element, clientAssignmentType, presentationOrder, clientExpertiseRating) {
+        element.text(clientAssignmentType == "UnAssign" ? "" : presentationOrder > 0 ? clientAssignmentType + presentationOrder : clientAssignmentType);
+        (clientExpertiseRating == "High") ? element.attr("id", "expertiseHigh") : (clientExpertiseRating == "Med") ? element.attr("id", "expertiseMed") : (clientExpertiseRating == "Low") ? element.attr("id", "expertiseLow") : (clientExpertiseRating == "None") ? element.attr("id", "expertiseNone") : (clientExpertiseRating == "COI") ? element.attr("id", "expertiseCOI") : element.attr("id", "expertiseNoSelection");
+    }
+    // Update head counts (1st/Other)
+    function UpdateHeadCounts(element, presentationOrder) {
+        var headerEle = $("th.block-stat").eq(element.index() - 1);
+        var headCounts = headerEle.text().split("/");
+        var firstCount = 0, subsequentCount = 0, totalCount = 0;
+        var isScientist = false;
+        if (headCounts.length > 1) {
+            firstCount = parseInt(headCounts[0]);
+            subsequentCount = parseInt(headCounts[1]);
+            isScientist = true;
+        } else {
+            totalCount = parseInt(headCounts[0]);
+        }
+        var oldAssignment = element.text().split(/(\d+)/).filter(Boolean);
+        var isOldAssignmentFirst = oldAssignment.length > 1 && oldAssignment[1] == 1;
+        var isOldAssignmentSubsequent = oldAssignment.length > 1 && oldAssignment[1] > 1;
+        var isNewAssignmentFirst = presentationOrder == 1;
+        var isNewAssignmentSubsequent = presentationOrder > 1;
+        var isHeadCountChanged = false;
+        if (isScientist) {
+            if (isOldAssignmentFirst != isNewAssignmentFirst) {
+                firstCount = firstCount + (isNewAssignmentFirst ? 1 : -1);
+                isHeadCountChanged = true;
+            }
+            if (isOldAssignmentSubsequent != isNewAssignmentSubsequent) {
+                subsequentCount = subsequentCount + (isNewAssignmentSubsequent ? 1 : -1);
+                isHeadCountChanged = true;
+            }
+        } else {
+            var isOldAssignmentCounted = isOldAssignmentFirst | isOldAssignmentSubsequent;
+            var isNewAssignmentCounted = isNewAssignmentFirst | isNewAssignmentSubsequent;
+            if (isOldAssignmentCounted != isNewAssignmentCounted) {
+                totalCount = totalCount + (isNewAssignmentCounted ? 1 : -1);
+                isHeadCountChanged = true;
+            }
+        }
+        if (isHeadCountChanged) {
+            var newHeadCount = (isScientist) ? firstCount + "/" + subsequentCount : totalCount;
+            headerEle.text(newHeadCount);
+        }
+    }
+    // Update side counts (H/M/L)
+    function UpdateSideCounts(element, clientExpertiseRating) {
+        var sideCountElement = element.closest("tr").find(".block-stat");
+        var sideCounts = sideCountElement.text().split("/");
+        for (var i = 0; i < sideCounts.length; i++) {
+            sideCounts[i] = +sideCounts[i];
+        }
+        var elementId = element.attr("id");
+        if (clientExpertiseRating == "High") {
+            sideCounts[0] += elementId == "expertiseHigh" ? 0 : 1;
+            sideCounts[1] += elementId == "expertiseMed" ? -1 : 0;
+            sideCounts[2] += elementId == "expertiseLow" ? -1 : 0;
+        } else if (clientExpertiseRating == "Med") {
+            sideCounts[0] += elementId == "expertiseHigh" ? -1 : 0;
+            sideCounts[1] += elementId == "expertiseMed" ? 0 : 1;
+            sideCounts[2] += elementId == "expertiseLow" ? -1 : 0;
+        } else if (clientExpertiseRating == "Low") {
+            sideCounts[0] += elementId == "expertiseHigh" ? -1 : 0;
+            sideCounts[1] += elementId == "expertiseMed" ? -1 : 0;
+            sideCounts[2] += elementId == "expertiseLow" ? 0 : 1;
+        } else if (clientExpertiseRating == "None") {
+            sideCounts[0] += elementId == "expertiseHigh" ? -1 : 0;
+            sideCounts[1] += elementId == "expertiseMed" ? -1 : 0;
+            sideCounts[2] += elementId == "expertiseLow" ? -1 : 0;
+        } else if (clientExpertiseRating == "COI") {
+            sideCounts[0] += elementId == "expertiseHigh" ? -1 : 0;
+            sideCounts[1] += elementId == "expertiseMed" ? -1 : 0;
+            sideCounts[2] += elementId == "expertiseLow" ? -1 : 0;
+        } else {
+            sideCounts[0] += elementId == "expertiseHigh" ? -1 : 0;
+            sideCounts[1] += elementId == "expertiseMed" ? -1 : 0;
+            sideCounts[2] += elementId == "expertiseLow" ? -1 : 0;
+        }
+        sideCountElement.text(sideCounts.join("/"));
+    }
+</script>
+
+<script type="text/javascript">
+    $('#ColorLegend').click(function () {
+        if ($(this).is(':checked')) {
+            $("#legend").show();
+        } else {
+            $("#legend").hide();
+        }
+    });
+
+    $(document).ready(function () {
+        // View Count function
+        $("#ExpertiseCount").click(function () {
+            var isChecked = $('#ExpertiseCount').is(':checked');
+            if (isChecked) {
+                var column = "table #ExpertiseToggle";
+                $(column).addClass('displayCell').removeClass('displayNone');
+                var columnTwo = "table #ExpertiseToggleEnd";
+                $(columnTwo).addClass('displayCell').removeClass('displayNone');
+            } else {
+                var column = "table #ExpertiseToggle";
+                $(column).removeClass('displayCell').addClass('displayNone');
+                var columnTwo = "table #ExpertiseToggleEnd";
+                $(columnTwo).removeClass('displayCell').addClass('displayNone');
+            }
+
+            var setCheckbox = $(this).is(':checked');
+            sessionStorage.setItem('expertiseCheckbox', setCheckbox);
+        });
+
+        // Session Variables set
+        var toolTipCheckbox = sessionStorage.getItem('toolTipCheckbox');
+        if (toolTipCheckbox != null) {
+            if (toolTipCheckbox == "false") {
+                toolTipCheckbox = false;
+                $('.pm-displayBox_view-group label').html('<input type="checkbox" id="toolTip" name="ExpertiseToggle" class="pm-displayBox_view-group_tooltip" data-toggle="false" />View ToolTip&nbsp;');
+            } else {
+                toolTipCheckbox = true;
+            }
+            $('#toolTip').attr('checked', toolTipCheckbox);
+        }
+        var hideCheckbox = sessionStorage.getItem('hideCheckbox');
+        var disabledCheckbox;
+        if (hideCheckbox != null) {
+
+            $('#applyButton').click();
+            hideCount();
+        }
+        //style COI entries
+        styleCoiRows();
+    });
+    function hideCount() {
+        var expertiseCheckbox = sessionStorage.getItem('expertiseCheckbox');
+        if (expertiseCheckbox != null) {
+            expertiseCheckbox = (expertiseCheckbox == 'true') ? true : false;
+            $('#ExpertiseCount').attr('checked', expertiseCheckbox);
+            if (expertiseCheckbox == false) {
+                var column = "table #ExpertiseToggle";
+                $(column).removeClass('displayCell').addClass('displayNone');
+                var columnTwo = "table #ExpertiseToggleEnd";
+                $(columnTwo).removeClass('displayCell').addClass('displayNone');
+            } else {
+                var column = "table #ExpertiseToggle";
+                $(column).addClass('displayCell').removeClass('displayNone');
+                var columnTwo = "table #ExpertiseToggleEnd";
+                $(columnTwo).addClass('displayCell').removeClass('displayNone');
+            }
+        }
+    }
+</script>
+@*script for populating review assignment data to modal*@
+<script type="text/javascript">
+    // Array used to save data
+    var savedData = [];
+
+    $('body').on('click', '.reviewer-assignment', function (e) {
+        // Get the parameters to pass
+        var isElevatedChairperson = $(this).hasClass("elevated-chairperson");
+        var dialogReviewerLabel = isElevatedChairperson ? "CPRIT Chair" : "Reviewer";
+        var hasManagePermission = @Json.Encode(Model.HasManageReviewerAssignmentExpertisePermission);
+        var logNumber = $(this).attr("log-number");
+        reviewerName = $(this).attr("reviewer-name"),
+            dialogTitle = dialogReviewerLabel + ": " + reviewerName + ", Application: " + logNumber,
+            panelApplicationId = $(this).attr("panel-app-id")
+        panelUserAssignmentId = $(this).attr("participant-id"),
+            cellNumber = $(this)[0].cellIndex;
+        sessionStorage.setItem('newCellNumber', cellNumber);
+        sessionStorage.setItem('raLogNumber', logNumber);
+
+        if (hasManagePermission)
+            // load the data via ajax
+            $.get('/PanelManagement/GetReviewerAssignment',
+                { logNumber: logNumber, reviewerName: reviewerName, panelApplicationId: panelApplicationId, panelUserAssignmentId: panelUserAssignmentId, popupBox: false, isElevatedChairperson: isElevatedChairperson },
+                function (responseText, textStatus, XMLHttpRequest) {
+                    p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.medium, dialogTitle);
+                    $(".ui-dialog").draggable({ drag: function (event, ui) { $('.ui-draggable').css('height', 'auto');}})
+                }
+            );
+    })
+    .on('click', '.expertiseLogNum', function (e) {
+        var logNumber = $(this).text();
+        var panelApplicationId = $(this).attr("panel-app-id")
+        var applicationId = $(this).attr("app-id")
+
+        //var title = 'View Application for  ' + logNumber;
+        //// Load the data via ajax
+        //$.get("/SummaryStatementProcessing/ViewApplicationModal", { panelApplicationId: panelApplicationId },
+        //    function (responseText, textStatus, XMLHttpRequest) {
+        //        p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, title);
+        //        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+        //        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        //    }
+        //);
+
+        var dialogTitle = 'View Application ' + logNumber;
+        $.get("/PanelManagement/PIInformation", { applicationId: applicationId },
+            function (data) {
+                p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+                $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+            });
+
+    });
+</script>
+
+@*script for releasing applications*@
+<script type="text/javascript">
+    $('body').on('click', '#ReleaseApplications', function () {
+
+        if (confirm("Are you sure you want to release the applications to the reviewers?")) {
+            //
+            // retrieve the session panel id from the HTML.  (We put it there)
+            //
+            var sessionPanelId = $(this).attr("data-sessionPanelId");
+
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("ReleaseApplications")',
+                data: { "sessionPanelId": sessionPanelId }
+            }).success(function (result) {
+                //
+                // Let the user know the results of the Release
+                //
+                alert(result.message);
+                if (result.hideButton) {
+                    $('#ReleaseApplications').hide();
+                    $("#releaseMessage").text(result.releaseDate);
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert("Sorry, there was a problem processing your request.");
+            });
+        };
+
+    });
+</script>
+@*Script for showing the Request Transfer model window*@
+<script type="text/javascript">
+    $('body').on('click', '#RequestReviewerTransfer', function (e) {
+        e.preventDefault();
+        //
+        // Display the model Request Transfer window
+        //
+        var dialogTitle = 'Request Transferring to another panel / Releasing Reviewer';
+        var currentPanelId = $("#SessionPanelId").val();
+        var currentPanelName = $("#SessionPanelName").val();
+        $.get('/PanelManagement/NewRequestReviewerTransfer', { currentPanelId: currentPanelId, currentPanelName: currentPanelName },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+            }
+        );
+    });
+</script>
+<script type="text/javascript">
+
+    // Highlights cell plus row and column
+    $(document).on('mouseover', '#expertiseTable tr td', function () {
+        var col = $(this).parent().children().index($(this)) - 1;
+        var colNew = $(this).parent().children().index($(this));
+        var rowNew = $(this).closest('#expertiseTable tr').index() + 1;
+        $(this).addClass('expertiseBorder, cellBorder');
+        $(this).closest('tr').find('td').addClass('expertiseBorder');
+        $('.sticky-col tr').closest('tr').find('td:eq(' + col + ')').addClass('colBorder');
+        $(this).closest('tr').find('td').addClass('expertiseBorder');
+        $(this).closest('tr').find('th').addClass('expertiseBorderTh');
+        $('#expertiseTable thead tr').find('th:eq(' + colNew + ')').addClass('colBorder');
+        $('.sticky-col thead tr').find('th:eq(' + colNew + ')').addClass('colBorder');
+        $('.sticky-thead tr').find('th:eq(' + colNew + ')').addClass('colBorder');
+        $('#expertiseTable tr').each(function () {
+            $(this).closest('tr').find('td:eq(\"' + col + '\")').addClass('colBorder');
+            $('.sticky-col').find('th:eq(' + rowNew + ')').addClass('expertiseBorderTh');
+        })
+    }).on('mouseout', '#expertiseTable tr td', function () {
+        var col = $(this).parent().children().index($(this)) - 1;
+        var colNew = $(this).parent().children().index($(this));
+        var rowNew = $(this).closest('#expertiseTable tr').index() + 1;
+        $(this).removeClass('expertiseBorder, cellBorder');
+        $(this).closest('tr').find('td').removeClass('expertiseBorder');
+        $(this).closest('tr').find('th').removeClass('expertiseBorderTh');
+        $('.sticky-col thead tr').find('th:eq(' + colNew + ')').removeClass('colBorder');
+        $('.sticky-thead tr').find('th:eq(' + colNew + ')').removeClass('colBorder');
+        $('#expertiseTable thead tr').find('th:eq(' + colNew + ')').removeClass('colBorder');
+        $('#expertiseTable tr').each(function () {
+            $(this).closest('tr').find('td:eq(' + col + ')').removeClass('colBorder');
+            $('.sticky-col').find('th:eq(' + rowNew + ')').removeClass('expertiseBorderTh');
+        })
+    });
+
+    $('#expertiseTable tr th').on('mouseover', function () {
+        var col = $(this).parent().children().index($(this)) - 1;
+        var colNew = $(this).parent().children().index($(this));
+        var rowNew = $(this).closest('#expertiseTable tr').index() + 1;
+        $(this).addClass('expertiseBorder, cellBorder');
+        $(this).closest('tr').find('td').addClass('expertiseBorder');
+        $('.sticky-col tr').closest('tr').find('td:eq(' + col + ')').addClass('colBorder');
+    }).on('mouseout', function () {
+        var col = $(this).parent().children().index($(this)) - 1;
+        var colNew = $(this).parent().children().index($(this));
+        var rowNew = $(this).closest('#expertiseTable tr').index() + 1;
+        $(this).removeClass('expertiseBorder, cellBorder');
+        $(this).closest('tr').find('td').removeClass('expertiseBorder');
+        $(this).closest('tr').find('th').removeClass('expertiseBorderTh');
+        $('.sticky-col thead tr').find('th:eq(' + colNew + ')').removeClass('colBorder');
+        $('.sticky-thead tr').find('th:eq(' + colNew + ')').removeClass('colBorder');
+        $('#expertiseTable thead tr').find('th:eq(' + colNew + ')').removeClass('colBorder');
+        $('#expertiseTable tr').each(function () {
+            $(this).closest('tr').find('td:eq(' + col + ')').removeClass('colBorder');
+            $('.sticky-col').find('th:eq(' + rowNew + ')').removeClass('expertiseBorderTh');
+        })
+    });
+
+    function debounce(fn, delay) {
+        var timer = null;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                fn.apply(context, args);
+            }, delay);
+        };
+    }
+
+    // Activates Tool tip
+    $('body').on('mouseenter', '.reviewer-assignment', debounce(function (e) {
+        var thisClass = $('#toolTip').attr('data-toggle');
+        if (thisClass == 'true') {
+            var isElevatedChairperson = $(this).hasClass("elevated-chairperson");
+            var isCoi = $(this).attr("id") == "expertiseCOI";
+            if (!isElevatedChairperson || (isElevatedChairperson && isCoi)) {
+                // Get the parameters to pass
+                var logNumber = $(this).attr("log-number");
+                var reviewerName = $(this).attr("reviewer-name");
+                var panelApplicationId = $(this).attr("panel-app-id");
+                var panelUserAssignmentId = $(this).attr("participant-id");
+                $('.popUp, .popUpRight').remove();
+                // load the data via ajax
+                $.get('/PanelManagement/GetReviewerAssignment',
+                    { logNumber: logNumber, reviewerName: reviewerName, panelApplicationId: panelApplicationId, panelUserAssignmentId: panelUserAssignmentId, popupBox: true, isElevatedChairperson: isElevatedChairperson },
+                    function (responseText, textStatus, XMLHttpRequest) {
+                        var assignmentType = responseText.AssignmentTypeId != null;
+                        var expertiseType = responseText.ClientExpertiseRatingId != null;
+                        if (assignmentType || expertiseType) {
+                            var actualPoint = e.pageX;
+                            if (actualPoint > 990) {
+                                $(e.target).append('<div class="popUpRight"><div class="appAssign"><strong>Application Assignment:</strong> <span></span></div><div class="presentationOrder"><strong>Presentation Order:</strong> <span></span></div><div class="expertiseCell"><strong>Expertise:</strong> <span></span></div><div class="coiType"><strong>COI Type:</strong> <span></span></div><div class="commentsValue"><strong>Comments:</strong><span></span></div></div>');
+                            } else {
+                                $(e.target).append('<div class="popUp"><div class="appAssign"><strong>Application Assignment:</strong> <span></span></div><div class="presentationOrder"><strong>Presentation Order:</strong> <span></span></div><div class="expertiseCell"><strong>Expertise:</strong> <span></span></div><div class="coiType"><strong>COI Type:</strong> <span></span></div><div class="commentsValue"><strong>Comments:</strong><span></span></div></div>');
+                            }
+                            var ClientAssignmentTypeId = responseText.ClientAssignmentTypeId;
+                            var UnAssign;
+                            $(responseText.ClientAssignmentTypeList).each(function (i, value) {
+                                if (value.ClientAssignmentTypeId == ClientAssignmentTypeId) {
+                                    UnAssign = value.ClientAssignmentTypeAbbreviation;
+                                }
+                            });
+                            var assignedAbbreviation = UnAssign;
+                            var assignedExpertise = '';
+                            var ClientExpertiseRatingId = responseText.ClientExpertiseRatingId;
+                            var rating = responseText.ClientExpertiseRatingList;
+                            $(rating).each(function (i, value) {
+                                if (ClientExpertiseRatingId == value.ClientExpertiseRatingId) {
+                                    assignedExpertise = value.ClientExpertiseRatingAbbreviation;
+                                }
+                            })
+
+                            var ClientCoiTypeId = responseText.ClientCoiTypeId;
+                            var presentationOrder = responseText.PresentationOrder;
+
+                            $('#expertiseTable td').find('.appAssign span').text(assignedAbbreviation);
+                            if (presentationOrder == null) {
+                                $('#expertiseTable td').find('.presentationOrder span').text('None');
+                            } else {
+                                $('#expertiseTable td').find('.presentationOrder span').text(presentationOrder);
+                            }
+                            $('#expertiseTable td').find('.expertiseCell span').text(assignedExpertise);
+
+                            // If its a COI
+                            if (ClientExpertiseRatingId == 4 || ClientExpertiseRatingId == 49) {
+                                $('.coiType').show();
+                                var coiValue;
+                                $(responseText.ClientCoiList).each(function (i, value) {
+                                    if (ClientCoiTypeId == value.ClientCoiTypeId) {
+                                        coiValue = value.CoiTypeDescription;
+                                    }
+                                })
+                                var coiDesc = coiValue;
+                                $('.presentationOrder').hide();
+                                var commentsValue = responseText.Comment;
+                                $('#expertiseTable td').find('.coiType span').text(coiDesc).show();
+                                $(e.target).find('.commentsValue span').text(commentsValue).show();
+                                $('.popUp').removeClass('popUp').addClass('popUpCOI');
+                            } else {
+                                $('#expertiseTable td .coiType').hide();
+                                $('#expertiseTable td .commentsValue').hide();
+                                $('.presentationOrder').show();
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    }, 250)).on('mouseout', function () {
+        $(this).find('.popUp').remove();
+        $(this).find('.popUpCOI').remove();
+        $(this).find('.popUpRight').remove();
+    });
+
+    // Activates Tool tip for a reviewer
+    $('body').on('mouseenter', '.reviewer-name', debounce(function (e) {
+        var thisClass = $('#toolTip').attr('data-toggle');
+        if (thisClass == 'true') {
+            var revExpertise = $(this).attr("rev-expertise");
+            var revId = $(this).attr("id");
+            var revName = $(this).attr("rev-name");
+            $('.pm-filterBox_hover-effect_expertisePopUp, .pm-filterBox_hover-effect_expertisePopUpRight').remove();
+            var currPosition = $(e.target).closest("th").position();
+
+            if (typeof revExpertise === 'undefined') {
+                revExpertise = "None specified";
+            }
+            var actualPoint = e.pageX;
+            if (actualPoint > 950) {
+                $('.pm-filterBox_hover-effect').append('<div class="pm-filterBox_hover-effect_expertisePopUpRight"><div><strong>Name: </strong><span>' + revName + '</span></div><div><strong>Expertise: </strong><span>' + revExpertise + '</span></div> </div>').show();
+                $('.pm-filterBox_hover-effect_expertisePopUpRight').css('left', currPosition.left - 350);
+            } else {
+                $('.pm-filterBox_hover-effect').append('<div class="pm-filterBox_hover-effect_expertisePopUp"><div><strong>Name: </strong><span>' + revName + '</span></div><div><strong>Expertise: </strong><span>' + revExpertise + '</span></div> </div>').show();
+                $('.pm-filterBox_hover-effect_expertisePopUp').css('left', currPosition.left);
+            }
+
+        }
+    }, 250)).on('mouseout', function () {
+        $('.pm-filterBox_hover-effect_expertisePopUp').remove();
+        $('.pm-filterBox_hover-effect_expertisePopUpRight').remove();
+    });
+
+
+    $(document).on('mouseenter', 'th.block-stat', debounce(function (e) {
+        var isChecked = $('#toolTip').is(':checked');
+        if (isChecked) {
+            var actualPoint = e.pageX,
+                getText = $(e.target).text(),
+                leftPosition = $(e.target).position(),
+                firstTd = $('#expertiseTable th.block-stat:nth-child(1)').outerWidth(),
+                secondTd = $('#expertiseTable th.block-stat:nth-child(2)').outerWidth(),
+                thirdTd = $('#expertiseTable th.block-stat:nth-child(3)').outerWidth(),
+                parentBox = parseInt($(this).index() - 2),
+                grabFirstNumber = getText.substr(0, getText.indexOf('/')),
+                grabSecondNumber = getText.substr(getText.indexOf("/") + 1),
+                total = parseInt(grabFirstNumber) + parseInt(grabSecondNumber),
+                thisId = $(this).attr('id');
+            if (thisId != 'ExpertiseToggle') {
+                if (getText != 'Assigned:') {
+                    var getWidthGone = parseInt(sessionStorage.getItem('scrolledWidth'));
+
+                    if (actualPoint > 990) {
+                        $('.pm-filterBox_hover-effect').append('<div class="pm-filterBox_hover-effect_toolPopUp"><div class="pm-filterBox_hover-effect_toolPopUp_text"># of 1st Assignment:<span class="pm-filterBox_hover-effect_toolPopUp_text--result">' + grabFirstNumber + '</span></div><div class="pm-filterBox_hover-effect_toolPopUp_text"># of 2nd Assignment:<span class="pm-filterBox_hover-effect_toolPopUp_text--result">' + grabSecondNumber + '</span></div><div class="pm-filterBox_hover-effect_toolPopUp_text">Total Assignments:<span class="pm-filterBox_hover-effect_toolPopUp_text--result">' + total + '</span></div></div>').show();
+                        $('.pm-filterBox_hover-effect_toolPopUp').css('left', (firstTd + secondTd + (thirdTd * parentBox) + getWidthGone));
+                    } else {
+                        $('.pm-filterBox_hover-effect').append('<div class="pm-filterBox_hover-effect_toolPopUp"><div class="pm-filterBox_hover-effect_toolPopUp_text"># of 1st Assignment:<span class="pm-filterBox_hover-effect_toolPopUp_text--result">' + grabFirstNumber + '</span></div><div class="pm-filterBox_hover-effect_toolPopUp_text"># of 2nd Assignment:<span class="pm-filterBox_hover-effect_toolPopUp_text--result">' + grabSecondNumber + '</span></div><div class="pm-filterBox_hover-effect_toolPopUp_text">Total Assignments:<span class="pm-filterBox_hover-effect_toolPopUp_text--result">' + total + '</span></div></div>').show();
+                        $('.pm-filterBox_hover-effect_toolPopUp').css('left', (firstTd + secondTd + (thirdTd * parentBox) + getWidthGone));
+                    }
+                }
+            }
+
+        }
+    }, 250)).on('mouseout', function () {
+        $('.pm-filterBox_hover-effect_toolPopUp').remove();
+    });
+
+    function fnExcelReport() {
+        var gridExport = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+        gridExport = gridExport + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+        gridExport = gridExport + '<x:Name>Test Sheet</x:Name>';
+        gridExport = gridExport + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+        gridExport = gridExport + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        gridExport = gridExport + '<table border="1px">';
+        gridExport = gridExport + $("#expertiseTable").html();
+        gridExport = gridExport + '</table></body></html>';
+
+        var dataType = 'data:application/vnd.ms-excel';
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+            if (window.navigator.msSaveBlob) {
+                var blob = new Blob(gridExport, {
+                    type: "application/csv;charset=utf-8;"
+                });
+                navigator.msSaveBlob(blob, "ExpertiseGrid.xls");
+            }
+        } else {
+            $('#btnExport').attr('href', dataType + ', ' + encodeURIComponent(gridExport));
+            $('#btnExport').attr('download', 'ExpertiseGrid.xls');
+        }
+
+    }
+    $('#btnExport').on('click', function () {
+        $("#expertiseTable").table2excel({
+            name: "Table2Excel",
+            filename: "ExpertiseGrid",
+        });
+    })
+
+    // Sets grid with scrollbar or not
+    setTimeout(function () {
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        var ua = window.navigator.userAgent;
+        var ie = ua.search(/(MSIE|Trident|Edge)/);
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        if (ie > -1 || isFirefox) {
+            var expertiseWidth = $('#expertiseTable').width();
+            if (expertiseWidth >= 1301) {
+                $('.sticky-wrap.overflow-y').addClass('overflowFirst');
+                $('.sticky-wrap.overflow-y').removeClass('overflowSecond');
+                var isFirefox = typeof InstallTrigger !== 'undefined';
+                var ua = window.navigator.userAgent;
+                var ie = ua.search(/(MSIE|Trident|Edge)/);
+                if (ie > -1) {
+                    var fireFoxWidth = $('#expertiseTable .log-number').width();
+                    $('.sticky-thead tr:nth-child(2) th:nth-child(2) #log-num').css('width', fireFoxWidth);
+                }
+                if (isFirefox) {
+                    var fireFoxWidth = $('#expertiseTable .log-number').width();
+                    $('.sticky-thead tr:nth-child(2) th:nth-child(2) #log-num').css('width', fireFoxWidth);
+                }
+                if (isChrome) {
+                    //       $('.sticky-wrap .sticky-thead').css('width', 'auto');
+                    fireFoxWidth = $('#expertiseTable .log-number').width();
+                    $('.sticky-thead tr:nth-child(2) th:nth-child(2) #log-num').css('width', fireFoxWidth);
+                    $('.sticky-thead tr:nth-child(2) th:nth-child(3) #award').css('width', fireFoxWidth);
+                }
+            } else {
+                $('.sticky-wrap.overflow-y').removeClass('overflowFirst');
+                $('.sticky-wrap.overflow-y').addClass('overflowSecond');
+                var isChrome = !!window.chrome && !!window.chrome.webstore;
+                if (isChrome) {
+                    $('.sticky-wrap .sticky-thead').css('width', 'auto');
+                }
+            }
+        }
+    }, 1000);
+
+
+    // Tooltip for grid
+    $(document).on('click', '#toolTip', function () {
+        var toggled = $(this).attr('data-toggle');
+        var checked = $(this).is(':checked');
+        if (checked) {
+            $(this).attr('data-toggle', 'true');
+            $('.pm-displayBox_view-group label').html('<input type="checkbox" id="toolTip" name="ExpertiseToggle" checked class="pm-displayBox_view-group_tooltip" data-toggle="true" />View ToolTip&nbsp;');
+        } else {
+            $(this).attr('data-toggle', 'false');
+            $('.pm-displayBox_view-group label').html('<input type="checkbox" id="toolTip" name="ExpertiseToggle" class="pm-displayBox_view-group_tooltip" data-toggle="false" /> View ToolTip&nbsp;');
+        }
+        sessionStorage.setItem('toolTipCheckbox', checked);
+    })
+
+    // Tooltips
+    $('#expertiseTitle').on('mouseenter', function () {
+        $('.pm-filterBox_title-hover').addClass('displayBlock');
+    }).on('mouseout', function () {
+        $('.pm-filterBox_title-hover').removeClass('displayBlock');
+    });
+
+    $('#displayTooltip').on('mouseenter', function () {
+        $('.pm-filterBox_title-hover--display').addClass('displayBlock');
+    }).on('mouseout', function () {
+        $('.pm-filterBox_title-hover--display').removeClass('displayBlock');
+    });
+
+    $('#displayAssignment').on('mouseenter', function () {
+        $('.pm-filterBox_title-hover--assignment').addClass('displayBlock');
+    }).on('mouseout', function () {
+        $('.pm-filterBox_title-hover--assignment').removeClass('displayBlock');
+    });
+
+    // Show / Hide Grid options
+    $('#showGrid').on('click', function () {
+        $('.pm-filterBox, .pm-displayBox, .pm-thresholdBox').show();
+        $(this).removeClass('pm-fieldSet_links_show');
+        $('#hideGrid').addClass('pm-fieldSet_links_show');
+        $('.pm-filterBox_component').removeClass('gridPush');
+    })
+    $('#hideGrid').on('click', function () {
+        $('.pm-filterBox, .pm-displayBox, .pm-thresholdBox').hide();
+        $(this).removeClass('pm-fieldSet_links_show');
+        $('#showGrid').addClass('pm-fieldSet_links_show');
+        $('.pm-filterBox_component').addClass('gridPush');
+    })
+
+    var clone = 0;
+    var clonedGrid = $('#expertiseTable tbody').clone();
+    var originalGrid = $('#expertiseTable tbody').clone();
+    var kendoGridDatasourceArray = [];
+    $(document).ready(function () {
+        sessionStorage.setItem('setOnLoad', true);
+    })
+    // Apply Button
+    $('#applyButton').on('click', function () {
+        // Reset grid no matter what
+        $('#expertiseTable tbody, .sticky-col tbody').remove();
+        $('#expertiseTable tr th, .sticky-thead tr th').show();
+        $(clonedGrid[0]).appendTo('#expertiseTable, .sticky-col');
+        styleCoiRows();
+        var expCount = $('#ExpertiseCount').is(':checked');
+        if (expCount == false) {
+            hideCount();
+        }
+
+        $('.sticky-col tbody tr').each(function (i, value) {
+            $(this).find('td').remove();
+        });
+
+        var scientistValue = "",
+            consumerValue = "",
+            specialistValue = "",
+            eachCell = $('#expertiseTable tbody tr');
+        clonedGrid = $('#expertiseTable tbody').clone();
+
+        // Lets the rest of the function know if a scientist and/or a consumer is a part of the equation
+        $('.pm-thresholdBox_select').each(function (i, value) {
+            var selected = $(this).val(),
+                id = $(this).attr('id');
+            (id == 'scientistReviewer') ? scientistValue = selected :
+                (id == 'consumerReviewer') ? consumerValue = selected : specialistValue = selected;
+        })
+        $('span.pm-threshold_exclamation').remove();
+
+        // Add any changed data here
+        if (savedData.length > 0) {
+            // Go through each saved data piece
+            $(savedData).each(function (e, value) {
+                // Search each row
+                $('#expertiseTable tbody tr').each(function (i, newValue) {
+                    var selectedLogNumber = $('#expertiseTable tbody tr:nth-child(' + (i + 1) + ')').find('td:nth-child(4)'),
+                        cell = parseInt(value.cellNumber) + 1,
+                        assignedCell = $('#expertiseTable tbody tr:nth-child(' + (i + 1) + ')').find('td:nth-child(' + cell + ')'),
+                        newLog = selectedLogNumber.attr('log-number');
+                    if (newLog == value.newAppId) {
+                        assignedCell.text(value.assignmentListText);
+                        assignedCell.attr('id', value.expertiseColor);
+                        return false;
+                    }
+                });
+            });
+        }
+
+        if (scientistValue == 0 && consumerValue == 0 && specialistValue == 0) {
+            $('span.pm-threshold_exclamation, #expertiseTable tbody').remove();
+            $(originalGrid[0]).appendTo('#expertiseTable');
+        } else {
+            $(eachCell).each(function (i, value) {
+                var scientistNumber = 0,
+                    consumerNumber = 0,
+                    specialistNumber = 0,
+                    scientistCount = 0,
+                    consumerCount = 0;
+
+                // Search each cell
+                $(this).find('td').each(function (e, newValue) {
+                    var totalTdCount = value.childElementCount - 3,
+                        cellText = $.trim($(this).text()),
+                        firstCell = $(this).attr('id'),
+                        containsSR = cellText.indexOf('SR'),
+                        containsSPR = cellText.indexOf('SPR'),
+                        containsCR = cellText.indexOf('CR') >= 0 ? cellText.indexOf('CR') : cellText.indexOf('AR');
+
+                    if (scientistValue != 0) {
+                        if (firstCell != 'ExpertiseToggle') {
+                            // Scientist search
+                            if (containsSR >= 0) {
+                                var hasClass = $(this).closest('tr').find('th span').length;
+                                if (hasClass < 1) {
+                                    scientistNumber++;
+                                }
+                            }
+                            else if (containsSPR >= 0) {
+                                var hasClass = $(this).closest('tr').find('th span').length;
+                                if (hasClass < 1) {
+                                    specialistNumber++;
+                                }
+                            }
+                            // Consumer search
+                            else if (containsCR >= 0) {
+                                var hasClass = $(this).closest('tr').find('th span').length;
+                                if (hasClass < 1) {
+                                    consumerNumber++;
+                                }
+                            }
+                        }
+                    }
+                    else if (specialistValue != 0) {
+                        if (firstCell != 'ExpertiseToggle') {
+                            if (containsSPR >= 0) {
+                                var hasClass = $(this).closest('tr').find('th span').length;
+                                if (hasClass < 1) {
+                                    specialistNumber++;
+                                }
+                            }
+                            // Consumer search
+                            else if (containsCR >= 0) {
+                                var hasClass = $(this).closest('tr').find('th span').length;
+                                if (hasClass < 1) {
+                                    consumerNumber++;
+                                }
+                            }
+                        }
+                    }
+                    else if (consumerValue != 0) {
+                        if (firstCell != 'ExpertiseToggle') {
+                            // Consumer search
+                            if (containsCR >= 0) {
+                                var hasClass = $(this).closest('tr').find('th span').length;
+                                if (hasClass < 1) {
+                                    consumerNumber++;
+                                }
+                            }
+                        }
+                    }
+                    if (totalTdCount == e) {
+                        return false;
+                    }
+                });
+                // If select dropdowns have a value
+                if (scientistValue > 0 && scientistNumber != scientistValue) {
+                    setExclamation(this);
+                } else if (consumerValue > 0 && consumerNumber != consumerValue) {
+                    setExclamation(this);
+                } else if (specialistValue > 0 && specialistNumber != specialistValue) {
+                    setExclamation(this);
+                }
+            });
+        }
+        var count = 0;
+        $('.pm-thresholdBox_select').each(function (i, value) {
+            var selected = $(this).val();
+            if (selected != 0) {
+                count++;
+            }
+        });
+        if (count != 0) {
+            $('#activeCheckbox').attr('disabled', false);
+            $('.pm-thresholdBox_activeText').css('color', 'black');
+        } else {
+            $('#activeCheckbox').attr({ 'disabled': 'disabled', 'checked': false });
+            $('.pm-thresholdBox_activeText').css('color', '#757575');
+        }
+        var data = {
+            sessionPanelId: $('#selectedPanel option:selected').val(),
+            scientistReviewerSortOrder: $('#scientistReviewer option:selected').val(),
+            advocateConsumerSortOrder: $('#consumerReviewer option:selected').val(),
+            specialistReviewerSortOrder: $('#specialistReviewer option:selected').val()
+        };
+
+        $.ajax({
+            data: data,
+            url: "/PanelManagement/SaveAssignmentTypeThreshold",
+        });
+
+        var newCell = $('#expertiseTable tbody tr');
+        kendoGridDatasourceArray = [];
+        $(newCell).each(function (i, value) {
+            var ac = 0,
+                sr = 0,
+                spr = 0,
+                appId = $.trim($(this).find('th b').text()),
+                hasIt = $(this).find('span'),
+                isCompliant = false;
+
+            if (hasIt.length <= 0) {
+                isCompliant = true;
+            }
+
+            // Search each cell
+            $(this).find('td').each(function (e, newValue) {
+                var firstCell = $(this).attr('id'),
+                    cellText = $.trim($(this).text()),
+                    containsSR = cellText.indexOf('SR'),
+                    containsSPR = cellText.indexOf('SPR'),
+                    containsCR = cellText.indexOf('CR') >= 0 ? cellText.indexOf('CR') : cellText.indexOf('AR');
+
+                if (firstCell != 'ExpertiseToggle') {
+                    // Scientist datasource count
+                    if (containsSR >= 0) {
+                        sr++;
+                    }
+                    else if (containsSPR >= 0) {
+                        spr++;
+                    }
+                    // Consumer datasource count
+                    else if (containsCR >= 0) {
+                        ac++;
+                    }
+                }
+
+            });
+
+            // Tally up each datasource column
+            kendoGridDatasourceArray.push({ isCompliant: isCompliant, appId: appId, sr: sr, ac: ac, spr: spr });
+        });
+
+        // If Hide Compliant checkbox is checked
+        var isChecked = $('#activeCheckbox').is(':checked');
+        if (isChecked) {
+            $('#expertiseTable tbody tr th').each(function (i, value) {
+                var hasIt = $(this).find('span');
+                var currId = $(this).attr('id');
+                if (hasIt.length <= 0 && currId != 'ExpertiseToggle') {
+                    $(this).closest('tr').remove();
+                }
+            })
+        }
+        $('#applyButton').attr('disabled', 'disabled');
+    })
+    // This sets each th with an exclamation if the threshold isn't met
+    function setExclamation(value) {
+        var stickyIndex = $(value).index();
+        $(value).closest('tr').find('.expertiseLogNum').append('<span class="pm-threshold_exclamation"></span>');
+        $('.sticky-col tbody tr:nth-child(' + (stickyIndex + 1) + ')').find('.expertiseLogNum').append('<span class="pm-threshold_exclamation"></span>');
+    }
+
+    // Recreating the grid from a Reviewer Assignment modal
+    function onNewRow(value) {
+        var scientistValue = $('#scientistReviewer').val(),
+            consumerValue = $('#consumerReviewer').val(),
+            specialistValue = $('#specialistReviewer').val();
+
+        var newLogNumber = sessionStorage.getItem('raLogNumber');
+        $('#expertiseTable tbody tr').each(function (i, value) {
+            var containText = $(value).find('b').text();
+            if (containText == newLogNumber) {
+                // Search each cell
+                var scientistNumber = 0,
+                    consumerNumber = 0,
+                    specialistNumber = 0,
+                    scientistCount = 0,
+                    consumerCount = 0;
+
+                $(this).find('td').each(function (e, newValue) {
+                    var totalTdCount = value.childElementCount - 3,
+                        cellText = $.trim($(this).text()),
+                        firstCell = $(this).attr('id'),
+                        containsSR = cellText.indexOf('SR'),
+                        containsSPR = cellText.indexOf('SPR'),
+                        containsCR = cellText.indexOf('CR') >= 0 ? cellText.indexOf('CR') : cellText.indexOf('AR');
+
+                    if (scientistValue != 0) {
+                        if (firstCell != 'ExpertiseToggle') {
+                            // Scientist search
+                            if (containsSR >= 0) {
+                                scientistNumber++;
+                            }
+                            else if (containsSPR >= 0) {
+                                specialistNumber++;
+                            }
+                            // Consumer search
+                            else if (containsCR >= 0) {
+                                consumerNumber++;
+                            }
+                        }
+                    } else if (specialistValue != 0) {
+                        if (firstCell != 'ExpertiseToggle') {
+                            if (containsSPR >= 0) {
+                                specialistNumber++;
+                            }
+                            // Consumer search
+                            else if (containsCR >= 0) {
+                                consumerNumber++;
+                            }
+                        }
+                    } else {
+                        if (firstCell != 'ExpertiseToggle') {
+                            // Consumer search
+                            if (containsCR >= 0) {
+                                consumerNumber++;
+                            }
+                        }
+                    }
+                    if (totalTdCount == e) {
+                        return false;
+                    }
+                });
+                // If select dropdowns have a value
+                var isChecked;
+                if (scientistValue > 0 && scientistNumber != scientistValue) {
+                    setExclamation(this);
+                } else if (consumerValue > 0 && consumerNumber != consumerValue) {
+                    setExclamation(this);
+                } else if (specialistValue > 0 && specialistNumber != specialistValue) {
+                    setExclamation(this);
+                } else {
+                    isChecked = $('#activeCheckbox').is(':checked');
+                    $(this).find('span.pm-threshold_exclamation').remove();
+                    if (isChecked) {
+                        $(this).remove();
+                    }
+                }
+                return false;
+            }
+        });
+    }
+    $('#scientistReviewer, #consumerReviewer, #specialistReviewer').on('change', function () {
+        $('#applyButton').attr('disabled', false);
+    })
+
+    $('#activeCheckbox').on('click', function () {
+        var isChecked = $('#activeCheckbox').is(':checked');
+        if (isChecked) {
+            $('#expertiseTable tbody tr th').each(function (i, value) {
+                var hasIt = $(this).find('span');
+                var currId = $(this).attr('id');
+                if (hasIt.length <= 0 && currId != 'ExpertiseToggle') {
+                    $(this).closest('tr').remove();
+                }
+            })
+            $('.sticky-col tbody tr th').each(function (i, value) {
+                var hasClass = $(this).find('.pm-threshold_exclamation');
+                // If both select dropdowns have a value
+                if (hasClass.length <= 0) {
+                    $(this).closest('tr').remove();
+                }
+            })
+        } else {
+            $('#expertiseTable tbody').remove();
+            $(clonedGrid[0]).appendTo('#expertiseTable');
+            sessionStorage.setItem('hideBox', true);
+            $('#applyButton').click();
+        }
+        $('#applyButton').attr('disabled', false);
+
+        sessionStorage.setItem('hideCheckbox', isChecked);
+    })
+    function styleCoiRows() {
+        $("td[is-user-coi='true']").parent("tr").children(".reviewer-assignment").addClass("coi-table-row");
+    };
+
+    $('body').on('click', "a[id='closeModal'], button[id='closeDialogBtn']", function (e) {
+        if ($(".ui-dialog-title").text() == "@PdfViewer.WarningModalTitle".replace(/&amp;/g, '&'))
+            showExportThresholdDialogAgain();
+    });
+    function showExportThresholdDialogAgain(downloadFile) {
+        var dropdownValue = $('#selectedProgramYear option:selected').text(),
+            dropdownPanel = $('#selectedPanel option:selected').text(),
+            finalProgram = dropdownValue.substr(dropdownValue.indexOf("(") + 1),
+            firstSlice = finalProgram.substr(0, finalProgram.indexOf(')')),
+            finalYear = dropdownValue.slice(0, 4);
+
+        $('#applyButton').click();
+        var title = 'Application Assignments (' + firstSlice + ' ' + finalYear + ' ' + dropdownPanel + ')';
+        $.get("/PanelManagement/ThresholdAssignmentModal", function (data) {
+            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, title);
+            $(document).on('click', '#closeDialogBtn', function () { $('.ui-dialog-titlebar-close').click(); });
+            $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+            $('.k-pager-wrap').remove();
+            if (downloadFile) {
+                var grid = $("#pm-threshold-grid").data("kendoGrid");
+                grid.hideColumn(0);
+                grid.saveAsExcel();
+                grid.showColumn(0);
+            }
+        });
+    }
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/UserProfileManagement/table2excel.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/fileDownload.js")

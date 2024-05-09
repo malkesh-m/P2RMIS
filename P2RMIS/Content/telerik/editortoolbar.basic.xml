@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <tools>
+    <tool name="Bold" />
+    <tool name="Italic" />
+  </tools>
+  <tools>
+    <tool name="InsertOrderedList" />
+    <tool name="InsertUnorderedList"/>
+  </tools>
+  <tools>
+    <tool name="Undo" />
+    <tool name="Redo" />
+    <tool name="AjaxSpellCheck" Text="Spellchecker" />
+  </tools>
+</root>

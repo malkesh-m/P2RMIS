@@ -1,0 +1,115 @@
+﻿.note {
+    color: darkgrey;
+}
+
+
+fieldset.filter-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    width: inherit;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.filter-border {
+    font-size: 1em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+    margin-bottom: 0px !important;
+    color: gray;
+    position: relative;
+    /*left: -10px;*/
+}
+
+#filterTableOpts table th {
+    text-align: left;
+}
+
+#filterTableOpts table td.panelSelection select {
+    width: 600px !important;
+}
+
+#preAssignmentApplications a {
+    /*color: inherit;*/
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    #preAssignmentApplications a:hover,
+    #preAssignmentApplications a:focus {
+        text-decoration: underline;
+        color: #005580;
+    }
+
+#preAssignmentApplications td {
+    padding: 3px;
+}
+
+#applicationInfo, #explanationText, #noConflicts {
+    color: #2f4f4f;
+    font-family: Arial, sans-serif !important;
+    font-size: 12px !important;
+    width: auto;
+    margin: 0px 0px 10px 0px;
+}
+
+#noConflictsCheckbox {
+    vertical-align: text-bottom;
+    margin-right: 10px;
+}
+
+#expertiseList, #coiDiv, #instructionSection {
+    font-family: Arial, sans-serif !important;
+    font-size: 12px !important;
+}
+
+#coiDiv {
+    margin: 0px;
+}
+
+#Comment {
+    width: 92%;
+}
+
+#preAssignmentApplications td:nth-child(1),
+#preAssignmentApplications td:nth-child(5),
+#preAssignmentApplications td:nth-child(6),
+.leftAlign {
+    text-align: left !important;
+    padding-left: 9px;
+}
+
+/*.ui-dialog-buttonpane {
+    padding: 5px 0 !important;
+}
+.ui-dialog-title {
+    padding: 12px 0 !important;
+    font-size: 20px !important;
+}*/
+/*.ui-widget-header {
+    font-weight: normal !important;
+    font-family: Arial, sans-serif !important;
+    background: #6D89D9 none repeat scroll 0px 0px !important;
+}*/
+/*.ui-widget {
+    font-size: 14px !important;
+}*/
+/*.ui-widget-content a{
+    color: #08c !important;
+}*/
+.modal-dialog {
+    margin-bottom: -7px;
+}
+
+.critique-due-date {
+    float: right;
+    text-align: right;
+}
+
+#panelTitle {
+    width: 50px !important;
+}

@@ -1,0 +1,138 @@
+﻿.pageTitle {
+    font-size: 26px;
+}
+
+.pageTitleFocused {
+    font-size: 20px;
+}
+
+.note {
+    color: darkgrey;
+}
+
+fieldset.filter-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        width: 600px;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+        box-shadow:  0px 0px 0px 0px #000;
+}   
+
+legend.filter-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
+    margin-bottom: 0px !important;
+}
+
+#filterTableOpts,
+#filterTableOpts table {
+    width: 100%;
+    text-align: left;
+    padding-top: 5px;
+    margin-bottom: -10px;
+}
+
+#filterTableOpts table th{
+    text-align: left;
+}
+
+#submitFilteredRegistrationStatusSearch {
+    margin-right: -20px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    width: 80px;
+}
+
+button.ui-multiselect {
+    margin-right: -20px;
+    margin-bottom: 10px;
+}
+
+#filterTableOpts table select {
+    width: 80px !important;
+}
+
+.statusInstructions {
+    padding-left: 10px;
+}
+
+.statusInstructions .statusTitle {
+    font-size: 20px;
+    vertical-align: bottom;
+}
+    
+.statusInstructions .statusContent {
+    padding-left: 40px;
+}
+
+#btnExport,#btnQRG {
+    padding-left: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#viewStatusInformation td img {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+} 
+   
+#viewStatusInformation td img {   
+    text-decoration: underline;
+    color: #005580;   
+}
+
+#viewStatusInformation td img {
+    float: right;
+    padding-right: 5px;
+    padding-top: 2px;
+}
+
+#viewStatusInformation td {
+    padding: 3px;
+}
+
+#viewStatusInformation td select {
+    margin-top: -7px;
+    margin-bottom: 3px;
+}
+
+#viewStatusInformation td:nth-child(1),
+#viewStatusInformation td:nth-child(3),
+#viewStatusInformation td:nth-child(7),
+.leftAlign {
+    text-align: left !important;
+    padding-left: 3px;
+}
+
+#ModalDialogProgramRegStatus div {
+    padding-top: 10px;
+    padding-left: 20px;
+    margin-bottom: -15px;
+}
+
+#ModalDialogProgramRegStatus input.contractModalCheckbox {
+    margin-bottom: 5px;
+}
+
+#ModalDialogProgramRegStatus p.passwordConfirmation input {
+    margin-top: 9px;
+}
+
+#ModalDialogProgramRegStatus a {
+    color: #08c;
+    text-decoration: none;
+}
+
+.k-grid .k-grid-header .k-header .k-link {
+    height: auto;
+}
+
+.k-grid .k-grid-header .k-header {
+    white-space: normal;
+}

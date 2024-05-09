@@ -1,0 +1,308 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.WebModels.ApplicationScoring
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+@*@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab1;
+    @Html.Partial("_KendoHeader2020");
+}*@
+
+<style type="text/css">
+    .k-header {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+
+    #innerModalContainer {
+        display: none;
+    }
+
+    ul.k-editor-toolbar, ul.k-editor-toolbar li {
+        height: 30px;
+        padding: 5px 0px;
+    }
+
+        ul.k-editor-toolbar .k-button-group .k-tool {
+            height: 30px;
+            padding: 0px;
+        }
+
+    .k-editor .k-tool:focus {
+        box-shadow: none;
+        border-color: transparent;
+        border: 0px;
+    }
+
+       .k-pager-info.k-label {
+        color: black;
+    }
+
+    .k-pager-wrap.k-grid-pager .k-icon, .pagerTop .k-icon {
+       margin-top: 2px;
+       vertical-align: baseline;
+    }
+
+    .k-pager-wrap .k-link.k-state-disabled {
+        border-color: transparent;
+    }
+
+    .k-pager-wrap .k-icon.k-i-arrow-60-down, .pagerTop .k-icon.k-i-arrow-60-down {
+        margin-top: 3px;
+    }
+
+    /*.k-animation-container form.k-filter-menu .k-multiselect-wrap input.k-input {
+        width: 100% !important;
+    }*/
+
+    #ExpertiseList {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    #gridChair {
+        position: inherit;
+        margin-top: 150px;
+    }
+</style>
+<div id="preAssignmentSection">
+    <div id="gridChair"></div>
+</div>
+<div class="innerModalContainer" id="innerModalContainer">
+    <div id="overviewModal">
+        <div>
+            <textarea id="overviewEditor" rows="5" cols="10" style="height:200px;width:100%;"></textarea>
+            <input type="hidden" id="panelApplicationId" />
+        </div>
+    </div>
+</div>
+<input type="hidden" value="" id="cpritChairRawData" />
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+<script type="text/javascript">
+    $(function () {
+        // Grid data source
+        var mainDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.ChairApplications)),
+            batch: true,
+            pageSize: 20,
+        });
+
+        $("#gridChair").kendoGrid({
+            //pageable: true,
+            height: 550,
+            resizable: true,
+            navigatable: true,
+            batch: true,
+            toolbar: ["create"],
+            columns: [
+                { field: "ApplicationLogNumber", filterable: true, title: "App ID", field: "ApplicationLogNumber", width: "100px", template: "<div data-logno='${ApplicationLogNumber}' data-panelapplicationid='${PanelApplicationId}' data-applicationId='${ApplicationId}' data-currentPanelName='${SessionPanelName}'>${ApplicationLogNumber}</div>" },
+                { field: "PiName", filterable: true, title: "PI", width: "150px", field: "PiName", template: "<div>${PILastName}" + ", " + "${PIFirstName}</div>" },
+                { field: "Title", filterable: false, title: "Application Title", field: "Title", width:"300px" },
+                { field: "AwardMechanism", filterable: true, title: "Award", field: "Mechanism", width: "100px" },
+                { field: "PIOrganization", filterable: true, title: "PI Organization", width: "200px" },
+                { field: "COI", filterable: true, title: "COIs", width: "120px", field: "expertiseLevel", template:"# if (ConflictFlag) { # <a href='\\#' class='reviewer-assignment' panel-app-id='${PanelApplicationId}' participant-id='${PanelUserAssignmentId}'>Yes</a> # } else if (ConflictFlag == false) { # <a href='\\#' class='reviewer-assignment' panel-app-id='${PanelApplicationId}' participant-id='${PanelUserAssignmentId}'>No</a> # } else { # <a href='\\#' class='reviewer-assignment' panel-app-id='${PanelApplicationId}' participant-id='${PanelUserAssignmentId}'>Not Started</a> # } #"},
+                { field: "Overview", filterable: false, title: "Overview", width: "90px", template: "# if (ConflictFlag && ExpertiseLevel != 'COI') { # <div>Add</div> # } else if(ConflictFlag && ExpertiseLevel == 'COI') {# <div>N/A</div> #} else if (IsSummaryStarted) { # <a href='\\#' class='overview'>View</a> # } else if (HasSummaryText != null && HasSummaryText == true) { # <a href='\\#' class='textCenter overview' data-panelapplicationid='${SessionPanelId}'>Edit</a> # } else { # <a href='\\#' class='textCenter overview' data-panelapplicationid='${PanelApplicationId}'>Add</a> # } #" },
+
+                {
+                    command: [
+                    {
+                        name: "Transfer",
+                        text: "",
+                        template: "<a class='k-button k-button-icontext k-grid-assign transfer' href='\\#'><img src='/Content/img/arrow switch.png' title='Request Transfer' alt='Request Transfer' /></a>",
+                    },
+                    ], title: "Action", width: "70px",
+                },
+                { field: "IsSummaryStarted", hidden: true },
+                { field: "HasSummaryText", hidden: true },
+                { field: "HasAssignedReviewers", hidden: true },
+                { field: "ProgramMechanismId", hidden: true },
+                { field: "ClientProgramId", hidden: true },
+                { field: "PanelApplicationId", hidden: true },
+                { field: "ApplicationId", hidden: true },
+                { field: "SessionPanelName", hidden: true }
+            ],
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "Starts with",
+                        eq: "Is equal to",
+                        neq: "Is not equal to"
+                    }
+                }
+            },
+            editable: false,
+            scrollable: true,
+            dataSource: mainDataSource,
+            groupable: true,
+            sortable: true,
+            dataBound: function (e) {
+                //kendoUnload()
+            },
+            pageable: {
+                input: true,
+                numeric: false,
+                refresh: true,
+                pageSizes: [ 20, 40, 60, "all"],
+                pageSize: 20
+            }
+        });
+
+        // This is where we added the same toolbar thats on the bottom of the grid to the top
+        var grid = $("#gridChair").data("kendoGrid");
+        var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+        wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+        grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+
+        $('#gridChair th a:nth-child(1)').addClass('alignCenter');
+        $('#gridChair .k-grid-header th:nth-child(14) .k-icon').css('margin-top', '17px');
+
+
+        setTimeout(function () {
+            // First Pager Input
+            var pageTextBox = $('#gridChair .pagerTop .k-pager-input input.k-textbox');
+            pageTextBox.attr('id', 'k-textBox');
+            pageTextBox.closest('.k-pager-input').append('<label for="k-textBox" class="sr-only">Page</label>');
+
+            var pageSelectBox = $('#gridChair .pagerTop .k-pager-sizes select');
+            pageSelectBox.attr('id', 'k-textSelect');
+            pageSelectBox.closest('.k-widget').append('<label for="k-textSelect" class="sr-only">Items per Page</label>');
+
+            // Second Pager Input
+            var pageTextBox2 = $('#gridChair .k-grid-pager .k-pager-input input.k-textbox');
+            pageTextBox2.attr('id', 'k-textBox-two');
+            pageTextBox2.closest('.k-pager-input').append('<label for="k-textBox-two" class="sr-only">Page</label>');
+
+            var pageSelectBox2 = $('#gridChair .k-grid-pager .k-pager-sizes select');
+            pageSelectBox2.attr('id', 'k-textSelect-two');
+            pageSelectBox2.closest('.k-widget').append('<label for="k-textSelect-two" class="sr-only">Items per Page</label>');
+        }, 500);
+
+        // Add title attribute to title cell
+        $(".ellipsisCell").each(function () {
+            $(this).text($.trim($(this).text()));
+            $(this).attr('title', $(this).text());
+        });
+
+        $(function () {
+            $("#innerModalContainer").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 550,
+                resizable: false
+            });
+            // Create Editor from textarea HTML element
+            $("#overviewEditor").kendoEditor({
+                tools: [
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strikethrough",
+                    "insertUnorderedList",
+                    "insertOrderedList",
+                ],
+                pasteCleanup: {
+                    all: true,
+                    css: true,
+                    span: true,
+                    keepNewLines: true,
+                    msAllFormatting: true,
+                    msConvertLists: false,
+                    msTags: true,
+                }
+            });
+        });
+        $("body").on("click", ".overview", function () {
+            // Get the parameters to pass
+            var panelApplicationId = $(this).closest('tr').find('td div').attr('data-panelapplicationid');
+            var logNo = $(this).closest('tr').find('td div').attr('data-logno');
+            var title = 'View/Edit Overview for Application ' + logNo;
+            var dialogfooter = p2rims.modalFramework.defaultModalFooters.cancelSaveTextFooter;
+            var savedOverview = $(this).text();
+            if (savedOverview == 'Add') {
+                $(this).addClass('clickedAdd');
+            }
+            else if (savedOverview === 'View') {
+               title = 'View Overview for Application ' + logNo;
+               dialogfooter = p2rims.modalFramework.defaultModalFooters.closeFooter
+               $($("#overviewEditor").data("kendoEditor").body).attr("contenteditable", false);
+           }
+
+            if(panelApplicationId != ""){
+                $.ajax({
+                    cache: false,
+                    url: '@Url.Action("EditOverview", "MyWorkspace")',
+                    data: { "panelApplicationId": panelApplicationId }
+                }).done(function (data) {
+                    // fill the data into the modal
+                    $("#overviewEditor").data("kendoEditor").value(data);
+                    $("#panelApplicationId").val(panelApplicationId);
+                    $("#saveOverviewStatus").html("");
+
+                    $("#innerModalContainer").dialog("option", "title", title);
+                    $("#innerModalContainer").dialog("open");
+                    if ($('.modal-footer').is(':visible')) {
+                        $('.modal-footer').remove();
+                    }
+                    $('.ui-dialog.ui-widget').append("<div class='modal-footer'></div>");
+                    $(".modal-footer").append(dialogfooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); $('#grid').find('.clickedAdd').removeClass('clickedAdd') });
+
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert($.defaultFailureMessage);
+                });
+            }
+
+        });
+
+        $(document).on("click", "#saveTextChanges", function (e) {
+            e.preventDefault();
+            // Get the parameters to pass
+            var overview = $("#overviewEditor").data("kendoEditor").value();
+            var panelApplicationId = $("#panelApplicationId").val();
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '@Url.Action("SaveOverview", "MyWorkspace")',
+                data: JSON.stringify({ "panelApplicationId": panelApplicationId, "panelOverview": overview }),
+                contentType: 'application/json'
+            }).done(function (data) {
+                $('.ui-dialog-titlebar-close').click();
+                $('#gridChair').find('.clickedAdd').text('Edit');
+                $('#gridChair').find('.clickedAdd').removeClass('clickedAdd');
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        });
+
+        $('body').on('click', '.transfer', function () {
+            // Get the parameters to pass
+            var appId = $(this).closest('tr').find('td div').attr('data-applicationId');
+            var logNo = $(this).closest('tr').find('td div').attr('data-logno');
+            var currentPanelName = $(this).closest('tr').find('td div').attr('data-currentPanelName');
+            var currentPanelId = $(this).closest('tr').find('td div').attr('data-panelapplicationid');
+            sessionStorage.setItem('currentPanelNameSaved', currentPanelName);
+            $('#successMessage').hide();
+            $('#failureMessage').hide();
+            var title = 'Request Transfer';
+            $.get("/PanelManagement/RequestApplicationModal", { logNumber: logNo, applicationId: appId, currentPanelId: currentPanelId, currentPanelName: currentPanelName },
+                function (data) {
+                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.large, title);
+                    if ($('.modal-footer').is(':visible')) {
+                        $('.modal-footer').remove();
+                    }
+                    $('.ui-dialog').append('<div class="modal-footer"></div>');
+                    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelRequestFooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+                });
+
+            //
+            // Display the model Request Transfer window
+            //
+
+        });
+    });
+</script>

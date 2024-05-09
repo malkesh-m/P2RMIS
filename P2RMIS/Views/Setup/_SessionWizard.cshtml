@@ -1,0 +1,395 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SessionWizardViewModel
+@using Newtonsoft.Json;
+
+<div class="row-fluid ss-add-session">
+    <a href="#" id="scrollTopAnchor"></a>
+    <form id="sessionWizardForm">
+        <div id="sessionWizardAlert" class="ss-add-session__error"></div>
+        <span class="redColor">*</span> <span>Indicates a required</span>
+        <div class="ss-add-session_filter">
+            <table class="ss-add-session_filter_table">
+                <tr>
+                    <td class="ss-add-session_filter_table_short-cell">Client:<span id="addSessionClient" class="ss-add-session_filter_table_short-cell_result"></span></td>
+                    <td class="ss-add-session_filter_table_long-cell">Mtg:<span id="addSessionMtg" class="ss-add-session_filter_table_long-cell_result"></span></td>
+                    <td class="ss-add-session_filter_table_short-cell">Mtg Type:<span id="addSessionMtgType" class="ss-add-session_filter_table_short-cell_result"></span></td>
+                </tr>
+                <tr>
+                    <td class="ss-add-session_filter_table_long-cell">Mtg Dates:<span id="addSessionMtgDates" class="ss-add-session_filter_table_long-cell_result"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="ss-add-session_filter">
+            <div class="ss-add-session_filter_title">Session</div>
+            <table class="ss-add-session_filter_table">
+                <tr>
+                    @{
+                        string abbrDisabledProp = Model.MeetingSessionId == null ? "" : "disabled";
+                    }
+                    <td class="ss-add-session_filter_table_abbr sessionAbbr"><span class="redColor">*</span><b>Abbr</b><input id="sessionAbbr" maxlength="20" class="ss-add-session_filter_table_abbr_input" @abbrDisabledProp /> Max 20 Char</td>
+                    <td class="ss-add-session_filter_table_name sessionName"><span class="redColor">*</span><b>Name</b><input id="sessionName" maxlength="100" class="ss-add-session_filter_table_name_input" /> Max 100 Char</td>
+                </tr>
+            </table>
+        </div>
+        <div class="ss-add-session_filter">
+            <div class="ss-add-session_filter_title">Review Phases</div>
+            <div>Please enter Start and End Date/Times for each phase that is selected.</div>
+            <table class="ss-add-session_filter_table-meeting">
+                <tr>
+                    <td style="width:25px;background:#fafafa;border-bottom:1px solid #d3d3d3;">&nbsp;</td>
+                    <td class="ss-add-session_filter_table-meeting_phase-review" style="border-top:none;border-right:none;">Review Phase</td>
+                    <td class="ss-add-session_filter_table-meeting_phase" style="border-top:none;border-right:none;">Start and End Date Time</td>
+                    <td class="ss-add-session_filter_table-meeting_phase" style="border-top:none;border-right:none;">Re-open and Close Date Time</td>
+                </tr>
+                @{
+                    var canAddOrRemove = !Model.HasApplicationsBeenReleased && !Model.HasScoringBeenSetup;
+                    var disabledCheckboxProp = canAddOrRemove ? "" : "disabled";
+                }
+                @for (var i = 0; i < Model.ReviewPhases.Count; i++)
+                {
+                    var bgColor = (i % 2 == 1) ? "#fafafa" : "#ffffff";
+                    var required = i == 0 || i == Model.ReviewPhases.Count - 1;
+                    var checkedBox = required || Model.ReviewPhases[i].StartDate != null;
+                    var disabledProp = checkedBox ? "" : "disabled";
+                    <tr class="ss-add-session_filter_table-meeting_date-row" style="background:@bgColor"
+                        data-step-type-id="@Model.ReviewPhases[i].StepTypeId" data-step-phase-id="@Model.ReviewPhases[i].PhaseId"
+                        data-phase-name="@Model.ReviewPhases[i].PhaseName">
+                        <td class="padding10">
+                            @if (required)
+                            {
+                                <input type="checkbox" class="phase-checkbox" checked disabled />
+                            }
+                            else if (checkedBox)
+                            {
+                                <input type="checkbox" class="phase-checkbox" checked @disabledCheckboxProp />
+                            }
+                            else
+                            {
+                                <input type="checkbox" class="phase-checkbox" @disabledCheckboxProp />
+                            }
+                        </td>
+                        <td class="ss-add-session_filter_table-meeting_date-row_cell-middle" style="border-right:none;">
+                            @if (required)
+                            {
+                                <span class="redColor">*</span>@Model.ReviewPhases[i].PhaseName
+                            }
+                            else
+                            {
+                                @Model.ReviewPhases[i].PhaseName
+                            }
+                        </td>
+                        <td class="ss-add-session_filter_table-meeting_date-row_cell-middle" style="border-right:none;">
+                            <div><input type="text" class="ss-add-session_filter_table-meeting_date-row_cell-middle_input startDate" value="@Model.ReviewPhases[i].StartDate" @disabledProp /></div>
+                            <div class="padding-top-5"><input type="text" class="ss-add-session_filter_table-meeting_date-row_cell-middle_input endDate" value="@Model.ReviewPhases[i].EndDate" @disabledProp /></div>
+                        </td>
+                        <td class="ss-add-session_filter_table-meeting_date-row_cell-middle" style="border-right:none;">
+                            <div><input type="text" class="ss-add-session_filter_table-meeting_date-row_cell-middle_input reopenDate" value="@Model.ReviewPhases[i].ReopenDate" @disabledProp /></div>
+                            <div class="padding-top-5"><input type="text" class="ss-add-session_filter_table-meeting_date-row_cell-middle_input closeDate" value="@Model.ReviewPhases[i].CloseDate" @disabledProp /></div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        @*<input type="hidden" id="preMeetingPhases" value="@JsonConvert.SerializeObject(Model.PreMeetingPhases)" />*@
+        <input type="hidden" id="meetingSessionId" value="@Model.MeetingSessionId" />
+        <input type="hidden" id="meetingStartDate" value="@Model.MeetingStartDate" />
+        <input type="hidden" id="meetingEndDate" value="@Model.MeetingEndDate" />
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $("input").removeClass('input-validation-error');
+            $('#saveDialogChanges').attr('disabled', false);
+            var msg = "";
+
+            var sessionAbbr = $("#sessionAbbr").val();
+            var sessionName = $("#sessionName").val();
+            var clientMeetingId = $("#meetingSelection").val();
+
+            var meetingSessionId = $("#meetingSessionId").val() != "" ?
+                parseInt($("#meetingSessionId").val()) : null;
+
+            if (sessionAbbr == "") {
+                msg = "Please enter a session abbreviation.";
+                $('#sessionAbbr').addClass('input-validation-error');
+            } else {
+                $('#sessionAbbr').removeClass('input-validation-error');
+                if (sessionName == "" && msg == "") {
+                    msg = "Please enter a session name.";
+                    $('#sessionName').addClass('input-validation-error');
+                } else {
+                    $('#sessionName').removeClass('input-validation-error');
+                    $('input.startDate').each(function () {
+                        if ($(this).closest("tr").find(".phase-checkbox").prop("checked") &&
+                                $(this).val() == "" && msg == "") {
+                            msg = "Please select a start date for " + $(this).closest("tr").attr("data-phase-name") + " phase.";
+                            $(this).addClass('input-validation-error');
+                        } else {
+                            $(this).removeClass('input-validation-error');
+                        }
+                    });
+                    $('input.endDate').each(function () {
+                        if ($(this).closest("tr").find(".phase-checkbox").prop("checked") &&
+                                $(this).val() == "" && msg == "") {
+                            msg = "Please select an end date for " + $(this).closest("tr").attr("data-phase-name") + " phase.";
+                            $(this).addClass('input-validation-error');
+                        } else {
+                            $(this).removeClass('input-validation-error');
+                        }
+                    });
+                    $('input.closeDate').each(function () {
+                        if ($(this).closest("tr").find(".phase-checkbox").prop("checked") &&
+                            $(this).closest("tr").find("input.reopenDate").val() != "" &&
+                            $(this).val() == "" && msg == "") {
+                            msg = "Please enter a Close date for " + $(this).closest("tr").attr("data-phase-name") + " phase.";
+                            $(this).addClass('input-validation-error');
+                        } else {
+                            $(this).removeClass('input-validation-error');
+                        }
+                    });
+                }
+            }
+
+            // Checking each input to see if date is valid
+            $('input').each(function () {
+                var data = $(this).val();
+                var dataHtml = $(this).is('.datePick');
+                if (data != "") {
+                    if (dataHtml == true) {
+                        if (checkValue(data)) {
+                            $(this).removeClass('input-validation-error');
+                        } else {
+                            $(this).addClass('input-validation-error');
+                            $("#sessionWizardAlert").html("Date is invalid");
+                            msg = "Date is invalid";
+                        }
+                    }
+                }
+            });
+
+            function checkValue(data) {
+                var date_regex = /^(0?[1-9]|1[0-2])\/(0?[1-9]|1\d|2\d|3[01])\/(19|20)\d{2} (0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/;
+                return date_regex.test(data);
+            }
+
+            console.log(msg);
+            // Phase date validations
+            $("input.startDate").each(function () {
+                var end = $(this).closest("tr").find("input.endDate");
+                var reopen = $(this).closest("tr").find("input.reopenDate");
+                var close = $(this).closest("tr").find("input.closeDate");
+                if (msg == "" && $(this).val() != "" && end.val() != "" && new Date($(this).val()) > new Date(end.val())) {
+                    msg = "Please select a start date that is before the end date or an end date that is after the start date.";
+                    $("#sessionWizardAlert").html(msg);
+                    $(this).addClass('input-validation-error');
+                    end.addClass('input-validation-error');
+                }
+                if (msg == "" && reopen.val() != "" && close.val() != "" && new Date(reopen.val()) > new Date(close.val())) {
+                    msg = "Please select a re-open date that is before the close date or an end date that is after the re-open date.";
+                    $("#sessionWizardAlert").html(msg);
+                    reopen.addClass('input-validation-error');
+                    close.addClass('input-validation-error');
+                }
+
+                // Constraints against meeting start/end date range
+                var row = $(this).closest("tr");
+                if (msg == "" && row.is(':last-child')) {
+                    var lastStart = row.find("input.startDate");
+                    var lastEnd = row.find("input.endDate");
+                    if (lastStart.val() != "" && new Date(lastStart.val()) < new Date($("#meetingStartDate").val())) {
+                        msg = row.attr("data-phase-name") + " phase must match or fall within the meeting start and end dates.";
+                        $("#sessionWizardAlert").html(msg);
+                        lastStart.addClass('input-validation-error');
+                    }
+                    if (lastEnd.val() != "" && new Date(lastEnd.val()) > new Date($("#meetingEndDate").val())) {
+                        msg = row.attr("data-phase-name") + " phase must match or fall within the meeting start and end dates.";
+                        $("#sessionWizardAlert").html(msg);
+                        lastEnd.addClass('input-validation-error');
+                    }
+                }
+
+                // Constraints against current end date with next start date
+                if (msg == "" && end.val() != "") {
+                    var nextCheckedBox = $(this).closest("tr").nextAll().find(".phase-checkbox:checked");
+                    if (nextCheckedBox.length > 0) {
+                        var nextCheckedRow = nextCheckedBox.eq(0).closest("tr");
+                        var nextStart = nextCheckedRow.find("input.startDate");
+                        if (nextStart.val() != "" && new Date(end.val()) > new Date(nextStart.val())) {
+                            msg = nextCheckedRow.attr("data-phase-name") + " phase cannot start before " + row.attr("data-phase-name") + " phase ends.";
+                            $("#sessionWizardAlert").html(msg);
+                            nextStart.addClass('input-validation-error');
+                            end.addClass('input-validation-error');
+                        }
+                    }
+                }
+            });
+            
+            $("#sessionWizardAlert").html(msg);
+            if (msg == "") {
+                // Save AJAX call
+                var phases = [];
+                $("input.startDate").each(function () {
+                    var phaseId = $(this).closest(".ss-add-session_filter_table-meeting_date-row").attr("data-step-phase-id");
+                    var stepTypeId = $(this).closest(".ss-add-session_filter_table-meeting_date-row").attr("data-step-type-id");
+                    var startDate = $(this).val();
+                    var endDate = $(this).closest(".ss-add-session_filter_table-meeting_date-row").find("input.endDate").val();
+                    var reopenDate = $(this).closest(".ss-add-session_filter_table-meeting_date-row").find("input.reopenDate").val();
+                    var closeDate = $(this).closest(".ss-add-session_filter_table-meeting_date-row").find("input.closeDate").val();
+
+                    phases.push(JSON.stringify({ Index: phaseId, Value: { StepTypeId: parseInt(stepTypeId), StartDate: startDate, EndDate: endDate, ReopenDate: reopenDate, CloseDate: closeDate } }));
+                });
+                var inputData = {
+                    "clientId": $("#clientSelection").val(), "sessionAbbreviation": sessionAbbr,
+                    "clientMeetingId": clientMeetingId, "sessionDescription": sessionName,
+                    "phases": phases, "meetingSessionId": meetingSessionId
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveSession',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#sessionWizardAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            $('.ui-dialog-titlebar-close').click();
+                            setSessionGrid();
+                            if (meetingSessionId != null) {
+                                $("#successMessage").text("Session " + sessionName + " updated successfully.").show();
+                            } else {
+                                $("#successMessage").text("Session " + sessionName + " added successfully.").show();
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#sessionWizardAlert").html("Failed to save the session.");
+                    },
+                    complete: function (data) {
+                        $('#saveDialogChanges').prop("disabled", false);
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+
+    $(function () {
+        var reopenCloseWarningShown = false;
+        $("#sessionWizardForm").change(function (e) {
+            var changedElement = $(e.target);
+            if ((changedElement.hasClass("reopenDate") || changedElement.hasClass("closeDate")) && !reopenCloseWarningShown) {
+                var msg = "Changing the Re-open/Close dates will update the dates for all associated panels. If you want to update the re-open/close dates for a specific panel, please do so from the Panel Management→Critiques page or click 'Save' to proceed.";
+                $("#sessionWizardAlert").html(msg);
+                $("#scrollTopAnchor").focus();
+                reopenCloseWarningShown = true;
+            }
+        });
+        function dateChange() {
+            var jqStart = this.element.closest(".ss-add-session_filter_table-meeting_date-row").find("input.startDate");
+            var jqEnd = this.element.closest(".ss-add-session_filter_table-meeting_date-row").find("input.endDate");
+            var jqReopen = this.element.closest(".ss-add-session_filter_table-meeting_date-row").find("input.reopenDate");
+            var jqClose = this.element.closest(".ss-add-session_filter_table-meeting_date-row").find("input.closeDate");
+            var start = jqStart.data("kendoDateTimePicker"),
+                end = jqEnd.data("kendoDateTimePicker"),
+                reopen = jqReopen.data("kendoDateTimePicker"),
+                close = jqClose.data("kendoDateTimePicker");
+            var startDate = start.value(),
+                endDate = end.value(),
+                reopenDate = reopen.value(),
+                closeDate = close.value();
+            // Start & end date configuration
+            if (startDate || endDate) {
+                if (startDate) {
+                    startDate = new Date(startDate);
+                    startDate.setDate(startDate.getDate());
+                    end.min(startDate);
+                }
+                if (endDate) {
+                    endDate = new Date(endDate);
+                    endDate.setDate(endDate.getDate());
+                    start.max(endDate);
+                }
+            } else {
+                start.max(new Date(2030, 11, 31));
+                end.min(new Date(1990, 0, 1));
+            }
+            // Re-open & close date configuration
+            if (reopenDate || closeDate) {
+                if (reopenDate) {
+                    reopenDate = new Date(reopenDate);
+                    reopenDate.setDate(reopenDate.getDate());
+                    close.min(reopenDate);
+                }
+                if (closeDate) {
+                    closeDate = new Date(closeDate);
+                    closeDate.setDate(closeDate.getDate());
+                    reopen.max(closeDate);
+                }
+            } else {
+                reopen.max(new Date(2030, 11, 31));
+                close.min(new Date(1990, 0, 1));
+            }
+        }
+
+        function fnSetDateTimePickers(row) {
+            var start = row.find(".startDate").kendoDateTimePicker({
+                format: "MM/dd/yyyy hh:mm tt",
+                parseFormats: ["MM/dd/yyyy hh:mm tt"],
+                change: dateChange,
+                open: dateChange
+            }).data("kendoDateTimePicker");
+            var end = row.find(".endDate").kendoDateTimePicker({
+                format: "MM/dd/yyyy hh:mm tt",
+                parseFormats: ["MM/dd/yyyy hh:mm tt"],
+                change: dateChange,
+                open: dateChange
+            }).data("kendoDateTimePicker");
+            var reopen = row.find(".reopenDate").kendoDateTimePicker({
+                format: "MM/dd/yyyy hh:mm tt",
+                parseFormats: ["MM/dd/yyyy hh:mm tt"],
+                change: dateChange,
+                open: dateChange
+            }).data("kendoDateTimePicker");
+            var close = row.find(".closeDate").kendoDateTimePicker({
+                format: "MM/dd/yyyy hh:mm tt",
+                parseFormats: ["MM/dd/yyyy hh:mm tt"],
+                change: dateChange,
+                open: dateChange
+            }).data("kendoDateTimePicker");
+
+            start.max(end.value());
+            end.min(start.value());
+            reopen.max(close.value());
+            close.min(reopen.value());
+        };
+
+        $('.ss-add-session_filter_table-meeting_date-row').each(function () {
+            fnSetDateTimePickers($(this));
+        });
+
+        $(document).on("change", ".phase-checkbox", function () {
+            if ($(this).prop("checked") || $(this).prop("disabled")) {
+                $(this).closest(".ss-add-session_filter_table-meeting_date-row")
+                    .find("input.ss-add-session_filter_table-meeting_date-row_cell-middle_input").each(function () {
+                        var picker = $(this).data("kendoDateTimePicker")
+                        picker.enable(true);
+                    });
+            } else {
+                $(this).closest("tr").find(".ss-add-session_filter_table-meeting_date-row_cell-middle_input").val("");
+                $(this).closest(".ss-add-session_filter_table-meeting_date-row")
+                    .find("input.ss-add-session_filter_table-meeting_date-row_cell-middle_input").each(function () {
+                        $(this).removeClass('input-validation-error');
+                        var picker = $(this).data("kendoDateTimePicker")
+                        picker.enable(false);
+                    });
+            }
+        });
+    });
+</script>

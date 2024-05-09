@@ -1,0 +1,11 @@
+﻿CREATE VIEW [dbo].[ViewPanelUserRegistrationDocumentItem]
+	AS SELECT [PanelUserRegistrationDocumentItemId]
+      ,[PanelUserRegistrationDocumentId]
+      ,[RegistrationDocumentItemId]
+      ,[Value]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+	   FROM [PanelUserRegistrationDocumentItem]
+	   WHERE [DeletedFlag] = 0

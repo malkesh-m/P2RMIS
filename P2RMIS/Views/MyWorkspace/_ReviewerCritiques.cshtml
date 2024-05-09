@@ -1,0 +1,112 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ReviewerCritiquesViewModel
+
+@{
+    var sectionId = "reviewer" + Model.WorkflowId;
+}
+<section class="mw-critiques_main_section" id="@sectionId"
+         role="region"
+     data-step-name="@Model.WorkflowStepName"
+     data-workflowid="@Model.WorkflowId">
+    <div class="mw-critiques_main_section_header">
+        <h4>@Model.FormattedReviewerName</h4>
+    </div>
+    <h6 class="mw-critiques_main_section_sub-header">@Model.WorkflowStepName</h6>
+    <div class="mw-critiques_main_sub-section">
+        @if (Model.CanNavigateToPrevSteps && Model.PrevApplicationWorkflowSteps.Count > 0)
+        {
+            <div class="right-align padding-right10">
+                @for (var i = 0; i < Model.PrevApplicationWorkflowSteps.Count; i++)
+                {
+                    if (Model.PrevApplicationWorkflowSteps[i].Key != null)
+                    {
+                        <a href="#" class="view-critique-panel"
+                           data-url="/MyWorkspace/CritiquePanel?panelApplicationId=@Model.PanelApplicationId&sessionPanelId=@Model.SessionPanelId&userId=@Model.ReviewerId&applicationWorkflowStepId=@Model.PrevApplicationWorkflowSteps[i].Key">@Model.PrevApplicationWorkflowSteps[i].Value</a>
+                    }
+                    else
+                    {
+                        @Model.PrevApplicationWorkflowSteps[i].Value <text>- No critiques submitted</text>
+                    }
+                    if (i < Model.PrevApplicationWorkflowSteps.Count - 1)
+                    {
+                        <text> | </text>
+                    }
+                }
+            </div>
+        }
+        @if (Model.HasNoCritiquesSubmitted && !Model.IsCurrentUser)
+        {
+            <p><i>No critique submitted.</i></p>
+        }
+        else
+        {
+            var critiqueLength = Model.Critiques.Count;
+            for (var iCritique = 0; iCritique < critiqueLength; iCritique++)
+            {
+                var critique = Model.Critiques[iCritique];
+                var scoreId = "Critiques_" + iCritique + "__Score_"+ Session["SavedCritiqueIndex"] + "";
+
+        <div class="mw-critiques_main_sub-section_critique" data-contentid="@critique.ApplicationWorkflowStepElementContentId"
+             data-elementid="@critique.ApplicationWorkflowStepElementId"
+             data-instructions="@critique.Instructions"
+             data-abstain="@critique.IsAbstain"
+             data-abstainable="@critique.IsAbstainable"
+             data-submitted="@critique.IsCritiqueSubmitted"
+             data-ratable="@critique.IsRatable"
+             data-score="@critique.Score"
+             data-score-type="@critique.ScoreType"
+             data-score-selectable="@critique.IsScoreSelectable"
+             data-criteria-text="@critique.IsCriteriaText"
+             data-is-panel-started="@critique.IsPanelStarted"
+             data-score-instructions="@Model.FormatScaleInstructions(iCritique)"
+             data-score-scale="@Model.ScoringLabel(iCritique)"
+             data-word-limit="@critique.RecommendedWordLimit">
+            <h5>
+                <b><span class="criterion">@critique.Criterion</span></b>
+                @if (critique.CritiqueRevised)
+                {
+                    <img src="~/Content/img/revised-critique.png" alt="Revised Critique" title="Revised Critique" />
+                }
+                @if (Model.CanEdit)
+                {
+                    <a class="edit-critique" href="#"><span class="hidden-text">@critique.Criterion</span>(edit)<span class="hidden-text">description</span></a>
+                }
+            </h5>
+            <div class="critique-content" style="word-wrap: break-word;">@Html.Raw(critique.Content)</div>
+            <p>&nbsp;</p>
+            @if (critique.IsCriteriaScored)
+            {
+                <div class="gray">
+                    @for (var iScore = 0; iScore < critique.PhaseScores.Count; iScore++)
+                    {
+                        var score = critique.PhaseScores[iScore];
+                        <span class="padding-right10">
+                            @score.Key Score:
+                            <span class="critique-score" data-step-name="@score.Key">@score.Value</span>
+                        </span>
+                    }
+                </div>
+            }
+            <label for="@scoreId" class="sr-only">Score Result</label>
+            @Html.DropDownListFor(m => m.Critiques[iCritique].Score,
+                          new SelectList(Model.Critiques[iCritique].ScoreScales, "Key", "Value",
+                              Model.Critiques[iCritique].Score), new { @class = "hide score-scale", id = scoreId })
+            @if (iCritique < critiqueLength - 1)
+            {
+                <hr />
+            }
+        </div>
+        }
+        }
+    </div>
+</section>
+<br /><br /><br />
+<script type="text/javascript">
+    $('.mw-critiques_main_section').each(function () {
+        var sectionHeader = $(this).find('.mw-critiques_main_section_sub-header').text();
+        if (sectionHeader == "Preliminary") {
+            $(this).find('.mw-critiques_main_sub-section .mw-critiques_main_sub-section_critique').each(function () {
+                $(this).find('h5 img').hide();
+            })
+        }
+    });
+</script>

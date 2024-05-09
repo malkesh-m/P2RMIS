@@ -1,0 +1,521 @@
+﻿@using Sra.P2rmis.Web.Common
+
+<div id="EditCritiqueModalDialog" style="font-size:12px !important; padding:0px 20px">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                @Html.Partial("_EditCritique")
+            </div>
+            <div class="modal-footer" style="margin: 0px -20px !important;">
+                <span style="width:30%">
+                    <a id="cancelEditCritiqueChanges" style="float:left;margin-left:10px;color:#08c" href="#">Cancel</a>
+                </span>
+                <span style="width:40%">
+                    <button id="saveCritiqueChangesAndBack" type="button" class="btn btn-primary">Back</button>
+                    <button id="saveCritiqueChangesAndNext" type="button" class="btn btn-primary">Next</button>
+                </span>
+                <span style="width:30%">
+                    <button id="saveCritiqueChangesAndClose" type="button" class="btn btn-primary" style="margin-right:10px;float:right;">Save and Close</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="applicationWorkflowStepElementId">
+<input type="hidden" id="applicationWorkflowStepElementContentId">
+<input type="hidden" id="isSubmitted">
+
+<script type="text/javascript">
+    // Score format in text box
+    $(".decimal-score").numeric({ decimalPlaces: 1, negative: false });
+    // Save critique
+    var fnSaveCritique = function (elementId, contentId, critique, score, scoreType, adjectival, abstain, isPanelStarted) {
+        var returnStatus = false;
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            async: false,
+            url: '@Url.Action(Routing.MyWorkspace.SaveReviewersCritiqueAndScore, Routing.P2rmisControllers.MyWorkspace)',
+            data: {
+                "applicationWorkflowStepElementId": elementId, "applicationWorkflowStepElementContentId": contentId, "contentText": critique,
+                "score": score, "scoreType": scoreType, "adjectival": adjectival, "abstain": abstain, "isPanelStarted": isPanelStarted
+            }
+        }).done(function (data) {
+            if (data.success) {
+                var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]");
+                // Reset the contentId
+                critiqueSection.attr("data-contentid", data.contentId);
+                critiqueSection.attr("data-score", data.score);
+                critiqueSection.attr("data-abstain", data.abstain);
+                // Reset the critique content
+                critiqueSection.find(".critique-content").html(data.content);
+                // Reset the score
+                var stepName = critiqueSection.closest(".mw-critiques_main_section").attr("data-step-name");
+                critiqueSection.find(".critique-score[data-step-name='" + stepName + "']").html(data.scoreDisplay);
+                returnStatus = true;
+            } else {
+                if (data.message !== undefined) {
+                    $("#EditCritiqueModalDialog").find(".alert-message").html(data.message).show();
+                    // Check the message here, if already submitted no need to display score-instructions.
+                    if (data.issubmitted === false) {
+                        $('.score-instructions').show();
+                        $('.score').css('border', '1px solid red');
+                        $('.rating-range').text('');
+                        var firstNum = $('.score option:nth-child(2)').text();
+                        var lastNum = $('.score option:last-child').text();
+                        $('.rating-range').append(firstNum + " - " + lastNum);
+                    }
+                 } else {
+                    alert($.defaultFailureMessage);
+                }
+            }
+        }).fail(function (xhr, ajaxOptions, thrownError) {
+            alert($.defaultFailureMessage);
+        });
+        return returnStatus;
+    };
+
+    // Check if submitted.
+    var fnIsCritiqueSubmitted = function (elementId, contentId) {
+        var elementId = $("#applicationWorkflowStepElementId").val();
+        var contentId = $("#applicationWorkflowStepElementContentId").val();
+     //   var submit = $("#isSubmitted").val();
+        var returnStatus = false;
+         $.ajax({
+            cache: false,
+            type: 'POST',
+            async: false,
+            url: '@Url.Action(Routing.MyWorkspace.IsCritiquesAlreadySubmitted, Routing.P2rmisControllers.MyWorkspace)',
+            data: {
+                "applicationWorkflowStepElementId": elementId, "applicationWorkflowStepElementContentId": contentId
+            }
+        }).done(function (data) {
+            if (data.success) {
+
+                $("#isSubmitted").val(data.issubmitted);
+                if (data.message !== undefined) {
+                    $("#EditCritiqueModalDialog").find(".alert-message").html(data.message).show();
+                 } else {
+                    alert($.defaultFailureMessage);
+                }
+
+                returnStatus = data.issubmitted;
+            }
+        }).fail(function (xhr, ajaxOptions, thrownError) {
+            alert($.defaultFailureMessage);
+        });
+        return returnStatus;
+    };
+
+
+    // Initialize dialog
+    $('#EditCritiqueModalDialog').dialog({
+        bgiframe: true,
+        modal: true,
+        width: 820,
+        title: 'Edit Critique',
+        resizable: false,
+        autoOpen: false,
+        open: function (event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide(); }
+    });
+    // Save critique contents
+    var fnSaveCritiqueContents = function () {
+        var modal = $("#EditCritiqueModalDialog");
+        var elementId = $("#applicationWorkflowStepElementId").val();
+        var contentId = $("#applicationWorkflowStepElementContentId").val();
+        var scoreText = modal.find("input.score");
+        var scoreScale = modal.find("select.score option:selected");
+        var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]");
+        var isScoreSelectable = $.toBoolean(critiqueSection.attr("data-score-selectable"));
+        var score = (!isScoreSelectable) ? scoreText.val() : scoreScale.val();
+        var adjectival = (!isScoreSelectable) ? scoreText.val() : scoreScale.text();
+        var scoreType = modal.find(".score-type").val();
+        var abstain = modal.find(".abstain").is(":checked");
+        var isPanelStarted = critiqueSection.attr("data-is-panel-started").toLowerCase() == 'true';
+        // Get content from Editor
+        var content = $("#editCritiqueIframe")[0].contentWindow.GetEditorHtmlContent();
+
+        var returnStatus = fnSaveCritique(elementId, contentId, content, score, scoreType, adjectival, abstain, isPanelStarted);
+        return returnStatus;
+    };
+    // Disable/enable rating textbox and hide/show editor text when needed
+    var fnToggleAbstain = function (critiqueSection) {
+        if ($("#editCritiqueIframe")[0].contentWindow.IsLoaded) {
+            if ($(".abstain").is(":checked")) {
+                $(".score").prop("disabled", true);
+                $('.score').css('border', '1px solid rgb(204, 204, 204)');
+                $('.score-instructions').hide();
+                $('#saveCritiqueChangesAndNext').attr('disabled', false);
+            } else {
+                $(".score").prop("disabled", false);
+                if (critiqueSection && !$.toBoolean(critiqueSection.attr("data-criteria-text"))) {
+                    $("#editCritiqueIframe")[0].contentWindow.ToggleEditing(false);
+                } else {
+                    $("#editCritiqueIframe")[0].contentWindow.ToggleEditing(true);
+                }
+            }
+        } else {
+            setTimeout(function () { fnToggleAbstain(critiqueSection); }, 100);
+        }
+    };
+    $(".abstain").on("change", function () {
+        fnToggleAbstain();
+    });
+    var fnToggleBackNextButtons = function (section) {
+        var index = section.index();
+        var size = section.parent().children().length;
+        if (index === 0) {
+            $("#saveCritiqueChangesAndBack").prop("disabled", true);
+        } else {
+            $("#saveCritiqueChangesAndBack").prop("disabled", false);
+        }
+        if (index === size - 1) {
+            $("#saveCritiqueChangesAndNext").prop("disabled", true);
+        } else {
+            $("#saveCritiqueChangesAndNext").prop("disabled", false);
+        }
+    };
+    var fnSetCritiqueModal = function (critiqueSection) {
+        var modal = $("#EditCritiqueModalDialog");
+        var scoreHigh = $('#scoreHigh').val();
+        var scoreLow = $('#scoreLow').val();
+
+        // Set element id and content id
+        var applicationWorkflowStepElementId = critiqueSection.attr("data-elementid");
+        var applicationWorkflowStepElementContentId = critiqueSection.attr("data-contentid");
+        var isubmit = critiqueSection.attr("data-submitted");
+        $("#applicationWorkflowStepElementId").val(applicationWorkflowStepElementId);
+        $("#applicationWorkflowStepElementContentId").val(applicationWorkflowStepElementContentId);
+        $("#isSubmitted").val(isubmit);
+        var height = 280;
+        $("#editCritiqueIframe")[0].contentWindow.IsLoaded = false;
+        $("#editCritiqueIframe")[0].contentWindow.location.replace("/Home/RadEditor?id=" + applicationWorkflowStepElementContentId + "&height=" + height);
+
+
+        // Set display data to the screen
+        var maxCriterionLength = 50;
+        var criterion = critiqueSection.find(".criterion").html();
+        var instructions = critiqueSection.attr("data-instructions");
+        var isAbstain = $.toBoolean(critiqueSection.attr("data-abstain"));
+        var isAbstainable = $.toBoolean(critiqueSection.attr("data-abstainable"));
+        var isRatable = $.toBoolean(critiqueSection.attr("data-ratable"));
+        var isScoreSelectable = $.toBoolean(critiqueSection.attr("data-score-selectable"));
+        var isCriteriaText = $.toBoolean(critiqueSection.attr("data-criteria-text"));
+        var score = critiqueSection.attr("data-score");
+        var scoreType = critiqueSection.attr("data-score-type");
+        var scoreInstruction = critiqueSection.attr("data-score-instructions");
+        var scoreScale = critiqueSection.attr("data-score-scale");
+        var logNumber = $("#logNumber").text();
+        var title = logNumber + " - " + criterion;
+        criterion = $.trimWithEllipses(criterion, maxCriterionLength);
+        var wordLimit = critiqueSection.attr("data-word-limit");
+
+        if (isCriteriaText) {
+            modal.find(".word-limit").text(wordLimit);
+            modal.find(".recWordLimit").show();
+        } else {
+            modal.find(".recWordLimit").hide();
+        }
+
+        $("#EditCritiqueModalDialog").dialog("option", "title", title);
+        modal.find(".abstain-title").html(criterion);
+        modal.find(".critique-instructions").html(instructions);
+        modal.find(".alert-message").html("").hide();
+        modal.find(".abstain").prop("checked", isAbstain);
+        modal.find(".score-type").val(scoreType);
+        //modal.find(".score-instructions").text(scoreInstruction);
+        modal.find(".score-scale").text(scoreScale);
+
+        var scoreScale = modal.find("select.score");
+        var scoreText = modal.find("input.score");
+        if (isScoreSelectable) {
+            scoreScale.children("option:not(:first)").remove();
+            critiqueSection.find(".score-scale").children().clone().appendTo(scoreScale);
+            scoreScale.val(score);
+            scoreText.val(score);
+            scoreScale.show();
+            scoreText.hide();
+        } else {
+            scoreScale.val(score);
+            scoreText.val(score);
+            scoreScale.hide();
+            scoreText.show();
+        }
+        if (!isRatable) {
+            modal.find(".rating-section").removeClass("inline-block").addClass("hidden");
+        } else {
+            modal.find(".rating-section").removeClass("hidden").addClass("inline-block");
+        }
+        if (!isAbstainable) {
+            modal.find(".abstain-section").removeClass("inline-block").addClass("hidden");
+        } else {
+            modal.find(".abstain-section").removeClass("hidden").addClass("inline-block");
+        }
+        // Toggle abstain
+        setTimeout(function () {
+            fnToggleAbstain(critiqueSection);
+        }, 100);
+        // Enable or disable Back/Next button
+        fnToggleBackNextButtons(critiqueSection);
+    };
+    // Edit critique modal window
+    $(document).on('click', '.edit-critique', function (e) {
+        e.preventDefault();
+        var critiqueSection = $(this).closest(".mw-critiques_main_sub-section_critique");
+        var storedTitle = $('.mw-critiques_main_sub-section .mw-critiques_main_sub-section_critique:last-child .criterion').text();
+        sessionStorage.setItem('storedEditTitle', storedTitle);
+        var storedEditTitle = sessionStorage.getItem('storedEditTitle');
+        fnSetCritiqueModal(critiqueSection);
+        // Open dialog
+        $('.score-instructions').hide();
+        $('.score').css('border', '1px solid #ccc');
+        $('#EditCritiqueModalDialog').dialog("open");
+        if ($('.ui-dialog-title:contains("' + storedEditTitle + '")').length > 0) {
+            $('#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+        }
+    });
+
+    // Get markup content for Editor
+    function GetMarkupContent(id) {
+        var section = $(".mw-critiques_main_sub-section_critique[data-contentId=" + id + "]");
+        var content = section.find(".critique-content").html();
+        return content;
+    }
+    // Cancel changes and close dialog
+    $("#cancelEditCritiqueChanges").on("click", function (e) {
+        e.preventDefault();
+        $('#EditCritiqueModalDialog').dialog("close");
+    });
+    // Save changes and close dialog
+    $("#saveCritiqueChangesAndClose").on("click", function (e) {
+        e.preventDefault();
+        var setText = $(this).closest('.modal-content').find('.rating-section .score-scale').text();
+        var scoreHigh = parseInt(setText.substring(0, setText.indexOf(".")));
+        var scoreLow = setText.split((',')[0]);
+        var scoreLowVis = setText.indexOf('.');
+ 
+        var elementId = $("#applicationWorkflowStepElementId").val();
+        var contentId = $("#applicationWorkflowStepElementContentId").val();
+        var checkSubmitted = fnIsCritiqueSubmitted(elementId, contentId);
+        var submit = $("#isSubmitted").val();
+    
+        if (scoreLowVis > 0) {
+            var setScoreLow = parseInt($.trim(scoreLow[1].substring(0, scoreLow[1].indexOf("."))));
+        }
+
+        var decimalScore = ($('.decimal-score').val() == "") ? "" : parseFloat($('.decimal-score').val());
+        if (($('.score').is(':visible')) && (checkSubmitted !== true)) {
+            if ($('.rating-section select option').is(':visible') && $('.rating-section select option:selected').val() == "" && !$('.score').prop('disabled')) {
+                $('.score-instructions').text("");
+                $('.score-instructions').show();
+                var ratingInput = $('#ratingText').is(':visible');
+                (ratingInput) ? $('.score-instructions').html("Please select a value between <span class='rating-range'></span>") : $('.score-instructions').html("Please select a value between <span class='rating-range'></span>");
+                $('.score').css('border', '1px solid red');
+                var lastNum = $('.score option:last-child').val();
+                var firstNum = $('.score option:nth-child(2)').val();
+                $('.rating-range').append(firstNum + " - " + lastNum);
+                $('button#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+            } else if (decimalScore == "" || decimalScore > scoreHigh || setScoreLow > decimalScore) {
+                var isVisible = $('.decimal-score').is(':visible');
+                if (isVisible) {
+                    $('.score-instructions').html("Please enter a value between <span class='rating-range'>" + scoreHigh + " - " + setScoreLow + "</span>").show();
+                    $('.score').css('border', '1px solid red');
+                } else {
+                    $('.score-instructions').hide();
+                    $('.score').css('border', '1px solid #ccc');
+                    $('button#saveCritiqueChangesAndNext').attr('disabled', false);
+                     var returnStatus = fnSaveCritiqueContents();
+                    var ratingInput = $('#ratingText').is(':visible');
+                    (ratingInput) ? $('.score-instructions').html("Please enter a value between <span class='rating-range'></span>") : $('.score-instructions').html("Please select a value between <span class='rating-range'></span>");
+                    if (returnStatus) {
+                        $('#EditCritiqueModalDialog').dialog("close");
+                    }
+                }
+            } else {
+                $('.score-instructions').hide();
+                $('.score').css('border', '1px solid #ccc');
+                $('button#saveCritiqueChangesAndNext').attr('disabled', false);
+
+                var returnStatus = fnSaveCritiqueContents();
+                var ratingInput = $('#ratingText').is(':visible');
+                (ratingInput) ? $('.score-instructions').html("Please enter a value between <span class='rating-range'></span>") : $('.score-instructions').html("Please select a value between <span class='rating-range'></span>");
+                if (returnStatus) {
+                    $('#EditCritiqueModalDialog').dialog("close");
+                }
+                else {
+                    $('#EditCritiqueModalDialog').dialog("close");
+                    dialogTitle = "<span class='modalSmallCaption modalNotificationCaption'>Critique already submitted</span>";
+            // load the data via ajax
+                    $.get('@Url.Action("AlreadySubmittedCritique")',
+                        function (responseText, textStatus, XMLHttpRequest) {
+                            p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.small, dialogTitle);
+                            $('.ui-dialog').find('#smallModal').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                            $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); window.location.reload() });
+
+                        }
+                    );
+                    //location.reload();
+                }
+            }
+        } else {
+            var returnStatus = false;
+            if ((checkSubmitted !== true)) {
+               returnStatus = fnSaveCritiqueContents();
+            }
+             if (returnStatus) {
+                $('#EditCritiqueModalDialog').dialog("close");
+            }
+        }
+    });
+    // Save changes and retrieve the previous element if available
+    $("#saveCritiqueChangesAndBack").on("click", function (e) {
+        e.preventDefault();
+        var elementId = $("#applicationWorkflowStepElementId").val();
+        var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]").prev();
+        var setText = $(this).closest('.modal-content').find('.rating-section .score-scale').text();
+        var scoreHigh = parseInt(setText.substring(0, setText.indexOf(".")));
+        var scoreLow = setText.split((',')[0]);
+        var scoreLowVis = setText.indexOf('.');
+        if (scoreLowVis > 0) {
+            var setScoreLow = parseInt($.trim(scoreLow[1].substring(0, scoreLow[1].indexOf("."))));
+        }
+
+        var elementId = $("#applicationWorkflowStepElementId").val();
+        var contentId = $("#applicationWorkflowStepElementContentId").val();
+        var checkSubmitted = fnIsCritiqueSubmitted(elementId, contentId);
+        var submit = $("#isSubmitted").val();
+
+        var decimalScore = ($('.decimal-score').val() == "") ? "" : parseFloat($('.decimal-score').val());
+        if  (($('.score').is(':visible')) && (checkSubmitted !== true)) {
+            if ($('.rating-section select').is(':visible') && $('.rating-section select option:selected').val() == "" && !$('.score').prop('disabled')) {
+                $('.score-instructions').text("");
+                $('.score-instructions').show();
+                $('.score-instructions').html("Please select a value between <span class='rating-range'></span>");
+                $('.score').css('border', '1px solid red');
+                var lastNum = $('.score option:last-child').val();
+                var firstNum = $('.score option:nth-child(2)').val();
+                $('.rating-range').append(firstNum + " - " + lastNum);
+                $('button#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+                $('.score-instructions').focus();
+            } else if (decimalScore == "" || decimalScore > scoreHigh || setScoreLow > decimalScore) {
+                var isVisible = $('.decimal-score').is(':visible');
+                if (isVisible) {
+                    $('.score-instructions').html("Please enter a value between <span class='rating-range'>" + scoreHigh + " - " + setScoreLow + "</span>").show();
+                    $('.score').css('border', '1px solid red');
+                } else {
+                    var returnStatus = fnSaveCritiqueContents();
+                    if (returnStatus) {
+                        var elementId = $("#applicationWorkflowStepElementId").val();
+                        var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]").prev();
+                        fnSetCritiqueModal(critiqueSection);
+                    }
+                }
+            } else {
+                $('.score-instructions').hide();
+                $('.score').css('border', '1px solid #ccc');
+                $('button#saveCritiqueChangesAndNext').attr('disabled', false);
+
+                var returnStatus = fnSaveCritiqueContents();
+                if (returnStatus) {
+                    var elementId = $("#applicationWorkflowStepElementId").val();
+                    var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]").prev();
+                    fnSetCritiqueModal(critiqueSection);
+                }
+            }
+        } else {
+            fnSetCritiqueModal(critiqueSection);
+        }
+        //$('.score-instructions').hide();
+        //$('.score').css('border', '1px solid #ccc');
+    });
+
+    // Save changes and retrieve the next element if available
+    $("#saveCritiqueChangesAndNext").on("click", function (e) {
+        var setText = $(this).closest('.modal-content').find('.rating-section .score-scale').text();
+        var scoreHigh = parseInt(setText.substring(0, setText.indexOf(".")));
+        var scoreLow = setText.split((',')[0]);
+        var scoreLowVis = setText.indexOf('.');
+        if (scoreLowVis > 0) {
+            var setScoreLow = parseInt($.trim(scoreLow[1].substring(0, scoreLow[1].indexOf("."))));
+        }
+
+        var elementId = $("#applicationWorkflowStepElementId").val();
+        var contentId = $("#applicationWorkflowStepElementContentId").val();
+        var checkSubmitted = fnIsCritiqueSubmitted(elementId, contentId);
+        var submit = $("#isSubmitted").val();
+
+        var decimalScore = ($('.decimal-score').val() == "") ? "" : parseFloat($('.decimal-score').val());
+        if ( ($('.score').is(':visible'))  && (checkSubmitted !== true) ) {
+            if ($('.rating-section select').is(':visible') && $('.rating-section select option:selected').val() == "" && !$('.score').prop('disabled')) {
+                $('.score-instructions').text("");
+                $('.score-instructions').show();
+                $('.score-instructions').html("Please select a value between <span class='rating-range'></span>");
+                $('.score').css('border', '1px solid red');
+                var lastNum = $('.score option:last-child').val();
+                var firstNum = $('.score option:nth-child(2)').val();
+                $('.rating-range').append(firstNum + " - " + lastNum);
+                $('button#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+                $('.score-instructions').focus();
+            } else if (decimalScore == "" || decimalScore > scoreHigh || setScoreLow > decimalScore) {
+                var isVisible = $('.decimal-score').is(':visible');
+                if (isVisible) {
+                    $('.score-instructions').html("Please enter a value between <span class='rating-range'>" + scoreHigh + " - " + setScoreLow + "</span>").show();
+                    $('.score').css('border', '1px solid red');
+                } else {
+                    var returnStatus = fnSaveCritiqueContents();
+                    if (returnStatus) {
+                        var elementId = $("#applicationWorkflowStepElementId").val();
+                        var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]").next();
+                        fnSetCritiqueModal(critiqueSection);
+                    }
+                }
+            } else {
+                $('.score-instructions').hide();
+                $('.score').css('border', '1px solid #ccc');
+                $('button#saveCritiqueChangesAndNext').attr('disabled', false);
+                var returnStatus = fnSaveCritiqueContents();
+                if (returnStatus) {
+                    var elementId = $("#applicationWorkflowStepElementId").val();
+                    var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]").next();
+                    fnSetCritiqueModal(critiqueSection);
+                }
+            }
+        } else {
+            var returnStatus = false;
+            if ((checkSubmitted !== true)) {
+               returnStatus = fnSaveCritiqueContents();
+            }
+            if (returnStatus) {
+                var elementId = $("#applicationWorkflowStepElementId").val();
+                var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + elementId + "]").next();
+                fnSetCritiqueModal(critiqueSection);
+            }
+        }
+    });
+
+    // Score validation
+    $('select.score').on('change', function () {
+        if ($('.score-instructions').is(':visible')){
+            if($('select.score option:selected').val() == ""){
+                $('.score-instructions').show();
+                $('.score').css('border', '1px solid red');
+                $('button#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+            } else {
+                $('.score-instructions').hide();
+                $('.score').css('border', '1px solid #ccc');
+                $('button#saveCritiqueChangesAndNext').attr('disabled', false);
+                $('.alert-message').hide();
+                var storedEditTitle = sessionStorage.getItem('storedEditTitle');
+                if ($('.ui-dialog-title:contains("' + storedEditTitle + '")').length > 0) {
+                    $('#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+                }
+            }
+        };
+    });
+    // Hides validation to start
+    $('.score-instructions').hide();
+    $('.score').css('border', '1px solid #ccc');
+    if ($('.ui-dialog-title').filter(':contains("Overall")').length > 0) {
+        $('button#saveCritiqueChangesAndNext').attr('disabled', 'disabled');
+    }
+</script>

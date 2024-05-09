@@ -1,0 +1,1 @@
+﻿UPDATE Airport SET Code = 'ABE' WHERE [Description] = 'Allentown Bthlem, PA' 

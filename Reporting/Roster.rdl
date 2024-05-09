@@ -1,0 +1,1755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="P2RMISDS">
+      <DataSourceReference>P2RMISDS</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>84f4d08f-1376-4dc5-b3b3-491c9c9727d9</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Query>
+        <DataSourceName>P2RMISDS</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ProgramList">
+            <Value>=Parameters!ProgramList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@FiscalYearList">
+            <Value>=Parameters!FiscalYearList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@PanelList">
+            <Value>=Parameters!PanelList.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@NumberOfYears">
+            <Value>=Parameters!NumberOfYears.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspReportRoster</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="UserID">
+          <DataField>UserID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ReportFieldsConcat">
+          <Value>=Join(Parameters!ReportFields.Value, ",")</Value>
+        </Field>
+        <Field Name="UserInfoID">
+          <DataField>UserInfoID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Prefix">
+          <DataField>Prefix</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Suffix">
+          <DataField>Suffix</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="MilitaryRank">
+          <DataField>MilitaryRank</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BadgeName">
+          <DataField>BadgeName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FirstName">
+          <DataField>FirstName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Lastname">
+          <DataField>LastName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Email">
+          <DataField>Email</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Institution">
+          <DataField>Institution</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Department">
+          <DataField>Department</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ProgramDesc">
+          <DataField>ProgramDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="MeetingSessionId">
+          <DataField>MeetingSessionId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="SessionID">
+          <DataField>SessionID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ProgramAbrv">
+          <DataField>ProgramAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Year">
+          <DataField>Year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ClientProgramId">
+          <DataField>ClientProgramId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ClientAbrv">
+          <DataField>ClientAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ProgramYearId">
+          <DataField>ProgramYearId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ClientID">
+          <DataField>ClientID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PartType">
+          <DataField>PartType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PartTypeName">
+          <DataField>PartTypeName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ParticipationMethodLabel">
+          <DataField>ParticipationMethodLabel</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PanelName">
+          <DataField>PanelName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PanelAbrv">
+          <DataField>PanelAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ClientParticipantTypeId">
+          <DataField>ClientParticipantTypeId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PanelID">
+          <DataField>PanelID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MeetingTypeName">
+          <DataField>MeetingTypeName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SessionDesc">
+          <DataField>SessionDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StartDate">
+          <DataField>StartDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="EndDate">
+          <DataField>EndDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Expertise">
+          <DataField>Expertise</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="RestrictedAssignedFlag">
+          <DataField>RestrictedAssignedFlag</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="PartLevel">
+          <DataField>PartLevel</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReviewerFlag">
+          <DataField>ReviewerFlag</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="SpecialistFlag">
+          <DataField>SpecialistFlag</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="ConsumerFlag">
+          <DataField>ConsumerFlag</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="RosterOrder">
+          <DataField>RosterOrder</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="AltContact">
+          <DataField>AltContact</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AltPhone">
+          <DataField>AltPhone</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AltEmail">
+          <DataField>AltEmail</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PersonPreferredPhone">
+          <DataField>PersonPreferredPhone</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PhoneNumber">
+          <DataField>PhoneNumber</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Address_1">
+          <DataField>Address</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ParticipationHistory">
+          <DataField>ParticipationHistory</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Photo">
+          <DataField>Photo</DataField>
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+        </Field>
+        <Field Name="Role">
+          <DataField>Role</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ProgramParticipantDescription">
+          <DataField>ProgramParticipantDescription</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorID">
+          <DataField>VendorID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorName">
+          <DataField>VendorName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorAddress">
+          <DataField>VendorAddress</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorCity">
+          <DataField>VendorCity</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorStateAbrv">
+          <DataField>VendorStateAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorZipCode">
+          <DataField>VendorZipCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StateAbrv">
+          <DataField>StateAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Zipcode">
+          <DataField>ZipCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendorCountryAbrv">
+          <DataField>VendorCountryAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CountryAbrv">
+          <DataField>CountryAbrv</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PersonNameLine">
+          <Value>=IIF(Fields!ReportFieldsConcat.Value LIKE "*MilitaryRank*" AND Fields!MilitaryRank.Value &lt;&gt; "", Fields!MilitaryRank.Value + " ", "") +
+IIF(Fields!ReportFieldsConcat.Value LIKE "*Name*", Fields!FirstName.Value + " " + Fields!Lastname.Value, "") +
+IIF(Fields!ReportFieldsConcat.Value LIKE "*Suffix*" AND Fields!Suffix.Value &lt;&gt; "" AND (Fields!PartType.Value &lt;&gt; "CR" OR Fields!ReportFieldsConcat.Value = "*ConsumerSuffix*"), ", " + Fields!Suffix.Value, "")</Value>
+        </Field>
+      </Fields>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!RosterOrder.Value</FilterExpression>
+          <Operator>NotEqual</Operator>
+          <FilterValues>
+            <FilterValue DataType="Integer">0</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
+    </DataSet>
+    <DataSet Name="DataSet2">
+      <Query>
+        <DataSourceName>P2RMISDS</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@ProgramList">
+            <Value>=Parameters!ProgramList.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspReportPanelParticipants</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ParticipantTypeAbbreviation">
+          <DataField>ParticipantTypeAbbreviation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ClientParticipantTypeId">
+          <DataField>ClientParticipantTypeId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="List1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>9.18335in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>3.16202in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Rectangle Name="List1_Contents">
+                          <ReportItems>
+                            <Tablix Name="table1">
+                              <TablixBody>
+                                <TablixColumns>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>3.36805in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>0.26388in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1.63354in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1.15974in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1.75814in</Width>
+                                  </TablixColumn>
+                                </TablixColumns>
+                                <TablixRows>
+                                  <TablixRow>
+                                    <Height>0.16791in</Height>
+                                    <TablixCells>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox2">
+                                            <CanGrow>true</CanGrow>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=IIF(Parameters!ReportGrouping.Value = "Panel", Fields!PanelName.Value, "")</Value>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox2</rd:DefaultName>
+                                            <RepeatWith>List1</RepeatWith>
+                                            <Style>
+                                              <Border>
+                                                <Color>Gray</Color>
+                                                <Style>Solid</Style>
+                                                <Width>2pt</Width>
+                                              </Border>
+                                              <TopBorder>
+                                                <Style>Solid</Style>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Style>None</Style>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Style>None</Style>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                          <ColSpan>2</ColSpan>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell />
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox11">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value />
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox11</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>Gray</Color>
+                                                <Style>Solid</Style>
+                                                <Width>2pt</Width>
+                                              </Border>
+                                              <TopBorder>
+                                                <Style>Solid</Style>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Style>None</Style>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Style>None</Style>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox30">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value xml:space="preserve">  </Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                  <TextRun>
+                                                    <Value>="Meeting Type" + ":" +  Fields!MeetingTypeName.Value</Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                  <TextRun>
+                                                    <Value xml:space="preserve">     </Value>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                  <TextRun>
+                                                    <Value>="Meeting Dates:" + FORMAT(Fields!StartDate.Value,"MM/dd/yyyy") + " " + "-" + Format(Fields!EndDate.Value,"MM/dd/yyyy")</Value>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                  <TextRun>
+                                                    <Value xml:space="preserve">     </Value>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                  <TextRun>
+                                                    <Value xml:space="preserve">                                                                                                                    </Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>calibri</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Left</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox30</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>Gray</Color>
+                                                <Style>Solid</Style>
+                                                <Width>2pt</Width>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Style>None</Style>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Style>None</Style>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                          <ColSpan>3</ColSpan>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell />
+                                      <TablixCell />
+                                    </TablixCells>
+                                  </TablixRow>
+                                  <TablixRow>
+                                    <Height>1.48958in</Height>
+                                    <TablixCells>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Image Name="Image2">
+                                            <Source>Embedded</Source>
+                                            <Value>NoPhoto</Value>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                            </Style>
+                                          </Image>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox5">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=IIF(Fields!ClientID.Value = 9 AND Fields!ReportFieldsConcat.Value LIKE "*PartType*"
+     , "&lt;b&gt;" + Fields!ProgramParticipantDescription.Value + "&lt;/b&gt;" + "&lt;BR&gt;"
+	 , ""
+	 ) 
+	 + IIF(Fields!Suffix.Value &lt;&gt; ""
+	       , Fields!FirstName.Value +" " +Fields!Lastname.Value+"," +" "+Fields!Suffix.Value + "&lt;BR&gt;"
+		   ,IIF (Fields!Suffix.Value= Nothing,Fields!FirstName.Value +" " +Fields!Lastname.Value + "&lt;BR&gt;"
+		   , "&lt;font color = 'red' size = '2'&gt;" + "NO LAST NAME for ACCOUNT" + "&lt;/font&gt;"+"&lt;BR&gt;") )
+		   + IIF(Fields!ReportFieldsConcat.Value LIKE "*Title*" AND Fields!Title.Value &lt;&gt; ""
+		        , Fields!Title.Value + "&lt;BR&gt;"
+				, "") 
+				+ IIF(Fields!ReportFieldsConcat.Value LIKE "*Institution*" AND Fields!Institution.Value &lt;&gt; ""
+				     , Fields!Institution.Value + "&lt;BR&gt;"
+					 , "") 
+					 + IIF(Fields!ReportFieldsConcat.Value LIKE "*Department*" AND Fields!Department.Value &lt;&gt; ""
+					       , Fields!Department.Value + "&lt;BR&gt;"
+						   , "") 
+						   + IIF(Fields!ReportFieldsConcat.Value LIKE "*Expertise*" AND Fields!Expertise.Value &lt;&gt; "" AND Fields!ConsumerFlag.Value &lt;&gt; True
+						        , "Expertise: " + Fields!Expertise.Value + "&lt;BR&gt;"
+								, "") 
+								+ IIF(Fields!ReportFieldsConcat.Value LIKE "*Address*" AND Fields!Address_1.Value &lt;&gt; ""
+								     , Fields!Address_1.Value + "&lt;BR&gt;"
+									 , "") 
+									 + IIF(Fields!ReportFieldsConcat.Value LIKE "*CityStateZip*" AND Fields!City.Value &lt;&gt; ""
+									       , Fields!City.Value + ", " + Fields!StateAbrv.Value  + "  " + Fields!Zipcode.Value + "&lt;BR&gt;"
+										   , "")
+										   + IIF(Fields!ReportFieldsConcat.Value LIKE "*Country*" AND Fields!CountryAbrv.Value &lt;&gt; ""
+										   , Fields!CountryAbrv.Value + "&lt;BR&gt;"
+										   , "")
+										   + IIF(Fields!ReportFieldsConcat.Value LIKE "*Email*" AND Fields!Email.Value &lt;&gt; ""
+										   , "Email: " + Fields!Email.Value + "&lt;BR&gt;"
+										   , "") 
+										   + IIF(Fields!ReportFieldsConcat.Value LIKE "*PreferredPhone*" AND Fields!PersonPreferredPhone.Value &lt;&gt; ""
+										        , "Preferred Phone: " + Fields!PersonPreferredPhone.Value + "&lt;BR&gt;"
+												, "") 
+												+ IIF(Fields!ReportFieldsConcat.Value LIKE "*AltContact*" AND Fields!AltContact.Value &lt;&gt; ""
+												      , "Alternate Contact: " + Fields!AltContact.Value + "&lt;BR&gt;"
+												      , "") 
+												      + IIF(Fields!ReportFieldsConcat.Value LIKE "*AlternateEmail*" AND Fields!AltEmail.Value &lt;&gt; ""
+													        , "Alternate Email: " + Fields!AltEmail.Value + "&lt;BR&gt;"
+															, "")
+															+ IIF(Fields!ReportFieldsConcat.Value LIKE "*AlternatePhone*" AND Fields!AltPhone.Value &lt;&gt; ""
+															      , "Alternate Phone: " + Fields!AltPhone.Value + "&lt;BR&gt;"
+																  , "")
+																  + IIF(Fields!ReportFieldsConcat.Value LIKE "*VendorID*" AND (Format(Fields!VendorID.Value,"D2")) &lt;&gt; Nothing
+																        ,"W9 Vendor ID: " + (Format(Fields!VendorID.Value,"D2"))+ "&lt;BR&gt;"
+																		, Nothing)
+																		+ IIF(Fields!ReportFieldsConcat.Value LIKE "*VendorName*" AND Fields!VendorName.Value &lt;&gt; ""
+																		, "W9 Vendor Name: " + Fields!VendorName.Value + "&lt;BR&gt;"
+																		, "")
+																		+ IIF(Fields!ReportFieldsConcat.Value LIKE "*VendorAddress*" AND Fields!VendorAddress.Value &lt;&gt; ""
+																		      , "W9 Vendor Address: " + Fields!VendorAddress.Value + "&lt;BR&gt;" 
+																			      + Fields!VendorCity.Value + ", " 
+																				  + Fields!VendorStateAbrv.Value  + "  " 
+																				  + Fields!VendorZipCode.Value +  "  " 
+																				  + Fields!VendorCountryAbrv.Value + "&lt;BR&gt;"
+																			  , "")</Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>Calibri</FontFamily>
+                                                      <FontSize>9pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox5</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Style>None</Style>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Style>None</Style>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox12">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value />
+                                                    <Style>
+                                                      <FontFamily>Calibri</FontFamily>
+                                                      <FontSize>9pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox12</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Style>None</Style>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Style>None</Style>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="ProgramParticipantDescription">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=IIF(Fields!ReportFieldsConcat.Value LIKE "*ProgramParticipantDescription*"
+		AND Fields!PartTypeName.Value &lt;&gt; ""
+	 , Fields!PartTypeName.Value + "&lt;BR&gt;"
+	 , "")
+	 + IIF(Parameters!InpersonRemote.Value LIKE "*All*" 
+		or Parameters!InpersonRemote.Value LIKE "*InPerson*"
+		or Parameters!InpersonRemote.Value LIKE "*Remote*"
+		AND Fields!ParticipationMethodLabel.Value &lt;&gt; ""
+			 , Fields!ParticipationMethodLabel.Value + "&lt;BR&gt;"
+			 , "")
+	+ IIF(Parameters!FullPartial.Value LIKE "*All*" 
+		or Parameters!FullPartial.Value LIKE "*Full*"
+		or Parameters!FullPartial.Value LIKE "*Adhoc*"
+		AND Fields!PartLevel.Value &lt;&gt; ""
+			 , Fields!PartLevel.Value + "&lt;BR&gt;"
+			 , "")</Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>Calibri</FontFamily>
+                                                      <FontSize>9pt</FontSize>
+                                                      <FontWeight>Normal</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>ProgramParticipantDescription</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Role">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=IIF(Fields!ReportFieldsConcat.Value LIKE "*Role*"
+		AND Fields!Role.Value &lt;&gt; ""
+	 , Fields!Role.Value + "&lt;BR&gt;"
+	 , "")</Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>Calibri</FontFamily>
+                                                      <FontSize>9pt</FontSize>
+                                                      <FontWeight>Normal</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Role</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Style>None</Style>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Style>None</Style>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="ParticipationHistory">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Replace(Fields!ParticipationHistory.Value,"!","&lt;br&gt;")</Value>
+                                                    <MarkupType>HTML</MarkupType>
+                                                    <Style>
+                                                      <FontFamily>Calibri</FontFamily>
+                                                      <FontSize>9pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Left</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>ParticipationHistory</rd:DefaultName>
+                                            <Visibility>
+                                              <Hidden>=IIF(Fields!ReportFieldsConcat.Value LIKE "*ParticipationHistory*" 
+		and (Fields!PartType.Value &lt;&gt; "RTA" or Fields!PartType.Value &lt;&gt; "SRO")
+		, False, True)</Hidden>
+                                            </Visibility>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                    </TablixCells>
+                                  </TablixRow>
+                                </TablixRows>
+                              </TablixBody>
+                              <TablixColumnHierarchy>
+                                <TablixMembers>
+                                  <TablixMember>
+                                    <Visibility>
+                                      <Hidden>=IIF(Fields!ReportFieldsConcat.Value LIKE "*Photo*", false, true)</Hidden>
+                                    </Visibility>
+                                  </TablixMember>
+                                  <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember>
+                                    <Visibility>
+                                      <Hidden>=IIF(Fields!ReportFieldsConcat.Value LIKE "*ProgramParticipantDescription*", False, True)</Hidden>
+                                    </Visibility>
+                                  </TablixMember>
+                                  <TablixMember>
+                                    <Visibility>
+                                      <Hidden>=IIF(Fields!ReportFieldsConcat.Value LIKE "*Role*", False, True)</Hidden>
+                                    </Visibility>
+                                    <HideIfNoRows>true</HideIfNoRows>
+                                  </TablixMember>
+                                  <TablixMember />
+                                </TablixMembers>
+                              </TablixColumnHierarchy>
+                              <TablixRowHierarchy>
+                                <TablixMembers>
+                                  <TablixMember>
+                                    <KeepWithGroup>After</KeepWithGroup>
+                                    <RepeatOnNewPage>true</RepeatOnNewPage>
+                                    <KeepTogether>true</KeepTogether>
+                                  </TablixMember>
+                                  <TablixMember>
+                                    <Group Name="table1_Details_Group">
+                                      <DataElementName>Detail</DataElementName>
+                                    </Group>
+                                    <TablixMembers>
+                                      <TablixMember />
+                                    </TablixMembers>
+                                    <Visibility>
+                                      <ToggleItem>textbox2</ToggleItem>
+                                    </Visibility>
+                                    <DataElementName>Detail_Collection</DataElementName>
+                                    <DataElementOutput>Output</DataElementOutput>
+                                    <KeepTogether>true</KeepTogether>
+                                  </TablixMember>
+                                </TablixMembers>
+                              </TablixRowHierarchy>
+                              <RepeatColumnHeaders>true</RepeatColumnHeaders>
+                              <RepeatRowHeaders>true</RepeatRowHeaders>
+                              <KeepTogether>true</KeepTogether>
+                              <DataSetName>DataSet1</DataSetName>
+                              <SortExpressions>
+                                <SortExpression>
+                                  <Value>=IIF(Parameters!SortOrder.Value = "RosterOrder", Fields!RosterOrder.Value, 
+IIF(Parameters!SortOrder.Value = "ChairFirst", (iif(Fields!RosterOrder.Value=2,"1",
+iif(Fields!RosterOrder.Value=3,"2",
+iif(Fields!RosterOrder.Value=4,"3",
+iif(Fields!RosterOrder.Value=5,"4",
+iif(Fields!RosterOrder.Value=5,"4",
+iif(Fields!RosterOrder.Value=6,"5",
+iif(Fields!RosterOrder.Value=1,"6",
+iif(Fields!RosterOrder.Value=7,"7", " " ))))))))), 
+Fields!Lastname.Value))</Value>
+                                </SortExpression>
+                              </SortExpressions>
+                              <Top>0.19202in</Top>
+                              <Height>1.65749in</Height>
+                              <Width>9.18335in</Width>
+                              <Style>
+                                <Border>
+                                  <Color>White</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <TopBorder>
+                                  <Style>Solid</Style>
+                                </TopBorder>
+                              </Style>
+                            </Tablix>
+                          </ReportItems>
+                          <KeepTogether>true</KeepTogether>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                          </Style>
+                        </Rectangle>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <HideIfNoRows>true</HideIfNoRows>
+                </TablixMember>
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="ProgramAbrv">
+                    <DocumentMapLabel>=Fields!ProgramAbrv.Value</DocumentMapLabel>
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!ProgramAbrv.Value</GroupExpression>
+                    </GroupExpressions>
+                    <PageBreak>
+                      <BreakLocation>Between</BreakLocation>
+                    </PageBreak>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!ProgramAbrv.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixMembers>
+                    <TablixMember>
+                      <Group Name="Year">
+                        <DocumentMapLabel>="FY" + " " + Fields!Year.Value</DocumentMapLabel>
+                        <GroupExpressions>
+                          <GroupExpression>=Fields!Year.Value</GroupExpression>
+                        </GroupExpressions>
+                        <PageBreak>
+                          <BreakLocation>Between</BreakLocation>
+                        </PageBreak>
+                      </Group>
+                      <SortExpressions>
+                        <SortExpression>
+                          <Value>=Fields!Year.Value</Value>
+                        </SortExpression>
+                      </SortExpressions>
+                      <TablixMembers>
+                        <TablixMember>
+                          <Group Name="PanelAbrv">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!PanelAbrv.Value</GroupExpression>
+                            </GroupExpressions>
+                            <PageBreak>
+                              <BreakLocation>Between</BreakLocation>
+                            </PageBreak>
+                            <Filters>
+                              <Filter>
+                                <FilterExpression>=Fields!ParticipationMethodLabel.Value</FilterExpression>
+                                <Operator>Equal</Operator>
+                                <FilterValues>
+                                  <FilterValue>=IIF(Parameters!InpersonRemote.Value= "InPerson" ,"InPerson", 
+IIF (Parameters!InpersonRemote.Value= "Remote" ,"Remote",Fields!ParticipationMethodLabel.Value))</FilterValue>
+                                </FilterValues>
+                              </Filter>
+                              <Filter>
+                                <FilterExpression>=Fields!RestrictedAssignedFlag.Value</FilterExpression>
+                                <Operator>Equal</Operator>
+                                <FilterValues>
+                                  <FilterValue>=IIF(Parameters!FullPartial.Value= "Adhoc",true, 
+IIF (Parameters!FullPartial.Value= "Full",false,Fields!RestrictedAssignedFlag.Value))</FilterValue>
+                                </FilterValues>
+                              </Filter>
+                            </Filters>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!PanelAbrv.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <TablixMembers>
+                            <TablixMember>
+                              <Group Name="list1_ProgramAbrv">
+                                <DocumentMapLabel>=Fields!PanelAbrv.Value</DocumentMapLabel>
+                                <GroupExpressions>
+                                  <GroupExpression>=IIF(Parameters!ReportGrouping.Value = "Panel", Fields!PanelAbrv.Value, Fields!SessionID.Value)</GroupExpression>
+                                </GroupExpressions>
+                              </Group>
+                              <SortExpressions>
+                                <SortExpression>
+                                  <Value>=Fields!ProgramAbrv.Value</Value>
+                                </SortExpression>
+                                <SortExpression>
+                                  <Value>=Fields!Year.Value</Value>
+                                  <Direction>Descending</Direction>
+                                </SortExpression>
+                              </SortExpressions>
+                              <DataElementOutput>Output</DataElementOutput>
+                              <KeepTogether>true</KeepTogether>
+                            </TablixMember>
+                          </TablixMembers>
+                        </TablixMember>
+                      </TablixMembers>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <RepeatColumnHeaders>true</RepeatColumnHeaders>
+            <RepeatRowHeaders>true</RepeatRowHeaders>
+            <DataSetName>DataSet1</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!ParticipationMethodLabel.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue>=IIF(Parameters!InpersonRemote.Value= "InPerson" ,"InPerson", 
+IIF (Parameters!InpersonRemote.Value= "Remote" ,"Remote",Fields!ParticipationMethodLabel.Value))</FilterValue>
+                </FilterValues>
+              </Filter>
+              <Filter>
+                <FilterExpression>=Fields!RestrictedAssignedFlag.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue>=IIF(Parameters!FullPartial.Value= "Adhoc",true, 
+IIF (Parameters!FullPartial.Value= "Full",false,Fields!RestrictedAssignedFlag.Value))</FilterValue>
+                </FilterValues>
+              </Filter>
+              <Filter>
+                <FilterExpression>=Fields!PartType.Value</FilterExpression>
+                <Operator>In</Operator>
+                <FilterValues>
+                  <FilterValue>=Parameters!PartTypeList.Value</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
+            <Top>0.19126in</Top>
+            <Left>0.1238in</Left>
+            <Height>3.16202in</Height>
+            <Width>9.18335in</Width>
+            <Style>
+              <Border>
+                <Color>Gray</Color>
+                <Style>None</Style>
+              </Border>
+              <FontFamily>Tahoma</FontFamily>
+              <FontSize>12pt</FontSize>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>3.35328in</Height>
+        <Style />
+      </Body>
+      <Width>9.30715in</Width>
+      <Page>
+        <PageHeader>
+          <Height>0.94708in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox9">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=First(Fields!Year.Value, "DataSet1")</Value>
+                      <Style>
+                        <FontFamily>calibri</FontFamily>
+                        <FontSize>18pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value xml:space="preserve"> </Value>
+                      <Style>
+                        <FontFamily>calibri</FontFamily>
+                        <FontSize>18pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=First(Fields!ProgramDesc.Value, "DataSet1")</Value>
+                      <Style>
+                        <FontFamily>calibri</FontFamily>
+                        <FontSize>18pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Parameters!ReportTitle.Value</Value>
+                      <Style>
+                        <FontFamily>calibri</FontFamily>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox9</rd:DefaultName>
+              <Top>0.18625in</Top>
+              <Height>0.76083in</Height>
+              <Width>9.14048in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageHeader>
+        <PageFooter>
+          <Height>0.52083in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox4">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Globals!ExecutionTime, "Eastern Standard Time")</Value>
+                      <Style>
+                        <FontFamily>Calibri</FontFamily>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox3</rd:DefaultName>
+              <Top>0.06944in</Top>
+              <Left>0.1238in</Left>
+              <Height>0.40957in</Height>
+              <Width>1.91027in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox8">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Procurement Sensitive Document</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Do not copy or circulate without written permission</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox8</rd:DefaultName>
+              <Top>0.06944in</Top>
+              <Left>0.1238in</Left>
+              <Height>0.40957in</Height>
+              <Width>9.01668in</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox6">
+              <CanGrow>true</CanGrow>
+              <CanShrink>true</CanShrink>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Page </Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Globals!PageNumber</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> of </Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Globals!TotalPages</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Calibri</FontFamily>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                        <Color>#000000</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox3</rd:DefaultName>
+              <Top>0.06944in</Top>
+              <Left>7.74867in</Left>
+              <Height>0.34954in</Height>
+              <Width>1.39181in</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageWidth>10in</PageWidth>
+        <InteractiveHeight>8.5in</InteractiveHeight>
+        <InteractiveWidth>11in</InteractiveWidth>
+        <LeftMargin>0.25in</LeftMargin>
+        <RightMargin>0.25in</RightMargin>
+        <TopMargin>0.25in</TopMargin>
+        <BottomMargin>0.25in</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="ReportTitle">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Roster</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Title to display on report:</Prompt>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+    <ReportParameter Name="ReportFields">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Suffix</Value>
+          <Value>FullName</Value>
+          <Value>Title</Value>
+          <Value>Institution</Value>
+          <Value>Department</Value>
+          <Value>Title</Value>
+          <Value>Expertise</Value>
+          <Value>ProgramParticipantDescription</Value>
+          <Value>Role</Value>
+          <Value>ParticipationHistory</Value>
+          <Value>Photo</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Select data fields for display on report:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>FullName</Value>
+            <Label>Full Name</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Suffix</Value>
+            <Label>Person Suffix</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>MilitaryRank</Value>
+            <Label>Person Military Rank</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Email</Value>
+            <Label>Person Email</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Title</Value>
+            <Label>Person Title</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Institution</Value>
+            <Label>Person Institution</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Department</Value>
+            <Label>Person Department</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Expertise</Value>
+            <Label>Reviewer Expertise</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>ConsumerSuffix</Value>
+            <Label>Consumer Suffix</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Address</Value>
+            <Label>Person Full Address</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>CityStateZip</Value>
+            <Label>Person City, State and Zip Only</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>PersonCountry</Value>
+            <Label>Person Country</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>AltContact</Value>
+            <Label>Person Alternate Contact</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>ProgramParticipantDescription</Value>
+            <Label>Participant Type</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Role</Value>
+            <Label>Participant Role</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>PreferredPhone</Value>
+            <Label>Person Preferred Phone</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>AlternatePhone</Value>
+            <Label>Person Alternate Phone</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>ParticipationHistory</Value>
+            <Label>Person Participation History</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Photo</Value>
+            <Label>Person Photo</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>AlternateEmail</Value>
+            <Label>Person Alternate Email</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>VendorID</Value>
+            <Label>W9 Vendor ID</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>VendorName</Value>
+            <Label>W9 Vendor Name</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>VendorAddress</Value>
+            <Label>W9 Vendor Address</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="SortOrder">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>RosterOrder</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Specify report sort order:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>RosterOrder</Value>
+            <Label>Standard Roster</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>LastName</Value>
+            <Label>Person Last Name</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>ChairFirst</Value>
+            <Label>Chair First Order</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="ProgramList">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>63</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Program List</Prompt>
+      <Hidden>true</Hidden>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="FiscalYearList">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>2019</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>FiscalYearList</Prompt>
+      <Hidden>true</Hidden>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="PanelList">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>PanelList</Prompt>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+    <ReportParameter Name="ReportGrouping">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Panel</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Select grouping for report:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>Panel</Value>
+            <Label>Panel</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Session</Value>
+            <Label>Session</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="PartTypeList">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>DataSet2</DataSetName>
+          <ValueField>ParticipantTypeAbbreviation</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Select the participants the report should display:</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>DataSet2</DataSetName>
+          <ValueField>ParticipantTypeAbbreviation</ValueField>
+          <LabelField>ParticipantTypeAbbreviation</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="FullPartial">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>All</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Select participant level to include on report:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>All</Value>
+            <Label>All</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Full</Value>
+            <Label>Full</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Adhoc</Value>
+            <Label>Partial (Adhoc)</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="InpersonRemote">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>All</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Select participant method to include on report:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>All</Value>
+            <Label>All</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>InPerson</Value>
+            <Label>In Person</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Remote</Value>
+            <Label>Remote</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="NumberOfYears">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>3</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Number Of Years</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>2</NumberOfColumns>
+      <NumberOfRows>7</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ReportTitle</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>ReportFields</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>SortOrder</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ProgramList</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FiscalYearList</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>PanelList</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>ReportGrouping</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>PartTypeList</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>FullPartial</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>InpersonRemote</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>NumberOfYears</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <EmbeddedImages>
+    <EmbeddedImage Name="No_Photo_Available_Small">
+      <MIMEType>image/jpeg</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="NoPhoto2">
+      <MIMEType>image/jpeg</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="NoPhoto">
+      <MIMEType>image/jpeg</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <Language>en-US</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>546133db-68c2-4d67-a768-d08f27f51e1c</rd:ReportID>
+</Report>

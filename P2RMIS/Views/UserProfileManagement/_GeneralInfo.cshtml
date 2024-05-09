@@ -1,0 +1,105 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<section class="upm-profile-section" role="region" aria-labelledby="general-info">
+    <span class="upm-profile-section_header" id="general-info">General Info</span>
+    <p><span class="required">*</span><span class="upm-profile-section_required"> Indicates a required field.</span></p>
+    <div class="upm-profile-section_container">
+        <!-- First Name -->
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_FirstName" class="upm-profile-section_field_required">First Name <div class="hidden-text">Required</div></label>
+            @Html.TextBoxFor(m => m.GeneralInfo.FirstName, new { @class = "upm-profile-section_field_input-short", @maxlength = "500", @required = "required" })
+        </div>
+        <!-- MI -->
+        <div class="upm-profile-section_field">
+            <span class="sr-only">Middle Iniital</span>
+            <label for="GeneralInfo_MI" class="upm-profile-section_field">MI</label>
+            @Html.TextBoxFor(m => m.GeneralInfo.MI, new { @class = "upm-profile-section_field_input-abbr", @maxlength = "1" })
+        </div>
+        <!-- Last Name -->
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_LastName" class="upm-profile-section_field_required">Last Name <div class="hidden-text">Required</div></label>
+            @Html.TextBoxFor(m => m.GeneralInfo.LastName, new { @class = "upm-profile-section_field_input-short", @maxlength = "500", @required = "required" })
+        </div>
+    </div>
+    <!-- Nick Name -->
+    <div class="upm-profile-section_container">
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_NickName" class="upm-profile-section_field">Nickname</label>
+            @Html.TextBoxFor(m => m.GeneralInfo.NickName, new { @class = "upm-profile-section_field_input-short", maxlength = "15" })
+            <a href="#" title="The nickname will be used in lieu of your First Name on any communications which do not require your legal name."><img class="upm-profile-section_field_img" src="~/Content/img/info_20px_enabled.png" alt="Nickname description"/></a>
+        </div>
+    </div>
+    <!-- Prefix -->
+    <div class="upm-profile-section_container">
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_PrefixId" class="upm-profile-section_field">Prefix</label>
+            @Html.DropDownListFor(m => m.GeneralInfo.PrefixId, new SelectList(Model.PrefixDropdown, "Index", "Value", @Model.GeneralInfo.PrefixId), "Select", new { @class = "upm-profile-section_field_input-short-dropdown" })
+        </div>
+    </div>
+    <!-- Suffix -->
+    <div class="upm-profile-section_container">
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_Suffix" class="upm-profile-section_field">Suffix</label>
+            @Html.TextBoxFor(m => m.GeneralInfo.Suffix, new { @class = "upm-profile-section_field_input-short-dropdown", maxlength = "47" })
+        </div>
+    </div>
+
+    @Html.Partial("_GenderEthinicity")
+
+    <!-- Websites -->
+    @for (int i = 0; i < Model.MaxWebsiteNumber; i++)
+    {
+        <div class="upm-profile-section_container">
+            <div class="upm-profile-section_field">
+                @if (Model.Websites[i].Primary)
+                {
+                    <label for="Websites_0__WebsiteAddress" class="upm-profile-section_field"><div class="hidden-text">Preferred</div>Website</label>
+                }
+                else
+                {
+                    <label for="Websites_1__WebsiteAddress" class="upm-profile-section_field"><div class="hidden-text">Secondary</div>Website</label>
+                }
+                @Html.TextBoxFor(m => Model.Websites[i].WebsiteAddress, new { @class = "upm-profile-section_field_input-long websiteAddress", maxlength = "250" })
+                @Html.HiddenFor(m => Model.Websites[i].UserWebsiteId)
+                @Html.HiddenFor(m => Model.Websites[i].WebsiteTypeId)
+                @Html.HiddenFor(m => Model.Websites[i].Primary, new { @class = "upm-profile-section_field_input-long websitePrimary" })
+            </div>
+            <span class="validWebsiteAddress">
+                <a href="@Model.Websites[i].WebsiteAddress" title="Go to website" target="_blank" class="websiteAddressIcon">
+                    <img class="website-icon-link" src="~/Content/img/globe_link_20px_enabled.png" alt="Preferred Website Link" />
+                </a>
+            </span>
+            <span class="invalidWebsiteAddress hidden"><img class="website-icon-link" src="~/Content/img/globe_link_20px_disabled.png" alt="Secondary Website Link" /></span>
+            @if (Model.Websites[i].Primary)
+            {
+                <span class="prefWebsiteTag"> @Model.PreferredText</span>
+            }
+            else
+            {
+                <span class="prefWebsiteTag"> @Model.SecondaryText</span>
+            }
+        </div>
+    }
+
+    <!-- Username -->
+    <div class="upm-profile-section_container">
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_Username" class="upm-profile-section_field">Username</label>
+            @Html.TextBoxFor(m => m.GeneralInfo.Username, new { @readonly = "readonly", @class = "upm-profile-section_field_input-long" })
+        </div>
+    </div>
+    <!-- Badge -->
+    <div class="upm-profile-section_container">
+        <div class="upm-profile-section_field">
+            <label for="GeneralInfo_Badge" class="upm-profile-section_field">Badge</label>
+            @if (Model.IsBadgeNameEditable)
+            {
+                @Html.TextBoxFor(m => m.GeneralInfo.Badge, new { @class = "upm-profile-section_field_input-long", maxlength = "60" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.GeneralInfo.Badge, new { @readonly = "readonly", @class = "upm-profile-section_field_input-long", maxlength = "60" })
+            }
+        </div>
+    </div>
+</section>

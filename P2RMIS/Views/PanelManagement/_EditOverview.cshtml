@@ -1,0 +1,15 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.ViewModels.PanelManagement.EditOverviewViewModel
+
+@*<form id="editOverviewForm">*@
+@using (Html.BeginForm("SaveOverview", "PanelManagement", FormMethod.Post, new { @id = "editOverviewForm" }))
+{
+    @Html.TextAreaFor(m => m.PanelOverview, new { rows = 5, cols = 10, style = "height:200px;width:100%;" })
+    @Html.HiddenFor(m => m.PanelApplicationId)
+}
+
+
+@*</form>*@
+<script type="text/javascript">
+  
+</script>

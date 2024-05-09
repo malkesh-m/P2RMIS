@@ -1,0 +1,24 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.TransferDataViewModel
+@{
+    ViewBag.PageTitle = "Import Application Data";
+    string NoResult = string.Empty;
+}
+@Html.Partial("_KendoHeader2020")
+<p class="formTitle">@ViewBag.PageTitle</p>
+<div id="infoMessage"></div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<div id="hiddenDiv" style="display: none;"></div>
+<div class="row-fluid">
+    <div class="span12" id="mainContent" style="padding:20px">
+        @Html.Partial("_TabMenu", Model.TabModel)
+        @Html.Partial("_DataTransferFilterMenu", Model.FilterModel)
+
+        <h4 class="inline-block gridTitle">List of Mechanisms</h4>
+        <div class="formNoResults" id="formNoResults">@NoResult</div>
+        <div id="loading"></div>
+        <div id="grid"></div>
+    </div>
+</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/transferData.js")

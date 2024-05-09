@@ -1,0 +1,43 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+@*needed to determine organization type so that Position can be required for an instritution or organization*@
+@Html.HiddenFor(m => Model.AffiliationInstutionTypeIdValue)
+@Html.HiddenFor(m => Model.AffiliationNominatingOrganizationValue)
+
+<section class="upm-profile-section-sub" role="region" aria-labelledby="pro-affiliation">
+    <div class="upm-profile-section-sub_main-header" id="pro-affiliation">Professional Affiliation</div>
+    <p class="upm-profile-section-sub_container_exp-text">
+        Please provide your position if you are affiliated with an institution or organization.
+    </p>
+    @{
+        string showHideAffiliationRequired = !Model.IsProspectOrMisconduct ? "display: inline" : "display: none";
+    }
+    <!-- Organizational Type -->
+    <div class="upm-profile-section-sub_container-sub">
+        <div class="upm-profile-section_field">
+            <label for="ProfessionalAffiliationId" class="upm-profile-section_field_required">Org<div class="hidden-text">anization</div> Type <div class="hidden-text">Required</div></label>
+            @Html.DropDownListFor(m => m.ProfessionalAffiliation.ProfessionalAffiliationId, new SelectList(Model.ProfessionalAffiliationDropdown, "Index", "Value", Model.ProfessionalAffiliation.ProfessionalAffiliationId), "Select", new { id = "ProfessionalAffiliationId", @class = "upm-profile-section_field_input-long" })
+        </div>
+    </div>
+    <!-- Organization -->
+    <div class="upm-profile-section-sub_container-sub">
+        <div class="upm-profile-section_field">
+            <label for="ProfessionalAffiliation_Name" class="upm-profile-section_field_required" id="PositionRequired">Organization <div class="hidden-text">Required</div></label>
+            @Html.TextBoxFor(m => m.ProfessionalAffiliation.Name, new { @class = "upm-profile-section_field_input-full", maxlength = "100" })
+        </div>
+    </div>
+    <!-- Department -->
+    <div class="upm-profile-section-sub_container-sub">
+        <div class="upm-profile-section_field">
+            <label for="ProfessionalAffiliation_Department" class="upm-profile-section_field">Department</label>
+            @Html.TextBoxFor(m => m.ProfessionalAffiliation.Department, new { @class = "upm-profile-section_field_input-full", maxlength = "75" })
+        </div>
+    </div>
+    <!-- Position -->
+    <div class="upm-profile-section-sub_container-sub">
+        <div class="upm-profile-section_field">
+            <label for="ProfessionalAffiliation_Position" class="upm-profile-section_field">Position</label>
+            @Html.TextBoxFor(m => m.ProfessionalAffiliation.Position, new { @class = "upm-profile-section_field_input-long", maxlength = "100" })
+        </div>
+    </div>
+</section>

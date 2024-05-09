@@ -1,0 +1,30 @@
+﻿<div class="mw-editcritique_header">
+    <label for="critique-instructions">Explanation</label>
+    <div class="critique-instructions" id="critique-instructions"></div>
+</div>
+<div class="mw-editcritique_alert alert-message hide"></div>
+<div class="mw-editcritique_text">
+    <div class="score-instructions" style="color: red; display: none;" role='alert' aria-atomic='true' tabindex="-1">
+        Please enter a value between <span class="rating-range"></span>.
+    </div>
+    <div class="inline-block abstain-section padding-top10 span7">
+        <input type="checkbox" class="abstain" value="1" style="vertical-align: top;" id="abstain-checkbox" />
+        <label for="abstain-checkbox" class="displayInline">Abstain from evaluating <span class="abstain-title"></span>.</label>
+    </div><br/>
+          <div class="inline-block rating-section">
+              <!-- If scoreType is decimal -->
+              <label for="rating-checkbox" class="displayInline">Rating</label>
+              <input type="text" class="score decimal-score" id="rating-checkbox" />
+              <!-- If scoreType is integer or adjectival -->
+              <label for="score-edit-modal" class="sr-only">Select Rating from</label>
+              <select class="score" id="score-edit-modal">
+                  <option value="">Select</option>
+              </select>
+              <span class="score-scale"></span>
+          </div>
+    <div class="float-right padding-top10 padding-right10 recWordLimit">
+        Recommended word limit is <span class="word-limit"></span>.
+    </div>
+</div>
+<input type="hidden" class="score-type" />
+<iframe id="editCritiqueIframe" style="width:100%;height:300px;" frameborder="0"><span class="hidden-text">Enter Description here</span></iframe>

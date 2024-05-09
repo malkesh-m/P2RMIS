@@ -1,0 +1,191 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.WorklistViewModel
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader")
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css">
+    #statusBody td {
+        text-align: left;
+        padding-left: 10px;
+    }
+
+    #viewStatusInformation a,
+    #viewStatusInformation td img {
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    #viewStatusInformation a:hover,
+    #viewStatusInformation a:focus,
+    #viewStatusInformation td img {
+        text-decoration: underline;
+        color: #005580;
+    }
+
+    #viewStatusInformation td img {
+        float: right;
+        padding-right: 5px;
+        padding-top: 2px;
+    }
+
+    #viewStatusInformation td {
+        white-space: nowrap;
+    }
+
+    #statusContents table.table-bordered {
+        border-style: none !important;
+    }
+
+    #filterOpts {
+        padding-top: 10px;
+    }
+
+    #filterOpts label {
+        float: left !important;
+        padding-top: 5px;
+        padding-right: 15px;
+        padding-left: 10px;
+    }
+    .expandableTable th:nth-child(1) {
+        
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        
+    }
+    .expandableTable th:nth-child(2) {
+        max-width: 128px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        
+        
+    }
+    .expandableTable th:nth-child(3) {
+        
+        max-width: 80px;
+        width:80px;
+        
+    }
+    .expandableTable th:nth-child(4) {
+        
+        width:auto;
+       
+        
+    }
+    .tablewidth {
+        table-layout:fixed;
+    }
+
+</style>
+
+<p class="formTitle">Work List</p>
+
+<div id="filterOpts">    
+    <label for="clientListOptList" class="formFieldLabel">Client</label>
+    @Html.DropDownListFor(x => x.SelectedClientId, new SelectList(Model.ClientList, "ClientId", "ClientName", Model.SelectedClientId), new { @id = "clientSelectList" }) 
+</div>
+
+@if (!string.IsNullOrEmpty(Model.NoWorkListMessage))
+{
+    <div class="align-center" style="padding:50px 0 150px 0;line-height:30px;font-size:20px;">
+        @Model.NoWorkListMessage
+    </div>
+}
+else
+{
+    <div id="statusContents">
+        <table class="table table-bordered table-striped tablesorter expandableTable tablewidth" id="viewStatusInformation">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Modified By</th>
+                    <th>Modified</th>
+                    <th>Profile Type</th>
+                </tr>
+            </thead>
+            <tbody id="statusBody">
+                @foreach (var item in Model.WorkList)
+                {
+                    <tr class="statusRow">
+                        <td><a onclick='profileUpdateModal("@item.Name", "@item.UserInfoId")'>@item.Name</a></td>
+                        <td>@item.LastModifiedByName</td>
+                        <td>@item.LastModifiedDate</td>
+                        <td>@item.ProfileName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}  
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Determine stickyheaders offset from the top
+        var sHeadersOffset;
+        if (p2rims.isChrome()) {
+            sHeadersOffset = '121px';
+        } else if (p2rims.getIEVersion() > 0) {
+            sHeadersOffset = '121px';
+        } else {
+            sHeadersOffset = '114px';
+        }
+
+        $("#viewStatusInformation").tablesorter({
+            headers: {
+                0: { sorter: true },
+                1: { sorter: true },
+                2: { sorter: true },
+                3: { sorter: true }
+            },
+            showProcessing: true,
+            widthFixed: true,
+            headerTemplate: '{content} {icon}', // Add icon for various themes,
+            sortList: [[0, 0], [2, 0]],          // Default sort for plugin is ascending by panel
+            tabIndex: false,                    // Disable the tab index that table sorter plugin adds.  Interferes with specific tab index layout
+            widgets: ['stickyHeaders'],
+            widgetOptions: {
+                // number or jquery selector targeting the position:fixed element
+                stickyHeaders_offset: sHeadersOffset,
+                // jQuery selector or object to attach sticky header to
+                stickyHeaders_attachTo: null
+            }
+        });
+    });
+
+    function profileUpdateModal(clientName, userInfoId) {
+        var dialogTitle = "<span class='modalLargeCaption modalNotificationCaption'>Profile Update for " + clientName + "</span>";
+
+        // load the data via ajax
+        $.get('/Worklist/ProfileUpdateModal',
+            { "userInfoId":userInfoId },
+            function (responseText, textStatus, XMLHttpRequest) {
+                p2rims.modalFramework.displayModalNoEvent(responseText, p2rims.modalFramework.customModalSizes.large, dialogTitle);
+            }
+        );  
+    }
+    // scripts for drop down menu
+    $('body').on('change', "select#clientSelectList", function () {
+        // Call ajax to set session
+        var clientId = $(this).val();
+        if (clientId !== "") {
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("SetClientInSession")',
+                data: { "clientId": clientId }
+            }).done(function (data) {
+                if (data) {
+                    document.location.reload();
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        }
+    });
+</script>

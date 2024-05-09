@@ -1,0 +1,354 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.Web.UI.Models.ConsumerViewModel
+
+
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+    @Html.IncludeVersionedFiles("/scripts/jquery.maskedinput.min.js")
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.Tab1;
+    @Html.Partial("_KendoHeader2016");
+}
+<!-- Header -->
+    <div class="main-header" style="margin-bottom:-10px">
+        <span class="main-header_back-button">
+            <a id="backArrow" class="main-header_back-button_link">
+                <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                     alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+            </a>
+        </span>
+        <span style="font-size: 24px">
+            @if (ViewBag.Editing)
+            {
+                <text>Edit Consumer - <b>@Model.NomineeUpdateModel.FirstName @Model.NomineeUpdateModel.LastName</b></text>
+            }
+            else
+            {
+                <text>Add Consumer</text>
+            }
+        </span>
+        <span><a href="/ConsumerManagement/Index">(Back to Consumer Management)</a></span>
+        <span style="display: inline-block;float:right;">
+            <a href="#saveSection">Skip to Save/Cancel</a>
+        </span>
+        <div id="successMessage"></div>
+        <div id="nomineeError" class="alert-block redColor"></div>
+    </div>
+<!-- Body -->
+<div>
+    <div class="cm-type padding-left30 padding-bottom10" id="main-text">
+        <span><b>Type</b></span>
+        @Html.DropDownListFor(model => model.NomineeProgramUpdateModel.NomineeTypeId, new SelectList(Model.NomineeTypes, "Key", "Value"), new { @id = "nomineeTypeId", @class = "mm-filterBox_table_typeSelect_select margin-none" })       
+        @if (ViewBag.Editing)
+        {
+            <text>&nbsp;&nbsp;&nbsp;&nbsp;<b>Created Date:</b> @ViewHelpers.FormatDate(Model.NomineeUpdateModel.CreatedDate)
+            <span style="float: right">
+                Last Updated: @ViewHelpers.FormatDate(Model.NomineeUpdateModel.ModifiedDate)
+                Last Updated By: @Model.NomineeUpdateModel.LastModifiedBy
+            </span></text>
+        }
+    </div>
+
+    <!-- Main Body -->
+    <div class="mm-fieldSet" style="padding-top:10px">
+        <div class="ss-filterBox_required"><span class="asterisk">*</span> Indicates required fields</div>
+        <form id="consumerForm">
+            <div style="width:48%;display:inline-block;vertical-align:top;">
+                <div class="mm-fieldSet padding10">
+                    <span class="mm-title upm-profile-section_header">General Information</span>
+                    <div class="padding-left10">
+                        <input type="hidden" id="editing" value="@ViewBag.Editing.ToString()" />
+                        @Html.HiddenFor(model => model.NomineeUpdateModel.NomineeId, new { id = "nomineeId" })
+                        @Html.HiddenFor(model => model.NomineeUpdateModel.UserId, new { id = "nomineeUserId" })
+                        @Html.HiddenFor(model => model.NomineeProgramUpdateModel.NomineeProgramId, new { id = "nomineeProgramId" })
+                        @Html.HiddenFor(model => model.NomineeSponsorUpdateModel.NominatorId, new { id = "nomineeSponsorId" })
+                        <table>
+                            @if (ViewBag.Editing)
+                            {
+                                <tr>
+                                    <td class="right-align padding-right5"><b>Nominee ID:</b> </td>
+                                    <td>@Model.NomineeUpdateModel.NomineeId</td>
+                                </tr>
+                                <tr>
+                                    <td class="right-align padding-right5"><b>User ID:</b> </td>
+                                    <td>
+                                        @{
+                                            var userId = Model.NomineeUpdateModel.UserId;
+                                            if (userId == null)
+                                            {
+                                                <text>N/A</text>
+                                            }
+                                            else
+                                            {
+                                                var userInfoId = Model.NomineeUpdateModel.UserInfoId;
+                                                if (userInfoId == null)
+                                                {
+                                                    <text>N/A</text>
+                                                }
+                                                else
+                                                {
+                                                    <text><a href='/UserProfileManagement/ViewUser?userInfoId=@userInfoId'>@userId</a></text>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>First Name:</b> </td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.FirstName, new { id = "nomineeFirstName", maxlength = 50 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Last Name:</b> </td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.LastName, new { id = "nomineeLastName", maxlength = 100 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Prefix:</b> </td>
+                                <td>@Html.DropDownListFor(model => model.NomineeUpdateModel.PrefixId, new SelectList(Model.Prefixes, "Key", "Value"), "Select", new { @id = "nomineePrefix", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Date of Birth:</b> </td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.DateOfBirth, new { id = "nomineeDob", placeholder = "mm/dd/yyyy" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Gender:</b> </td>
+                                <td>@Html.DropDownListFor(model => model.NomineeUpdateModel.GenderId, new SelectList(Model.Genders, "Key", "Value"), "Select", new { @id = "nomineeGender", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Ethnicity:</b> </td>
+                                <td>@Html.DropDownListFor(model => model.NomineeUpdateModel.EthnicityId, new SelectList(Model.Ethnicities, "Key", "Value"), "Select", new { @id = "nomineeEthnicity", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Address 1:</b> </td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.Address1, new { id = "nomineeAddress1", maxlength = 100 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Address 2:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.Address2, new { id = "nomineeAddress2", maxlength = 100 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>City:</b> </td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.City, new { id = "nomineeCity" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>State:</b> </td>
+                                <td>@Html.DropDownListFor(model => model.NomineeUpdateModel.StateId, new SelectList(Model.States, "Key", "Value"), "Select", new { @id = "nomineeState", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Zip:</b> </td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.Zip, new { id = "nomineeZip", maxlength = 20 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Country:</b> </td>
+                                <td>@Html.DropDownListFor(model => model.NomineeUpdateModel.CountryId, new SelectList(Model.Countries, "Key", "Value", Model.DefaultCountryId), new { @id = "nomineeCountry", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Email:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeUpdateModel.Email, new { id = "nomineeEmail" })</td>
+                            </tr>
+                            <tr id="nomineeEmailMessageContainer" class="hidden">
+                                <td class="w150 right-align padding-right5">&nbsp;</td>
+                                <td>
+                                    <div id="nomineeEmailMessage" class="redColor"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5 valign-top"><span class="asterisk">*</span> <b>Phone:</b><br />(at least one is required)</td>
+                                <td>
+                                    @Html.HiddenFor(model => model.NomineeUpdateModel.PhoneId1)
+                                    @Html.DropDownListFor(model => model.NomineeUpdateModel.PhoneType1, new SelectList(Model.PhoneTypes, "Key", "Value", Model.DefaultPhoneType1Id), new { @id = "nomineePhoneType1", @class = "mm-filterBox_table_typeSelect_select margin-none valign-top" })
+                                    @Html.TextBoxFor(model => model.NomineeUpdateModel.PhoneNumber1, new { id = "nomineePhone1", @class = "phone-number" })<br />
+                                    @Html.HiddenFor(model => model.NomineeUpdateModel.PhoneId2)
+                                    @Html.DropDownListFor(model => model.NomineeUpdateModel.PhoneType2, new SelectList(Model.PhoneTypes, "Key", "Value", Model.DefaultPhoneType2Id), new { @id = "nomineePhoneType2", @class = "mm-filterBox_table_typeSelect_select margin-none valign-top" })
+                                    @Html.TextBoxFor(model => model.NomineeUpdateModel.PhoneNumber2, new { id = "nomineePhone2", @class = "phone-number" })
+                                </td>
+                            </tr>
+                            <tr id="nomineePhoneMessageContainer" class="hidden">
+                                <td class="w150 right-align padding-right5">&nbsp;</td>
+                                <td>
+                                    <div id="nomineePhoneMessage" class="redColor"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="padding-left-30" style="width:48%;display:inline-block;vertical-align:top;">
+                <div class="mm-fieldSet padding10 margin-bottom-20">
+                    <div class="mm-title upm-profile-section_header">Program Information</div>
+                    <div class="padding-left10">
+                        <table>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Program:</b></td>
+                                <td>
+                                    <select id="nomineeProgram" name="ConsumerViewModel.NomineeProgramUpdateModel.ClientProgramId" class="mm-filterBox_table_typeSelect_select margin-none">
+                                        <option>Select</option>
+                                        @foreach (var program in Model.Programs)
+                                        {
+                                            <text>
+                                                <option value="@program.ClientProgramId" data-program-name="@program.ProgramName" @(program.ClientProgramId == Model.NomineeProgramUpdateModel.ClientProgramId ? "selected" : "")>@program.ProgramAbbreviation</option>
+                                            </text>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Year:</b></td>
+                                <td>@Html.DropDownListFor(model => model.NomineeProgramUpdateModel.ProgramYearId, new SelectList(Model.NomineeProgramUpdateModel.ProgramFiscalYears, "Key", "Value"), "Select", new { @id = "nomineeProgramYear", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Disease Site:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeProgramUpdateModel.DiseaseSite, new { id = "nomineeProgramDiseaseSite", maxlength = 20 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Affected:</b></td>
+                                <td>@Html.DropDownListFor(model => model.NomineeProgramUpdateModel.AffectedId, new SelectList(Model.Affected, "Key", "Value"), "Select", new { @id = "nomineeProgramAffected", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Score:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeProgramUpdateModel.Score, new { id = "nomineeProgramScore", min = 1, max = 10 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align valign-top padding-right5"><b>Comments:</b><br />(Max char. 255)</td>
+                                <td>@Html.TextAreaFor(model => model.NomineeProgramUpdateModel.Comments, new { id = "nomineeProgramComments", rows = 5, cols = 50, maxlength = 255, style = "width:350px" })</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="mm-fieldSet padding10">
+                    <div class="mm-title upm-profile-section_header">Nominating Organization Information</div>
+                    <div class="padding-left10">
+                        <table>
+                            <tr>
+                                <td class="w150 right-align padding-right5" style="vertical-align:top"><span class="asterisk">*</span> <b>Nominating Organization:</b></td>
+                                <td style="vertical-align:top">
+                                    @Html.HiddenFor(model => model.NomineeSponsorUpdateModel.NominatingOrganizationId, new { id = "nominatingOrganizationId" })
+                                    @Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatingOrganization, new { id = "nominatingOrganization", maxlength = 125, @class = "form-control", autocomplete = "new_nomOrg" })
+                                    <span id="lblNomOrgWarning" class="warning-message" style="display:none">! Nominating Organization not found in database</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Address 1:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorAddress1, new { id = "nominatingOrganizationAddress1", maxlength = 100 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Address 2:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorAddress2, new { id = "nominatingOrganizationAddress2", maxlength = 100 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>City:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorCity, new { id = "nominatingOrganizationCity" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>State:</b></td>
+                                <td>@Html.DropDownListFor(model => model.NomineeSponsorUpdateModel.NominatorStateId, new SelectList(Model.States, "Key", "Value"), "Select", new { @id = "nominatingOrganizationState", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Zip:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorZip, new { id = "nominatingOrganizationZip", maxlength = 20 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Country:</b></td>
+                                <td>@Html.DropDownListFor(model => model.NomineeSponsorUpdateModel.NominatorCountryId, new SelectList(Model.Countries, "Key", "Value", Model.DefaultCountryId), new { @id = "nominatingOrganizationCountry", @class = "mm-filterBox_table_typeSelect_select margin-none" })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Nominator<br /> First Name:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorFirstName, new { id = "nominatorFirstName", maxlength = 20 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Nominator<br /> Last Name:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorLastName, new { id = "nominatorLastName", maxlength = 20 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><b>Title:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorTitle, new { id = "nominatorTitle", maxlength = 50 })</td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5"><span class="asterisk">*</span> <b>Email:</b></td>
+                                <td>@Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorEmail, new { id = "nominatorEmail" })</td>
+                            </tr>
+                            <tr id="nominatorEmailMessageContainer" class="hidden">
+                                <td class="w150 right-align padding-right5">&nbsp;</td>
+                                <td>
+                                    <div id="nominatorEmailMessage" class="redColor"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w150 right-align padding-right5 valign-top"><span class="asterisk">*</span> <b>Phone:</b><br /> (at least one is required)</td>
+                                <td>
+                                    @Html.HiddenFor(model => model.NomineeSponsorUpdateModel.NominatorPhoneId1)
+                                    @Html.DropDownListFor(model => model.NomineeSponsorUpdateModel.NominatorPhoneTypeId1, new SelectList(Model.PhoneTypes, "Key", "Value", Model.DefaultPhoneType1Id), new { @id = "nominatorPhoneType1", @class = "mm-filterBox_table_typeSelect_select margin-none valign-top" })
+                                    @Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorPhoneNumber1, new { id = "nominatorPhone1", @class = "phone-number" })<br />
+                                    @Html.HiddenFor(model => model.NomineeSponsorUpdateModel.NominatorPhoneId2)
+                                    @Html.DropDownListFor(model => model.NomineeSponsorUpdateModel.NominatorPhoneTypeId2, new SelectList(Model.PhoneTypes, "Key", "Value", Model.DefaultPhoneType2Id), new { @id = "nominatorPhoneType2", @class = "mm-filterBox_table_typeSelect_select margin-none valign-top" })
+                                    @Html.TextBoxFor(model => model.NomineeSponsorUpdateModel.NominatorPhoneNumber2, new { id = "nominatorPhone2", @class = "phone-number" })
+                                </td>
+                            </tr>
+                            <tr id="nominatorPhoneMessageContainer" class="hidden">
+                                <td class="w150 right-align padding-right5">&nbsp;</td>
+                                <td>
+                                    <div id="nominatorPhoneMessage" class="redColor"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (!ViewBag.Editing)
+    {
+        <div class="align-center padding-top20" style="margin-bottom:20px;">
+
+            <input type="checkbox" id="addAnotherNominee" style="margin:0px;" checked /><text>Add Another Consumer Record</text>
+        </div>
+    }
+    else
+    {
+        <br/>
+    }
+
+</div>
+<div id="saveSection" class="alignCenter">
+    <label for="btnSaveConsumer" class="sr-only">Save consumer page</label>
+    <input type="submit" value="Save" class="btnSubmit" id="btnSaveConsumer" />
+    <input type="button" value="Cancel" class="cancelSubmit cancel-consumer-changes" title="Cancel changes and restart consumer page" />
+</div>
+<div id="cancelConsumerChangesDialog" class="hidden">
+    <div class="modal-body">
+        <p>Your changes will be discarded. Please click CONFIRM to proceed.</p>
+    </div>
+</div>
+@if (ViewBag.Editing)
+{
+    <div id="userProfileExistsDialog" class="hidden">
+        <div class="modal-body">
+            <p>A user profile with the email below currently exists for '@Model.NomineeUpdateModel.FirstName @Model.NomineeUpdateModel.LastName'. Do you want to associate the existing user profile to this consumer's record? Click CONFIRM to proceed or CANCEL to return to the previous screen.</p>
+            <table>
+                <tr>
+                    <td>
+                        <label for="userProfileName"><b>User Profile Name:</b></label>
+                    </td>
+                    <td>
+                        <span class="margin-left25" id="userProfileName"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="userEmail"><b>User Email:</b></label>
+                    </td>
+                    <td>
+                        <span class="margin-left25" id="userEmail"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+<script src="~/Scripts/Custom/ConsumerManagement/consumer.js"></script>

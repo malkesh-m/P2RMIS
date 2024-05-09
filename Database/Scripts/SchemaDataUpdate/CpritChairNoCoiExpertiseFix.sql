@@ -1,0 +1,4 @@
+﻿UPDATE PanelApplicationReviewerExpertise SET ClientExpertiseRatingId = 50
+FROM PanelApplicationReviewerExpertise
+INNER JOIN ViewPanelUserAssignment ON PanelApplicationReviewerExpertise.PanelUserAssignmentId = PanelApplicationReviewerExpertise.PanelUserAssignmentId
+WHERE ClientExpertiseRatingId IS NULL AND ViewPanelUserAssignment.ClientParticipantTypeId = 209;

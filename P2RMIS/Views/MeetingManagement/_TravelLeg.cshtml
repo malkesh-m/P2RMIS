@@ -1,0 +1,165 @@
+﻿@model List<Sra.P2rmis.Web.ViewModels.MeetingManagement.TravelFlightViewModel>
+@using Newtonsoft.Json;
+
+<style type="text/css">
+    .city-time {
+        font-size: 12px;
+    }
+</style>
+
+<div class="row-fluid" id="addTravelLeg">
+    <div class="flight-alert alert-message hideme"></div>
+    <label for="meeting-attendee-tl" class="p2FilterContainer_details_label" style="width: auto;">Meeting Attendee:</label>
+    <div id="meeting-attendee-tl" class="p2FilterContainer_details_result"></div>
+    <ul class="mm-flight-box">
+        <li class="mm-flight-container"><h6 class="mm-flight-header">Carrier-Flight Num</h6></li>
+        <li class="mm-flight-container" style="width: 35%"><h6 class="mm-flight-header">Dep City Time</h6></li>
+        <li class="mm-flight-container" style="width: 35%"><h6 class="mm-flight-header">Arrival City Time</h6></li>
+        <li class="mm-flight-container action"><h6 class="mm-flight-header" style="width: 73%">Action</h6></li>
+    </ul>
+    @foreach (var element in Model)
+    {
+        <ul class="mm-flight-box flight-details" data-flightid="@element.FlightId">
+            <li class="mm-flight-container">
+                <div class="mm-flight-container_padding">
+                    <label for="select-carrier-flight" class="sr-only">Carrier Flight Number Select</label>
+                    @Html.DropDownList("CarrierName", new SelectList(element.CarrierList.Select(x => new { Value = x, Text = x }),
+                        "Value", "Text", element.CarrierName), "Select",
+                        new { @class="carrier-flight maxWidth", id="select-carrier-flight" })
+                    <label for="carrier-number" class="sr-only">Carrier Flight Number</label>
+                    <input type="text" id="carrier-number" class="carrier-number mm-flight-container_input" value="@element.FlightNumber" />
+                </div>
+            </li>
+            <li class="mm-flight-container" style="width: 35%">
+                <div class="mm-flight-container_padding">
+                    <label for="select-travel-departure" class="sr-only">Departure City Select</label>
+                    @Html.DropDownList("DepartureCity", new SelectList(element.AirportList, "Key", "Value", element.DepartureCity), "Select",
+                        new { @class="travel-departure maxWidth", id= "select-travel-departure" })
+                    <label for="dept-city-time" class="sr-only">departure city time</label>
+                    @if (element.FlightId != null)
+                    {
+                        <input type="text" id="dept-city-time" class="dept-city-time city-time" value="@element.DepartureDate" />
+                    }
+                    else
+                    {
+                        <input type="text" id="dept-city-time" class="dept-city-time city-time" value="" />
+                    }
+                </div>
+            </li>
+            <li class="mm-flight-container" style="width: 35%">
+                <div class="mm-flight-container_padding">
+                    <label for="select-travel-arrival" class="sr-only">Arrival city Select</label>
+                    @Html.DropDownList("ArrivalCity", new SelectList(element.AirportList, "Key", "Value", element.ArrivalCity), "Select",
+                        new { @class="travel-arrival maxWidth", id= "select-travel-arrival" })<label for="arrival-city-time" class="sr-only">arrival city time</label>
+                    @if (element.FlightId != null)
+                    {
+                        <input type="text" id="arrival-city-time" class="arrival-city-time city-time" value="@element.ArrivalDate" />
+                    }
+                    else
+                    {
+                        <input type="text" id="arrival-city-time" class="arrival-city-time city-time" value="" />
+                    }
+                </div>
+            </li>
+            <li class="mm-flight-container action">
+                <div class="mm-flight-container_padding">
+                    @if (element.FlightId != null)
+                    {
+                        <div class="mm-link add-delete-leg" id="travel-leg-action">Delete</div>
+                    }
+                    else
+                    {
+                        <div class="mm-link add-delete-leg" id="travel-leg-action">Add</div>
+                    }
+                </div>
+            </li>
+        </ul>
+    }
+</div>
+<script id="cloned-flight" type="text/x-kendo-template">
+    <!-- Clone copy -->
+    <ul class="mm-flight-box flight-details" style="display: none;">
+        <li class="mm-flight-container">
+            <div class="mm-flight-container_padding">
+                <label for="select-carrier" class="sr-only">Carrier Flight Number Select</label>
+                <select class="carrier-flight maxWidth" id="select-carrier"></select>
+                <label for="carrier-number" class="sr-only">Carrier Flight Number</label>
+                <input type="text" id="carrier-number" class="carrier-number mm-flight-container_input" value="" />
+            </div>
+        </li>
+        <li class="mm-flight-container" style="width: 35%">
+            <div class="mm-flight-container_padding">
+                <label for="select-travel-arr" class="sr-only">departure City Select</label>
+                <select class="travel-departure maxWidth" id="select-travel-arr"></select>
+                <label for="dept-city-time" class="sr-only">departure city time</label>
+                <input type="text" id="dept-city-time" class="city-time dept-city-time" />
+            </div>
+        </li>
+        <li class="mm-flight-container" style="width: 35%">
+            <div class="mm-flight-container_padding">
+                <label for="select-travel-dept" class="sr-only">Arrival City Select</label>
+                <select class="travel-arrival maxWidth" id="select-travel-dept"></select>
+                <label for="arrival-city-time" class="sr-only">arrival city time</label>
+                <input type="text" id="arrival-city-time" class="city-time arrival-city-time" value="" />
+            </div>
+        </li>
+        <li class="mm-flight-container action">
+            <div class="mm-flight-container_padding">
+                <div class="mm-link add-delete-leg" id="travel-leg-action">Add</div>
+            </div>
+        </li>
+    </ul>
+</script>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelUpdateTravelFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+    $('.city-time').kendoDateTimePicker();
+
+    // Save travel legs
+    $('#travellegsave').on('click', function () {
+        $("#addTravelLeg .flight-alert").addClass("hidden");
+        var secs = $("#addTravelLeg").find(".flight-details");
+        var flights = [];
+        var isValid = true;
+        for (var i = 0; i < secs.length; i++) {
+            var sec = secs.eq(i);
+            console.log(sec);
+            var flight = {
+                panelUserAssignmentId: $('#panelUserAssignmentId').val(),
+                sessionUserAssignmentId: $('#sessionUserAssignmentId').val(),
+                flightId: sec.attr("data-flightid"),
+                carrierName: sec.find(".carrier-flight").val(),
+                flightNumber: $.trim(sec.find(".carrier-number").val()),
+                departureCity: sec.find(".travel-departure").val(),
+                departureDate: sec.find("input.dept-city-time").val(),
+                arrivalCity: sec.find(".travel-arrival").val(),
+                arrivalDate: sec.find("input.arrival-city-time").val()
+            };
+            var iText = sec.find(".add-delete-leg").text();
+            if (iText === "Add") {
+                if (flight.flightNumber && flight.carrierName && flight.departureCity &&
+                    flight.departureDate && flight.arrivalCity && flight.arrivalDate) {
+                    flights.push(flight);
+                }
+            } else if (iText === "Delete") {
+                if (flight.flightNumber && flight.carrierName && flight.departureCity &&
+                    flight.departureDate && flight.arrivalCity && flight.arrivalDate) {
+                    flights.push(flight);
+                } else {
+                    isValid = false;
+                }
+            }
+        }
+        if (isValid) {
+            var data = { flights: flights };
+            $.post("/MeetingManagement/SaveTravelLegs", data).done(
+                function () {
+                    $('.ui-dialog-titlebar-close').click();
+                    window.location.reload();
+                });
+        } else {
+            $("#addTravelLeg .flight-alert").html("You must complete all fields.")
+                .removeClass("hidden");
+        }
+    });
+</script>

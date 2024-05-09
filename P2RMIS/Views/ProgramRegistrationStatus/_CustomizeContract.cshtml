@@ -1,0 +1,134 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.RegistrationCustomizeContractViewModel
+<style>
+    .kendoModalUpload .k-delete {
+        display: block !important;
+        right: 85px;
+    }
+    .k-icon {
+        display: none;
+    }
+
+</style>
+@using (Html.BeginForm("SaveCustomizedContract", "ProgramRegistrationStatus", FormMethod.Post, new { @id = "customContractForm", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.PanelUserRegistrationDocumentId)
+    @Html.HiddenFor(m => m.CanAddAddendum, new { @id = "canAddAddendum" })
+    <div id="statusFilter" class="clearfix span8">
+        <div style="font-size: 14px; padding-bottom: 10px;">
+            <strong>Please select the reason for updating this contract for @Model.FullName </strong><br />
+            <span class="redMessage" id="errorMessage" style="display:none"></span>
+        </div>
+        <div class="span4">
+            @Html.DropDownListFor(m => m.ContractStatusId, new SelectList(Model.ContractStatusTypeList, "Index", "Value"), "Please Select", new { @id = "contractStatusDropdown" })
+        </div>
+        <div id="wordLink" class="span4" style="display:none">
+            <a href="#" onclick="showWordTemplateDownloadWarning(@Model.PanelUserAssignmentId);" style="color:#08c">Download Contract Template (WORD)</a>
+        </div>
+    </div>
+    //Replace
+    <div id="divContractStatusId5" class="span8 padding-top-20" style="display:none">
+        <div class=" bordered">
+            <span class="textHeaderNotBold alignLeft">Select File</span>
+
+            <p><strong>Please select and upload the contract document that will replace the current contract document: </strong></p>
+            <div class="field-validation-error"></div>
+
+            <div id="uploadReplaceAlert" class="alert-message kendoModalUpload"></div>
+            <div class="kendoModalUpload k-content">
+                <div id="uploadReplaceAlert" class="kendoModalUpload_error"></div>
+                <div class="kendoModalUpload_filterBox">
+                    <table class="kendoModalUpload">
+                        <tr>
+                            <td>@Html.TextBoxFor(m => m.CustomContractFile, new { type = "file", @id = "contractFile" })</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="input-group">
+                <label class="displayInline margin-right15" for="FeeAmount"><span class="asterisk">*</span>Please enter the Consultant Fee: </label>
+                <span class="input-group-addon">$</span>
+                @Html.TextBoxFor(m => m.FeeAmount, "{0:0.00}", new { @id = "feeAmount" })
+            </div>
+            <span>Allowed file formats: PDF</span>
+        </div>
+        <div>
+            <span class="warning-message">By clicking Save, the system will replace the current contract file. </span>
+        </div>
+
+    </div>
+    //Add addendum
+    <div id="divContractStatusId2" class="span8 padding-top-20" style="display:none">
+        @if (Model.CanAddAddendum)
+        {
+            <div class=" bordered">
+                <span class="textHeaderNotBold alignLeft">Select File</span>
+
+                <p><strong>Please select and upload the file you would like to add as an addendum to the current contract: </strong></p>
+                <div class="field-validation-error"></div>
+
+                <div id="uploadReplaceAlert" class="alert-message kendoModalUpload"></div>
+                <div class="kendoModalUpload k-content">
+                    <div id="uploadReplaceAlert" class="kendoModalUpload_error"></div>
+                    <div class="kendoModalUpload_filterBox">
+                        <table class="kendoModalUpload">
+                            <tr>
+                                <td>@Html.TextBoxFor(m => m.CustomContractFile, new { type = "file", @id = "contractFile" })</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="FeeAmount" class="displayInline margin-right15"><span class="asterisk">*</span>Please enter the Consultant Fee: </label>
+                    <span class="input-group-addon">$</span>
+                    @Html.TextBoxFor(m => m.FeeAmount, "{0:0.00}", new { @id = "feeAmount" })
+                </div>
+                <span>Allowed file formats: PDF</span>
+            </div>
+            <div>
+                <span class="warning-message">By clicking Save, the system will append the uploaded file to the existing contract file. </span>
+            </div>
+        }
+        else
+        {
+            <span class="failureMessage">You can only add an addendum after the Original Contract has been signed.</span>
+        }
+    </div>
+    //Bypass
+    <div id="divContractStatusId3" class="span8 padding-top-20" style="display:none">
+        <div>
+            <label for="BypassReason"><span class="asterisk">*</span>Comment </label>
+            @Html.TextAreaFor(m => m.BypassReason, new { rows = 5, cols = 10, style = "height:200px;width:70%;", required = "required", id = "bypassReason" })
+            @Html.HiddenFor(m => m.FeeAmount, new { @id = "feeAmount", Value = 0 })
+        </div>
+
+        <div>
+            <span class="warning-message">
+                By clicking Save, this reviewer will be exempt from signing a contract and the W9 and Vendor Information Report will show $0 in the
+                Consultant Fee column.
+            </span>
+        </div>
+
+    </div>
+    //Regenerate
+    <div id="divContractStatusId4" class="span8 padding-top-20" style="display:none">
+
+        <div>
+            <span class="warning-message">
+                By clicking Save, the System will update the contract based on the Updated Fee Schedule, Panel/Session Date Changes, and ParticipantType Changes.
+            </span>
+        </div>
+
+    </div>
+
+
+
+}
+
+
+<script type="text/javascript">
+
+
+</script>
+
+@Html.IncludeVersionedFiles("/Scripts/Custom/regcustomizecontract.js")

@@ -1,0 +1,87 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ScoringTemplateWizardViewModel
+
+<div class="row-fluid ss-upload-template">
+    <div id="scoringTemplateAlert" class="ss-upload-template__error"></div>
+    <span id="templateTitle" class="ss-upload-template_title">Online</span>
+    <table class="ss-upload-template_table">
+        <tr class="ss-upload-template_table_row">
+            <td class="ss-upload-template_table_cell">Review Phases</td>
+            <td class="ss-upload-template_table_cell">Overall Type</td>
+            <td class="ss-upload-template_table_cell">Overall Range</td>
+            <td class="ss-upload-template_table_cell">Evaluation Type</td>
+            <td class="ss-upload-template_table_cell">Evaluation Range</td>
+        </tr>
+        @for (var i = 0; i < Model.PreMeetingPhases.Count; i++)
+        {
+            <tr class="ss-upload-template_table_row">
+                <td class="ss-upload-template_table_cell">@Model.PreMeetingPhases[i].PhaseName</td>
+                <td class="ss-upload-template_table_cell">@Model.PreMeetingPhases[i].OverallType</td>
+                <td class="ss-upload-template_table_cell">@Model.PreMeetingPhases[i].OverallRange</td>
+                <td class="ss-upload-template_table_cell">@Model.PreMeetingPhases[i].EvaluationType</td>
+                <td class="ss-upload-template_table_cell">@Model.PreMeetingPhases[i].EvaluationRange</td>
+            </tr>
+        }
+    </table>
+    <table class="ss-upload-template_table">
+        <tr class="ss-upload-template_table_row">
+            <td class="ss-upload-template_table_cell">Final Phase</td>
+            <td class="ss-upload-template_table_cell">Overall Type</td>
+            <td class="ss-upload-template_table_cell">Overall Range</td>
+            <td class="ss-upload-template_table_cell">Evaluation Type</td>
+            <td class="ss-upload-template_table_cell">Evaluation Range</td>
+        </tr>
+        @for (var i = 0; i < Model.MeetingPhases.Count; i++)
+        {
+            <tr class="ss-upload-template_table_row">
+                <td class="ss-upload-template_table_cell">@Model.MeetingPhases[i].PhaseName</td>
+                <td class="ss-upload-template_table_cell">@Model.MeetingPhases[i].OverallType</td>
+                <td class="ss-upload-template_table_cell">@Model.MeetingPhases[i].OverallRange</td>
+                <td class="ss-upload-template_table_cell">@Model.MeetingPhases[i].EvaluationType</td>
+                <td class="ss-upload-template_table_cell">@Model.MeetingPhases[i].EvaluationRange</td>
+            </tr>
+        }
+    </table>
+    <div class="ss-upload-template_text">Note: Decimal scoring is limited to one decimal place (text field). Integer is limited to whole numbers only (drop-down).</div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.applyTemplate);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        // Save event handler
+        $("button[id='submitDialog']").click(function (e) {
+            e.preventDefault();
+            $('#submitDialog').attr('disabled', false);
+            var msg = "";
+            var released = $("#hasApplicationsBeenReleased").val();
+            if (released == "True") {
+                msg = "You may not change a template once assignments have been released.";
+            }
+            $("#scoringTemplateAlert").html(msg);
+            if (msg == "") {
+                $('#submitDialog').attr('disabled', true);
+
+                // Save AJAX call
+                var inputData = {
+                    "programMechanismId": $('#programMechanismId').val(),
+                    "scoringTemplateId": $('#scoringTemplateId option:selected').val()
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/AddMechanismScoringTemplate',
+                    data: inputData,
+                    complete: function () {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+        // Cancel event handler
+        $("a[id='closeModal']").click(function (e) {
+            e.preventDefault();
+            // Reverse changed option back
+            $("#scoringTemplateId").val($("#selectedScoringTemplateId").val());
+        });
+    });
+</script>

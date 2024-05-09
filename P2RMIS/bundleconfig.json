@@ -1,0 +1,26 @@
+[
+  {
+    "outputFileName": "Scripts/pdfjs-2.4.456-es5-dist/web/viewer.min.css",
+    "inputFiles": [
+      "Scripts/pdfjs-2.4.456-es5-dist/web/viewer.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/pdfjs-2.4.456-es5-dist/web/viewer.min.js",
+    "inputFiles": [
+      "Scripts/pdfjs-2.4.456-es5-dist/web/viewer.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/pdfjs-2.4.456-es5-dist/build/pdf.min.js",
+    "inputFiles": [
+      "Scripts/pdfjs-2.4.456-es5-dist/build/pdf.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jtimeout/jTimeout.min.js",
+    "inputFiles": [
+      "Scripts/jtimeout/jTimeout.js"
+    ]
+  }
+]

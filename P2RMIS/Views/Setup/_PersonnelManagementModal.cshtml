@@ -1,0 +1,199 @@
+﻿@using Newtonsoft.Json;
+<style type="text/css">
+    .ui-multiselect-menu.ui-widget.ui-widget-content.ui-corner-all {
+        position: absolute;
+        z-index: 10000;
+    }
+
+    .ui-widget-content .ui-state-hover, .ui-widget-content .ui-state-default {
+        background: white;
+        border: 1px solid #ccc;
+    }
+
+    .ui-multiselect .ui-icon.ui-icon-triangle-1-s {
+        display: none;
+    }
+    .ui-multiselect .ellipsisCell {
+        float: left;
+    }
+    button.ui-multiselect.ui-widget.ui-state-default.ui-corner-all {
+        margin-left: 4px;
+    }
+</style>
+<div id="failureMessage"></div>
+<section class="p2FilterContainer" id="addRemoveMember">
+    <div class="p2FilterContainer_full">
+        <h6 class="p2FilterContainer_title">Details</h6>
+        <div class="p2FilterContainer_contents">
+            <div class="p2FilterContainer_selects" style="padding-top: 0px;">
+                <div style="margin-bottom: 10px;">
+                    <label for="personnel-name" class="p2FilterContainer_modal-details_label" style="width: auto;">Name:</label>
+                    <div id="personnel-name" class="p2FilterContainer_details_result">test</div>
+                </div>
+                <div><strong>All fields required.</strong></div>
+                <ul class="p2FilterContainer_modal-details" style="width: 350px;">
+                    <li class="p2FilterContainer_modal-details_margin">
+                        <label for="fare" class="p2FilterContainer_modal-details_label">Fiscal Year</label>
+                        <select class="p2FilterContainer_selects_select" id="per-managementmodal-fy"><option selected>Select FY</option></select>
+                    </li>
+                    <li class="p2FilterContainer_modal-details_margin" id="meetingLabel">
+                        <label for="fare" class="p2FilterContainer_modal-details_label">Meeting</label>
+                        <select class="p2FilterContainer_selects_select" id="per-managementmodal-meeting"><option selected>Select Meeting</option></select>
+                    </li>
+                    <li class="p2FilterContainer_modal-details_margin per-managementmodal-program">
+                        <label for="fare" class="p2FilterContainer_modal-details_label" style="float: left;">Program</label>
+                        <select name="basic[]" multiple="multiple" class="p2FilterContainer_selects_select 3col active hidden" id="per-managementmodal-program" style="margin-left: 4px;">
+                            <option>All</option>
+                        </select>
+                        <select class="p2FilterContainer_selects_select" id="fake-select-dropdown">
+                            <option>Select Program</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+    $('#saveDialogChanges').attr('disabled', 'disabled');
+
+    var yearSelectModal = $('#per-managementmodal-fy');
+    var programSelectModal = $('#per-managementmodal-program');
+    var meetingSelectModal = $('#per-managementmodal-meeting');
+
+    // Fiscal year drop-down change event handler
+    yearSelectModal.on("change", function () {
+        if (yearSelectModal.val() != "Select FY") {
+            var getCheckedRadio = $('input[name="per-management-radio"]:checked').val();
+            if (getCheckedRadio == 0) {
+                $.ajax({
+                    url: '/Setup/GetProgramYearsJson',
+                    data: {
+                        clientId: clientSelect.val(),
+                        fiscalYear: yearSelect.val()
+                    }
+                }).done(function (results) {
+                    programYearsJson = results;
+                    setProgramYearsModal(programYearsJson);
+                });
+            } else {
+                $.ajax({
+                    url: '/Setup/GetFeeScheduleMeetingsJson',
+                    data: {
+                        clientId: clientSelect.val(),
+                        fiscalYear: yearSelectModal.val()
+                    }
+                }).done(function (results) {
+                    meetingsJson = results;
+                    setMeetingsModal(meetingsJson);
+                });
+            }
+        } else {
+            programSelectModal.find("option:gt(0)").remove();
+            meetingSelectModal.find("option:gt(0)").remove();
+        }
+    });
+
+    // Meeting drop-down change
+    meetingSelect.on('change', function () {
+        if (meetingSelectModal.val() != "Select Meeting") {
+            $.ajax({
+                url: '/Setup/GetFeeScheduleSessionsJson',
+                data: {
+                    clientMeetingId: $("#meetingId").val()
+                }
+            }).done(function (results) {
+                sessionsJson = results;
+                setFeeScheduleSessions();
+            });
+        }
+    })
+
+    
+
+    // Set fiscal years drop-down
+    function setFiscalYearsModal(activeOnly) {
+        yearSelectModal.find("option:gt(0)").remove();
+        $.each(fiscalYearsJson, function (i, item) {
+            if (!activeOnly || (activeOnly && item.IsActive)) {
+                yearSelectModal.append($("<option/>")
+                    .attr("value", item.YearValue).html(item.YearText));
+            }
+        });
+    }
+
+    // Set meeting drop-down
+    function setMeetingsModal(meetingsJson) {
+        meetingSelectModal.find("option:gt(0)").remove();
+        $.each(meetingsJson, function (i, item) {
+            if (!activeOnly || (activeOnly && item.IsActive)) {
+                meetingSelectModal.append($("<option/>")
+                    .attr("value", item.Key).html(item.Value));
+            }
+        });
+    }
+
+    setFiscalYearsModal($('#per-management-client').val());
+
+    // Program on change disables/enables save button
+    programSelectModal.on('change', function () {
+        var getValue = $(this).val();
+        (getValue != "Select Program") ? $('#saveDialogChanges').attr('disabled', false) : $('#saveDialogChanges').attr('disabled', 'disabled');
+    });
+
+    $(document).on('click', '#ui-multiselect-per-managementmodal-program-option-0', function () {
+        var checkedAllButton = $('#ui-multiselect-per-managementmodal-program-option-0').is(':checked');
+        if (checkedAllButton) {
+            var eachUl = $(this).closest('ul');
+            $(eachUl).find('input').each(function () {
+                $(this).attr('checked', 'checked');
+            })
+        } else {
+            var eachUl = $(this).closest('ul');
+            $(eachUl).find('input').each(function () {
+                $(this).attr('checked', false);
+            })
+            setTimeout(function () {
+                $('.per-managementmodal-program button span:nth-child(2)').text('Select Program');
+            }, 100);
+        }
+    })
+
+    $(document).on('click', 'input[name="multiselect_per-managementmodal-program"]', function () {
+        var eachUl = $(this).closest('ul');
+        var newCount = 0;
+        var newString = '';
+        $(eachUl).find('input').each(function (i, value) {
+            var ifChecked = $(this).is(':checked');
+            $('.per-managementmodal-program .ellipsisCell').text('');
+            if (ifChecked) {
+                var selectTextValue = $(this).next('span').text();
+                newString += selectTextValue + ', ';
+                console.log(newString);
+                newCount++;
+            }
+        })
+        if (newCount == 0) {
+            $('.per-managementmodal-program .ellipsisCell').text('All');
+        } else if (newCount == 1) {
+            var sliced = newString.slice(0, -2);
+            setTimeout(function () {
+                $('.per-managementmodal-program .ellipsisCell').text(sliced);
+            }, 100);
+        } else if (newCount == 2) {
+            setTimeout(function () {
+                $('.per-managementmodal-program .ellipsisCell').text(newString);
+            }, 100);
+        } else {
+            setTimeout(function () {
+                if (newCount == 5) {
+                    $('.per-managementmodal-program .ellipsisCell').text('All');
+                } else {
+                    $('.per-managementmodal-program .ellipsisCell').text(newCount + ' selected');
+                }
+            }, 100);
+        }
+    });
+</script>

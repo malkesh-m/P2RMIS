@@ -1,0 +1,215 @@
+﻿@model Sra.P2rmis.Web.ViewModels.SummaryStatementProcessing.WorkflowStepListViewModel
+<style>
+    #uploadInstruction {
+        padding: 0px;
+        font-size: 12px;
+    }
+
+    .select-filter-title {
+        margin: -20px 0px 0px 0px;
+    }
+
+    #hiddenFileResume {
+        width: 0px;
+        height: 0px;
+        border: none;
+    }
+
+    #submitQuery {
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+
+    #fileResume {
+        border: 1px solid #ddd;
+        width: 340px;
+        padding-left: 10px;
+    }
+
+    #newFileButton {
+        margin-left: 10px;
+        font-size: 12px;
+    }
+
+    .selectPhase {
+        font-size: 12px;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-right: 5px;
+        vertical-align: super;
+    }
+
+    .select-filter-title {
+        position: absolute;
+    }
+
+    #validationError {
+        display: none;
+        color: red;
+        font-size: 12px;
+    }
+
+    form {
+        margin: 0px;
+    }
+
+    *:not(input) {
+        -ms-user-select: none;
+    }
+
+    .innerModalContainer {
+        overflow-x: hidden;
+    }
+</style>
+
+<div id="validationError"></div>
+<div id="uploadInstruction" class="padding10">
+    Please select a Summary Statement file to check in.
+</div>
+<div class="session-filter">
+    <form enctype="multipart/form-data" id="modalForm">
+        <div class="select-filter-title"><strong>Select File</strong></div>
+        <table>
+            <tr>
+                <td>
+                    <input id="fileResume" value="" tabindex="0" />
+                    <button id="newFileButton">Browse</button>
+                    <small>Allowed file format: .DOCX</small>
+                    <input name="summaryStatement" id="hiddenFileResume" type="file" value="" />
+                    <input type="submit" id="submitQuery" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div class="selectPhase">
+    @if (Model.IsClient)
+    {
+        <text>Phase: </text>
+        <text>@Model.WorkflowStep</text>
+        <input type="hidden" id="selectedStep" value="@Model.ApplicationWorkflowStepEntityId" />
+    }
+    else
+    {
+        <text>Select Phase: </text>
+        @Html.DropDownListFor(m => m.ApplicationWorkflowStepEntityId, new SelectList(Model.WorkflowStepList, "Index", "Value", Model.ApplicationWorkflowStepEntityId), new { @id = "selectedStep", @style = "max-width:25ch" })
+    }
+</div>
+<input type="hidden" value="@Model.WorkflowId" id="workflowID" />
+<input type="hidden" value="" id="dataLogNo" />
+<script>
+     //File Upload Validation
+    $(document).on('click', 'input#hiddenFileResume:file', function () {
+        $('#hiddenFileResume').one('change',
+                function () {
+                    $('#fileResume').val('');
+                    $('#validationError').hide();
+                    $('#validationError').text('');
+                    var newText = $('#hiddenFileResume').val();
+                    var filename = newText.replace(/^.*\\/, "");
+                    if (filename.length > 0 && !$('#validationError').is(':visible')) {
+                        $('#fileResume').prop('value', filename);
+                        $('button#saveDialogChanges').prop('disabled', false);
+                    }
+                })
+    });
+
+    $('#newFileButton').on('click', function () {
+        setTimeout(function () {
+            $('#hiddenFileResume').click();
+        }, 500);
+        sessionStorage.setItem('tester', 'not');
+    });
+
+    $('#fileResume').on('focusout', function () {
+        var valVis = $('#validationError').is(':visible');
+        ($('#fileResume').val().length > 0 && valVis == false) ? $('button#saveDialogChanges').prop('disabled', false) : $('button#saveDialogChanges').prop('disabled', true);
+    });
+    $("#submitQuery").keypress(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+        }
+    });
+    $("#newFileButton").keypress(function (e) {
+        var inView = !$(document.activeElement).is('#newFileButton');
+        sessionStorage.setItem('tester', 'not');
+        if (e.keyCode === 13 && inView) {
+            e.preventDefault();
+        }
+    });
+    $('#modalForm').submit(function (e) {
+        var buttonFocus = $(document.activeElement).is('#saveDialogChanges');
+        var newVar = sessionStorage.getItem('tester');
+        if (buttonFocus || newVar == 'tester') {
+            /* File extension validation */
+            var getText = $('#fileResume').val();
+            var getExtension = getText.split('.');
+            getText = getExtension[1];
+            if ($('#hiddenFileResume').val() == '' && getText != "docx") {
+                $('#validationError').text(INVALID_FILE_FORMAT);
+                document.getElementById('validationError').style.display = 'block';
+                $('#validationError').show();
+                return false;
+            }
+            if (getText != "docx") {
+                $('#validationError').text(INVALID_FILE_FORMAT);
+                document.getElementById('validationError').style.display = 'block';
+                return false;
+            }
+
+            /* Include variables */
+            var applicationWorkflowId = $('#workflowID').val();
+            @if (Model.IsClient)
+            {
+                <text>var targetApplicationWorkflowStepId = $('#selectedStep').val();</text>
+            }
+            else {
+                <text>var targetApplicationWorkflowStepId = $('#selectedStep option:selected').val();</text>
+            }
+            var formData = new FormData();
+            var fileAttach = $('#hiddenFileResume')[0].files[0];
+            formData.append('applicationWorkflowId', applicationWorkflowId);
+            formData.append('targetApplicationWorkflowStepId', targetApplicationWorkflowStepId);
+            formData.append('summaryStatement', fileAttach, fileAttach.name);
+            if (!$('#validationError').is(':visible')) {
+                e.preventDefault();
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '@Url.Action("CheckInSummaryStatement", "SummaryStatementProcessing")',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data != "") {
+                            $("#validationError").append($("<div/>").text(data));
+                            $('#validationError').show();
+                            $('button#saveDialogChanges').prop("disabled", true);
+                        } else {
+                            $('.ui-dialog-titlebar-close').click();
+                            $('#validationError').hide();
+                            $('a.k-pager-refresh').click();
+                            $(document).scrollTop(0);
+                            $("#successMessage").html("You have successfully checked in " + $("#dataLogNo").val() + "!").show();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#validationError").html("Failed to check in document.");
+                        $('#fileResume').focus();
+                    },
+                    complete: function (data) {
+                        $('#fileResume').focus();
+                    }
+                });
+
+            } else {
+                return false;
+            }
+        } else {
+            $('#hiddenFileResume').val('');
+            e.preventDefault();
+        }
+     })
+</script>

@@ -1,0 +1,38 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ApplicationInformationViewModel
+<section role="region" class="mw-critiques_fixed-header">
+    <div class="mw-critiques_fixed-first">
+        <label for="logNumber" class="mw-critiques_fixed-label">Application ID:</label>
+        <div id="logNumber" class="mw-critiques_fixed-label-result">@Model.LogNumber</div>
+    </div>
+    <div class="mw-critiques_fixed-second">
+        <label for="applicationTitle" class="mw-critiques_fixed-app-label">Application Title:</label>
+        <div id="applicationTitle" class="mw-critiques_fixed-app-title" data-title="@Model.Title" data-title-cropped="@Model.TitleCropped">@Model.TitleCropped</div>
+    </div>
+    <div class="mw-critiques_fixed-first">
+        <label for="pi-id" class="mw-critiques_fixed-label">PI:</label>
+        <div id="pi-id" class="mw-critiques_fixed-label-result">@Model.PiName</div>
+    </div>
+    <div class="mw-critiques_fixed-second">
+        <label for="mech-id" class="mw-critiques_fixed-label">Mechanism:</label>
+        <div id="mech-id" class="mw-critiques_fixed-label-result">@Model.AwardMechanism</div>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.CritiqueDueDate))
+    {
+        <div class="margin-bottom-5">
+            <label for="phase-id" class="mw-critiques_fixed-label">@Model.Phase:</label>
+            <div id="phase-id" class="mw-critiques_fixed-label-result">Critiques are due @Model.CritiqueDueDate</div>
+        </div>
+    }
+    <div class="margin-bottom-5">
+        <label for="order-id" class="mw-critiques_fixed-label">Order:</label>
+        <div id="order-id" class="mw-critiques_fixed-label-result">@Model.CritiqueReviewerOrderedList</div>
+    </div>
+</section>
+<script type="text/javascript">
+    // Mouse over effect for the title
+    $("#applicationTitle").hover(function () {
+        $(this).html($(this).attr("data-title"));
+    }, function () {
+        $(this).html($(this).attr("data-title-cropped"));
+    });
+</script>

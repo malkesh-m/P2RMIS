@@ -1,0 +1,30 @@
+﻿@using Sra.P2rmis.CrossCuttingServices;
+@{
+    ViewBag.Title = "Permission Denied";
+}
+@if (ViewBag.isLoggedIn != false)
+{
+<h3>You do not have permission to access this page.</h3>
+<p>If you believe you should have access, please contact <a href = "mailto:@ViewHelpers.HelpDeskEmail">@ViewHelpers.HelpDeskEmail</a></p>
+<input type="button" id="returnOrCloseButton" name="ReturnButton" value="Return to Previous Page" class="normal" />
+}
+else
+{
+<h3>Your session has expired, please use the button below to return to the login page.</h3>
+    using (Html.BeginForm("ReturnToLogin", "ErrorPage"))
+    { 
+        <input type="submit" value="Return to Login" />
+    }
+}
+<script type="text/javascript">
+    $(function () {
+        if (history.length > 1) {
+            $("#returnOrCloseButton").attr("value", "Return to Previous Page");
+            $("#returnOrCloseButton").on("click", function () {
+                history.go(-1);
+            });
+        } else {
+            $("#returnOrCloseButton").hide();
+        }
+    });
+</script>

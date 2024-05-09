@@ -1,0 +1,261 @@
+﻿@model Sra.P2rmis.Web.UI.Models.LibraryViewModel
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+
+@{
+    string instructions = Sra.P2rmis.Web.Controllers.Library.LibraryController.Constants.MarkAsReviewedInstructions;
+}
+<style type="text/css">
+    .tablesorter-filter {
+        width: 95% !important;
+        text-align: left;
+    }
+
+    .expandableTable th:nth-child(1) {
+        width: 134px;
+    }
+
+    .expandableTable th:nth-child(2) {
+        width: 330px;
+    }
+
+    .expandableTable th:nth-child(3) {
+        width: 460px;
+    }
+
+    .expandableTable th:nth-child(5) {
+        width: 60px;
+    }
+
+    .expandableTable th:nth-child(6) {
+        width: 90px;
+    }
+
+    .expandableTable th:nth-child(7) {
+        width: 25px;
+    }
+
+    .expandableTable th:nth-child(4) {
+        width: 100px;
+    }
+
+    /* Zebra Widget - row alternating colors */
+    #postAssignmentSection .tablesorter-default tbody tr.odd > td {
+        background-color: #E9F6FD !important;
+    }
+
+    #postAssignmentSection .tablesorter-default tbody tr.even > td {
+        background-color: #fff !important;
+    }
+
+    #postAssignmentSection .tablesorter-default tbody tr.odd:hover > td {
+        background-color: #FFFACD !important;
+    }
+
+    #postAssignmentSection .tablesorter-default tbody tr.even:hover > td {
+        background-color: #FFFACD !important;
+    }
+
+    .expandableTable td {
+        padding-left: 2.5px !important;
+        padding-right: 2.5px !important;
+    }
+
+    #postAssignmentSection .tablesorter-filter-row {
+        background-color: #fff !important;
+    }
+</style>
+
+<div id="postAssignmentSection" class="lib-main-section">
+    <div class="margin-top10 margin-left10">
+        <div class="lib-main-section_title"><h5 class="margin-none">Catalog</h5></div>
+        <div class="lib-main-section_part">
+            <input id="showReviewedChkBx" type="checkbox" class="lib-main-section_part" checked />
+            <label for="showReviewedChkBx" class="lib-main-section_part">Hide Reviewed Items</label>
+        </div>
+        <span class="instructions-right paddingRight5">@instructions</span>
+    </div>
+    <div class="wrapper">
+        <table class="table table-bordered tablesorter expandableTable" id="postAssignmentApplications">
+            <thead>
+                <tr>
+                    <th class="filter-select sorter-false">Category</th>
+                    <th class="filter-false sorter-false">Title</th>
+                    <th class="filter-false sorter-false">Description</th>
+                    <th class="filter-false sorter-false">Content Type</th>
+                    <th class="filter-false sorter-false">File Type</th>
+                    <th class="filter-false sorter-false">Reviewed</th>
+                    <th class="filter-false sorter-false"><div class="hidden-text">Marked as Reviewed</div>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody id="applicationContents">
+                @{
+                    var count = 0;
+                }
+                @foreach (var doc in Model.TrainingDocuments)
+                {
+                    <tr class="applicationContentRow" data-docid="@doc.DocumentId">
+                        <td class="left-align" title="Category">
+                            @doc.Category
+                        </td>
+                        <td class="left-align" title="Document Title">
+                            <a href="#" data-id="@doc.DocumentId" data-path="@doc.ContentUrl" data-video="@doc.IsVideo" data-link="@doc.IsLink" class="linkPage">@doc.Title</a>
+                        </td>
+                        <td class="left-align" title="Description">
+                            @doc.Description
+                        </td>
+                        <td title="ContentType">
+                            @doc.ContentType
+                        </td>
+                        <td title="File Type">
+                            @doc.FileType
+                        </td>
+                        <td class="center-align reviewed-date" title="Reviewed">
+                            @doc.ReviewedDate
+                        </td>
+                        <td title="Mark Reviewed">
+                            @if (doc.IsReviewed)
+                            {
+                                <label for="mark-reviewed-@count" class="sr-only">Category Mark Reviewed</label>
+                                <input type="checkbox" checked="checked" class="mark-reviewed" id="mark-reviewed-@count" />
+                            }
+                            else
+                            {
+                                <label for="mark-reviewed-@count" class="sr-only">Category Mark Reviewed</label>
+                                <input type="checkbox" class="mark-reviewed" id="mark-reviewed-@count"/>
+                            }
+                        </td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+@Html.IncludeVersionedFiles("/Scripts/colResizable-1.5.min.js")
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+
+<script type="text/javascript">
+    // Apply table sorter
+    $(function () {
+        $("#postAssignmentApplications").tablesorter({
+            theme: 'default',
+            showProcessing: true,
+            widgets: ['zebra', 'filter'],
+            widgetOptions: {
+                filter_columnFilters: true,  // this is true to have column filters active
+                filter_startsWith: true,
+                filter_saveFilters: true,
+                filter_ignoreCase: true,
+                filter_searchDelay: 300,
+                filter_hideFilters: false
+            }
+        });
+
+        $('.expandableTable').colResizable({
+            gripInnerHtml: "<div class='grip'></div>",
+            headerOnly: true
+        });
+
+        $('.boxResponsive').ellipsis({
+            lines: 1
+        });
+
+        // Expand row on hover
+        $(".expandableTable tr").hover(function () {
+            if (!$(this).hasClass('disableEllipse')) {
+                $(this).find('span').each(function () {
+                    $(this).toggleClass('ellip ellip-line');
+                });
+            }
+        });
+
+        // Expand row on tab focus keyup event
+        $(".expandableTable tr a").on('keydown keyup', function (e) {
+            if (e.which == 9 && e.type == 'keyup') {
+                if (!$(this).closest('tr').hasClass('disableEllipse')) {
+                    console.log('disable');
+                    $(this).closest('tr').toggleClass('disableEllipse');
+                    $(this).closest('tr').find('span').each(function () {
+                        $(this).toggleClass('ellip ellip-line');
+                    });
+                }
+            }
+            if (e.which == 9 && e.type == 'keydown') {
+                if ($(this).closest('tr').hasClass('disableEllipse')) {
+                    console.log('enable');
+                    $(this).closest('tr').toggleClass('disableEllipse');
+                    $(this).closest('tr').find('span').each(function () {
+                        $(this).toggleClass('ellip ellip-line');
+                    })
+                }
+            }
+        });
+
+        // Collapse row on tab focus keydown event
+        $(".expandableTable tr a").keydown(function (e) {
+            if (e.which == 9) {
+                $(this).closest('tr').find('span').each(function () {
+                    $(this).toggleClass('ellip ellip-line');
+                });
+            }
+        });
+
+        // Check for column filter checks after page loads
+        if ($('#showReviewedChkBx').is(':checked') && $('#showReviewedChkBx').is(':checked')) {
+            applyTableSorterFIlter('postAssignmentApplications', ['', '', '', '', '', '=', ''], true);
+        }
+
+        // Monitor for changes in the application filter checkbox
+        $('#showReviewedChkBx').change(function () {
+            if ($(this).is(":checked")) {
+                // Check if show reviewed is checked
+                applyTableSorterFIlter('postAssignmentApplications', ['', '', '', '', '', '=', ''], true);
+            } else {
+                applyTableSorterFIlter('postAssignmentApplications', ['', '', '', '', '', '', ''], true);
+
+            }
+        });
+
+        $('#postAssignmentSection table thead').find('td:nth-child(2) input').attr('id', 'tablesorter-filter-id');
+        $('#postAssignmentSection table thead').find('td:nth-child(2) input').closest('td').append('<label for="tablesorter-filter-id" class="sr-only">Search Category</label>');
+    });
+
+    function applyTableSorterFIlter(table, filter, applyFilterBln) {
+        $.tablesorter.setFilters($('#' + table), filter, applyFilterBln);
+        $('#' + table).trigger('search');
+    }
+
+    // Mark reviewed
+    $(function () {
+        $(".mark-reviewed").on("change", function () {
+            var docId = $(this).closest(".applicationContentRow").attr("data-docid");
+            var oThis = $(this);
+            console.info($('#selectedProgramYear').val());
+            var programYearId = $('#selectedProgramYear').val();
+            oThis.prop("disabled", true);
+            $.ajax({
+                cache: false,
+                url: '@Url.Action(Routing.Library.MarkReviewed, Routing.P2rmisControllers.Library)',
+                data: { "programYearId": programYearId, "documentId": docId, "reviewed": $(this).is(":checked") }
+            }).done(function (result) {
+                if (result.Success) {
+                    if (result.ReviewedDate) {
+                        oThis.closest("tr").find(".reviewed-date").html(result.ReviewedDate);
+                    } else {
+                        oThis.closest("tr").find(".reviewed-date").html("");
+                    }
+                    $('#postAssignmentApplications').trigger('update');
+                }
+                oThis.prop("disabled", false);
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+                oThis.prop("disabled", false);
+            });
+        });
+    });
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/documentDownload.js")

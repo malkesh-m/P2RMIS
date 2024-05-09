@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[NomineeType](
+	[NomineeTypeId] [int] IDENTITY(1,1) NOT NULL,
+	[NomineeType] [nvarchar](20) NULL,
+	[SortOrder] [int] NOT NULL,
+ CONSTRAINT [PK_NomineeType] PRIMARY KEY CLUSTERED 
+(
+	[NomineeTypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO

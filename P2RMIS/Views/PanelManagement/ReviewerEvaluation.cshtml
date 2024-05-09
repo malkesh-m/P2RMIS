@@ -1,0 +1,155 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.UI.Models
+@model Sra.P2rmis.Web.UI.Models.ReviewerEvaluationViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab7;
+    string PanelSessionVar = SessionVariables.PanelId;
+    ViewBag.HideFirst = true;
+}
+@section HeaderExtension
+{
+    <script src="@Url.Content("~/Scripts/jquery.raty.js")" type="text/javascript"></script>
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Panel Mgmt - Overview</span>
+</div>
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        @using (Html.BeginForm("ReviewerEvaluation", "PanelManagement", FormMethod.Post, new { @name = "pmAction", @id = "pmAction" }))
+        {
+            @Html.Partial("_PanelSelection")
+        }
+        @Html.Partial("_PrivilegedTabMenu")
+
+        @if (Session[PanelSessionVar] == null || Model.ReviewerEvaluation.Count() < 1)
+        {
+            <p style="text-align:center">@Model.NoResultsMessage</p>
+        }
+        else
+        {
+            <h4 style="text-align: center;">Reviewer Evaluation for @Model.ReviewerEvaluation.FirstOrDefault().PanelName</h4>
+            @Html.Partial("_ShowHideInstructions")
+            <div id="instructions" style="display:none;">
+                @if (Model.RatingGuidance.Count() > 0)
+                {
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <b>Reviewer Guidance</b>
+                                <br />
+                                <br />
+                                Please rate your reviewer/chair performance on a scale of 1 to 5, with 5 being the best.
+                                <br /><br />
+                                <table class="table table-bordered table-striped" style="width: 90%" align="center">
+                                    <tr>
+                                        @foreach (var item in Model.RatingGuidance.Values.ToList()[0])
+                                        {
+                                            <th>@item.RatingGroupName</th>
+                                        }
+                                    </tr>
+                                    @foreach (var item in Model.RatingGuidance)
+                                    {
+                                        <tr>
+                                            @foreach (var subitem in item.Value)
+                                            {
+                                                <td>@subitem.Rating. @subitem.RatingDescription</td>
+                                            }
+                                        </tr>
+                                    }
+                                </table>
+                                When entering comments, please take into account all attributes that indicate reviewer/chair quality: knowledge base, responsiveness to requests, and written and verbal communication skills and provide thorough comments.
+                                If you are recommending a reviewer as a future chair or if a chair might not be suitable for a specific review format, (e.g. good for onsite but not teleconference), please provide a comment.
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+            using (Html.BeginForm("SaveEvaluations", "PanelManagement", FormMethod.Post))
+            {
+                <div id="reviewerEval">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Reviewer Name</th>
+                                <th>Participant Type</th>
+                                <th>Rating (1-low, 5-high)</th>
+                                <th>Potential Chair</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ReviewerEvaluation)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.ReviewerLastName, @item.ReviewerFirstName
+                                        <input type="hidden" name="@ReviewerEvaluationViewModel.FormValues.PanelUserAssignment" value="@item.PanelUserAssignmentId" />
+                                        <input type="hidden" name="@ReviewerEvaluationViewModel.FormValues.ReviewerEvalId" value="@item.ReviewerEvaluationId" />
+                                        <input type="hidden" name="@ReviewerEvaluationViewModel.FormValues.IsChair" value="@item.ChairFlag.ToString()" />
+                                    </td>
+                                    <td>@item.ParticipantTypeName</td>
+                                    <td>
+                                        <div id="rating(@item.PanelUserAssignmentId)" data-score="@item.Rating"></div>
+                                        <input type="hidden" name="@ReviewerEvaluationViewModel.FormValues.Rating" id="@item.PanelUserAssignmentId" value="@item.Rating" />
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @if ((item.ChairFlag == false) && (item.ConsumerFlag == false))
+                                        {
+                                            @Html.CheckBox("chairCheckbox", item.PotentialChairFlag.GetValueOrDefault(false), new { @id = "chairCheckbox" + item.PanelUserAssignmentId })
+                                            <input type="hidden" id="@(ReviewerEvaluationViewModel.FormValues.PotentialChairFlag + item.PanelUserAssignmentId)" name="@ReviewerEvaluationViewModel.FormValues.PotentialChairFlag" value="@item.PotentialChairFlag.GetValueOrDefault(false).ToString()" />
+                                        }
+                                        else
+                                        {
+                                            <input type="hidden" name="@ReviewerEvaluationViewModel.FormValues.PotentialChairFlag" value="False" />
+                                        }
+                                    </td>
+                                    <td>@Html.TextArea(ReviewerEvaluationViewModel.FormValues.RatingComments, item.RatingComments, new { @style = "width:90%" })</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <p style="text-align: center"><input type="submit" value="Save" id="reviwerEvalSave" /></p>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#reviewerEvalSave').on('click', function () {
+        $('#reviewerEvalSave').attr('readonly', readonly);
+    });
+    $('[id^=rating]').raty({
+        score: function () {
+            return $(this).attr('data-score');
+        }
+        ,
+        click: function (number) {
+            var idToChange = '#' + $(this).attr('id').replace("rating(", "").replace(")", "");
+            //alert(idToChange);
+            $(idToChange).val(number);
+            //alert($(idToChange).val());
+        } 
+    });
+
+    $('[id^=chairCheckbox]').click(function ()
+    {
+        var idToChange = '#' + $(this).attr("id").replace("chairCheckbox", "@ReviewerEvaluationViewModel.FormValues.PotentialChairFlag");
+        if ($(this).is(':checked')) {
+            $(idToChange).val('True');
+        } else {
+            $(idToChange).val('False');
+        }
+    });
+</script>
+

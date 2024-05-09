@@ -1,0 +1,28 @@
+﻿                <div id="uploadFeeScheduleAlert" class="alert-message kendoModalUpload"></div>
+                <div class="kendoModalUpload">
+                    <div id="uploadFeeScheduleAlert" class="kendoModalUpload_error"></div>
+                    <div id="uploadExampleFile" class="kendoModalUpload_text">
+                        Please select a file and click upload.
+                        <a href="#" onclick="showFileDownloadWarning(showUploadDialogAgain, true);" class="kendoModalUpload_link" style="color: #08c !important;">View Fee Schedule</a>                       
+                    </div>
+                </div>
+    <div class="kendoModalUpload_filterBox">
+        <div class="kendoModalUpload_filterBox_title">Select File</div>
+        <table class="kendoModalUpload">
+            <tr>
+                <td>
+                    <input id="feeSchedule" name="feeSchedule" class="maxWidth60" type="file" value="Browse" />
+                    <small>&nbsp;&nbsp;Allowed file format: XLSX</small>
+                </td>
+            </tr>
+        </table>
+    </div> 
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelUploadFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click();});
+        $("#saveDialogChanges").prop("disabled", true);
+    });
+    // Call all functions
+    $(document).ready(feeScheduleUploadCalls.allFeeScheduleUploadFunctions);    
+</script>

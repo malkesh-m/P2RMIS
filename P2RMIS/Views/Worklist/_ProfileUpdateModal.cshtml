@@ -1,0 +1,139 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileUpdateViewModel
+@using Sra.P2rmis.Web.Common
+
+<!-- Stylesheet for the custom Modal -->
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    .wrapper {
+        position: relative;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    #profileStatusInformation th {
+        width: auto;
+        max-width: 400px;
+        word-wrap: break-word;
+    }
+
+    #profileStatusInformation td {
+        text-align: left;
+        padding-left: 10px;
+        word-wrap: break-word;
+    }
+
+    .tablefix {
+        table-layout: fixed;
+    }
+</style>
+
+<div id="ProfileUpdateModal" tabindex="-1" role="dialog">
+    <div class="wrapper">
+        <table class="table table-bordered table-striped tablesorter expandableTable tablefix" id="profileStatusInformation">
+            <thead>
+                <tr>
+                    <th>Field Name</th>
+                    <th>From</th>
+                    <th>To</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var updateItem in Model.ProfileUpdateItems)
+                {
+                    <tr class="profileStatusRow" data-changelogid="@updateItem.ChangeLogId">
+                        <td>@updateItem.FieldName</td>
+                        <td>@updateItem.From</td>
+                        <td>@updateItem.To</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Javascript to include the cancel save footer -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".modal-footer").append(
+            '<input type="checkbox" id="reviewCompleteCkBx" style="float: left; margin-top: 10px; margin-left: 10px;"><label for="reviewCompleteCkBx" style="display: normal; float: left; color: black; padding-left: 10px; padding-top: 5px;"> Review Complete</label>' +
+            '<button type="button" class="btn btn-primary" style="font-size:12px; margin-right: 40px;" id="closeDialogBtn">Close</button>' +
+            '<a id="goToProfileLnk" style="float: right; margin-right: 10px;" href="#">Go to Profile</a>'
+        );
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+        $("#profileStatusInformation").tablesorter({
+            headers: {
+                0: { sorter: false },
+                1: { sorter: false },
+                2: { sorter: false }
+            },
+            showProcessing: true,
+            widthFixed: true,
+            headerTemplate: '{content} {icon}', // Add icon for various themes,
+            sortList: [],                       // Default sort for plugin is ascending by panel
+            tabIndex: false,                    // Disable the tab index that table sorter plugin adds.  Interferes with specific tab index layout
+            widgets: ['stickyHeaders'],
+            widgetOptions: {
+                // number or jquery selector targeting the position:fixed element
+                stickyHeaders_offset: 0,
+                // jQuery selector or object to attach sticky header to
+                stickyHeaders_attachTo: $('.wrapper')
+            }
+        });
+    });
+</script>
+
+<!-- Custom JavaScript -->
+<script type="text/javascript">
+    var saveReviewed = function (callback) {
+        if ($("#reviewCompleteCkBx").is(":checked")) {
+            var changeLogIds = [];
+            $(".profileStatusRow").each(function () {
+                changeLogIds.push($(this).attr("data-changelogid"));
+            });
+            $.ajax({
+                cache: false,
+                traditional: true,
+                url: '@Url.Action(Routing.Worklist.SaveReviewed)',
+                data: { "changeLogIds": changeLogIds }
+            }).done(function (data) {
+                callback(data);
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        } else {
+            callback();
+        }
+    }
+
+    //function to perform close operation
+    $('#closeDialogBtn').on('click', function (e) {
+        e.preventDefault();
+        var closeDialog = function (data) {
+            // Close the Dialog
+            $('#closeDialogBtn').closest(".ui-dialog .ui-dialog-content").dialog("close");
+            // Reload if needed
+            if (data && $(".profileStatusRow").length > 0) {
+                window.location.reload();
+            }
+        }
+        if ($(this).attr('id') == 'closeDialogBtn') {
+            // Save reviewed if needed, close dialog, then reload if needed
+            saveReviewed(closeDialog);
+        }
+    });
+
+    // function to perform go to profile operation
+    $('#ModalDialog div.modal-footer a[id="goToProfileLnk"]').on('click', function (e) {
+        e.preventDefault();
+
+        var loadProfile = function () {
+            // Go To Profile
+            window.location.href = '@Url.Action(Routing.UserProfileManagement.ViewUser, Routing.P2rmisControllers.UserProfile, new { userinfoid = Model.UserInfoId })';
+        }
+        // Save reviewed if needed, then load profile
+        saveReviewed(loadProfile);
+    });
+</script>
+
+

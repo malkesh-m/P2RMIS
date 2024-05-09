@@ -1,0 +1,136 @@
+﻿@model Sra.P2rmis.WebModels.Setup.ApplicationWithdrawnModal
+<head>
+    <style>
+        .modalWarningCaption {
+            color: black !important;
+            background: #FFFF21 !important;
+        }
+        .k-invalid-msg {
+            margin-left: 40px;
+        }
+    </style>
+</head>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <input type="hidden" value="text" id="applicationIdValue" />
+                <input type="hidden" value="@Model.ApplicationId" id="applicationId"/>
+                <div id="warningAlert" class="textRed"></div>
+                <div>
+                    <span><label for="withDrawnBy" class="inline-block w150">Withdrawn By:</label></span>
+                    @if (Model.WithDrawnBy != null)
+                    {
+                        @Html.DropDownListFor(m => m.WithDrawnBy, ViewData["WithdrawnType"] as SelectList, "Select");
+                    }
+                    else
+                    {
+                        @Html.DropDownList("WithDrawnBy", ViewData["WithdrawnType"] as SelectList, "Select");
+                    }
+                </div>
+                <div>
+                    <span><label for="withDrawnDate" class="inline-block w150">Withdrawn Date:</label></span>
+                    @if (Model.WithdrawnDate != null)
+                    {
+                        <input id="withDrawnDate" value="@Model.WithdrawnDate" />
+                    }
+                    else
+                    {
+
+                        <input id="withDrawnDate" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveWithdrawFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+    // Formated Datepicker for Filter
+    var withDrawnDateClick = $('#withDrawnDate');
+    var withDrawnByClick = $('#WithDrawnBy');
+    var d = new Date();
+
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+
+    var output = d.getFullYear() + '/' +
+        (month < 10 ? '0' : '') + month + '/' +
+        (day < 10 ? '0' : '') + day;
+
+    withDrawnDateClick.kendoDatePicker({
+        max: output,
+        dateInput: true,
+        format: "MM/dd/yyyy"        
+    })
+
+    withDrawnDateClick.kendoValidator({
+        rules: {
+            date: function (input) {
+                var d = kendo.parseDate(input.val(), "MM/dd/yyyy");
+                return d instanceof Date;
+            }
+        }
+    });
+
+    withDrawnByClick.on('change', function () {
+        if (withDrawnByClick.val() == "" || withDrawnDateClick.val() == "") {
+            $('#warningAlert').html("");
+        } else {
+            $('#warningAlert').html("Please remember to unassign this application from the panel that it's currently assigned to.");
+        }
+    });
+
+    withDrawnDateClick.on('change', function () {
+        if (withDrawnByClick.val() == "" || withDrawnDateClick.val() == "") {
+            $('#warningAlert').html("");
+        } else {
+            $('#warningAlert').html("Please remember to unassign this application from the panel that it's currently assigned to.");
+        }
+    });
+
+    // Save
+    $(document).on('click', '#saveWithdrawApplication', function (e) {
+        e.stopImmediatePropagation();
+        var withDrawnBy = $('#WithDrawnBy').val();
+        var withDrawnDate = $('#withDrawnDate').val();
+        var logNumber = $(':hidden#applicationIdValue').val();
+        var applicationId = $('#applicationId').val();
+        var alterDate = false;
+        var errorField = '';
+
+        var errorMessage = "The following fields are required:";
+        if (withDrawnBy == "") {
+            errorField += "<br /> Withdrawn By";
+        }
+        if (withDrawnDate == "") {
+            errorField += "<br /> Withdrawn Date";
+        }
+        if ($('.k-invalid-msg').is(':visible')) {
+            errorField += "<br /> Withdrawn Date";
+        }
+        if (new Date(withDrawnDate).getTime() > new Date(output).getTime()) {
+            errorField += "<br /> Withdrawn Date is after today's date";
+            alterDate = true;
+        }
+        if (withDrawnBy == "" || withDrawnDate == "" || alterDate) {
+            if (withDrawnBy && alterDate) {
+                $('#warningAlert').html(errorField);
+            } else {
+                errorMessage = errorMessage += errorField;
+                $('#warningAlert').html(errorMessage);
+            }            
+        } else {
+            $.get('/Setup/SaveWithdrawStatus', { applicationId: applicationId, withDrawnBy: withDrawnBy, withDrawnDate: withDrawnDate },
+                function (e) {                    
+                    $('.ui-dialog-titlebar-close').click();
+                    $('#app-management-button').click();                    
+                }
+            )
+        }
+    });    
+</script>

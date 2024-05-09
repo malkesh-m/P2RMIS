@@ -1,0 +1,102 @@
+﻿@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+
+@Html.Partial("_FormHeader")
+@{
+    bool disabledFlag = Model.Form.DocumentSigned != null && (bool)Model.Form.DocumentSigned;
+}
+<input type="hidden" id="document-signed" value="@disabledFlag.ToString()">
+<section id="documentFormContent" class="upm-rw-container_section" role="region">
+    <h5 class="textCenter">
+        CONFLICT OF INTEREST POLICY FOR CPRIT SCIENTIFIC RESEARCH<br />
+        AND PREVENTION PROGRAM (SRPP) COMMITTEE MEMBERS
+    </h5> 
+    <p>
+        To be successful, the Cancer Prevention and Research Institute of Texas (CPRIT) must make awards according to an open, fair and unbiased process. Consistent with this aim, the evaluation of funding award applications by the Scientific Research and Prevention Program (SRPP) committee members must be free both from real and apparent conflicts of interest. CPRIT is committed to strong and effective conflict of interest policies.
+    </p>
+    <p>
+        A conflict of interest exists when a SRPP committee member has a real or apparent interest in the outcome of an application such that the member is in a position to gain financially, professionally or personally from either a positive or negative evaluation of the grant proposal.
+    </p>
+    <p>
+        <u>Please be aware that CPRIT considers that some conflicts of interest are such that the existence of a conflict with a grant applicant raises the presumption that the conflict may affect the SRPP committee member’s impartial review of other grant applications applying for the same grant mechanism in the same grant cycle. For these conflicts (underlined below), the SRPP member will be recused from participating in the review, discussion, scoring, deliberation, and vote on all grant applications competing for the same grant mechanism.</u>
+    </p>
+    <h5>
+        <i>Financial:</i>
+    </h5>
+    <p>
+        A SRPP committee member has a financial conflict of interest if the SRPP committee member or a person related to the SRPP committee member within the second degree of consanguinity or affinity, or any other person with whom the member has a common financial interest:
+    </p>
+    <p>
+        (1) Stands to receive a financial benefit of any amount from an application under review (excluding remuneration, if any, for services rendered in conducting the review).
+    </p>
+    <p>
+        <u>(2) Owns or controls, directly or indirectly, an ownership interest in an entity applying to receive money the Institute, or in a foundation or similar organization affiliated with the applicant. Interests subject to this provision include sharing in profits, proceeds, or capital gains. Examples of ownership or control include but are not limited to owning shares, stock, or otherwise, and are not dependent upon whether voting rights are included.</u>
+    </p>
+    <p>
+        (3) Has received a financial benefit from the grant applicant unrelated to the grant application of more than $5,000 within the past twelve months. This total includes fees, stock and other benefits. It also includes current stock holdings, equity interest, intellectual property or real property interest, but does not include diversified mutual funds.
+    </p>
+    <h5>
+         <i>Professional:</i>
+    </h5>
+    <p>
+        A SRPP committee member has a professional conflict of interest if:
+    </p>
+    <p>
+        (1) <u>Is a member of the board of directors, other governing board</u> or any committee <u>of an entity or of a foundation or similar organization affiliated with an entity receiving or applying to receive money from the Institute during the same Grant Review Cycle</u>.
+    </p>
+    <p>
+        (2) <u>Serves as an elected or appointed officer of an entity receiving or applying to receive money from the Institute or of a foundation or similar organization affiliated with the entity</u>.
+    </p>
+    <p>
+        (3) <u>Is an employee of or is negotiating future employment with an entity receiving or applying to receive money from the Institute or a foundation or similar organization affiliated with the entity</u>.
+    </p>
+    <p>
+        (4) Represents in business or law, including actively seeking to represent, an entity receiving or applying to receive money from the Institute or a foundation or similar organization affiliated with the entity.
+    </p>
+    <p class="padding-left-30">
+        (a) Representation that constitutes a professional Conflict of Interest includes providing services as a consultant or contractor;
+    </p>
+    <p class="padding-left-30">
+        (b) "Actively seeking to represent" includes activities such as responding to a request for proposals or qualifications issued by the entity applying to receive money from the Institute, providing a solicited or unsolicited proposal for work to the entity applying to receive money from the Institute, and negotiating terms of service for representation even if a final agreement has not yet been executed; 
+    </p>
+    <p class="padding-left-30">
+        (c) For the purposes of this rule, an individual is no longer considered to be actively seeking to represent an entity if that entity has selected another provider or has notified the individual that the individual's services are not needed.
+    </p>
+    <p>
+        (5) Are in a current or recent (ie, within the past 3 years) collaboration with the grant applicant
+    </p>
+    <h5>
+        <i>Personal:</i>
+    </h5>
+    <p>
+        A SRPP committee member has a personal conflict of interest if:
+    </p>
+    <p>
+        (1) A close personal friend is a primary member of the research or prevention program team listed on the grant application.
+    </p>
+    <p>
+        (2) An applicant is someone with whom the member has had long-standing personal differences.
+    </p>
+    <h5>
+        <i>Duty to Report and Process for Recusal:</i>
+    </h5>
+    <p>
+        At the time that the SRPP committee member becomes aware of a possible conflict of interest including, but not limited to, those described above, the reviewer must notify the committee chair and the CPRIT Chief Executive Officer. Except under exceptional circumstances as described below, any member of a SRPP committee who has a real or apparent conflict of interest with respect to an application may not review or vote on the application and must leave the room when that application is discussed.
+    </p>
+    <p>
+        In exceptional cases, the CPRIT Chief Executive Officer, working in conjunction with CPRIT Staff may decide that the need for special expertise of the reviewer outweighs any possible bias posed by a real or apparent conflict of interest. Under these circumstances, the SRPP committee member’s interest shall be disclosed in writing before the SRPP committee meeting and the SRPP committee member shall be permitted to participate in the discussion if the waiver is approved by the Oversight Committee.
+    </p>
+    <p>
+        All reviewers must sign a post-review statement that they did not participate in the discussion or review of any application for which they might have a conflict of interest.
+    </p>
+    <h5 class="textCenter">
+        Acknowledgment of Understanding
+    </h5>
+    <p>        
+        I understand the conflict of interest policies of CPRIT and will report any and all conflicts of
+        interest that I have with respect to applications submitted to the assigned SRPP committee for
+        review.
+    </p>
+</section>
+<script type="text/javascript">
+    sessionStorage.setItem('signedDocument', $('#document-signed').val());
+</script>

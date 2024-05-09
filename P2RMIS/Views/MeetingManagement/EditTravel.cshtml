@@ -1,0 +1,486 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.ViewModels.MeetingManagement.MeetingTravelViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.SubTab2;
+    @Html.Partial("_KendoHeader2016");
+}
+
+<style type="text/css">
+    .k-widget.k-datepicker.k-header, .k-widget.k-timepicker.k-header {
+        font-size: 12px;
+    }
+    div#successMessage, div#failureMessage {
+        padding-bottom:8px;
+    }
+</style>
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Edit Meeting Details</span><span id="backtoStaff" class="main-header_title_back-to-staff"> (Back to Meeting Management)</span>
+</div>
+<!-- Tabs -->
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+<form id="editTravelForm" action="/MeetingManagement/SaveTravelMeetingDetails" method="post">
+    <div>
+        <!-- Main Body -->
+        <!-- Details -->
+        <section class="p2FilterContainer">
+            <div class="p2FilterContainer_full">
+                <h6 class="p2FilterContainer_title">Details</h6>
+                <div class="p2FilterContainer_contents">
+                    <!-- Details Field Set -->
+                    <ul class="p2FilterContainer_details">
+                        <li>
+                            <label for="meeting-attendee" class="p2FilterContainer_details_label">Meeting Attendee:</label>
+                            <div id="meeting-attendee" class="p2FilterContainer_details_result">@Model.ReviewerName</div>
+                        </li>
+                        <li>
+                            <label for="preferred-phone" class="p2FilterContainer_details_label">Preferred Phone:</label>
+                            <div id="preferred-phone" class="p2FilterContainer_details_result">@Model.DetailsHeader.Phone</div>
+                        </li>
+                        <li>
+                            <label for="email" class="p2FilterContainer_details_label" style="float: left;">Email:</label>
+                            <div id="email" class="p2FilterContainer_details_result" style="width: 145px; word-break:break-word; float: left; padding-left: 5px;">@Model.DetailsHeader.Email</div>
+                        </li>
+                    </ul>
+                    <ul class="p2FilterContainer_details">
+                        <li>
+                            <label for="participant-type" class="p2FilterContainer_details_label">Participant Type:</label>
+                            <div id="participant-type" class="p2FilterContainer_details_result">@Model.DetailsHeader.ParticipantType</div>
+                        </li>
+                        <li>
+                            <label for="meeting-result" class="p2FilterContainer_details_label">Meeting:</label>
+                            <div id="meeting-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Meeting</div>
+                        </li>
+                        <li>
+                            <label for="meeting-dates" class="p2FilterContainer_details_label">Meeting Dates:</label>
+                            <div id="meeting-dates" class="p2FilterContainer_details_result">@Model.DetailsHeader.MeetingDates</div>
+                        </li>
+                    </ul>
+                    <ul class="p2FilterContainer_details">
+                        <li>
+                            <label for="panel-result" class="p2FilterContainer_details_label">Panel:</label>
+                            <div id="panel-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Panel</div>
+                        </li>
+                        <li>
+                            <label for="session-result" class="p2FilterContainer_details_label">Session:</label>
+                            <div id="session-result" class="p2FilterContainer_details_result">@Model.DetailsHeader.Session</div>
+                        </li>
+                        <li>
+                            <label for="session-dates" class="p2FilterContainer_details_label">Session Dates:</label>
+                            <div id="session-dates" class="p2FilterContainer_details_result">@Model.DetailsHeader.SessionDates</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        @Html.Partial("_MMSubTabbedMenu")
+
+        @Html.Hidden("IsDataCompleteFlag", Model.IsDataComplete)
+        <div id="checkMarkAsComplete" class="float-left">
+            <input type="checkbox" id="chk-mark-for-complete" class="noMargin" />
+            <label id="lblMarkForComplete" for="mark-for-complete" class="p2FilterContainer_label">Mark As Complete</label>
+        </div>
+        <div id="markedAsComplete" class="float-left">
+            <img src="~/Content/img/MarkedAsComplete.png" alt="Marked As Complete" title="Marked As Complete" />
+            <label for="Marked-for-complete" class="p2FilterContainer_label">Marked As Complete</label>
+        </div>
+
+        <div class="mm-filterBox_buttons">
+            <input type="submit" id="mm-filterBox_buttons_save" class="mm-filterBox_buttons_save" value="Save" />
+            <button id="mm-filterBox_buttons_cancel" class="mm-filterBox_buttons_cancel">Cancel</button>
+        </div>
+
+        <!-- Main Body -->
+        <div class="mm-detailsBox">
+            <div class="mm-detailsBox_title">Travel Information</div>
+            <ul class="mm-informationBox">
+                <li>
+                    <label for="reservation" class="p2FilterContainer_details_label">Reservation:</label>
+                    @Html.TextBoxFor(m => m.Reservation, new { @class = "p2FilterContainer_details_input", maxlength = 200 })
+                    <img class="upm-profile-section_field_img" src="/Content/img/info_20px_enabled.png" alt="Nickname description" title="Add/update reservation number numbers separated by commas.">
+                </li>
+                <li>
+                    <label for="TravelModeId" class="p2FilterContainer_details_label">Travel Mode:</label>
+                    <select class="mm-detailsBox_table_date-picker_select" id="TravelModeId" name="TravelModeId">
+                        <option data-travelflight="false" value="">Please Select</option>
+                        @foreach (var mode in Model.TravelModeDropdown)
+                        {
+                            if (mode.TravelModeId == Model.TravelModeId)
+                            {
+                                <option value="@mode.TravelModeId" data-travelflight="@mode.CanContainTravelFlights" selected>@mode.Abbrevication</option>
+                            }
+                            else
+                            {
+                                <option value="@mode.TravelModeId" data-travelflight="@mode.CanContainTravelFlights">@mode.Abbrevication</option>
+                            }
+                        }
+                    </select>
+                    <div class="mm-link" id="travel-leg">Add Travel Leg</div>
+                </li>
+                <li>
+                    <label for="Fare" class="p2FilterContainer_details_label">Fare</label>
+                    @Html.TextBoxFor(m => m.Fare, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="AgentFee" class="p2FilterContainer_details_label">Agent Fee 1</label>
+                    @Html.TextBoxFor(m => m.AgentFee, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="AgentFee2" class="p2FilterContainer_details_label">Agent Fee 2</label>
+                    @Html.TextBoxFor(m => m.AgentFee2, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="ChangeFee" class="p2FilterContainer_details_label">Change Fee</label>
+                    @Html.TextBoxFor(m => m.ChangeFee, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="groundCheckbox" class="p2FilterContainer_details_label">Ground</label>
+                    @Html.CheckBoxFor(x => x.Ground, new { @checked = "checked", @class = "noMargin" })
+                </li>
+                <li>
+                    <label for="NteAmount" class="p2FilterContainer_details_label">NTE Amount</label>
+                    @Html.TextBoxFor(m => m.NteAmount, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="GsaRate" class="p2FilterContainer_details_label">GSA Rate</label>
+                    @Html.TextBoxFor(m => m.GsaRate, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="gsaCheckbox" class="p2FilterContainer_details_label">No GSA</label>
+                    @Html.CheckBoxFor(x => x.NoGsa, new { @checked = "checked", @class = "noMargin" })
+                </li>
+                <li>
+                    <label for="ClientApprovedAmount" class="p2FilterContainer_details_label">Client Approved Amount</label>
+                    @Html.TextBoxFor(m => m.ClientApprovedAmount, new { @class = "p2FilterContainer_details_input" })$
+                </li>
+                <li>
+                    <label for="CancelledDate" class="p2FilterContainer_details_label">Cancelled Date</label>
+                    @Html.TextBoxFor(m => m.CancelledDate, new { @class = "p2FilterContainer_details_input" })
+                </li>
+                <li>
+                    <label for="SpecialRequest" class="p2FilterContainer_details_label">Special Travel Request</label>
+                    @Html.TextAreaFor(m => m.SpecialRequest, new { @class = "p2FilterContainer_details_input", maxlength = 500, placeholder = "Max limit: 500 characters" })
+                </li>
+                <li>
+                    <label for="last-updated" class="p2FilterContainer_details_label">Last Updated:</label>
+                    <div id="last-updated" class="p2FilterContainer_details_result">@Model.LastUpdated</div>
+                </li>
+                <li>
+                    <label for="last-updated-by" class="p2FilterContainer_details_label">Last Updated By:</label>
+                    <div id="last-updated-by" class="p2FilterContainer_details_result">@Model.LastUpdatedBy</div>
+                </li>
+            </ul>
+            <div class="mm-travel-log-box hidden" id="mm-travel-log-box">
+                <ul class="mm-flight-box">
+                    <li class="mm-flight-container" style="width: 30%; background: #f5f5f5;"><h6 class="mm-flight-header">Carrier-Flight / Train Num</h6></li>
+                    <li class="mm-flight-container" style="width: 25%; background: #f5f5f5;"><h6 class="mm-flight-header">Dep City Time</h6></li>
+                    <li class="mm-flight-container" style="width: 25%; background: #f5f5f5;"><h6 class="mm-flight-header">Arrival City Time</h6></li>
+                    <li class="mm-flight-container"><h6 class="mm-flight-header" style="width: 85%;">Last Updated By</h6></li>
+                </ul>
+                @foreach (var flight in Model.Flights)
+                {
+                    <ul class="mm-flight-box">
+                        <li class="mm-flight-container" style="width: 30%;">
+                            <div class="mm-flight-container_padding">
+                                <div id="carrier-air-result">@flight.CarrierName</div>
+                                <div id="carrier-flight-result">@flight.FlightNumber</div>
+                            </div>
+                        </li>
+                        <li class="mm-flight-container" style="width: 25%">
+                            <div class="mm-flight-container_padding">
+                                <div id="dept-city-result">@flight.DepartureCity</div>
+                                <div id="dept-city-time-result">@flight.DepartureDate</div>
+                            </div>
+                        </li>
+                        <li class="mm-flight-container" style="width: 25%">
+                            <div class="mm-flight-container_padding">
+                                <div id="arr-city-result">@flight.ArrivalCity</div>
+                                <div id="arr-city-time-result">@flight.ArrivalDate</div>
+                            </div>
+                        </li>
+                        <li class="mm-flight-container">
+                            <div class="mm-flight-container_padding">
+                                <div id="updated-by-result">@flight.LastModifiedBy</div>
+                                <div id="updated-time-result">@flight.LastModifiedDate</div>
+                            </div>
+                        </li>
+                    </ul>
+                }
+
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.CanManageTravelFlights)
+    @Html.HiddenFor(m => m.PanelUserAssignmentId)
+    @Html.HiddenFor(m => m.SessionUserAssignmentId)
+</form>
+<script src="~/Scripts/Custom/MeetingManagement/hotelandTravel.js"></script>
+<script type="text/javascript">
+    $(function () {
+        if (sessionStorage.getItem("showTravelSuccessMessage") != null) {
+            $('#successMessage').html("Your changes were saved successfully.").show().delay(20000).fadeOut();
+            sessionStorage.removeItem("showTravelSuccessMessage");
+        }
+
+        $("#editTravelForm").on("submit", function (e) {
+            sessionStorage.setItem("showTravelSuccessMessage", true);
+        });
+    });
+
+    var isDataComplete = $("#IsDataCompleteFlag").val();
+    if (isDataComplete == "True") {
+        $("#checkMarkAsComplete").hide();
+        $("#markedAsComplete").show();
+    }
+    else {
+        $("#checkMarkAsComplete").show();
+        $("#markedAsComplete").hide();
+    }
+
+
+    var getMeetingRegistrationId = sessionStorage.getItem('setMeetingRegistrationId');
+    var getPanelUserAssignmentId = sessionStorage.getItem('setPanelUserAssignmentId');
+    var getSessionUserAssignmentId = sessionStorage.getItem('setSessionUserAssignmentId');
+
+    var paramString = (getPanelUserAssignmentId != null) ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+
+
+    $('.mm-fieldSet li:nth-child(1) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditHotel?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    });
+    $('.mm-fieldSet li:nth-child(2) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditTravel?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    });
+    $('.mm-fieldSet li:nth-child(3) span').on('click', function () {
+        window.location.href = "/MeetingManagement/EditComments?" + paramString + "=" + (getPanelUserAssignmentId != null) ? getPanelUserAssignmentId : getSessionUserAssignmentId;
+    });
+
+    // Cancel button
+    $('.mm-filterBox_buttons_cancel').on('click', function () {
+        location.reload();
+    });
+
+    // Decimal input
+    $('#Fare, #AgentFee, #AgentFee2, #ChangeFee, #NteAmount, #GsaRate, #ClientApprovedAmount').on('change', function () {
+        this.value = parseFloat(this.value).toFixed(2);
+    });
+
+    $('#CancelledDate').kendoDatePicker({
+        format: "MM/dd/yyyy",
+        parseFormats: ["MM/dd/yyyy"]
+    }).data("kendoDatePicker");
+
+    $('.nav-tabs a').each(function (i, value) {
+        var link = $.trim($(this).attr('href'));
+        var panelUserAssignmentId = $("#PanelUserAssignmentId").val();
+        var sessionUserAssignmentId = $("#SessionUserAssignmentId").val();
+        var parameterString = (panelUserAssignmentId != "") ? "panelUserAssignmentId" : "sessionUserAssignmentId";
+        var parameterValue = (panelUserAssignmentId != "") ? panelUserAssignmentId : sessionUserAssignmentId;
+        var newLink = link + "?" + parameterString + "=" + parameterValue;
+        $(this).attr('href', newLink);
+    });
+
+    var setPanelUserAssignmentId = $('#PanelUserAssignmentId').val();
+    var setSessionUserAssignmentId = $('#SessionUserAssignmentId').val();
+
+    // Travel Leg add/edit
+    $('#travel-leg').on('click', function () {
+        var title = 'Add Travel Leg';
+        var reviewerName = $('#meeting-attendee').text();
+        $.get('/MeetingManagement/TravelLeg', {
+            panelUserAssignmentId: setPanelUserAssignmentId, sessionUserAssignmentId: setSessionUserAssignmentId
+        }, function (data) {
+            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.large, title);
+            $('#meeting-attendee-tl').text(reviewerName);
+        });
+    });
+    // Add-Delete Travel Leg
+    $(document).on('click', '.add-delete-leg', function () {
+        var $this = $(this);
+        var getText = $(this).text();
+        var labelCount = $('#addTravelLeg .mm-flight-box').length;
+        var sec = $(this).closest(".mm-flight-box");
+        $("#addTravelLeg .flight-alert").addClass("hidden");
+        if (getText === "Add") {
+            var data = {
+                panelUserAssignmentId: setPanelUserAssignmentId,
+                sessionUserAssignmentId: setSessionUserAssignmentId,
+                carrierName: sec.find(".carrier-flight").val(),
+                flightNumber: $.trim(sec.find(".carrier-number").val()),
+                departureCity: sec.find(".travel-departure").val(),
+                departureDate: sec.find("input.dept-city-time").val(),
+                arrivalCity: sec.find(".travel-arrival").val(),
+                arrivalDate: sec.find("input.arrival-city-time").val()
+            };
+            if (data.flightNumber && data.carrierName && data.departureCity &&
+                data.departureDate && data.arrivalCity && data.arrivalDate) {
+                $.post("/MeetingManagement/AddTravelLeg", data).done(
+                    function (result) {
+                        sec.attr("data-flightid", result.flightId);
+                        $this.text('Delete');
+                        var cloned = kendo.template($('#cloned-flight').html());
+                        var theHtml = $this.closest('#addTravelLeg');
+                        var flightContainer = $this.closest('#addTravelLeg').find('.mm-flight-box');
+                        theHtml.append(cloned);
+                        var count = 0;
+
+                        // 508 Compliance additions
+                        $(flightContainer).each(function () {
+                            labelCount++;
+                            count++;
+                            var findLabel = $(flightContainer[count]).find('label');
+                            $(findLabel).each(function () {
+                                var getLabel = $(this).attr('for');
+                                var newId = getLabel + labelCount;
+                                $this.attr('for', newId);
+                            });
+                            var findSelect = $(flightContainer[count]).find('select');
+                            $(findSelect).each(function () {
+                                var getSelect = $(this).attr('id');
+                                var newSelectId = getSelect + labelCount;
+                                $this.attr('id', newSelectId);
+                            });
+                            var findInput = $(flightContainer[count]).find('input');
+                            $(findInput).each(function () {
+                                var getInput = $(this).attr('id');
+                                var newInputId = getInput + labelCount;
+                                $this.attr('id', newInputId);
+                            });
+                        });
+                        $('.mm-flight-box').show();
+                        $(".dept-city-time").last().kendoDateTimePicker();
+                        $(".arrival-city-time").last().kendoDateTimePicker();
+                        $(".carrier-flight").last().append($(".carrier-flight").first().find("option").clone());
+                        $(".travel-departure").last().append($(".travel-departure").first().find("option").clone());
+                        $(".travel-arrival").last().append($(".travel-arrival").first().find("option").clone());
+                    });
+            } else {
+                $("#addTravelLeg .flight-alert").html("You must complete all fields.")
+                    .removeClass("hidden");
+            }
+        } else if (getText === "Delete") {
+            var flightId = sec.attr("data-flightid");
+            $.post("/MeetingManagement/DeleteTravelLeg", { flightId: flightId }).done(
+                function () {
+                    $this.prev().find('.mm-link').text('Add');
+                    $this.closest('.mm-flight-box').remove();
+                });
+        }
+    });
+
+    // Mark as complete
+    $('#chk-mark-for-complete').on('click', function () {
+        var title = "Warning";
+        $.get('/Setup/RemoveWarning', function (data) {
+            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, title);
+            var attendeeName = $("#meeting-attendee").text();
+            var text = "You have completed the review of " + attendeeName + "'s travel record. Click 'Confirm' to proceed or 'Cancel' to return to the previous screen.";
+
+            $('#ui-id-1').addClass('modalWarningCaption');
+            $('.p2rmis-disallowed_p').text(text);
+            $('#closeModal').on('click', function () {
+                $('#chk-mark-for-complete').attr('checked', false);
+            });
+            $('#saveDialogChanges').on('click', function () {
+                var data = {
+                    panelUserAssignmentId: setPanelUserAssignmentId,
+                    sessionUserAssignmentId: setSessionUserAssignmentId
+                };
+                $.ajax({
+                    url: '/MeetingManagement/MarkTravelDataComplete',
+                    data: data
+                }).done(function (response) {
+                    switch (response.result) {
+                        case true:
+                            $('#successMessage').html("You successfully marked travel information as complete.").show();
+                            $("#checkMarkAsComplete").hide();
+                            $("#markedAsComplete").show();
+                            break;
+                        case false:
+                            $("#failureMessage").html("Please save travel information before marking it as complete.");
+                            $("#checkMarkAsComplete").show();
+                            $("#markedAsComplete").hide();
+                            break;
+                    }
+                });
+
+                $('.ui-dialog-titlebar-close').click();
+            });
+        });
+    });
+
+    // Travel mode
+    function setTravelFlightViewStatus() {
+        var option = $("#TravelModeId option:selected");
+        if (option.attr("data-travelflight").toLowerCase() === "true"
+            && $("#CanManageTravelFlights").val().toLowerCase() === "true") {
+            if ($("#mm-travel-log-box").find(".mm-flight-box").length > 1) {
+                $("#mm-travel-log-box").removeClass("hidden");
+                $("#travel-leg").text("Add/Edit Travel Leg");
+            } else {
+                $("#mm-travel-log-box").addClass("hidden");
+                $("#travel-leg").text("Add Travel Leg");
+            }
+            $("#travel-leg").removeClass("hidden");
+        } else {
+            $("#mm-travel-log-box").addClass("hidden");
+            $("#travel-leg").addClass("hidden");
+        }
+    }
+    // Set initial travel flight view
+    setTravelFlightViewStatus();
+
+    // Travel mode drop-down change event handler
+    $(document).on("change", "#TravelModeId", function () {
+        setTravelFlightViewStatus();
+    });
+
+    $('#Fare, #AgentFee, #AgentFee2, #ChangeFee, #NteAmount, #GsaRate, #ClientApprovedAmount').keydown(function (event) {
+        allowNumbersOnly(event);
+    });
+
+    function allowNumbersOnly(event) {
+        var theEvent = event || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        // Allow: backspace, delete, tab, escape, and enter
+        if (key == 46 || key == 8 || key == 9 || key == 27 || key == 13 || key == 110 || key == 190 ||
+            // Allow: Ctrl+A
+            (key == 65 && theEvent.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (key >= 35 && key <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if (theEvent.shiftKey || (key < 48 || key > 57) && (key < 96 || key > 105)) {
+                theEvent.preventDefault();
+            }
+
+        }
+    }
+
+    //form submission and validation
+    $(document).on("click",
+        "#mm-filterBox_buttons_save",
+        function (e) {
+            e.preventDefault();
+            if ($('#TravelModeId').val() == '') {
+                $('#TravelModeId').addClass('input-error');
+                $('#failureMessage').text('Travel Mode is required.').show();
+                $(document).scrollTop(0);
+            } else {
+                $('#TravelModeId').removeClass('input-error');
+                $('#failureMessage').hide();
+                $('#editTravelForm').submit();
+            }
+        });
+        </script>

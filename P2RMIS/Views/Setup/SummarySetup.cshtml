@@ -1,0 +1,111 @@
+﻿@model Sra.P2rmis.Web.UI.Models.SummarySetupViewModel
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.CrossCuttingServices.ConfigurationServices;
+@{ 
+    string successMessage = TempData["SuccessMessage"] != null ? TempData["SuccessMessage"].ToString() : string.Empty;
+    string failureMessage = TempData["FailureMessage"] != null ? TempData["FailureMessage"].ToString() : string.Empty;
+}
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2020")
+}
+<style>
+    .k-grid-content
+    {
+        min-height:200px;
+        max-height:200px;
+    }
+</style>
+<!-- Header -->
+    <div class="main-header">
+        <span class="main-header_back-button">
+            <a id="backArrow" class="main-header_back-button_link">
+                <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                     alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+            </a>
+        </span>
+        <span class="main-header_title">Summary Statement Setup</span>&nbsp;&nbsp;@Html.ActionLink("(Back to Award Setup)", "AwardSetup", "Setup")
+    </div>
+<div id="successMessage"></div>
+<div id="failureMessage"></div>
+    <!-- Details -->
+    <div class="row-fluid">
+        @if (Model.SelectedStandardSummaryTemplateId > 0 || Model.SelectedExpeditedSummaryTemplateId > 0)
+        {
+            <span class="warning-message" style="margin-bottom: 15px;">Any changes made to the template and/or reviewer descriptions will not be applied to summary statements that have been started.</span>
+        }
+        <div class="ss-filterBox span12">
+            <div style="position:relative" class="ss-setupfilterBox_title">Details</div>
+            <table class="span12 ss-grid-details">
+                <tr>
+                    <td class="span3"><strong>Client:</strong> @Model.Client</td>
+                    <td class="span3"><strong>Program:</strong> @Model.Program</td>
+                    <td class="span3"><strong>Last Updated Date:</strong> @Model.LastUpdateDate</td>
+                </tr>
+                <tr>
+                    <td class="span3"><strong>Fiscal Year:</strong> @Model.FiscalYear</td>
+                    <td class="span3"><strong>Award:</strong> @Model.Award</td>
+                    <td class="span3"><strong>Last Updated By:</strong> @Model.LastUpdatedBy</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @if (Model.AvailableStandardSummaryTemplates.Count() == 0)
+    {
+        <span class="warning-message">There are no Summary Statements available for @{@Model.Client}. Please contact the Help Desk at @{@ConfigManager.HelpDeskEmailAddress}. Please allow 24 hours for an email response.</span>
+    }
+    else
+    {
+<div class="summaryContainer">
+    @using (Html.BeginForm("SaveSummarySetup", "Setup", FormMethod.Post, new { @id = "summarySetupForm" }))
+    {
+        @Html.HiddenFor(x => x.ProgramMechanismId)
+        @Html.HiddenFor(x => x.IsDescriptionEdit, new { @id = "isDescriptionEdit" })
+        @Html.HiddenFor(x => x.IsTemplateEdit, new { @id = "isTemplateEdit" })
+        <!-- Select Template Section -->
+        <div class="row-fluid">
+            <span style="display:block;">Please select a Summary Statement Template and add Reviewer Descriptions.</span><br />
+            <div class="ss-filterBox span12">
+                <div style="position:relative" class="ss-setupfilterBox_title">Select Template</div>
+                <table class="span12 ss-grid-details">
+                    <tr>
+                        <td class="span6"><strong>Standard Summary Statement Template:</strong>&nbsp;&nbsp;@Html.DropDownListFor(x => x.SelectedStandardSummaryTemplateId, new SelectList(Model.AvailableStandardSummaryTemplates, "Key", "Value", Model.SelectedStandardSummaryTemplateId), "Select Template", new { @id = "selectedStandardSummaryTemplate", @class = "span6", style = "margin-top:6px;" })</td>
+                        <td class="span6"><strong>Expedited Summary Statement Template:</strong>&nbsp;&nbsp;@Html.DropDownListFor(x => x.SelectedExpeditedSummaryTemplateId, new SelectList(Model.AvailableExpeditedSummaryTemplates, "Key", "Value", Model.SelectedExpeditedSummaryTemplateId), "Select Template", new { @id = "selectedExpeditedSummaryTemplate", @class = "span6", style = "margin-top:6px;" })</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- Grid Header -->
+        <div class="row-fluid">
+            <div class="ss-filterBox span12" style="padding-left:10px;padding-bottom: 10px; padding-right: 20px;">
+                <div class="ss-setupfilterBox_title">Reviewer Descriptions</div>
+                @if (!(Model.ReviewerDescriptions.Count() > 0))
+                {
+                    <p class="noDescriptions" style="margin-top:10px;">You don't have any reviewer descriptions setup.  Please click <a href="#" class="addFirstDescription">Add Reviewer Description</a> to add a new description.</p>
+                }
+                <div id="ss-gridHeader" class="ss-gridHeader" style="position:relative;">
+                    <h6 class="ss-gridHeader_title">Reviewer Descriptions</h6><div id="totalRecords" class="ss-gridHeader_totalCount">(<span></span>)</div><a href="#" class="ss-gridHeader_addDescLink addDescription"><i>(add description)</i></a>
+                    <div class="right-button-container"><input type="button" class="mm-filterBox_buttons_save hidden" value="Edit" id="summaryConfigEdit" /></div>
+                </div>
+                <!-- Grid -->
+                <div id="grid" class="hidden" style="margin-top: 5px;"></div>
+
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span10 center-align">
+                <span class="center-align">
+                    <input type="button" class="mm-filterBox_buttons_save" value="Save" disabled="disabled" id="summaryConfigSave" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" class="mm-filterBox_buttons_cancel" onclick="window.location.reload()" value="Cancel" />
+                </span>
+            </div>
+        </div>
+    }
+</div>
+        @Html.DropDownList("assignmentDropdown", new SelectList(Model.AssignmentOrderDropdown), "Select", new { @class = "hidden", @id = "assignmentDropdownPrototype" })
+@*@Html.DropDownList(x => x.AssignmentOrderDropdown, new SelectList((Model.AssignmentOrderDropdown, "Select"), new { @class = "hidden", @id = "assignmentDropdownPrototype" })*@
+<input id="summaryGridData" type="hidden" value='@Html.Raw(Json.Encode(Model.ReviewerDescriptions))' />
+<input id="successMessageText" type="hidden" value="@successMessage" />
+<input id="failureMessageText" type="hidden" value="@failureMessage" />
+    }
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/summarySetup.js")

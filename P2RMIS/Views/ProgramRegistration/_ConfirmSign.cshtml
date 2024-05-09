@@ -1,0 +1,233 @@
+﻿@using Sra.P2rmis.Web.Common
+@using  Sra.P2rmis.CrossCuttingServices.MessageServices
+@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationWizardViewModel
+<style type="text/css">
+    .hide{
+        display: none;
+    }
+</style>
+<section style="width:100%;" role="region">
+    Please select the item(s) you wish to confirm, then enter your password and click CONFIRM to digitally sign the item.
+    All items must be confirmed before you can participate on the panel. Once confirmed, no changes can be made to these forms.
+</section>
+<div class="padding20">
+    <div class="registrationCaution">
+        <span>@MessageService.RegistrationFormHelpText</span>
+    </div>
+    @{ 
+        var contractBypassed = Model.Workflow.WorkflowSteps.Values.Any(x => x.IsBypassed);
+        var contractCustomized = Model.Workflow.WorkflowSteps.Values.Any(x => x.IsCustomized);
+    }
+    @for (var i = 0; i < Model.Workflow.WorkflowSteps.Count - 1; i++)
+    {
+        var documentId = Model.Workflow.WorkflowSteps.Values.ElementAt(i).DocumentId;
+        var documentVersion = Model.Workflow.WorkflowSteps.Values.ElementAt(i).DocumentVersion;
+        var confirmationText = Model.Workflow.WorkflowSteps.Values.ElementAt(i).ConfirmationText;
+        var nameSigned = Model.Workflow.WorkflowSteps.Values.ElementAt(i).NameSigned;
+        var dateSigned = Model.Workflow.WorkflowSteps.Values.ElementAt(i).DateSigned;
+        var readyForSignature = Model.Workflow.WorkflowSteps.Values.ElementAt(i).IsReadyForSignature;
+        var isSignedOffLine = Model.Workflow.WorkflowSteps.Values.ElementAt(i).IsSignedOffLine;
+        var isBypassed = Model.Workflow.WorkflowSteps.Values.ElementAt(i).IsBypassed;
+        var isCustomized = Model.Workflow.WorkflowSteps.Values.ElementAt(i).IsCustomized;
+        var checkboxAttr = (dateSigned != "") ? " checked disabled" : (!readyForSignature) ? " disabled" : "";
+        if (i == Model.Workflow.WorkflowSteps.Count() - 3)
+        {
+            checkboxAttr = (dateSigned != "") ? " checked disabled" : (Model.DisplayPayRateMessageOnContractualConfirmation(contractBypassed, contractCustomized)) ? " disabled" : (!readyForSignature) ? " disabled" : "";
+        }
+        var documentReadyClass = (dateSigned == "" && !readyForSignature) ? "" : "hide";
+        var documentSignedClass = (dateSigned != "") ? "" : "hide";
+        var documentPdfSignedClass = (dateSigned != "" && !isSignedOffLine) ? "" : "hide";
+        var documentPdfUnsignedClass = (dateSigned == "" && !isSignedOffLine) ? "" : "hide";
+        var signContext = (isSignedOffLine) ? "The contract has been signed off-line and verified on " : "Signed:";
+        var idAssigned = "acknowledge" + i + "";
+
+        if (!String.IsNullOrEmpty(confirmationText) && !isBypassed)
+        {
+        <div class="upm-confirm-container">
+            <input type="hidden" class="document-id" value="@documentId" />
+            <input type="checkbox" class="margin-bottom-5 document-checked float-left center-align leading-perc-width" id="@idAssigned" @checkboxAttr />
+            <label for="@idAssigned" class="mw-emergency-contact_table_label-confirm alignLeft">@confirmationText (@documentId/@documentVersion)</label>
+            <div class="pdf-signed margin-left40 @documentPdfSignedClass">
+                <a href="@Url.Action(Routing.ProgramRegistration.GetDocumentPdf, Routing.P2rmisControllers.ProgramRegistration)?panelRegistrationDocumentId=@documentId" id="print-pdf" target="_blank">Print PDF</a>
+            </div>
+            <div class="pdf-unsigned lightgray margin-left40 @documentPdfUnsignedClass">Print PDF</div>
+            <div class="document-signature @documentSignedClass">
+                @signContext
+                @if (!isSignedOffLine)
+                {
+                    <span class="document-signature-name">@nameSigned</span>
+                }
+                <span class="document-signature-date">@dateSigned</span>
+            </div>
+        </div>
+        }
+    }
+</div>
+<div id="passwordError" class="hide alert-message margin-bottom-10 passwordError" role="alert" tabindex="-1">
+    You have entered an incorrect password. Please re-enter your login password to digitally sign this document.
+</div>
+<div id="passwordSection" class="center-align float-left main-perc-width">
+    <label for="password" class="mw-emergency-contact_table_label alignLeft"><div class="hidden-text">Enter your </div><strong>Password</strong> <div class="hidden-text">to confirm </div></label>
+    <input type="password" id="password" data-keyup-enter="#saveConfirmation" disabled class="alignLeft margin-top10" />
+    <button type="button" id="saveConfirmation" class="btn-disabled margin-bottom-10 margin-left10 margin-top10 alignLeft" disabled>Confirm</button>
+</div>
+@{ int hideCount = 0; }
+@for (var i = 0; i < Model.Workflow.WorkflowSteps.Count - 1; i++)
+{
+    var dateSigned = Model.Workflow.WorkflowSteps.Values.ElementAt(i).DateSigned;
+    var readyForSignature = Model.Workflow.WorkflowSteps.Values.ElementAt(i).IsReadyForSignature;
+    var documentReadyClass = (dateSigned == "" && !readyForSignature) ? "" : "displayNone";
+    var isSignedOffLine = Model.Workflow.WorkflowSteps.Values.ElementAt(i).IsSignedOffLine;
+    var isSigned = !String.IsNullOrEmpty(dateSigned) || isSignedOffLine;
+<div class="float-left margin-bottom-10 form-message-fail" tabindex="-1" role="alert">
+    @if (!isSigned && Model.DisplayPayRateMessageOnContractualConfirmation(contractBypassed, contractCustomized))
+    {
+        <input type="text" value="@Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel.PayRateNotUploadedMessage" id="signed-message" class="hidden-text"/>       
+    }
+</div>
+}
+
+    <script type="text/javascript">
+        var signedMessageVis = $('#signed-message').is(":visible");
+        var signedMessage = $('#signed-message').val();
+        var allComplete = $(".document-checked:enabled").length === 0 && $(".document-checked:not(:checked)").length === 0;
+        var getCount = @hideCount;
+        var messageContainer = '<ul id="message-container" tabindex="-1" role="alert">';
+        if (signedMessageVis) {
+            messageContainer += '<li class="alert-message padding main-header_failure alignLeft list-unstyled" style="padding-left: 38px">' + signedMessage +'</li>';
+        }
+        if (getCount >= 1) {
+            messageContainer += '<li class="document-status alert-message padding alignLeft list-unstyled" style="padding-left: 38px" id="document-confirm-message" tabindex="-1" role="alert">This form is incomplete. To enable signature, please return to the form and complete all required fields.</li>'
+        }
+        messageContainer += '</ul>';
+        if (!allComplete && (signedMessageVis || getCount >= 1)) {
+            $('#documentForm').append(messageContainer);            
+            $('.form-message-fail').focus();
+        }
+        $('.form-message-fail').addClass('displayNone');
+        // Hide password section when needed
+        var fnHidePasswordSectionWhenNeeded = function () {
+            if ($(".document-checked:enabled").length === 0) {
+                $("#passwordSection").hide();
+            }
+        };
+        // Set password section visibility
+        var fnSetPasswordSectionVisibility = function () {
+            if ($(".document-checked:not(:checked):not([disabled])").length > 0) {
+                // Disable password controls
+                $("#password").prop("disabled", true);
+                $("#saveConfirmation").prop("disabled", true).removeClass("btn-info").addClass("btn-disabled");
+            } else {
+                // Enable password controls
+                $("#password").prop("disabled", false);
+                $("#saveConfirmation").prop("disabled", false).removeClass("btn-disabled").addClass("btn-info");
+            }
+        };
+        // Store check selections
+        var fnStoreCheckSelections = function ($this) {
+            var documentId = $this.closest(".upm-confirm-container").find(".document-id").val();
+            if ($this.prop("checked")) {
+                sessionStorage.setItem("ConfirmSign-" + documentId, true);
+            } else {
+                sessionStorage.removeItem("ConfirmSign-" + documentId);
+            }
+        };
+        // Retrieve check selections
+        var fnRetrieveCheckSelections = function () {
+            for (var i = 0; i < $(".upm-confirm-container > .document-id").length; i++) {
+                var documentId = $(".upm-confirm-container > .document-id").eq(i).val();
+                if (sessionStorage.getItem("ConfirmSign-" + documentId)) {
+                    $(".upm-confirm-container > .document-checked").eq(i).prop("checked", true);
+                }
+            }
+            // Uncheck last one unless all the rest are checked
+            if ($(".upm-confirm-container > .document-checked:checked").length <
+                    $(".upm-confirm-container > .document-checked").length) {
+                $(".upm-confirm-container > .document-checked").last().prop("checked", false);
+            }
+        };
+        $(function () {
+            // On keyup handler
+            $("[data-keyup-enter]").keyup(function (e) {
+                e.preventDefault();
+                var target = $(this).attr("data-keyup-enter");
+                if (e.keyCode === 13) {
+                    $(target).click();
+                }
+            });
+            // Retrieve check selections
+            fnRetrieveCheckSelections();
+            // Hide password section when needed
+            fnHidePasswordSectionWhenNeeded();
+            // Set password section visibility
+            fnSetPasswordSectionVisibility();
+        });
+        // Check box selection
+        $(".document-checked").off("change").on("change", function () {
+            fnStoreCheckSelections($(this));
+            fnSetPasswordSectionVisibility();
+        });
+        // Save agreement confirmation
+        $("#saveConfirmation").off("click").on("click", function (e) {
+            e.preventDefault();
+            // Get password
+            var password = $.trim($("#password").val());
+            if (password !== "") {
+                // Compile data from check boxes
+                var formData = [];
+                $(".document-id").each(function () {
+                    var o = $(this).parent().find(".document-checked");
+                    if (!o.is(":disabled")) {
+                        formData.push({ Key: parseInt($(this).val()), Value: o.is(":checked") });
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: '@Url.Action(Routing.ProgramRegistration.SignRegistrationForm, Routing.P2rmisControllers.ProgramRegistration)',
+                    data: JSON.stringify({ "password": password, "formData": JSON.stringify(formData) }),
+                    contentType: 'application/json'
+                }).done(function (data) {
+                    if (data.status) {
+                        // Success
+                        $("#passwordError").addClass('hide');
+                        for (var i = 0; i < data.signatures.length; i++) {
+                            var d = data.signatures[i];
+                            var sec = $(".document-id[value='" + d.PanelUserRegistrationDocumentId + "'").parent();
+                            if (d.Date !== "") {
+                                // Update signature section
+                                sec.find(".document-signature-name").html(d.Name);
+                                sec.find(".document-signature-date").html(d.Date);
+                                sec.find(".document-signature").show();
+                                // Disable the checkbox
+                                sec.find(".document-checked").prop("disabled", true);
+                                // Update signature indicators on tabs
+                                $(".document-sig[data-documentid=" + d.PanelUserRegistrationDocumentId + "]").removeClass("unsigned").addClass("signed");
+                                // Disable password controls
+                                $("#password").prop("disabled", true);
+                                $("#saveConfirmation").prop("disabled", true).removeClass("btn-info").addClass("btn-disabled");
+                                // Hide password section when needed
+                                fnHidePasswordSectionWhenNeeded();
+                                // Show Print PDF link
+                                sec.find(".pdf-unsigned").hide();
+                                sec.find(".pdf-signed").show();
+                            }
+                        }
+                        if (data.isRegistrationCompleted && fnCompleteRegistration) {
+                            var participationId = $("#participationId").val();
+                            fnCompleteRegistration(participationId);
+                        }
+                        $('.ui-dialog-titlebar-close').click();
+                    } else {
+                        $("#passwordError").removeClass('hide');
+                    }
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert($.defaultFailureMessage);
+                });
+            }
+        });
+        // Print PDF
+        $(".print-pdf").off("click").on("click", function (e) {
+            e.preventDefault();
+        });
+    </script>

@@ -1,0 +1,121 @@
+﻿@model Sra.P2rmis.Web.UI.Models.EditRequestViewModel
+@using Sra.P2rmis.Web.Controllers.TaskTracking
+
+<div class="row-fluid">
+    <div id="mainContent" class="span12">
+        <div class="row-fluid">
+            <div class="span12"><h3>Ticket Details for @Model.TicketId</h3></div>
+        </div>
+        @if (TempData[TaskTrackingBaseController.EditResultTempDataKey] != null && (bool)TempData[TaskTrackingBaseController.EditResultTempDataKey] == false)
+        {
+            <div class="row-fluid">
+                <div class="span12"><p class="ui-state-error">@TempData[TaskTrackingBaseController.EditResultMessageTempDataKey]</p></div>
+            </div>
+        }
+        else if (TempData[TaskTrackingBaseController.EditResultTempDataKey] != null)
+        {
+            <div class="row-fluid">
+                <div class="span12  alignLeft saveSuccessful">
+                    @TempData[TaskTrackingBaseController.EditResultMessageTempDataKey]
+                </div>
+            </div>
+        }
+            <fieldset>
+                <form action="" method="post" enctype="multipart/form-data">
+                    @Html.ValidationSummary(true, "Please fix the errors below:")
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.RequestorName, "Requestor Name:", new { @class = "boldWeight"})</div>
+                        <div class="span10">@Html.DisplayFor(x => x.RequestorName)</div>
+                        @Html.HiddenFor(x => x.RequestorName)
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.SelectedClient, "Primary Client:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.SelectedClient)</div>
+                        @Html.HiddenFor(x => x.SelectedClient)
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.Subject, "Subject:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.Subject)</div>
+                        @Html.HiddenFor(x => x.Subject)
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.RequestType, "Type:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.RequestType)</div>
+                        @Html.HiddenFor(x => x.RequestType)
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.DueDate, "Due Date:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.DueDateFormatted)</div>
+                        @Html.HiddenFor(x => x.DueDate)
+                    </div>
+                    @if (Model.DoDisplayTaskTypeInfo)
+                    {
+                        <div class="row-fluid">
+                            <div class="span2">@Html.LabelFor(x => x.TaskType, "Task Type:", new { @class = "boldWeight" })</div>
+                            <div class="span10">@Html.DisplayFor(x => x.TaskTypeName)</div>
+                        </div>
+                    }
+                    
+                    else {
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.Component, "Component:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.ComponentName)</div>
+                    </div>
+                    }
+                    @Html.HiddenFor(x => x.TaskTypeName)
+                    @Html.HiddenFor(x => x.ComponentName)
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.RequestDescription, "Request Description:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.Raw(Model.RequestDescriptionFormatted)</div>
+                        @Html.HiddenFor(x => x.RequestDescription)
+                    </div><br />
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.Assignee, "Assignee:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.Assignee)</div>
+                        @Html.HiddenFor(x => x.Assignee)
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.Status, "Status:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.DisplayFor(x => x.Status)</div>
+                        @Html.HiddenFor(x => x.Status)
+                    </div>
+                    @if (Model.IsEditingAllowed)
+                    {
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <p class="alert-info">
+                                Use the form fields below to upload comments and/or documents to the ticket.  Hold ctrl or shift to select multiple files for upload.<br />
+                                Please contact P2RMIS IT directly for changes regarding due date or ticket status.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.Comment, "Add comment:", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.TextAreaFor(x => x.Comment, new { style = "display:block; width:60%; height:125px;" })</div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">@Html.LabelFor(x => x.Attachments, "Add attachment(s):", new { @class = "boldWeight" })</div>
+                        <div class="span10">@Html.TextBoxFor(x => x.Attachments, new { type = "file", @multiple = "multiple" })@Html.ValidationMessageFor(x => x.Attachments)</div>
+                    </div>
+                    @Html.HiddenFor(x => x.TicketId)
+                    <div class="row-fluid">
+                        <div class="span12 align-center">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                        </div>
+                    </div>
+                    }
+                    else {
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <p class="alert-info">
+                                This ticket is currently closed.  Please contact P2RMIS IT to re-open.
+                            </p>
+                        </div>
+                    </div>
+                    }
+                </form>
+</fieldset>
+
+    </div>
+</div>

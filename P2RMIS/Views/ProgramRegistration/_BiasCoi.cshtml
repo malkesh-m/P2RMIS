@@ -1,0 +1,144 @@
+﻿@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+
+@Html.Partial("_FormHeader")
+@{
+    string contentClass = string.Empty;
+    string warningMessage = string.Empty;
+    bool disabledFlag = Model.Form.DocumentSigned != null && (bool)Model.Form.DocumentSigned;
+}
+<input type="hidden" id="document-signed" value="@disabledFlag.ToString()">
+<div id="documentFormContent">
+    <div style="text-align:center;font-weight:bold;color:purple;padding:20px;">
+        SRA International, Inc., a GDIT Company<br />
+        Confidentiality, Conflicts of Interest and<br />
+        Non-disclosure for <br />
+        @Model.Form.ClientAbbreviation<br />
+        @Model.Form.FiscalYear @Model.Form.ProgramAbbreviation
+    </div>
+    <div class="bordered" style="margin:30px 0px;float:left;width:97%;">
+        <div class="padding-top-20 inlineBlock">
+            <p>
+                <b>CONFIDENTIALITY AND PROPRIETARY INFORMATION:</b> I, in my capacity as a Reviewer, acknowledge and agree that any and all nonpublic information of whatever kind or nature  relating to this Agreement, or nonpublic information that Reviewer acquires in connection with or as a result of this Agreement, or nonpublic information that Reviewer receives or becomes aware of during the term of this Agreement concerning the Company, its clients, and other third parties, is confidential and proprietary ("Confidential Information"). Confidential Information shall include information marked as "Proprietary", "Confidential", or with a similar legend. In the absence of any marking, Confidential Information shall also include all information which a reasonable person would consider to be confidential. The Reviewer will use Confidential Information <u>only</u> for the purposes of this Agreement. Reviewer shall not share Confidential Information with anyone except such persons expressly authorized to receive such information in connection with the performance of this Agreement (i.e., others designated to participate in the same peer review process). The Reviewer will not duplicate Confidential Information, or use it at any time to provide, perform, or furnish any services; or use it to invent, create, modify, adapt, or manufacture any products for the benefit of Reviewer or any third party. If the Reviewer requires administrative assistance for the performance of obligations under this Agreement, he/she will limit access to Confidential Information only to those administrative assistants who have a legitimate need for access to perform this Agreement. Reviewer will ensure that any assistant is aware of and agrees in writing to comply with the confidentiality restrictions of this Agreement. The Reviewer acknowledges that unauthorized disclosure or use of Confidential Information could cause irreparable harm and significant injury to the Company or its Government client(s). Accordingly, the Reviewer agrees that the Company shall have the right to seek and obtain immediate injunctive relief from breach or threatened breach of this Agreement in addition to any other rights and remedies it may have.
+            </p>
+            <p>
+                As of April 3, 2018, SRA International, Inc, (SRA) is a managed affiliate of General Dynamics Information Technology (GDIT). GDIT maintains contracts in support of the Federal Government that are separate from those managed by SRA. SRA has adopted the GDIT branding as part of the acquisition process. However, SRA, Inc remains a separate legal entity. Due to this relationship, reviewers may encounter applications submitted utilizing GDIT branding similar to that adopted by SRA as a result of the recent acquisition. The Reviewer agrees to be bound by the terms of the Confidentiality and Conflict of Interest policies included herein and agrees to not disclose any information concerning the GDIT application to anyone other than U.S. Government personnel or authorized SRA representatives. The panel member shall notify the Scientific Review Officer of any such requests or disclosures immediately.
+            </p>
+            <p>
+                The Reviewer acknowledges that such use or disclosure of Confidential Information may constitute insider trading in violation of Federal law, resulting in severe sanctions on individuals and the corporate entities involved in insider trading.
+            </p>
+            <p>
+                <b>CONFLICTS OF INTEREST:</b> The integrity of scientific peer review depends on processes that are free of bias or conflict of interest ("COI"). A COI in peer review exists when a reviewer (or a close relative or a professional associate of that reviewer) has a financial or other interest in an application that may bias the reviewer's evaluation of the application, or where a reasonable person would otherwise have cause to question the reviewer's impartiality if he or she were to participate in the review.
+            </p>
+            <p>
+                The peer review system relies on the professionalism and integrity of each reviewer to identify any real or apparent COI that is likely to bias his or her evaluation of an application or create the perception of bias. Reviewers are required to identify real or apparent COIs as early as possible in the review process. Regardless of the level of financial involvement or other interest, if a reviewer believes, or may be perceived as being unable to provide an objective evaluation, he or she may not participate in the review of the application.
+            </p>
+            <p>
+                The Reviewer acknowledges that he/she has read and understand the Conflict of Interest (COI) policy (available on the client's web site at <a href="http://cdmrp.army.mil/about/2tierRevProcess" target="_blank">http://cdmrp.army.mil/about/2tierRevProcess</a>). The Reviewer agrees:
+            </p>
+            <p class="padding-left-30">
+                1. To notify the Company immediately if he/she has a COI that prevents service on the panel.
+            </p>
+            <p class="padding-left-30">
+                2. To declare any COI identified with application(s) or proposal(s) assigned to the panel, and to provide an explanation for each such declaration.
+            </p>
+            <p class="padding-left-30">
+                3. To notify the Company immediately if he/she is assigned to an application or proposal with which he/she has a COI.
+            </p>
+            <p>
+                <b>POLITICAL AND PERSONAL ACTIVITIES:</b> The Reviewer is considered a government adviser when attending peer review meetings funded by a federal government agency. Thus, the Reviewer is expected to adhere to relevant regulations and appropriate standards of ethics regarding political activities or lobbying during his/her attendance (including travel as applicable) to the review meeting. The Reviewer who is on federal government travel status may not use that trip for lobbying or any political activities. The Reviewer should not discuss any proposed, enacted, or pending legislation or appropriations with members of Congress or their staff while attending the subject meeting. In addition, the Reviewer should not discuss his/her or another's federal government-funded grants or pending applications to a federal government agency with government officials during the trip.
+            </p>
+        </div>
+    </div>
+    <div class="bordered" style="margin:0 0 10px 0;float:left;width:97%;">
+        <div style="margin-top:-20px;float:left;background-color:#fff;padding:0px 10px;">
+            A selection is required
+        </div>
+        <div class="padding-top-20 inlineBlock">
+            ADDITIONAL INFORMATION. Please describe briefly any other circumstances past or present or connections
+            (including personal or professional relationships) that, in your opinion, might reasonably be
+            construed as unduly affecting your judgment in matters within the assigned tasks which you have agreed to complete, or
+            that might reasonably be viewed by others as creating an actual or potential bias or conflict of interest.
+        </div>
+        @{
+            contentClass = (Model.Form[Model.Form.AdditionalDisclosure].IsRequired) ? "form-content-required" : "form-content";
+            warningMessage = Model.Form[Model.Form.AdditionalDisclosure].WarningMessage;
+        }
+        <div style="margin-top:20px;width:100%;">
+            <span style="float:left; width:5%;text-align:center;">
+                @if (disabledFlag)
+                {
+                    @Html.RadioButtonFor(m => m.Form[Model.Form.AdditionalDisclosure].ItemValue, "false", new { disabled = disabledFlag })
+                }
+                else
+                {
+                    @Html.RadioButtonFor(m => m.Form[Model.Form.AdditionalDisclosure].ItemValue, "false", new { @id = "additionalDisclosure", @class = "additional-disclosure " + contentClass, data_warning_message = warningMessage })
+                }
+            </span>
+            <span style="float:left; width:95%;">I have no additional disclosure to report.</span>
+        </div>
+        <div style="margin-top:20px;width:100%;">
+            <span style="float:left; width:5%;text-align:center;">
+                @if (disabledFlag)
+                {
+                    @Html.RadioButtonFor(m => m.Form[Model.Form.AdditionalDisclosure].ItemValue, "true", new { @id = "additionalDisclosure", disabled = disabledFlag })
+                }
+                else
+                {
+                    @Html.RadioButtonFor(m => m.Form[Model.Form.AdditionalDisclosure].ItemValue, "true", new { @id = "additionalDisclosure", @class = "additional-disclosure " + contentClass, data_warning_message = warningMessage })
+                }
+            </span>
+            <span style="float:left; width:95%;">Additional disclosure is provided below.</span>
+            <div class="padding-left-40">
+                @{
+                    contentClass = (Model.Form[Model.Form.AdditionalDisclosureDetails].IsRequired) ? "form-content-required" : "form-content";
+                }
+                @if (disabledFlag || Model.Form[Model.Form.AdditionalDisclosure].ItemValue == "false")
+                {
+                    @Html.TextAreaFor(m => m.Form[Model.Form.AdditionalDisclosureDetails].ItemValue, new { @id = "additionalDisclosureDetails", @class = "width-92p", disabled = disabledFlag })
+                }
+                else
+                {
+                    @Html.TextAreaFor(m => m.Form[Model.Form.AdditionalDisclosureDetails].ItemValue, new { @id = "additionalDisclosureDetails", @class = "width-92p " + contentClass, data_warning_message = warningMessage })
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // Get form data
+    function fnGetFormData() {
+        var formData = [];
+        if ($("#document-signed").val().toLowerCase() !== "true") {
+            formData = [{ Key: @Model.Form.AdditionalDisclosure, Value: $("#additionalDisclosure:checked").val() },
+            { Key: @Model.Form.AdditionalDisclosureDetails, Value: $("#additionalDisclosureDetails").val() }];
+        }
+        return formData;
+    }
+    // Disable/enable additional disclosure details box when necessary
+    $(".additional-disclosure").on("change", function() {
+        if ($("#additionalDisclosure:checked").val() === "true") {
+            $("#additionalDisclosureDetails").prop("disabled", false);
+            $("#additionalDisclosureDetails").addClass("form-content-required");
+            $("#additionalDisclosureDetails").attr("data-warning-message", $("#additionalDisclosure").attr("data-warning-message"));
+        } else {
+            $("#additionalDisclosureDetails").val("");
+            $("#additionalDisclosureDetails").prop("disabled", true);
+            $("#additionalDisclosureDetails").removeClass("form-content-required");
+            $("#additionalDisclosureDetails").attr("data-warning-message", "");
+            $('#additionalDisclosureDetails').removeClass('input-validation-error');
+        }
+    });
+    // Warning for details
+    $("#additionalDisclosureDetails").on("input propertychange", function () {
+        if ($("#additionalDisclosureDetails").val().trim() == "") {
+            $("#additionalDisclosureDetails").addClass("form-content-required");
+            $("#additionalDisclosureDetails").attr("data-warning-message", $("#additionalDisclosure").attr("data-warning-message"));
+            $('#additionalDisclosureDetails').addClass('input-validation-error');
+        } else {
+            $("#additionalDisclosureDetails").removeClass("form-content-required");
+            $("#additionalDisclosureDetails").attr("data-warning-message", "");
+            $('#additionalDisclosureDetails').removeClass('input-validation-error');
+       }
+    });
+    sessionStorage.setItem('signedDocument', $('#document-signed').val());
+</script>

@@ -1,0 +1,44 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.WebModels.SummaryStatement.ApplicationInfoModel
+
+<h4>Summary Statement Processing</h4>
+
+<p style="text-align:center">Application: @Model.theApplicationDetail.LogNumber</p>
+<table id="appView" class="table table-bordered table-striped alignCenter">
+    <tr>
+        <td align="left">
+            Title: @Model.theApplicationDetail.ApplicationTitle
+        </td>
+        <td rowspan="5" style="vertical-align:middle">
+            @{
+                int x = 1;
+                <p> Application Documents:</p>
+
+                foreach (var item in Model.theApplicationFileInfo)
+                {
+                    <p /><a style="color:black">@(x). </a><a href="/SummaryStatement/ViewApplicationFile/?logNumber=@item.FileInfo.LogNumber&fileSuffix=@item.FileInfo.FileSuffix" target="_blank">@item.FileInfo.DisplayLabel </a>
+                    x++;
+                }
+            }
+        </td>
+    </tr>
+    <tr>
+        <td align="left">Principal Investigator: @ViewHelpers.ConstructNameWithComma(Model.theApplicationDetail.PiFirstName, Model.theApplicationDetail.PiLastName)</td>
+    </tr>
+    <tr>
+        <td align="left">Organization: @Model.theApplicationDetail.PiOrganization</td>
+    </tr>
+    <tr>
+        <td align="left">Research Topic Area: @Model.theApplicationDetail.ResearchArea</td>
+    </tr>
+    <tr>
+        <td align="left">Award Mechanism: @Model.theApplicationDetail.MechanismName</td>
+    </tr>
+</table>
+
+
+
+
+
+
+

@@ -1,0 +1,109 @@
+﻿@model Sra.P2rmis.Web.UI.Models.PreviewCriteriaViewModel
+@using Newtonsoft.Json;
+
+@{
+    Layout = "../Shared/_LayoutHeadless.cshtml";
+    ViewBag.Title = "PreviewCriteriaLayout";
+}
+<style>
+    .ui-dialog-content {
+        padding: 0 !important;
+    }
+</style>
+<script type="text/javascript">
+    var inputData = {
+        mechanismTemplateId: $.getUrlParameter("mechanismTemplateId")
+    };
+    var title = '<span class="modalSmallCaption modalNotificationCaption"></span>';
+    $.get("/Setup/PreviewCriteria", inputData, function (data) {
+        p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.large, title, null, null, false);
+        var previewCriteriaData = JSON.parse($.trim($("#previewCriteriaData").html()));
+        if (previewCriteriaData.length > 0) {
+            for (var i = 0; i < previewCriteriaData.length; i++) {
+                if (i > 0) {
+                    $("body").append($(".ui-dialog").eq(0).clone());
+                }
+                $(".ui-dialog").eq(i).css("position", "inherit")
+                    .css("margin", "10px auto")
+                    .css("background", "#fff");
+                setCriterion(previewCriteriaData, i);
+            }
+            $(".ui-widget-overlay").remove();
+        }
+    });
+    // Set editor states
+    function setEditorStates(dialog, criterionData, times) {
+        setTimeout(function () {
+            if (dialog.find(".ss-preview-crit_iframe")[0] != undefined &&
+                dialog.find(".ss-preview-crit_iframe")[0].contentWindow.ToggleEditing) {
+                if (criterionData.RecommendedWordCount != undefined) {
+                    dialog.find(".ss-preview-crit_limit").show();
+                    dialog.find("#limitLocation").html(criterionData.RecommendedWordCount);
+                } else {
+                    dialog.find(".ss-preview-crit_limit").hide();
+                }
+                if (criterionData.IsOverall) {
+                    dialog.find(".ss-preview-crit_input-box").addClass("hidden");
+                } else {
+                    dialog.find(".ss-preview-crit_input-box").removeClass("hidden");
+                }
+                if (criterionData.IsCriteriaText) {
+                    dialog.find(".ss-preview-crit_iframe")[0].contentWindow.ToggleEditing(true);
+                } else {
+                    dialog.find(".ss-preview-crit_iframe")[0].contentWindow.ToggleEditing(false);
+                }
+                dialog.find(".ss-preview-crit_iframe")[0].contentWindow.clearEditorContent();
+            } else {
+                if (times < 10) {
+                    setEditorStates(dialog, criterionData, times);
+                } else {
+                    times += 1;
+                }
+            }
+        }, 1000);
+    }
+    // Set criterion data to the modal
+    function setCriterion(criteriaData, idx) {
+        var dialog = $("body .ui-dialog").eq(idx);
+        var criterionData = criteriaData[idx];
+        dialog.find(".ui-dialog-title").html("Preview - " + criterionData.ElementDescription);
+        dialog.find(".abstain-title").text(criterionData.ElementAbbreviation);
+        dialog.find("#descriptionArea").html(criterionData.InstructionText.replace(/\\"/g, '"'));
+        // Set editor states
+        setEditorStates(dialog, criterionData, 0);
+
+        dialog.find("#ratingDropdown").find("option:gt(0)").remove();
+        dialog.find("#ratingDropdown").hide();
+        dialog.find("#ratingText").hide();
+        if (!criterionData.IsScoringInteger && !criterionData.IsScoringDecimal && !criterionData.IsScoringAdjectival) {
+            dialog.find(".ss-preview-crit_rating").hide();
+        } else {
+            if (criterionData.IsScoringDecimal) {
+                dialog.find("#ratingText").show();
+            } else if (criterionData.IsScoringInteger) {
+                var lv = parseInt(criterionData.LowValue);
+                var hv = parseInt(criterionData.HighValue);
+                for (var iInt = lv; iInt <= hv; iInt++) {
+                    dialog.find("#ratingDropdown").append($("<option/>").text(iInt));
+                }
+                dialog.find("#ratingDropdown").show();
+            } else if (criterionData.IsScoringAdjectival) {
+                for (var iAdj = 0; iAdj <= criterionData.AdjectivalValues.length - 1; iAdj++) {
+                    dialog.find("#ratingDropdown").append($("<option/>").text(criterionData.AdjectivalValues[iAdj]));
+                }
+                dialog.find("#ratingDropdown").show();
+            }
+            dialog.find(".ss-preview-crit_rating").show();
+        }
+        dialog.find(".score-scale").text(criterionData.ScoreScale);
+        dialog.find("#backDialog").prop("disabled", false);
+        dialog.find("#nextDialog").prop("disabled", false);
+        if (idx == 0) {
+            dialog.find("#backDialog").prop("disabled", true);
+        }
+        if (idx == criteriaData.length - 1) {
+            dialog.find("#nextDialog").prop("disabled", true);
+        }
+    }
+</script>
+

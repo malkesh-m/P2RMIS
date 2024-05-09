@@ -1,0 +1,125 @@
+﻿@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.ViewModels.ProgramRegistration.RegistrationFormViewModel
+
+@{
+    @Html.IncludeVersionedFiles("/scripts/jquery.maskedinput.min.js")
+}
+<input type="hidden" id="document-signed" value="" />
+
+<div id="documentFormContent" class="mw-emergency-contact">
+    <label for="documentFormContent" class="sr-only" role='heading' aria-level='1'>Emergency Contact Information</label>
+    <div id="failureMessage" role="alert" aria-atomic="true"></div>
+    <div class="mw-emergency-contact_explanatory-text">Please add your emergency contact information.</div><br />
+    <div class="mw-emergency-contact_explanatory-text"><span class="asterisk">*</span>Indicates a required field.</div>
+    <!-- First Name -->
+    <div class="mw-emergency-contact_table">
+        <label for="emergencyFirstName" class="mw-emergency-contact_table_label">First <div class="hidden-text"> Name is Required</div></label>
+                @if (@Model.GetAlternateContactPersons.UserAlternateContactTypeId != 4)
+                {
+                    <input type="text" id="emergencyFirstName" class="mw-emergency-contact_input" value="" />
+                }
+                else
+                {
+                    <input type="text" id="emergencyFirstName" class="mw-emergency-contact_input" value="@Model.GetAlternateContactPersons.FirstName" />
+                }
+    </div>
+
+    <!-- Last Name -->
+    <div class="mw-emergency-contact_table">
+        <label for="emergencyLastName" class="mw-emergency-contact_table_label">Last <div class="hidden-text"> Name is Required</div></label>
+                @if (@Model.GetAlternateContactPersons.UserAlternateContactTypeId != 4)
+                {
+            <input type="text" id="emergencyLastName" class="mw-emergency-contact_input" value="" />
+                }
+                else
+                {
+                    <input type="text" id="emergencyLastName" class="mw-emergency-contact_input" value="@Model.GetAlternateContactPersons.LastName" />
+                }
+    </div>
+
+    <!-- Primary Phone -->
+    <div class="mw-emergency-contact_table">
+        <label for="emergencyPrimaryPhone" class="mw-emergency-contact_table_label">Primary Phone <div class="hidden-text"> is Required</div></label>
+        <div class="primarySelect mw-emergency-contact_table_primary">
+            @Model.PopulateMinimumPhones(Model.UserPhones)
+            @for (var i = 0; i < Model.UserPhones.Count(); i++)
+            {
+                <label for="primaryPhoneNumberType" class="sr-only">Primary Phone Type</label>
+                @Html.DropDownListFor(m => m.UserPhones[i].PhoneTypeId, new SelectList(Model.PhoneTypeDropdown, "Index", "Value", Model.UserPhones[i].PhoneTypeId), new { @class = "userPhoneTypeDropDown alignLeft", id = "primaryPhoneNumberType" })
+            }
+                @if (@Model.GetAlternateContactPersons.UserAlternateContactTypeId != 4)
+                {
+                <input type="text" id="emergencyPrimaryPhone" value="" class="masking alignLeft margin-left10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="14" />
+                <input type="checkbox" id="emergencyPrimaryCheckBox" class="mw-emergency-contact_table_large_input mw-emergency-contact_table_primary_checkbox" value="" />
+                <label for="emergencyPrimaryCheckBox" class="mw-emergency-contact_table_label-nr">International</label>
+                }
+                else
+                {
+                <input type="text" id="emergencyPrimaryPhone" value="@Model.GetAlternateContactPersons.AlternateContactPhone[0].Number" class="masking alignLeft margin-left10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="14" />
+                <input type="checkbox" id="emergencyPrimaryCheckBox" class="mw-emergency-contact_table_large_input mw-emergency-contact_table_primary_checkbox" checked="@Model.GetAlternateContactPersons.AlternateContactPhone[0].International" />
+                <label for="emergencyPrimaryCheckBox" class="mw-emergency-contact_table_label-nr">International</label>
+                }
+        </div>
+    </div>
+
+    <!-- Alternate Phone -->
+    <div class="mw-emergency-contact_table">
+        <label for="emergencyAlternatePhone" class="mw-emergency-contact_table_label-alt-nr">Alternate Phone</label>
+        <div class="alternateSelect mw-emergency-contact_table_primary">
+                @Model.PopulateMinimumPhones(Model.UserPhones)
+                @for (var i = 0; i < Model.UserPhones.Count(); i++)
+                {
+                <label for="alternatePhoneNumberType" class="sr-only">Alternate Phone Type</label>
+                @Html.DropDownListFor(m => m.UserPhones[i].PhoneTypeId, new SelectList(Model.PhoneTypeDropdown, "Index", "Value", Model.UserPhones[i].PhoneTypeId), new { @class = "userPhoneTypeDropDown alignLeft", id = "alternatePhoneNumberType" })
+                }
+                @if (Model.GetAlternateContactPersons.UserAlternateContactTypeId != 4)
+                {
+                <input type="text" id="emergencyAlternatePhone" value="" class="masking alignLeft margin-left10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="14" />
+                <input type="checkbox" id="emergencyAlternateCheckBox" class="mw-emergency-contact_table_large_input mw-emergency-contact_table_primary_checkbox" value="" />
+                <label for="emergencyAlternateCheckBox" class="mw-emergency-contact_table_label-nr">International</label>
+                }
+                else
+                {
+                <input type="text" id="emergencyAlternatePhone" value="@Model.GetAlternateContactPersons.AlternateContactPhone[1].Number" class="masking alignLeft margin-left10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="14" />
+                <input type="checkbox" id="emergencyAlternateCheckBox" class="mw-emergency-contact_table_large_input mw-emergency-contact_table_primary_checkbox" checked="@Model.GetAlternateContactPersons.AlternateContactPhone[1].International" />
+                <label for="emergencyAlternateCheckBox" class="mw-emergency-contact_table_label-nr">International</label>
+                }
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="@Model.GetAlternateContactPersons.AlternateContactPhone[0].PhoneTypeId" id="PhoneTypeIdOne" />
+<input type="hidden" value="@Model.GetAlternateContactPersons.AlternateContactPhone[1].PhoneTypeId" id="PhoneTypeIdTwo" />
+
+<script type="text/javascript">
+    var phoneTypeIdOne = $('#PhoneTypeIdOne').val();
+    var phoneTypeIdTwo = $('#PhoneTypeIdTwo').val();
+
+    // Sets Phone Type Id Dropdown
+    $('.primarySelect option').each(function (i, value) {
+        var newVal = $(this).val();
+        if (newVal == phoneTypeIdOne) {
+            $(this).attr('selected', 'selected');
+        }
+    })
+    $('.alternateSelect option').each(function (i, value) {
+        var newVal = $(this).val();
+        if (newVal == phoneTypeIdTwo) {
+            $(this).attr('selected', 'selected');
+        }
+    })
+
+    // Makes phone number fields numeric
+    $('#emergencyPrimaryPhone').numeric();
+    $('#emergencyAlternatePhone').numeric();
+
+    var signedDoc = sessionStorage.getItem('signedDocument');
+
+    // If doc is signed, all values are readonly
+    if (signedDoc == "True") {
+        $('input, checkbox, select').attr('disabled', 'disabled');
+    }
+
+    var failMessage = '#failureMessage';
+    isVisibleFocus(failMessage);
+</script>

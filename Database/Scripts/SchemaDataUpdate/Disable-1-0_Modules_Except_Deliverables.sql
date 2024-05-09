@@ -1,0 +1,1 @@
+﻿DELETE FROM [$(P2RMIS)].dbo.SYS_Groups_Modules WHERE MOD1_ID NOT IN (1,17,24);

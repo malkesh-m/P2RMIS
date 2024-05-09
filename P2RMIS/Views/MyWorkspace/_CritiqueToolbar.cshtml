@@ -1,0 +1,237 @@
+﻿@model Sra.P2rmis.Web.UI.Models.CritiqueViewModel
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+
+<!-- Stylesheet for the custom Modal -->
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<style>
+
+    #submitCritiqueButton {
+        margin-top: 0px !important;
+    }
+
+    .margin-top30 > div:nth-child(4) {
+        margin-top: 180px !important;
+    }
+</style>
+<nav class="navbar-inner navtoolbar" role="navigation">
+    <div class="mw-critiques-toolbar">
+        <div class="mw-critiques-toolbar_img">
+            <a id="backButton" href="@Model.LastPageUrl">
+                <img src="~/Content/img/backarrow_20px_enabled.png" border="0"
+                     alt="Go Back to Previous Page" title="Back" />
+            </a>
+        </div>
+        <label for="reviewerNav" class="mw-critiques-toolbar_label"><span class="hidden-text">Select a reviewer from</span>Critiques</label>
+        @if (Model.ReviewerCritiquesList.Count > 0)
+        {
+            <select id="reviewerNav" title="Assigned Reviewers" class="mw-critiques-toolbar_select">
+                    @if (Model.ReviewerCritiquesList.Count > 1)
+                    {
+                        <option value="">Select</option>
+                    }
+                    @for (var i = 0; i < Model.ReviewerCritiquesList.Count; i++)
+                    {
+                        var reviewer = Model.ReviewerCritiquesList[i];
+                        var reviewerAnchor = "reviewer" + reviewer.WorkflowId;
+                        var selectedAttribute = reviewer.IsCurrentUser ? " selected" : "";
+                        <option value="@reviewerAnchor" @selectedAttribute>@reviewer.FormattedReviewerName</option>
+                    }
+                </select>
+        }
+        @if (Model.CanSubmit)
+        {
+            <span class="inline-block float-right margin-top10">
+                <button id="submitCritiqueButton" class="btn btn-primary">Submit Critique</button>
+            </span>
+        }
+    </div>
+    <div class="toolbar-divider align-center lightgray">|</div>
+    <div class="toolbar-middle align-center">
+        <span class="icon-holder">
+            @{
+                var scoreCardUrl = "Scorecard?panelapplicationid=" + Model.PanelApplicationId + "&sessionpanelid=" + Model.SessionPanelId;
+            }
+            @if (Model.IsCommentsEnabled)
+            {
+                <a class="application-comment" data-applicationid="@Model.ApplicationInformation.ApplicationId" data-panelapplicationid="@Model.PanelApplicationId"><img src="~/Content/img/comment_20px_enabled.png" border="0" alt="Unassigned Reviewer Comments" title="Unassigned Reviewer Comments" /></a>
+            }
+            else
+            {
+                <img src="~/Content/img/comment_20px_disabled.png" border="0" alt="Unassigned Reviewer Comments" />
+            }
+        </span>
+        <span class="icon-holder">
+            @if (Model.IsScoreCardEnabled)
+            {
+                <a href="@scoreCardUrl"><img src="~/Content/img/scorecard_20px_enabled.png" border="0" alt="Score Card" title="Score Card" /></a>
+            }
+            else
+            {
+                <img src="~/Content/img/scorecard_20px_disabled.png" border="0"  alt="Score Card" title="Score Card" />
+            }
+        </span>
+        <span class="icon-holder">
+            <a href="javascript:void(0);" id="assignedRevImage" panel-app-id="@Model.PanelApplicationId" not-available="@Model.NoScoresAvailable">
+                <img src="~/Content/img/rating_summary_20px_enabled.png" border="0" alt="Assigned Reviewers' Scores" title="Assigned Reviewers' Scores" />
+            </a>
+        </span>
+        <span class="wide-icon-holder ">
+            @if (Model.CanAccessDiscussionBoard)
+            {
+                <a href="/PanelManagement/DiscussionBoard?applicationStageStepId=@Model.ApplicationStageStepId" id="modImage">
+                    <img src="~/Content/img/discussion_board_20px_enabled.png" border="0" alt="Discussion Board" title="Discussion Board" style="width:34px" />
+                </a>
+            }
+            else
+            {
+                <img src="~/Content/img/discussion_board_20px_disabled.png" border="0" alt="Discussion Board" title="Discussion Board" style="width:34px" />
+            }
+        </span>
+    </div>
+    <div class="toolbar-divider align-center lightgray">|</div>
+    <div class="toolbar-right align-center">
+        <span class="icon-holder">
+            <!-- One may wonder about the display:none style.  The log number is required to reuse the existing script in Application scoring -->
+            <a href="javascript:void(0);" class="applicationLogNumber" data-applicationid="@Model.ApplicationInformation.ApplicationId">
+                <span style="display:none;">@Model.ApplicationInformation.LogNumber</span>
+                <img src="~/Content/img/pdf_icon_20px_enabled.png" border="0" alt="Application" title="Application" />
+            </a>
+        </span>
+    </div>
+</nav>
+
+<script type="text/javascript">
+    // Submit critique
+    var fnSubmitCritique = function (applicationWorkflowId, elementId) {
+        if (applicationWorkflowId != "" || elementId != "") {
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@Url.Action(Routing.MyWorkspace.CanSubmitCritique, Routing.P2rmisControllers.MyWorkspace)',
+                data: {
+                    "applicationWorkflowId": applicationWorkflowId, "applicationWorkflowStepElementId": elementId, "confirmed": false
+                }
+            }).done(function (result) {
+                if (result.success) {
+                    // Successful
+                    $.get("/MyWorkspace/GetNotificationOfSubmitModal", function (data) {
+                        var title = '<span class="modalSmallCaption modalNotificationCaption">Notification</span>';
+                        p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, title);
+                        $('.ui-dialog').find('#notificationOfSubmitModal').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.cancelSubmitFooter);
+                        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                    });
+                } else {
+                if (result.code === 1) {
+                $.get("@Url.Action(Routing.MyWorkspace.AlreadySubmittedCritique, Routing.P2rmisControllers.MyWorkspace)", function (data) {
+                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, '<span class="modalSmallCaption modalNotificationCaption">Already submitted critique</span>');
+                    $('.ui-dialog').find('#ModalDialog').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { document.location.reload(); });
+                    $('#submitCritiqueButton').attr('disabled', 'disabled');
+                    $('a.edit-critique').attr('disabled', 'disabled');
+                    $("#ModalDialog").dialog({ position: { my: "top center", at: "top center", of: window } });
+                });
+
+                }
+                    else if (result.isOverallIncomplete) {
+                        // Overall evaluation is incomplete
+                        $.get("/MyWorkspace/GetIncompleteOverallWarningModal", function (data) {
+                            var title = '<span class="modalSmallCaption modalWarningCaption">Warning</span>'
+                            p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, title);
+                            $('.ui-dialog').find('#incompleteOverallWarningModal').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.closeFooter);
+                            $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                        });
+                    } else if (result.isCritiqueIncomplete) {
+                        $.post("/MyWorkspace/GetIncompleteCritiqueWarningModal",
+                            { "incompleteCritiques": result.incompleteCritiques }, function (data) {
+                                var title = '<span class="modalMediumCaption modalWarningCaption">Warning</span>';
+                                p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, title);
+                                $('.ui-dialog').find('#incompleteCritiqueWarningModal').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.cancelSubmitFooter);
+                                $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                                $('.newDisable').prop("disabled", true);
+                                // Toggle button
+                                $("#abstainFlag").on("change", function () {
+                                    $('.newDisable').prop("disabled", !($(this).is(":checked")));
+                                });
+                                //function to perform submit operation
+                                $('.newDisable').on('click', function (e) {
+                                    e.preventDefault();
+                                    if ($(this).attr('id') == 'submitDialog') {
+                                        var applicationWorkflowId = $(".edit-critique").eq(0).closest(".mw-critiques_main_section").attr("data-workflowid");
+                                        var elementId = $(".edit-critique").eq(0).closest(".mw-critiques_main_sub-section_critique").attr("data-elementid");
+                                        var elementsToAbstain = [];
+                                        $(".incomplete-critique-element").each(function () {
+                                            elementsToAbstain.push($(this).attr("data-elementid"));
+                                        });
+                                        $.ajax({
+                                            cache: false,
+                                            type: 'POST',
+                                            url: '@Url.Action(Routing.MyWorkspace.SetAbstains, Routing.P2rmisControllers.MyWorkspace)',
+                                            data: {
+                                                "applicationWorkflowId": applicationWorkflowId, "applicationWorkflowStepElementId": elementId, "elementsToAbstain": elementsToAbstain
+                                            }
+                                        }).done(function (result) {
+                                            if (result.success) {
+                                                // Populate data to parent window
+                                                $.each(result.elementsAbstained, function (index) {
+                                                    var critiqueSection = $(".mw-critiques_main_sub-section_critique[data-elementid=" + result.elementsAbstained[index].ApplicationWorkflowStepElementId + "]");
+                                                    // Reset the contentId and abstain
+                                                    critiqueSection.attr("data-contentid", result.elementsAbstained[index].ApplicationWorkflowStepElementContentId);
+                                                    critiqueSection.attr("data-abstain", true);
+                                                });
+
+                                                // Create confirmation modal
+                                                $.get("@Url.Action(Routing.MyWorkspace.GetNotificationOfSubmitModal, Routing.P2rmisControllers.MyWorkspace)", function (data) {
+                                                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.small, '<span class="modalSmallCaption modalNotificationCaption">Notification</span>');
+                                                    $('.modalWarningCaption').removeClass('modalWarningCaption');
+                                                    $('.ui-dialog').find('#ModalDialog').closest('.ui-dialog.ui-widget').find('.modal-footer').append(p2rims.modalFramework.defaultModalFooters.cancelSubmitFooter);
+                                                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                                                    $("#ModalDialog").dialog({ position: { my: "top center", at: "top center", of: window } });
+                                                });
+                                            } else {
+
+                                                alert($.defaultFailureMessage);
+                                            }
+                                        }).fail(function (xhr, ajaxOptions, thrownError) {
+                                            alert($.defaultFailureMessage);
+                                        });
+                                    }
+                                });
+                        });
+                    }
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        }
+    }
+    // Submit critique button handler
+    $("#submitCritiqueButton").on("click", function () {
+        var applicationWorkflowId = $(".edit-critique").eq(0).closest(".mw-critiques_main_section").attr("data-workflowid");
+        var elementId = $(".edit-critique").eq(0).closest(".mw-critiques_main_sub-section_critique").attr("data-elementid");
+        fnSubmitCritique(applicationWorkflowId, elementId);
+    });
+</script>
+@Html.IncludeVersionedFiles("/Scripts/Custom/MyWorkspace/ApplicationScoring.js")
+<script type="text/javascript">
+    // Initialize
+    var gViewApplicationModalUrl = '@Url.Action(Routing.PanelManagement.PIInformation, Routing.P2rmisControllers.PanelManagement)';
+</script>
+<script type="text/javascript">
+    $(function () {
+        //Drop down navigation
+        var fnJumpToReviewerSection = function () {
+            var offset = $("#" + $("#reviewerNav").val()).offset();
+            if (offset != undefined) {
+                var top = offset.top;
+                window.scrollTo(0, top - 350);
+            }
+        }
+        fnJumpToReviewerSection();
+        $("#reviewerNav").on("change", function () {
+            fnJumpToReviewerSection();
+        });
+    });
+
+</script>

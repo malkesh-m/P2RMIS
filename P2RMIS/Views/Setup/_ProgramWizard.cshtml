@@ -1,0 +1,262 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProgramWizardViewModel
+@using Newtonsoft.Json;
+
+<style type="text/css">
+
+    table.ss-add-program_table {
+        width:700px;
+    }
+
+    td.k-widget.k-combobox.k-header.ss-add-program_table_gridOptions {
+        width: 440px;
+    }
+
+    span.k-widget.k-combobox.k-header.ss-add-program_table_gridOptions_select {
+        width: 335px;
+    }
+
+    span.k-widget.k-combobox.k-header.ss-add-program_table_gridOptions_select.unselectable {
+        width: 325px;
+    }
+
+    .k-input {
+        width: 100% !important;
+    }
+
+    .ss-add-program-modal .k-combobox .k-input:after {
+               content: " ";
+    }
+
+    .k-combobox .k-input:after {
+        content: " ";
+    }
+
+    /*.ss-add-program_table_gridOptions_input {
+        width: 100%;          /*200px;*/
+    }*/
+
+    #fyList {
+        width: 80px;
+    }
+</style>
+
+<div class="row-fluid ss-add-program">
+    <div id="programSetupAlert" class="ss-add-program__error"></div>
+    <span class="ss-add-program_required">All fields are required.</span>
+    <table class="ss-add-program_table">
+        <tr>
+            <td class="ss-add-program_table_gridTitles">Client</td>
+            <td class="ss-add-program_table_gridOptions">
+                @Html.DropDownListFor(m => m.ClientId, new SelectList(Model.Clients, "Key", "Value", Model.ClientId), "Select", new { @id = "clientList", @class = "ss-add-program_table_gridOptions_select" })
+            </td>
+        </tr>
+        <tr>
+            <td class="ss-add-program_table_gridTitles">Program Name</td>
+            <td class="ss-add-program_table_gridOptions" id="programNameContainer">
+                <select name="fyField" id="pnComboBox" class="ss-add-program_table_gridOptions_select" style="width: 335px;">               @*class="ss-add-program_table_gridOptions_select"*@
+                    <option value="" id="programName" selected class="ui-widget-content" style="width: 335px;"></option>
+                </select>
+                <div class="ss-add-program_table_baseline">&nbsp; Max 75 char.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="ss-add-program_table_gridTitles-abbr">Abbreviation</td>
+            <td class="ss-add-program_table_gridOptions">
+                <input type="text" class="ss-add-program_table_gridOptions_input" id="prgAbbrev" disabled maxlength="10" />
+                <div class="ss-add-program_table_maxText">&nbsp; Max 10 char.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="ss-add-program_table_gridTitles">Fiscal Year</td>
+            <td class="ss-add-program_table_gridOptions">
+                @Html.DropDownListFor(m => m.Fy, new SelectList(Model.FiscalYears, "Key", "Value", Model.Fy), "Select", new { @id = "fyList", @class = "ss-add-program_table_gridOptions_select", @disabled = "disabled" })
+                <div class="ss-add-program_table_maxText"><input type="checkbox" id="activate" checked/>&nbsp; Active</div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<input type="hidden" id="programYearId" value="@Model.ProgramYearId" />
+<input type="hidden" id="clientProgramId" value="@Model.ClientProgramId" />
+<script type="text/javascript">
+    $('body').addClass('ss-add-program-modal');
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+    });
+    $(function () {
+        // Get program data
+        // Check if the parent program data contains the current program and fiscal year
+        var existsProgramAndFiscalYear = function (clientProgramId, fiscalYear) {
+            var found = false;
+            var getProgramData = true;
+            if (getProgramData) {
+                var programData = function () {
+                    return JSON.parse($("#programData").html());
+                }
+                var i = 0;
+                while (!found && i < programData.length) {
+                    if (programData[i].clientProgramId == clientProgramId && programData[i].fy == fiscalYear) {
+                        found = true;
+                    }
+                    i++;
+                }
+            }
+            return found;
+        }
+
+        // Save event handler
+            $("button[id='saveDialogChanges']").click(function () {
+                $('#saveDialogChanges').prop("disabled", true);
+                $("#programSetupAlert").html("");
+
+                var msg = "";
+                var clientId = $("#clientList").val();
+                var clientName = $("#clientList > option:selected").text();
+                var isAdd = $("#pnComboBox").data("kendoComboBox") != null;
+                var clientProgramId = isAdd ? $("#pnComboBox").data("kendoComboBox").value() : $("#clientProgramId").val();
+                var programAbbr = $('#prgAbbrev').val();
+                var fy = $("#fyList").val();
+                if (clientId == "") {
+                    msg = "Please select a client.";
+                    $('#clientList').addClass('input-validation-error');
+                } else {
+                    $('#clientList').removeClass('input-validation-error');
+                    if (clientProgramId == "") {
+                        msg = "Please select or enter in a program.";
+                        $('.k-combobox').addClass('input-validation-error');
+                    } else {
+                        $('.k-combobox').removeClass('input-validation-error');
+                        if (programAbbr == "") {
+                            msg = "Please enter in an abbreviation.";
+                            $('.selectSpan').addClass('input-validation-error');
+                        } else {
+                            $('.selectSpan').removeClass('input-validation-error');
+                            if (fy == "") {
+                                msg = "Please select a fiscal year.";
+                                $('#fyList').addClass('input-validation-error');
+                            } else {
+                                $('#fyList').removeClass('input-validation-error');
+                                if (isAdd && existsProgramAndFiscalYear(clientProgramId, fy)) {
+                                    // When adding a new program
+                                    msg = "The fiscal year already exists for " + getProgramAbbr(clientProgramId) +
+                                        ". Please select another fiscal year.";
+                                    $('#fyList').addClass('input-validation-error');
+                                } else {
+                                    $('#fyList').removeClass('input-validation-error');
+                                }
+                            }
+                        }
+                    }
+                }
+                $("#programSetupAlert").html(msg);
+                $("#successMessage, #failureMessage").html("").hide();
+                if (msg == "") {
+                    // Save AJAX call
+                    var programDescription = isAdd ? $("#pnComboBox").data("kendoComboBox").text() : $("#programNameContainer").find(".k-combobox").html();
+                    var inputData = {
+                        "clientId": clientId, "programYearId": $("#programYearId").val(), "clientProgramId": clientProgramId,
+                        "programDescription": programDescription, "programAbbreviation": $("#prgAbbrev").val(),
+                        "programYear": fy, "activate": $("#activate").prop("checked")
+                    };
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url: '/Setup/SaveProgram',
+                        data: inputData,
+                        success: function (data) {
+                            if (!data.flag) {
+                                for (var i = 0; i < data.messages.length; i++) {
+                                    $("#programSetupAlert").append($("<div/>").html(data.messages[i]));
+                                }
+                            } else {
+                                $('a.k-pager-refresh').click();
+                                $('.ui-dialog-titlebar-close').click();
+                                if (isAdd) {
+                                    $("#successMessage").html("Program " + fy + " - " + programAbbr + " added successfully for " + clientName + ".").show();
+                                } else {
+                                    $("#successMessage").html("Program " + fy + " - " + programAbbr + " updated successfully for " + clientName + ".").show();
+                                }
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            $("#programSetupAlert").html("Failed to save the program.");
+                        },
+                        complete: function (data) {
+                            $('#saveDialogChanges').prop("disabled", false);
+                        }
+                    });
+                } else {
+                    $('#saveDialogChanges').prop("disabled", false);
+                }
+            });
+    });
+
+    var programsJson = [];
+    // Get program abbreviation
+    function getProgramAbbr(clientProgramId) {
+        var abbr = "";
+        var i = 0;
+        while (abbr == "" && i < programsJson.length) {
+            console.log('hit: ', programsJson[i].ProgramAbbr);
+            if (programsJson[i].ClientProgramId == clientProgramId) {
+                abbr = programsJson[i].ProgramAbbr;
+            }
+            i++;
+        }
+        return abbr;
+    }
+
+    $('#clientList').on('change', function () {
+        var selected = $('#clientList option:selected').text();
+        (selected == "Select") ? $('#fyList').attr('disabled', 'disabled') : $('#fyList').attr('disabled', false);
+    })
+
+    $(function () {
+        // Executes when program drop-down value is changed
+        function setProgramAbbr() {
+            var clientProgramId = $("#pnComboBox").data("kendoComboBox").value();
+            var option = $("#pnComboBox").find("option[value='" + clientProgramId + "']").text();
+
+            if (option.length > 0) {
+                $("#prgAbbrev").val(getProgramAbbr(clientProgramId)).prop("disabled", true);
+            } else {
+            //    $("#prgAbbrev").prop("disabled", false);
+            }
+        }
+        $('#pnComboBox').kendoComboBox({
+            clearButton: false,
+            change: setProgramAbbr
+        });
+ //       setProgramAbbr();       .off("change")
+        $(document).on("change", "#clientList", function () {
+            $('#pnComboBox').find("option").remove();
+            var clientId = $("#clientList").val();
+            var option = $('#clientList option:selected').text();
+
+            if (option != "Select") {
+                $.getJSON('@Url.Action("GetProgramsJson", "Setup")', { clientId: clientId }, function (results) {
+                    programsJson = results;
+                    $('#pnComboBox').kendoComboBox({
+                        change: setProgramAbbr,
+                        clearButton: false,
+                        dataTextField: "ProgramName",
+                        dataValueField: "ClientProgramId",
+                        dataSource: results,
+                        filter: "startswith",
+                    });
+            //        setProgramAbbr();
+                });
+                $("#prgAbbrev").val("").prop("disabled", false);
+                 $("#pnComboBox").data("kendoComboBox").enable(true);
+            } else {
+                $("#prgAbbrev").val(getProgramAbbr(clientProgramId)).prop("disabled", true);
+                 $("#pnComboBox").data("kendoComboBox").enable(false);
+                $("#pnComboBox").data("kendoComboBox").text("Type a new program name or select from the list");
+                $("#fyList").val('');
+            }
+        });
+        $('#pnComboBox').data('kendoComboBox').input.attr("placeholder", "Type a new program name or select from the list");
+        $("#pnComboBox").data("kendoComboBox").enable(false);
+    });
+</script>

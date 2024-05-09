@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>P2RMISDB-UA</TargetDatabaseName>
+    <DeployScriptFileName>Database.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=rds-usgw1-1ab-d-w-p2rmisdb01.cod2vnvjj4uy.us-gov-west-1.rds.amazonaws.com, 1433;Initial Catalog=p2rmisdb-test;User ID=jenkins-p2rmis;Password=8hrA1wh1aZ3mEPQVfLGK;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;</TargetConnectionString>
+    <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+    <IgnoreUserSettingsObjects>True</IgnoreUserSettingsObjects>
+    <GenerateSmartDefaults>True</GenerateSmartDefaults>
+    <ScriptNewConstraintValidation>False</ScriptNewConstraintValidation>
+    <DropObjectsNotInSource>False</DropObjectsNotInSource>
+    <IgnoreRoleMembership>True</IgnoreRoleMembership>
+    <DropPermissionsNotInSource>False</DropPermissionsNotInSource>
+    <DropRoleMembersNotInSource>False</DropRoleMembersNotInSource>
+    <IgnorePermissions>False</IgnorePermissions>
+    <ExcludeLinkedServers>True</ExcludeLinkedServers>
+    <ExcludeLinkedServerLogins>True</ExcludeLinkedServerLogins>
+  </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="LinkedServerName">
+      <Value>dvp2rmisdb01</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="P2RMIS">
+      <Value>P2RMIS-UA</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+</Project>

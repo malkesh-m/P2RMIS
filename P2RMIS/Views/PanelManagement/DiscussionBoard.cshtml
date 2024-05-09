@@ -1,0 +1,89 @@
+﻿@model Sra.P2rmis.Web.ViewModels.PanelManagement.DiscussionBoardViewModel
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+
+@{
+    ViewBag.Title = "Discussion Board";
+}
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.PanelTabsViewModel.Tab3;
+}
+
+<style>
+    #viewInvitedParticipantsGrid {
+        width: 300px;
+        margin-left: -50px;
+        font-size: 12px;
+        font-family: Arial;
+    }
+
+        #viewInvitedParticipantsGrid tr.k-alt {
+            background-color: white !important
+        }
+
+    #viewCommentsGrid {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+        #viewCommentsGrid td:nth-child(2) {
+            vertical-align: top;
+            color: #464646;
+            font-style: italic;
+        }
+
+        #viewCommentsGrid tr:hover {
+            background-color: yellow
+        }
+
+    .commentsCountText {
+        color: #464646;
+        font-size: 12px;
+        font-family: Arial;
+        font-style: italic;
+    }
+</style>
+<div class="row-fluid">
+    <div class="span6">
+        <p class="formTitle"><a href="@Model.LastPageUrl"><img src="~/Content/img/backarrow_20px_enabled.png" alt="Go back" title="Go back" style="border:0;width:25px;" /></a>Discussion Board for @Model.LogNumber</p>
+    </div>
+    <div class="span6 align-right">
+        <a href="/MyWorkspace/Critique?panelapplicationid=@Model.PanelApplicationId&sessionpanelid=@Model.SessionPanelId">View Critiques and Scores</a>
+    </div>
+</div>
+<br />
+<!-- Grid Header -->
+<div class="ss-gridHeader" style="display: block;">
+    <h4 class="ss-gridHeader_title">Comments</h4><div id="totalCount" class="ss-gridHeader_totalCount">( Total Records: <span></span> )</div>
+    @if (!Model.IsModDone)
+    {
+        <a href="#" class="ss-gridHeader_addAwardButton" onclick='openAddDBCommentModal()'><i>(add comment)</i></a>
+    }
+    else
+    {
+        <span href="#" class="ss-gridHeader_addAwardButton" disabled><i>(add comment)</i></span>
+    }
+</div>
+<div class="row-fluid">
+    <div id="viewCommentsGrid"></div>
+</div>
+<div class="hidden" id="commentData">
+    @Html.Raw(JsonConvert.SerializeObject(Model.DiscussionComments))
+</div>
+<div class="hidden" id="participantData">
+    @Html.Raw(JsonConvert.SerializeObject(Model.Participants))
+</div>
+<input type="hidden" id="applicationStageStepEntityId" value="@Model.ApplicationStageStepId" />
+<input type="hidden" id="applicationStageStepDiscussionEntityId" value="@Model.ApplicationStageStepDiscussionId" />
+<input type="hidden" id="discussionCommentsCount" value="@Model.DiscussionCommentsCount" />
+<input type="hidden" id="isDisscussionDone" value="@Model.IsModDone.ToString()" />
+@Html.IncludeVersionedFiles("/Scripts/Custom/PanelManagement/DiscussionBoard.js")
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+
+

@@ -1,0 +1,490 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.WebModels.SummaryStatement
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.EditSummaryStatementViewModel
+
+@{
+    const int DefaultRevSort = 99;
+}
+
+<input type="hidden" id="inlineCommentMaxCharLimit" value="@Model.InlineCommentMaximum" />
+<div id="summaryStatementPanel">
+    <div>
+        <h4>Header</h4>
+        <div id="summaryStatementHeader">
+            <div>
+                <table id="appInfo" class="gridTable" align="center">
+                    <tr class="whiteBackground">
+                        <td colspan="4">@Model.ApplicationDetails.ApplicationTitle</td>
+                    </tr>
+                    <tr class="whiteBackground">
+                        <td>Log Number:</td>
+                        <td>@Model.ApplicationDetails.LogNumber</td>
+                        <td>Project Duration:</td>
+                        <td>@ViewHelpers.FormatDurationIntoMonths(Model.ApplicationDetails.Duration)</td>
+                    </tr>
+                    <tr class="whiteBackground">
+                        <td>Grants.gov ID Number:</td>
+                        <td>@Model.ApplicationDetails.GrantID</td>
+                        <td>Total Budget Requested:</td>
+                        <td>@ViewHelpers.FormatCurrency(Model.ApplicationDetails.TotalBudget)</td>
+                    </tr>
+                    <tr class="whiteBackground">
+                        <td>Principal Investigator:</td>
+                        <td>@Model.ApplicationDetails.PiLastName, @Model.ApplicationDetails.PiFirstName</td>
+                        <td>Direct Costs:</td>
+                        <td>@ViewHelpers.FormatCurrency(Model.ApplicationDetails.DirectCosts)</td>
+                    </tr>
+                    <tr class="whiteBackground">
+                        <td>Performing Org:</td>
+                        <td>@Model.ApplicationDetails.PiOrganization</td>
+                        <td>Indirect Costs:</td>
+                        <td>@ViewHelpers.FormatCurrency(Model.ApplicationDetails.IndirectCosts)</td>
+                    </tr>
+                    <tr class="whiteBackground">
+                        <td>Contracting Org:</td>
+                        <td>@Model.ApplicationDetails.AdminOrgName</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin:10px 0 10px 0">
+                @if (Model.DoDisplayAverageScoreTable)
+                {
+                    <table id="scoreSummary" class="gridTable" align="center">
+                        <tr class="whiteBackground bold">
+                            <td>Score Summary</td>
+                            <td class="center">Average Score</td>
+                            <td class="center">Standard Deviation</td>
+                        </tr>
+                        <tr class="whiteBackground">
+                            <td>
+                                <div class="bold">Overall Rating</div>
+                                <div>Rating Scale: @Model.AverageScoreTableData.OverallScaleHigh (high merit) to @Model.AverageScoreTableData.OverallScaleLow (low merit)</div>
+                            </td>
+                            <td class="center"><div>@ViewHelpers.ScoreFormatter(Model.AverageScoreTableData.OverallScore)</div></td>
+                            <td class="center">@ViewHelpers.ScoreFormatter((decimal?)Model.AverageScoreTableData.OverallStandardDeviation)</td>
+                        </tr>
+                        @if (Model.AverageScoreTableData.CriteriaScores.ToList().Count > 0)
+                        {
+                            <tr class="grayBackground">
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr class="whiteBackground">
+                                <td><div class="bold">Evaluation Criteria</div><div>Rating Scale: 10.0 (high merit) to 1.0 (low merit)</div></td>
+                                <td colspan="2" class="bold center">Average Score</td>
+                            </tr>
+                            foreach (CriteriaAverageScoreModel cr in Model.AverageScoreTableData.CriteriaScores)
+                            {
+                                <tr class="whiteBackground">
+                                    <td class="bold leftPadding50">@cr.CriteriaDescription</td>
+                                    <td colspan="2" class="center">@ViewHelpers.ScoreFormatter(cr.CriteriaScore)</td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+                else
+                {
+                    if (Model.IndividualScoreTableData != null && Model.IndividualScoreTableData.ToList().Count > 0)
+                    {
+                        var iReviewers = Model.IndividualScoreTableData.ToList()[0].ReviewerScores.Count();
+                        <table id="scoreSummary" class="gridTable" align="center">
+                            <tr class="whiteBackground bold">
+                                <td>Score Summary</td>
+                                <td colspan="@iReviewers" class="center">Score</td>
+                            </tr>
+                            <tr class="whiteBackground bold">
+                                <td>Overall</td>
+                                @foreach (SummaryIndividualScoreModel cr in Model.IndividualScoreTableData)
+                                {
+                                    if (cr.IsOverall)
+                                    {
+                                        foreach (ReviewerScoreModel rs in cr.ReviewerScores)
+                                        {
+                                            <td class="center">@ViewHelpers.ScoreFormatterNotCalculated(rs.Score, rs.ScoreType, rs.AdjectivalValue)</td>
+                                        }
+                                    }
+                                }
+                            </tr>
+                            <tr style="background-color:gray">
+                                <td colspan="@(iReviewers + 1)">&nbsp;</td>
+                            </tr>
+                            <tr class="whiteBackground">
+                                <td>
+                                    <div class="bold">Evaluation Criteria</div>
+                                    <div>Rating Scale: @Model.IndividualScoreTableData.ToList()[0].ScaleHighValue (high merit) to @Model.IndividualScoreTableData.ToList()[0].ScaleLowValue (low merit)</div>
+                                </td>
+                                <td colspan="@iReviewers">&nbsp;</td>
+                            </tr>
+                            @foreach (SummaryIndividualScoreModel cr in Model.IndividualScoreTableData)
+                            {
+                                if (!cr.IsOverall)
+                                {
+                                    <tr class="whiteBackground">
+                                        <td class="bold leftPadding50">@cr.CriteriaName</td>
+                                        @foreach (ReviewerScoreModel rs in cr.ReviewerScores)
+                                        {
+                                            <td class="center">@ViewHelpers.ScoreFormatterNotCalculated(rs.Score, rs.ScoreType, rs.AdjectivalValue)</td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    @{
+        int iStepContent = 0;
+        int iSection = 0;
+    }
+    @*Loop to get the criteria*@
+    @foreach (var item in Model.Criteria)
+    {
+        if (!string.IsNullOrEmpty(item.Key))
+        {
+            var sectionAnchor = "section" + iSection;
+            <div>
+                <h4>
+                    <a class="sectionTitle" id="@sectionAnchor" name="@sectionAnchor">@item.Key</a>
+                    <a href="#editSummaryStatementMain" class="backToTop">[Back to Top]</a>
+                </h4>
+                @*Loop to get the reviewers for each criteria as well as discussion notes if they exist*@
+                <div>
+                    @foreach (var subitem in item.Value)
+                    {
+                        string reviewer = subitem.ReviewerAssignmentType;
+                        string disNotes = "Discussion Notes";
+                        string overview = "Summary";
+                        if (subitem.ElementTextFlag)
+                        {
+                            <div class="sectionContent" data-index="@iStepContent">
+                                @if (subitem.DiscussionNoteFlag)
+                                {
+                                    <b>@disNotes</b>
+                                }
+                                else if (subitem.IsOverview)
+                                {
+                                    <b>@overview</b>
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrEmpty(subitem.ElementContentAdjectivalLabel))
+                                    {
+                                        <b>@reviewer - Adjectival Rating: @subitem.ElementContentAdjectivalLabel</b>
+                                    }
+                                    else
+                                    {
+                                        <b>@reviewer</b>
+                                    }
+                                }
+                                <span class="openEditorLink" data-userid="@Model.CheckoutUserId"
+                                      data-username="@Model.CheckoutUsername" data-canaccepttrackchange="@Model.CanAcceptTrackChanges">
+                                    <a href="#"><img src="~/Content/img/edit_20px_enabled.png" border="0" alt="Editor" title="Edit Summary Statement" /></a>
+                                </span>
+                                <span><a href="#" class="closeEditorLink hide" title="Close Panel">Close Panel</a></span>
+                                @{
+                                var content = "content" + iStepContent;
+                                var originalContent = "originalContent" + iStepContent;
+                                var workflowId = "workflowId" + iStepContent;
+                                var contentId = "contentId" + iStepContent;
+                                var stepElementId = "stepElementId" + iStepContent;
+                                var currentContent = "currentContent" + iStepContent;
+                                }
+                                <input type="hidden" class="content" id="@content" value="@subitem.ElementContentText" />
+                                <input type="hidden" class="workflowId" id="@workflowId" value="@Model.ApplicationDetails.WorkflowId" />
+                                <input type="hidden" class="contentId" id="@contentId" value="@subitem.ApplicationWorkflowStepContentId" />
+                                <input type="hidden" class="stepElementId" id="@stepElementId" value="@subitem.ApplicationWorkflowStepElementId" />
+                                <div id="@currentContent" class="currentContent">@Html.Raw(subitem.ElementContentText)</div>
+                                <div id="@originalContent" class="originalContent hide">@Html.Raw(subitem.ElementContentOriginalText)</div>
+                                <div class="contentEditor hide relative-position">
+                                    <iframe class="editorIframe" frameborder="0"></iframe>
+                                    <img class="editorLoadingCircle loading-animation" src="~/Content/img/loading.gif" alt="" />
+                                </div>
+                            </div>
+                        }
+                        iStepContent += 1;
+                    }
+                </div>
+            </div>
+        }
+        iSection += 1;
+    }
+    <div>
+        <h4>
+            <a class="sectionTitle">Admin Note</a>
+            <a href="#editSummaryStatementMain" class="backToTop">[Back to Top]</a>
+        </h4>
+        <div class="bordered">
+            @if (string.IsNullOrEmpty(Model.AdminNote))
+            {
+                <text>None.</text>
+            } else
+            {
+                <text>@Model.AdminNote</text>
+            }
+        </div>
+    </div>
+</div>
+@*scripts for editor events*@
+@Html.IncludeVersionedFiles("/Scripts/common/editor.js")
+<script type="text/javascript">
+    // Id of the current logged in user
+    var CurrentUserId = @Json.Encode(Model.CheckoutUserId);
+    // Whether user can view all comments
+    var CanViewAllComments = @Json.Encode(Model.CanViewEditorComments);
+    // Whether user can view everyone's changes
+    var CanViewAllChanges = true;
+    // Warning message
+    var NavigateWarning = "Your unsaved data will be automatically saved."
+    // Get max character limit
+    var fnGetInlineCommentMaxCharLimit = function() {
+        var limit = $("#inlineCommentMaxCharLimit").val();
+        return parseInt(limit);
+    };
+    
+    // Load content to view
+    var fnLoadContent = function() {
+        $(".currentContent").each(function() {
+            var content = $(this).parent().find(".content").val();
+            content = EDITOR.getMarkupContent(content, CurrentUserId, CanViewAllChanges, CanViewAllComments);
+            $(this).html(content);
+        });
+    };
+    fnLoadContent();
+
+    var fnHideLoadingAnimation = function (idx) {
+        var sectionContent = $(".sectionContent[data-index=" + idx + "]");
+        if (sectionContent.find(".editorIframe")[0].contentWindow.IsLoaded) {
+            sectionContent.find(".editorLoadingCircle").addClass("hidden");   
+        } else {
+            sectionContent.find(".editorLoadingCircle").removeClass("hidden");    
+            setTimeout(function () { fnHideLoadingAnimation(idx); }, 50);
+        }
+    };
+
+    // Event handler for opening an editor
+    $(".openEditorLink").on("click", function (e) {
+        e.preventDefault();
+        var sectionContent = $(this).closest(".sectionContent");
+        var openEditorLinkEl = sectionContent.find(".openEditorLink");
+        var idx = sectionContent.attr("data-index");
+        var username = openEditorLinkEl.attr("data-username");
+        var userId = openEditorLinkEl.attr("data-userid");
+        var canAcceptTrackChanges = openEditorLinkEl.attr("data-canaccepttrackchange");
+        // Set the editor iframe URL
+        sectionContent.find(".editorLoadingCircle").removeClass("hidden");   
+        sectionContent.find(".editorIframe")[0].contentWindow.location.replace("/Home/RadEditorPro?idx=" + 
+            idx + "&name=" + username + "&userid=" + userId + "&catc=" + canAcceptTrackChanges);
+        // Open editor
+        sectionContent.find(".currentContent").addClass("hide");
+        sectionContent.find(".openEditorLink").addClass("hide");
+        sectionContent.find(".contentEditor").removeClass("hide");
+        sectionContent.find(".closeEditorLink").removeClass("hide");
+        // Hide the "Back to Top" links
+        $(".backToTop").hide();
+    });
+    // Event handler for closing an editor
+    $(".closeEditorLink").on("click", function (e) {
+        e.preventDefault();
+        fnCloseEditor($(this));
+    });
+ //Keyboard Shortcuts 
+
+    //Go to First Summary
+    function firstComment(){
+        $('.openEditorLink:first a').focus();
+    }
+    // Go to Close Panel
+    function widgetClosed(){
+        $('a.closeEditorLink').focus();
+    }
+    $(document).on('keydown', function (e) {
+        if (e.which === 113) {
+            $('.openEditorLink:first a').focus();
+        }
+        else if (e.which === 119) {
+            $('a.closeEditorLink').focus();
+        }
+        else if (e.which === 118) {
+            $(document).find('.reMode_html').focus();
+        }
+        else if (e.which === 120) {
+            $(document).find('#viewContentMode').focus();
+        }
+    });
+    // Close editor function
+    var fnCloseEditor = function($this) {
+        var sectionContent = $this.closest(".sectionContent");
+        var currentContent = sectionContent.find(".currentContent");
+        var editorIframeEl = sectionContent.find(".editorIframe");
+        var idx = sectionContent.attr("data-index");
+
+        // Cancel auto-save
+        if (editorIframeEl[0].contentWindow.CancelAutoSave) {
+            editorIframeEl[0].contentWindow.CancelAutoSave();
+        }
+        // Hide comment panel
+        if (editorIframeEl[0].contentWindow.HideCommentPanel) {
+            editorIframeEl[0].contentWindow.HideCommentPanel();
+        }
+        // Save editor
+        SaveEditorContent(editorIframeEl[0].contentWindow.GetEditorHtmlContent(), idx, function() {            
+            // Set content by the current display mode
+            fnSetSectionContentByDisplayMode(currentContent,  $("#viewContentMode").val());
+        });
+        // Close editor
+        sectionContent.find(".contentEditor").addClass("hide");
+        sectionContent.find(".currentContent").removeClass("hide");
+        sectionContent.find(".closeEditorLink").addClass("hide");
+        sectionContent.find(".openEditorLink").removeClass("hide");
+        // Show the "Back to Top" links
+        $(".backToTop").show();
+    };
+    // Whether there are content changes in an editor
+    var fnHasContentChanges = function (editorIframeElement, currentContentElement) {
+        var hasContentChanges = false;
+        if (editorIframeElement[0].contentWindow.GetEditorHtmlContent) {
+            var editorHtmlContent = EDITOR.getUnstyledContent(editorIframeElement[0].contentWindow.GetEditorHtmlContent());
+            var mainHtmlContent = EDITOR.getUnstyledContent(currentContentElement.html());
+            if (mainHtmlContent !== editorHtmlContent) {
+                hasContentChanges = true;
+            }
+        }
+        return hasContentChanges;
+    };
+    // Whether there are content changes in any editor
+    var fnHasContentChangesInAnyEditor = function() {
+        var hasContentChanges = false;
+        for (var i = 0; i < $(".contentEditor").length; i++) {
+            var oEditor = $(".contentEditor").eq(i);
+            if (!(oEditor.hasClass("hide")) && !hasContentChanges) {
+                var sectionContent = oEditor.closest(".sectionContent");
+                var editorIframeEl = sectionContent.find(".editorIframe");
+                var currentContentEl = sectionContent.find(".currentContent");
+                hasContentChanges = fnHasContentChanges(editorIframeEl, currentContentEl);
+            }
+        }
+        return hasContentChanges;
+    };
+
+    // Save all content changes and reset contents based on mode when necessary
+    var fnSaveAll = function(modeValue) {
+        $(".currentContent").each(function() {
+            var sectionContent = $(this).closest(".sectionContent");
+            var contentEditor = sectionContent.find(".contentEditor");
+            var $this = $(this);
+            if (!contentEditor.hasClass("hide")) {
+                var editorIframeEl = sectionContent.find(".editorIframe");
+                var idx = sectionContent.attr("data-index");
+                // Cancel auto-save
+                if (editorIframeEl[0].contentWindow.CancelAutoSave) {
+                    editorIframeEl[0].contentWindow.CancelAutoSave();
+                }
+                SaveEditorContent(editorIframeEl[0].contentWindow.GetEditorHtmlContent(), idx, function() {            
+                    if (modeValue !== undefined) {
+                        // Set content by the current display mode
+                        fnSetSectionContentByDisplayMode($this,  modeValue);
+                    }
+                });
+            } else {
+                if (modeValue !== undefined) {
+                    fnSetSectionContentByDisplayMode($this, modeValue);
+                }
+            }
+        });
+    }
+    // Set content by the display mode
+    var fnSetContentByDisplayMode = function (modeValue) {
+        fnSaveAll(modeValue);
+        // Show the "Back to Top" links
+        $(".backToTop").show();
+    };
+    // Set section content by display mode
+    var fnSetSectionContentByDisplayMode = function($this, modeValue) {
+        var content = $this.html();
+        if (modeValue === "0") { // Markup mode
+            content = EDITOR.getMarkupContent(content, CurrentUserId, CanViewAllChanges, CanViewAllComments);
+        } else if (modeValue === "1") { // Preview/Final mode
+            content = EDITOR.getFinalContent(content);
+        }
+        $this.html(content);
+    };
+    // Show or hide original content
+    var fnShowOrHideOriginal = function(modeValue) {
+        if (modeValue === "2") {
+            $(".currentContent").addClass("hide");
+            $(".contentEditor").addClass("hide");
+            $(".originalContent").removeClass("hide");
+            // Hide editor icons
+            $(".openEditorLink").addClass("hide");
+            $(".closeEditorLink").addClass("hide");
+        } else {
+            $(".currentContent").removeClass("hide");
+            $(".contentEditor").addClass("hide");
+            $(".originalContent").addClass("hide");
+            $(".openEditorLink").removeClass("hide");
+            $(".closeEditorLink").addClass("hide");
+        }
+    };
+
+    // Get contents for Telerik Editor
+    var GetMarkupContent = function (idx) {
+        var content = $("#currentContent" + idx).html();
+        // In case the main panel is in preview mode
+        var newContent = EDITOR.getMarkupContent(content, CurrentUserId, CanViewAllChanges, CanViewAllComments, true);
+        return newContent;
+    };
+    // Save contents from Telerik Editor
+    var SaveEditorContent = function (content, idx, fnPostSave) {
+        var currentContentEl = $("#currentContent" + idx);
+        var workflowId = $("#workflowId" + idx).val();
+        var contentId = $("#contentId" + idx).val();
+        var stepElementId = $("#stepElementId" + idx).val();
+
+        if (EDITOR.getUnstyledContent(currentContentEl.html()) !== EDITOR.getUnstyledContent(content)) {
+            // For saving
+            content = EDITOR.getCleanContentWithHiddenComments(content);
+            var newContent = EDITOR.getStorableContent(content);
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '/SummaryStatementProcessing/SaveContent',
+                data: { "workflowId": workflowId, "contentId": contentId, "stepElementId": stepElementId, "content": newContent }
+            }).done(function () {
+                $("#currentContent" + idx).html(content);
+                if (fnPostSave !== undefined) {
+                    fnPostSave();
+                }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert($.defaultFailureMessage);
+            });
+        }       
+    };
+
+    // Back to top navigation
+    $(".backToTop").on("click", function (e) {
+        e.preventDefault();
+        location.hash = $(this).attr("href");
+        window.scrollBy(0, -125);
+    });
+
+    // Before unload event handler
+    window.addEventListener("beforeunload", function (e) {
+        if (fnHasContentChangesInAnyEditor()) {
+            // Save unsaved data first
+            fnSaveAll();
+            var confirmationMessage = NavigateWarning;
+
+            (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+            return confirmationMessage;     //Webkit, Safari, Chrome etc.
+        }                           
+    });
+</script>
+
+
+
+

@@ -1,0 +1,20 @@
+﻿@using Sra.P2rmis.Web.Controllers
+<div>
+    <div class="bordered">
+        <div class="filterBox_title">Search</div>
+        <div class="filterBox_required padding-left5"><span class="required">*</span>Indicates a required field</div>
+        <table class="filterBox_table">
+            <tr>
+                <td class="filterBox_subTitle"><span class="required">*</span><strong>Program</strong></td>
+                <td><select class="filterBox_programSelect"><option selected>-- Select --</option></select></td>
+                <td class="filterBox_subTitle"><span class="required">*</span><strong>FY</strong></td>
+                <td><select class="filterBox_programYearSelect"><option selected>-- Select --</option></select></td>
+                <td class="filterBox_subTitle"><span class="required">*</span><strong>Panel</strong></td>
+                <td><select class="filterBox_panelSelect"><option selected>-- Select --</option></select></td>
+                <td class="filterBox_subTitle padding-left10 padding-bottom10"><button class="panel_selection buttonPrimary">Display</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+@*script for ajax calls to populate panel options after selecting a Program/Year from menu*@
+@Html.IncludeVersionedFiles("/Scripts/common/panel-selection.js")

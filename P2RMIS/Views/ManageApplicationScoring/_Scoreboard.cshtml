@@ -1,0 +1,156 @@
+﻿@using Sra.P2rmis.WebModels.ApplicationScoring
+@model Sra.P2rmis.Web.UI.Models.ScoreboardViewModelNew
+<style type="text/css">
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+
+    .sr-only-focusable:active,
+    .sr-only-focusable:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+    }
+</style>
+<div class="mas-scoreboard_text">
+    <label><input type="checkbox" id="hidePreMeetingScores" class="mas-scoreboard_text_input" />  Hide Pre-Meeting Scores</label>
+</div>
+<table class="mas-scoreboard_table">
+    <thead>
+        <tr>
+            <th class="mas-scoreboard_table_cell"></th>
+            @foreach (var item in Model.ScoreboardScores.Reviewers)
+            {
+                <th colspan="2" class="mas-scoreboard_table_cell">@item.ReviewerLastName, @item.ReviewerFirstName.Substring(0, 1). (@item.AssignmentType)</th>
+            }
+        </tr>
+        <tr>
+            <th class="mas-scoreboard_table_cell_header">Criteria</th>
+            @{
+                var setId = "noChangeButton";
+            }
+            @foreach (var item in Model.ScoreboardScores.Reviewers)
+            {
+                <th class="mas-scoreboard_table_cell_text">Pre-Mtg<div class="mas-scoreboard_table_cell_text_input"></div></th>
+                <th class="mas-scoreboard_table_cell_text">Final<div class="mas-scoreboard_table_cell_text_input">
+                    <input type="checkbox" class="noChangeButton" id="@setId + item +" /></div>
+                    <label for="@setId + item +">No Change</label>
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int row = 0;
+        }
+        @foreach (var item in Model.ScoreboardScores.Criteria)
+        {
+            string style = "";
+            if (item.OverallFlag)
+            {
+                style = "borderTop";
+            }
+            <tr>
+                <td class="mas-scoreboard_table_criteriaName">@item.CriteriaName</td>
+                @for (var i = 0; i < Model.ScoreboardScores.Reviewers.Count; i++)
+                {
+                    var subItem = item.CriteriaEvaluations.FirstOrDefault(x => x.PanelUserAssignmentId == Model.ScoreboardScores.Reviewers[i].PanelUserAssignmentId);
+                    var finalScoreCount = "final[" + row + "]ScoreCount" + i + "";
+
+                    string subStyle = "";
+                    if (item.OverallFlag)
+                    {
+                        subStyle = "borderTop";
+                    }
+                    if ((item.ScoreFlag) && (String.Equals(item.PreMeetingScoreType, "Adjectival", StringComparison.OrdinalIgnoreCase)) && subItem != null)
+                    {
+                        if (subItem.Abstain)
+                        {
+                            <td class="@subStyle">Abstain</td>
+                        }
+                        else
+                        {
+                            @*TODO: Property should be set upstream*@
+                            <td class="@subStyle">@item.PremeetingAdjectivalScale.Where(x => (decimal?)x.NumericEquivalent == subItem.Score).DefaultIfEmpty(new AdjectivalScale()).First().ScoringLabel</td>
+                        }
+
+                    }
+                    else if (item.ScoreFlag && subItem != null)
+                    {
+                        <td class="mas-scoreboard_table_number">@subItem.ScoreValue</td>
+                    }
+                    else
+                    {
+                        <td class="mas-scoreboard_table_empty"></td>
+                        <td class="mas-scoreboard_table_empty"></td>
+                    }
+                    if ((item.ScoreFlag) && (String.Equals(item.MeetingScoreType, "Adjectival", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        <td class="@subStyle">@Html.DropDownList("finalScore", new SelectList(item.MeetingAdjectivalScale, "NumericEquivalent", "ScoringLabel"), "--Select--", new { tabindex = (i + 1) })</td>
+                    }
+                    else if (item.ScoreFlag)
+                    {
+                        <td class="mas-scoreboard_table_number">
+                            <input type="text" name="finalScore" class="input-mini scoreboardButton final-score mas-scoreboard_table_number_input" id="@finalScoreCount" size="3" style="font-size:20px;" tabindex=@(i+1) />
+                            <label for="@finalScoreCount" class="sr-only">Enter Final Score for @item.CriteriaName</label>
+                        </td>
+                    }
+                }
+            </tr>
+            row++;
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    // ignore the return key
+    $(".final-score").on("keydown", function (e) {
+        if (e.keyCode == 13) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    // No changes button
+    $('.noChangeButton').on('click', function () {
+        var isChecked = $(this).is(":checked");
+        if (isChecked) {
+            var getCell = $(this).closest('th').index();
+            $(".mas-scoreboard_table tbody tr").each(function (i, value) {
+                var getPrevCellText = $(this).find('td:nth-child(' + getCell + ')').text();
+                $(this).find('td:nth-child(' + (getCell + 1) + ') input').val(getPrevCellText);
+            })
+        } else {
+            var getCell = $(this).closest('th').index();
+            $(".mas-scoreboard_table tbody tr").each(function (i, value) {
+                $(this).find('td:nth-child(' + (getCell + 1) + ') input').val('');
+            })
+        }
+    })
+
+    // Hide pre-meeting scores
+    $('#hidePreMeetingScores').on('click', function () {
+        var isChecked = $(this).is(":checked");
+        if (isChecked) {
+            $('.mas-scoreboard_table tbody tr td:nth-child(odd), .mas-scoreboard_table thead tr:nth-child(2) th:nth-child(odd)').not('.mas-scoreboard_table tbody tr td:nth-child(1), .mas-scoreboard_table thead tr:nth-child(2) th:nth-child(1)').attr('colspan', '2');
+            $('.mas-scoreboard_table tbody tr td:nth-child(even), .mas-scoreboard_table thead tr:nth-child(2) th:nth-child(even)').addClass('displayNone');
+            $('.mas-scoreboard_table_cell_text_input').css('padding', '0px 30px');
+        } else {
+            $('.mas-scoreboard_table tbody tr td:nth-child(odd), .mas-scoreboard_table thead tr:nth-child(2) th:nth-child(odd)').not('.mas-scoreboard_table tbody tr td:nth-child(1), .mas-scoreboard_table thead tr:nth-child(2) th:nth-child(1)').attr('colspan', '1');
+            $('.mas-scoreboard_table tbody tr td:nth-child(even), .mas-scoreboard_table thead tr:nth-child(2) th:nth-child(even)').removeClass('displayNone');
+            $('.mas-scoreboard_table_cell_text_input').css('padding', '0px');
+        }
+    })
+</script>
+
+

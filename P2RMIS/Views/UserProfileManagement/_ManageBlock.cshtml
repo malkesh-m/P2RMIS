@@ -1,0 +1,305 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+    <style type="text/css">
+        #clientBlockedTable {
+            width: 450px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid lightgrey;
+        }
+        #clientHistoryTable{
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid lightgrey;
+        } 
+        input[type="checkbox"] {
+            margin: 0px;
+        }
+        #clientBlockedTable tbody {
+            height: 130px;
+            display: block;
+            overflow: auto;
+            display: block;
+        }
+        #clientBlockedTable thead tr {
+            display: block;
+        }
+        #clientBlockedTable td, #clientBlockedTable th, #clientHistoryTable td, #clientHistoryTable th{
+            padding: 5px;
+        }
+        #clientBlockedTable td:nth-child(1) {
+            border-right: 1px solid lightgrey;
+            width: 150px;
+        }
+        #clientBlockedTable thead th:nth-child(1) {
+            width: 150px;
+        }
+        #clientBlockedTable td:nth-child(2), #clientBlockedTable thead th:nth-child(2) {
+            width: 300px;
+        }
+        #clientBlockedTable th, #clientHistoryTable th {
+            text-align: left;
+            background: #F5F5F5;
+            border-bottom: 1px solid lightgrey;
+        }
+        #clientBlockedTable tr:nth-child(even), #clientHistoryTable tr:nth-child(even) {
+            background: #F5F5F5;
+        }
+        #clientBlockedTable th:nth-child(1){
+            padding-right: 0px;
+        }
+        #clientBlockedTable th:nth-child(2){
+            padding-left: 0px;
+        }
+        textarea {
+            width: 723px;
+            min-height: 100px;
+            padding: 5px;
+        }
+        #clientHistoryTable .history {
+            width: 280px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+        #clientHistoryTable .commentsCell {
+            width: 20%;
+        }
+        #failureMessage{
+            color: red;
+        }
+        .borderRed{
+            border: 1px solid red;
+        }
+        .enteredBy{
+            width: 130px;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: text-top;
+        }
+    </style>
+<div>
+    <div id="failureMessage"></div>
+    <div>Select/unselect specific client(s)  to block/unblock reviewer from recruitment. Select/unselect  'Block All' to block/unblock reviewer from recruitment for all clients.</div>
+    <table id="clientBlockedTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="blockedCheckbox" /> Block All</th>
+                <th>Client</th>
+            </tr>
+        </thead>
+        @foreach (var client in Model.UserClients)
+        {
+            <tr>
+                <td><input type="checkbox" class="blockedCheckboxSelection" /></td>
+                <td class="clientBlocked" data-clientId="@client.ClientId">@client.ClientAbrv</td>
+            </tr>
+        }
+    </table>
+    <div><span class="required">*</span> <strong>Comment</strong></div>
+    <textarea id="textareaModal" placeholder=" Enter a brief explanation" disabled></textarea>
+    <div><strong>History</strong></div>
+    <table id="clientHistoryTable">
+        <thead>
+            <tr>
+                <th>Comments</th>
+                <th>Client(s) <img src="~/Content/img/info_20px_enabled.png" title="(U) - Unblocked" /></th>
+                <th>Entered By</th>
+                <th>Entered Date</th>
+            </tr>
+        </thead>
+        @{ int i = 0; }
+        @foreach (var history in Model.HistoryTable)
+        {
+            <tr>
+                <td class="history">@history.Comments</td>
+                <!-- If all clients equals the amount checked or unchecked -->
+                @if (@Model.UserClients.Count == @history.ClientBlockFlags.Count)
+                {
+                    var clientSelected = new List<string>();
+                    var clientTotals = "";
+                    var finalString = "";
+                    int p = 0;
+                    int u = 0;
+                    foreach (var clientSelectedValue in @history.ClientBlockFlags)
+                    {
+                        if (@history.ClientBlockFlags[p].Value == true)
+                        {
+                            clientSelected.Add(@history.ClientBlockFlags[p].Key);
+                            p++;
+                        }
+                        else
+                        {
+                            clientSelected.Add("<strong>(U)</strong>" + @history.ClientBlockFlags[u].Key);
+                            u++;
+                        }
+                    }
+                    for (i = 0; i < @clientSelected.Count; i++)
+                    {
+                        clientTotals += clientSelected[i] + ", ";
+                    }
+                    finalString = clientTotals.Substring(0, clientTotals.Length - 2);
+                    <td class="commentsCell">@Html.Raw(@finalString)</td>
+                }
+                else if (@history.ClientBlockFlags.Count == 0)
+                {
+                    var historyBlocked = new List<string>();
+                    foreach (var newhistory in @history.ClientBlockFlags)
+                    {
+                        if (@newhistory.Value == true)
+                        {
+                            historyBlocked.Add(@newhistory.Key);
+                        }
+                    }
+                    <td class="commentsCell">@Html.Raw(@historyBlocked)</td>
+                }
+                else
+                {
+                    var clientSelected = new List<string>();
+                    var clientTotals = "";
+                    var finalString = "";
+                    int e = 0;
+                    int unblockedAdded = 0;
+                    foreach (var clientSelectedValue in @history.ClientBlockFlags)
+                    {
+                        if (@history.ClientBlockFlags[e].Value == true)
+                        {
+                            clientSelected.Add(@history.ClientBlockFlags[e].Key);
+                        }
+                        else
+                        {
+                            clientSelected.Add("<strong>(U)</strong>" + @history.ClientBlockFlags[e].Key);
+                            unblockedAdded++;
+                        }
+                        e++;
+                    }
+                    for (i = 0; i < @clientSelected.Count; i++)
+                    {
+                        clientTotals += clientSelected[i] + ", ";
+                    }
+                    finalString = clientTotals.Substring(0, clientTotals.Length - 2);
+                    <td class="commentsCell">@Html.Raw(finalString)</td>
+                }
+                @{ i++; }
+                <td class="historyEntered enteredBy">@history.EnteredBy</td>
+                <td class="historyDate enteredBy">@history.CreatedDate</td>
+            </tr>
+                    }
+    </table>
+</div>
+<script type="text/javascript">
+    // Gets all blocked clients
+    var model = @Html.Raw(Json.Encode(Model.ClientsBlocked));
+    var modelHistory = @Html.Raw(Json.Encode(Model.HistoryTable));
+
+    // Client Table
+    $(model).each(function(i, value){
+        $('#clientBlockedTable tr td:nth-child(2)').each(function(e, newValue){
+        var keyValue = $(this).attr('data-clientId');    
+        if(value.Key == keyValue){
+            $(this).closest('tr').find('td:nth-child(1) input').attr('checked', true);
+            }
+        })
+    });
+
+    // Save block status
+    $(document).on('click', '#saveClientBlock', function(e){
+        var textAreaValue = $('#textareaModal').val();
+        if(textAreaValue == ""){
+            $('#failureMessage').text('Please enter in a comment.').show();
+            $('#textareaModal').addClass('borderRed');
+            return false
+        }
+        $('#textareaModal').removeClass('borderRed');
+        $('#failureMessage').hide();
+        var blockedClientIds = [];
+        $("#clientBlockedTable tr td:nth-child(1) input").each(function(i, value){
+            var isChecked = $(this).is(':checked');
+            if(isChecked){
+                var checkedValue = $(this).closest('tr').find('td:nth-child(2)').attr('data-clientid');
+                blockedClientIds.push(checkedValue);
+            }
+        });
+        var userInfoId = $('#UserInfoId').val();
+        var comment = $('#textareaModal').val();
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "/UserProfileManagement/UpdateUserClientBlock",
+            traditional: true,
+            data: { userInfoId: userInfoId, blockedClientIds: blockedClientIds, comment: comment },
+        }).done(function(results){
+            $('.ui-dialog-titlebar-close').click();
+            location.reload();
+        });
+    })
+
+    // Check all boxes
+    $(document).on('click', '#blockedCheckbox', function(){
+        var thisIsChecked = $(this).is(':checked');
+        if(thisIsChecked){
+            $('#clientBlockedTable tr td:nth-child(1) input').attr('checked', true);
+            $('#textareaModal').attr('disabled', false);
+        }else{
+            $('#clientBlockedTable tr td:nth-child(1) input').attr('checked', false);
+            $('#textareaModal').attr('disabled', false);
+        }
+        $('button#saveClientBlock').attr('disabled', false);
+    })
+
+    var newPageCount = 0;
+    $('#clientBlockedTable tr td:nth-child(1) input').each(function (i, value) {
+        var isChecked = $(this).is(':checked');
+        if (isChecked) {
+            newPageCount++;
+        }
+    })
+
+    // Disable/Enable textarea
+    $(document).on('click', '#clientBlockedTable tr td:nth-child(1) input', function(e){
+        var newCount = 0;
+        $('#clientBlockedTable tr td:nth-child(1) input').each(function (i, value) {
+            var isChecked = $(this).is(':checked');
+            if (isChecked) {
+                newCount++;
+            }
+        })
+        if(newPageCount > 0){
+            $('#textareaModal').attr('disabled', false);
+        }else{
+            if (newCount == 0) {
+                $('#textareaModal').attr('disabled', 'disabled');
+            } else {
+                $('#textareaModal').attr('disabled', false);
+            }
+        }
+        $('button#saveClientBlock').attr('disabled', false);
+    })
+    $('button#saveClientBlock').attr('disabled', 'disabled');
+
+    // Textarea validation
+    $(document).on('keyup', '#textareaModal', function(){
+        var textAreaValue = $('#textareaModal').val();
+        if(textAreaValue != ""){
+            $('#failureMessage').hide();
+            $('#textareaModal').removeClass('borderRed');
+        }
+    })
+
+    // Adds title to any cell that has ellipsis
+    $(document).on('hover', '.history', function (e) {
+        var getText = $(e.target).text();
+        $(e.target).attr('title', getText);
+    })
+
+    $('.historyDate').each(function(i, value){
+        var thisDate = $(this).text();
+        var newDate = thisDate.slice(0, -11);
+        $(this).text(newDate);
+    })
+    $('#textareaModal').attr('disabled', 'disabled');
+</script>
+

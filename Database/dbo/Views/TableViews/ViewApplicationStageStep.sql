@@ -1,0 +1,13 @@
+﻿CREATE VIEW [dbo].[ViewApplicationStageStep]
+	AS SELECT [ApplicationStageStepId]
+      ,[ApplicationStageId]
+      ,[PanelStageStepId]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+      ,[DeletedFlag]
+      ,[DeletedBy]
+      ,[DeletedDate]
+  FROM [dbo].[ApplicationStageStep]
+  WHERE DeletedFlag = 0;

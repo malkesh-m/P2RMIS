@@ -1,0 +1,185 @@
+﻿@model Sra.P2rmis.Web.UI.Models.MeetingWizardViewModel
+@using Newtonsoft.Json;
+@using Sra.P2rmis.CrossCuttingServices;
+
+<div class="row-fluid ss-addMeeting">
+    <div id="meetingWizardAlert" class="ss-addMeeting__error"></div>
+    <span class="ss-addMeeting_explanatory-text">All fields are required.</span>
+    <table class="ss-addMeeting_table">
+        <tr>
+            <td class="ss-addMeeting_table_title">Client:</td>
+            <td class="ss-addMeeting_table_result">@Model.Client</td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_title">Mtg. Abbr</td>
+            <td class="ss-addMeeting_table_input"><input id="meetingAbbr" maxlength="20" value="@Model.MtgAbbr" class="ss-addMeeting_table_input_area" /><span class="ss-addMeeting_table_input_text">Max 20 char.</span></td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_title">Meeting Name</td>
+            <td class="ss-addMeeting_table_inputMeet"><input id="meetingName" maxlength="100" value="@Model.MeetingName" class="ss-addMeeting_table_inputMeet_area" /><span class="ss-addMeeting_table_inputMeet_text">Max 100 char.</span></td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_date-title">Start</td>
+            <td class="ss-addMeeting_table_inputDate"><input id="startDatePicker" type="text" value="@Model.Start" class="ss-addMeeting_table_inputDate_input" /></td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_date-title">End</td>
+            <td class="ss-addMeeting_table_inputDate"><input id="endDatePicker" type="text" value="@Model.End" class="ss-addMeeting_table_inputDate_input" /></td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_title">Location</td>
+            <td class="ss-addMeeting_table_inputMeet"><input id="meetingLocation" maxlength="20" value="@Model.MeetingLocation" class="ss-addMeeting_table_input_area" /><span class="ss-addMeeting_table_input_text">Max 20 char.</span></td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_title">Meeting Type</td>
+            <td class="ss-addMeeting_table_input" id="meetingType">
+                @Html.DropDownListFor(m => m.MeetingTypeId, new SelectList(Model.MeetingTypeList, "Key", "Value", Model.MeetingTypeId), "Select", new { style = "margin: 5px 0px 0px 0px", @id = "MeetingType" })
+            </td>
+        </tr>
+        <tr>
+            <td class="ss-addMeeting_table_title">Hotel</td>
+            <td class="ss-addMeeting_table_input" id="hotelType">
+                @Html.DropDownListFor(m => m.HotelId, new SelectList(Model.HotelList, "Key", "Value", Model.HotelId), "TBD", new { style = "margin: 0px", @id = "Hotel" })
+            </td>
+        </tr>
+    </table>
+</div>
+<input type="hidden" id="clientMeetingId" value="@Model.ClientMeetingId" />
+<input type="hidden" id="hasSessions" value="@Model.HasSessions.ToString()" />
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+
+        if ($.toBoolean($("#hasSessions").val())) {
+            $("#meetingAbbr").prop("disabled", true);
+            $("#MeetingType").prop("disabled", true);
+        } else {
+            $("#meetingAbbr").prop("disabled", false);
+            $("#MeetingType").prop("disabled", false);
+        }
+
+        // Save event handler
+        $("button[id='saveDialogChanges']").click(function () {
+            $('#saveDialogChanges').attr('disabled', false);
+            $("#successMessage").hide();
+            $("#failureMessage").hide();
+            var msg = "";
+
+            var meetingAbbr = $("#meetingAbbr").val()
+            var meetingName = $.trim($("#meetingName").val());
+            var startDatePicker = $.trim($("#startDatePicker").val());
+            var endDatePicker = $.trim($("#endDatePicker").val());
+            var meetingLocation = $.trim($("#meetingLocation").val());
+            var meetingType = $.trim($("#MeetingType").val());
+            var hotel = $.trim($("#Hotel").val());
+
+            if (meetingAbbr == "") {
+                var msg = "Please enter a meeting abbreviation.";
+                $('#meetingAbbr').addClass('input-validation-error');
+            } else {
+                $('#meetingAbbr').removeClass('input-validation-error');
+                if (meetingName == "") {
+                    msg = "Please enter a meeting name.";
+                    $('#meetingName').addClass('input-validation-error');
+                } else {
+                    $('#meetingName').removeClass('input-validation-error');
+                    if (startDatePicker == "") {
+                        msg = "Please enter a start date.";
+                        $('#startDatePicker').addClass('input-validation-error');
+                    } else {
+                        $('#startDatePicker').removeClass('input-validation-error');
+                        if (endDatePicker == "") {
+                            msg = "Please enter an end date.";
+                            $('#endDatePicker').addClass('input-validation-error');
+                        } else {
+                            $('#endDatePicker').removeClass('input-validation-error');
+                            if ((new Date(startDatePicker).getTime() > new Date(endDatePicker).getTime())) {
+                                msg = "Please have start date before end date.";
+                                $('#startDatePicker').addClass('input-validation-error');
+                            } else {
+                                $('#startDatePicker').removeClass('input-validation-error');
+                                if (meetingLocation == "") {
+                                    msg = "Please enter a location.";
+                                    $("#meetingLocation").addClass('input-validation-error');
+                                } else {
+                                    $("#meetingLocation").removeClass('input-validation-error');
+                                    if (meetingType == "") {
+                                        msg = "Please select a meeting type.";
+                                        $('#MeetingType').addClass('input-validation-error');
+                                    } else {
+                                        $('#MeetingType').removeClass('input-validation-error');
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                } 
+            }
+            $("#meetingWizardAlert").text(msg);
+            if (msg == "") {
+                // Save AJAX call
+                var inputData = {
+                    "clientId": $("#clientSelection").val(), "clientAbbreviation": $("#clientSelection > option:selected").text(), 
+                    "clientMeetingId": $("#clientMeetingId").val(), "meetingAbbreviation": meetingAbbr, "meetingDescription": meetingName,
+                    "startDate": startDatePicker, "endDate": endDatePicker, "meetingLocation": meetingLocation, "meetingTypeId": meetingType,
+                    "hotelId": hotel
+                };
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '/Setup/SaveMeeting',
+                    data: inputData,
+                    success: function (data) {
+                        if (!data.flag) {
+                            for (var i = 0; i < data.messages.length; i++) {
+                                $("#meetingWizardAlert").append($("<div/>").html(data.messages[i]));
+                            }
+                        } else {
+                            if ($("#clientMeetingId").val() === "" && resetProgramAndYear) {
+                                resetProgramAndYear();
+                            }
+                            $("#btn-find-meetings").click();
+                            if ($("#clientMeetingId").val() === "") {
+                                $("#successMessage").text("Meeting " + meetingName + " added successfully.").show();
+                            } else {
+                                $("#successMessage").text("Meeting " + meetingName + " updated successfully.").show();
+                            }
+                            $('.ui-dialog-titlebar-close').click();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#meetingWizardAlert").html("Failed to save the meeting.");
+                    }
+                });
+            } else {
+                $('#saveDialogChanges').prop("disabled", false);
+            }
+        });
+    });
+    validateDate();
+
+    // Hotel Validation
+    var selectedHotelValue;
+    $('#meetingType').on('change', function () {
+        if ($('#meetingType select :selected').filter(':contains("Onsite")').length > 0) {
+            $('#hotelType select').val(selectedHotelValue);
+            $('#hotelType select').attr('disabled', false);
+        } else {
+            if ($('#hotelType select').val() != "") {
+                selectedHotelValue = $('#hotelType select').val();
+            }
+            $('#hotelType select').val("");
+            $('#hotelType select').attr('disabled', 'disabled');
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    window.onload = function () {
+    var datepicker = $("#startDatePicker").data("kendoDatePicker");
+    var todayDate = kendo.toString(kendo.parseDate('@Model.Start.ToString()'), 'MM/dd/yyyy');
+    datepicker.val(todayDate);
+    datepicker.trigger("change");
+    }
+</script>

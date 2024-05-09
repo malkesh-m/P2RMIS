@@ -1,0 +1,3 @@
+Cloud publish profiles are now stored on Jenkins for security purposes. Due to the need to use sql authentication which includes the password in the profile, including in version control would mean everyone has dbo level access to all 
+environments who has access to the Git repo.  Changes to publish profile are made on Jenkins under the credentials section of the P2RMIS credential store (all p2rmis devs have access to upload new) as a secret file (readable by Jenkins, 
+not users).  Outlines of each are included in the database project for reference purposes, however they require the password added when uploaded.

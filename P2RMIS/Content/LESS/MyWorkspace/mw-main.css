@@ -1,0 +1,120 @@
+﻿.mw-critique-checkboxes {
+  position: absolute;
+  top: 0px;
+  right: 0;
+}
+.mw-critique-checkboxes label {
+  display: inline-block;
+  margin-right: 10px;
+}
+.mw-critique-checkboxes input {
+  margin: 0px;
+}
+.mw-critiques-toolbar {
+  padding: 5px 0px 5px 5px;
+  display: table-cell;
+  width: 910px !important;
+}
+.mw-critiques-toolbar_img {
+  display: inline-block;
+  margin-top: 10px;
+}
+.mw-critiques-toolbar_label {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 18px;
+}
+.mw-critiques-toolbar_select {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+.mw-critiques_main {
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+}
+.mw-critiques_main_section {
+  margin-top: 180px;
+  display: inline-block;
+  width: 875px;
+  border: 1px solid #d4d4d4;
+  padding: 10px;
+}
+.mw-critiques_main_section_header {
+  padding: 0px 5px;
+  margin-top: -30px;
+  background: white;
+  position: absolute;
+}
+.mw-critiques_main_section_sub-header {
+  padding: 0px 5px;
+  margin-top: -20px;
+  background: white;
+  float: right;
+  font-weight: normal;
+}
+.mw-critiques_main_sub-section {
+  padding-top: 15px;
+  padding-left: 5px;
+}
+.mw-critiques_main_sub-section_critique {
+  display: block;
+}
+.mw-critiques_nav {
+  font-size: 14px;
+  background: #f1f1f1;
+  display: inline-block;
+  border: 1px solid #d4d4d4;
+  padding: 10px;
+  width: 280px;
+  float: right;
+  position: fixed;
+  z-index: 100;
+  margin-left: 910px;
+  height: 120px;
+}
+.mw-critiques_nav_link {
+  width: 100%;
+  display: inline-block;
+  margin: 5px;
+}
+.mw-critiques_fixed-header {
+  font-size: 14px;
+  background: #f1f1f1;
+  position: fixed;
+  z-index: 100;
+  display: inline-block;
+  border: 1px solid #d4d4d4;
+  padding: 10px;
+  width: 875px;
+}
+.mw-critiques_fixed-first {
+  display: inline-block;
+  width: 190px;
+  float: left;
+  margin-bottom: 5px;
+}
+.mw-critiques_fixed-second {
+  display: inline-block;
+  width: 670px;
+  float: left;
+  margin-bottom: 5px;
+}
+.mw-critiques_fixed-app-label {
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+  margin-right: 5px;
+}
+.mw-critiques_fixed-app-title {
+  width: 550px;
+  display: block;
+  float: left;
+}
+.mw-critiques_fixed-label {
+  display: inline-block;
+  font-weight: bold;
+}
+.mw-critiques_fixed-label-result {
+  display: inline-block;
+}

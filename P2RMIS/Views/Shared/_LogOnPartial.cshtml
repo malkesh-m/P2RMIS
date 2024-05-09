@@ -1,0 +1,12 @@
+﻿@if(Request.IsAuthenticated) {
+    <br />
+    <li>@Html.ActionLink("Personal Information", "MyAccount", "User")</li>
+    @*<li><a href="#">W-9 Status</a></li>
+    <li><a href="#">Emergency Contact Information</a></li>
+    <li>@Html.ActionLink("Incorrect Login? Logout", "LogOff", "Account")<a href="#"></a></li>**@
+}
+else
+{
+    //TODO:  Verify that Login is correct 
+    @Html.ActionLink("Login", "Logon", "Account")
+}

@@ -1,0 +1,22 @@
+﻿@using Sra.P2rmis.Web.Models
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.CrossCuttingServices
+@{
+    const string CreateContext = Sra.P2rmis.Web.Controllers.UserProfileManagement.UserProfileManagementBaseController.SearchContexts.CreateContext;
+}
+
+<nav class="offset header-icon" role="navigation">
+    <!-- HEADER MENU-->
+    <ul class="nav nav-pills sub-icons header-icon" role="menubar">
+        @if (Session[SessionVariables.Verified].Equals(1) && Session[SessionVariables.CredentialPermanent].Equals(1) && !SecurityHelpers.CheckPasswordAgeExpiredFromSession(Session))
+        {
+            if (SecurityHelpers.CheckValidPermissionFromSession(Session, Permissions.TaskTracking.SubmitTask))
+            {
+                <li>
+                    <label for="infoIcon" class="sr-only">Submit premise I T Ticket Request</label>
+                    <a href="@Url.Action("Index", "TaskTracking")" class="submitTaskRequest"><img src="~/Content/img/information.png" id="infoIcon" alt="Submit Program and Peer Review Management System I T Ticket Request " /></a>
+                </li>
+            }
+        }
+    </ul>
+</nav>

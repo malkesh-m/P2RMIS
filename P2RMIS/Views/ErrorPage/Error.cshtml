@@ -1,0 +1,15 @@
+﻿@using Sra.P2rmis.CrossCuttingServices;
+<h3>Error</h3>
+
+<p>
+    Uh oh! Something has gone wrong. Please contact helpdesk (<a href="mailto:@ViewHelpers.HelpDeskEmail">@ViewHelpers.HelpDeskEmail</a>) with any issues.
+    <br/><br/>
+    <input type="button" name="ReturnButton" value="Return to Previous Page" class="normal" onclick="history.go(-1)" />
+</p>
+<script type="text/javascript">
+    $(function () {
+        if (self != window) {
+            $('.ui-dialog-titlebar-close').click();
+        }
+    });
+</script>

@@ -1,0 +1,128 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<section class="upm-profile-section-alternate-container" role="region" aria-labelledby="alternate-contacts">
+    <div class="upm-profile-section-sub_main-header" id="alternate-contacts">Alternate Contacts</div>
+    @if (Model.HasZeroOrOneAlternateContacts)
+    {
+    <div class="upm-profile-section-sub_link">
+        <label for="alternateContactAdd" class="sr-only">Add Alternate</label>
+        <a href="#" id="alternateContactAdd" title="Add Alternate" class="upm-profile-section_field">Add Alternate</a>
+    </div>
+    }
+    else
+    {
+    <div class="upm-profile-section-sub_link disabled">
+        <label for="alternateContactAdd" class="sr-only">Add Alternate</label>
+        <a href="#" id="alternateContactAdd" title="Add Alternate Disabled" class="upm-profile-section_field disabled">Add Alternate</a>
+    </div>
+    }
+    @for (var iContact = 0; iContact < Model.AlternateContactPersons.Count; iContact++)
+    {
+        var primaryId = "AlternateContactPersons_" + iContact + "__PrimaryFlag";
+        var altId = "AlternateContactPersons_" + iContact + "__UserAlternateContactTypeId";
+        var firstNameId = "AlternateContactPersons_" + iContact + "__FirstName";
+        var lastNameId = "AlternateContactPersons_" + iContact + "__LastName";
+        var contactPreferText = (Model.IsPrimary(Model.AlternateContactPersons[iContact]) == string.Empty) ?
+            Model.PreferredText : Model.SecondaryText;
+        var contactDisplayStyle = Model.AlternateContactPersons[iContact].IsDeleted() ?
+            " style=display:none;" : string.Empty;
+    <div class="upm-profile-section-alternate-container_section alternateContact" @contactDisplayStyle>
+        <div class="upm-profile-section-alternate-container_section_header">
+            @Html.HiddenFor(m => m.AlternateContactPersons[iContact].UserAlternateContactId, new { @class = "alternateContactId" })
+            @Html.HiddenFor(m => m.AlternateContactPersons[iContact].PrimaryFlag, 
+                new { @class = "alternateContactPrimaryFlagHidden" })
+            @Html.RadioButton("userPrefAlternateRadio", Model.AlternateContactPersons[iContact].PrimaryFlag,
+                Model.AlternateContactPersons[iContact].PrimaryFlag, new { @class = "alternateContactPrimaryFlag" })
+            <label for="@primaryId" class="upm-profile-section-sub_field prefAlternateContactTag">@contactPreferText <span class="hidden-text">Alternate Contact</span></label>
+        </div>
+        <span class="alignRight"><a href="#" class="alternateContactDelete"><img src="~/Content/img/cross.png" class="icon-cancel close-x" alt="Delete Alternate Contact" /></a></span>
+        <p class="upm-profile-section-sub_container_exp-text">
+            Please provide the First Name, Last Name and email or phone number for your alternate contact.
+        </p>
+        <div class="upm-profile-section_container alternate-margin">
+            <!-- Alternate Contact List -->
+            <div class="upm-profile-section_field margin-left25">
+                <label for="@altId" class="sr-only">Alternate Contact Type</label>
+                @Html.DropDownListFor(m => m.AlternateContactPersons[iContact].UserAlternateContactTypeId,
+                 new SelectList(Model.AlternateContactTypesDropdown, "Index", "Value",
+                     Model.AlternateContactPersons[iContact].UserAlternateContactTypeId), "Select",
+                 new { @class = "alternateContactTypeId upm-profile-section_field_input-short" })
+            </div>
+            <!-- First Name -->
+            <div class="upm-profile-section_field">
+                <span class="sr-only">Middle Iniital</span>
+                <label for="@firstNameId" class="upm-profile-section_field">First Name</label>
+                @Html.TextBoxFor(m => m.AlternateContactPersons[iContact].FirstName, new { @class = "alternateContactFirstName upm-profile-section_field_input-short", maxlength = "25" })
+            </div>
+            <!-- Last Name -->
+            <div class="upm-profile-section_field">
+                <label for="@lastNameId" class="upm-profile-section_field">Last Name</label>
+                @Html.TextBoxFor(m => m.AlternateContactPersons[iContact].LastName, new { @class = "alternateContactLastName upm-profile-section_field_input-short", maxlength = "35" })
+            </div>
+        </div>
+        <ul class="list-unstyled">
+            @Model.MakeAtLeastTwoAlternates(Model.AlternateContactPersons[iContact])
+            @{
+                var emailId = "AlternateContactPersons_" + iContact + "__Email";
+            }
+            @for (var iPhone = 0; iPhone < Model.AlternateContactPersons[iContact].AlternateContactPhone.Count; iPhone++)
+            {
+                var phoneNumberClass = (Model.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].PhoneTypeId == 3) ? " UsPhoneDesk" : " UsPhone";
+                var phoneNumberIntlClass = (Model.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].International ? " IntlPhone" : string.Empty);
+                var idPhoneType = "AlternateContactPersons_" + iContact + "__AlternateContactPhone_" + iPhone + "__PhoneTypeId";
+                var idPhone = "AlternateContactPersons_" + iContact + "__AlternateContactPhone_" + iPhone + "__Number";
+                var prefCheck = "AlternateContactPersons_" + iContact + "__AlternateContactPhone_" + iPhone + "__PrimaryFlag";
+                var intCheckId = "AlternateContactPersons_" + iContact + "__AlternateContactPhone_" + iPhone + "__International";
+
+                <li>
+                    <div class="upm-profile-section-sub_field">
+                        <label for="@idPhoneType" class="sr-only">Alternate Contact Type</label>
+                        @Html.HiddenFor(m => m.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].UserAlternateContactPhoneId, new { @class = "alternateContactPhoneId" })
+                        @Html.DropDownListFor(m => m.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].PhoneTypeId,
+                                        new SelectList(Model.PhoneTypeDropdown, "Index", "Value",
+                                            Model.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].PhoneTypeId), "Select",
+                                        new { @class = "userPhoneTypeDropDown alternateContactPhoneTypeId upm-profile-section_field_input-short"})
+                    </div>
+                    <div class="upm-profile-section-sub_field">
+                        <label for="@idPhone" class="sr-only">Phone Number</label>
+                        @Html.TextBoxFor(m => m.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].Number, new { @class = "alternateContactPhoneNumber upm-profile-section_field_input-short" + @phoneNumberClass + @phoneNumberIntlClass, maxlength = "25" })
+                    </div>
+                    <div class="upm-profile-section-sub_field_phone">
+                        @Html.HiddenFor(m => m.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].PrimaryFlag,
+                            new { @class = "alternateContactPhonePrimaryFlagHidden" })
+                        @Html.RadioButton("userPrefAlternateContactRadio[" + iContact + "]",
+                            Model.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].PrimaryFlag,
+                            Model.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].PrimaryFlag,
+                            new { @class = "phonePreferredType alternateContactPhonePrimaryFlag upm-profile-section_field_input-short" })
+                        @if (@Model.IsPrimary(Model.AlternateContactPersons[iContact].AlternateContactPhone[iPhone]) == string.Empty)
+                        {
+                            <label for="@prefCheck" class="upm-profile-section-sub_field prefAlternateContactPhoneTag" data-label="side-label">@Model.PreferredText <span class="hidden-text">Phone Number</span></label>
+                        }
+                        else
+                        {
+                            <label for="@prefCheck" class="upm-profile-section-sub_field prefAlternateContactPhoneTag" data-label="side-label">@Model.SecondaryText <span class="hidden-text">Phone Number</span></label>
+                        }
+                        @Html.CheckBoxFor(m => m.AlternateContactPersons[iContact].AlternateContactPhone[iPhone].International, new { @class = "alternateContactPhoneInternational", @id = @intCheckId })
+                        <label for="@intCheckId" class="upm-profile-section-sub_field" data-label="side-label">International <span class="hidden-text">Phone Number</span></label>
+                    </div>
+                </li>
+            }
+            <li class="upm-profile-section-sub_field">
+                <label for="@emailId" class="upm-profile-section-sub_field alt-email">Email</label>
+                @Html.TextBoxFor(m => m.AlternateContactPersons[iContact].Email, new { @class = "alternateContactEmail upm-profile-section_field_input-long", maxlength = "200" })
+            </li>
+        </ul>
+        @Html.HiddenFor(m => m.AlternateContactPersons[iContact].IsDeletable, new { @class = "alternateContactIsDeletable" })
+    </div>
+    }
+</section>
+<style type="text/css">
+    .ui-widget-content a {
+        color: white;
+    }
+</style>
+<div id="AlternateContactDeletionDialog" class="hidden">
+    <div class="modal-body">
+        <p style="text-align:center">This will remove this Alternate Contact entry.<br />Click OK to proceed?</p>
+    </div>
+</div>

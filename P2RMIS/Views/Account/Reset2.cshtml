@@ -1,0 +1,67 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ResetModel2
+           
+<div class="row-fluid">
+    <div class="span3"></div>
+    <div class="span6">
+        <div id="containerSub">
+            <h3>Reset Password - Step 2 of 2</h3>
+            @using (Html.BeginForm("Reset2", "Account", FormMethod.Post, new { id = "Reset2", name = "Reset2;" }))
+            {
+                @Html.ValidationSummary()
+                <table style="width: 100%;"> 
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                            <p>Please enter the Answer in the field provided.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            E-mail Address: 
+                        </td>
+                        <td>
+                            @Session["email"]
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Security Question:  
+                        </td>
+                        <td>
+                            @ViewBag.securityQuestion
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="required">*</span>Answer: 
+                        </td>
+                        <td>
+                            <label for="Answer" class="sr-only">Please type an answer to @ViewBag.securityQuestion</label>
+                            @Html.TextBoxFor(m => m.Answer, new { @class = "wide" })<br />
+                            @Html.ValidationMessageFor(m => m.Answer)
+                        </td>
+                    </tr>
+                    <tr>
+                    <td align="right" colspan="2">
+                        <span class="normal" align="left">@Html.ActionLink("<< Previous", "Reset", Model)</span>
+                        @Html.HiddenFor(model => model.UserID, new {Value = Model.UserID})
+                        @Html.HiddenFor(model => model.QuestionNumber, new { Value = Model.QuestionNumber })
+                        @Html.HiddenFor(model => model.FullUserName, new { Value = Model.FullUserName })
+                        @Html.HiddenFor(model => model.UserLogin, new { Value = Model.UserLogin })
+                        @Html.HiddenFor(model => model.SecurityQuestion, new {Value = ViewBag.securityQuestion})
+                    <input class="focus" type="submit" value="Request password reset >>" title="Reset" id="resetPasswordTwo"/>
+                </td>
+                    </tr> </table>
+            }
+        </div>
+    </div>
+    <div class="span3"></div>
+</div>
+<script type="text/javascript">
+    $('#resetPasswordTwo').on('click', function (e) {
+        $('#Reset2').submit();
+        $(this).attr('disabled', 'disabled');
+        return false;
+    })
+</script>
+

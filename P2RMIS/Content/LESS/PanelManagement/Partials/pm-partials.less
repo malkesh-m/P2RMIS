@@ -1,0 +1,104 @@
+﻿@import '../../P2RMIS/variables.less';
+@import '../../P2RMIS/global.less';
+
+.pm-threshold-modal {
+    height: 400px;
+
+    &_explanatory-text {
+        float: left;
+        vertical-align: super;
+    }
+
+    .k-grid-content {
+        max-height: 340px;
+    }
+
+    .pm-threshold-grid {
+        height: auto;
+        margin-top: 30px;
+    }
+
+    td {
+        font-size: @fontSize12;
+        position: relative;
+        width: 100%;
+    }
+
+    td:nth-child(3), td:nth-child(4), td:nth-child(5) {
+        text-align: right;
+        width: 100%;
+    }
+
+    .k-link:focus {
+        outline: none;
+    }
+
+    &_exportButton {
+        float: right;
+        margin: 0px;
+
+        &__link {
+            font-size: @fontSize14;
+
+            &:active, &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .pm-threshold_exclamation {
+        width: 10px;
+        height: 10px;
+        transform: rotate(0deg) !important;
+        position: absolute;
+        left: 0px;
+    }
+
+    .pm-threshold_exclamation::before {
+        z-index: 1000;
+        position: absolute;
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        transform: rotate(0deg) !important;
+        left: 1px;
+        top: 5px;
+        font-size: 16px;
+        color: red;
+        font-weight: bold;
+        content: '!';
+        margin: 0px;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+
+    .k-grid-header thead th:nth-child(1) {
+        padding: 5px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+}
+.pm-threshold-grid_exclamation {
+    width: 10px;
+    height: 10px;
+    transform: rotate(0deg) !important;
+    position: absolute;
+    left: 0px;
+}
+
+.pm-threshold-grid_exclamation::before {
+    z-index: 1000;
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    transform: rotate(0deg) !important;
+    left: 7px;
+    top: -7px;
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
+    content: '!';
+    margin: 0px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}

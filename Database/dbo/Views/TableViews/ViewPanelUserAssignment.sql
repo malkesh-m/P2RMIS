@@ -1,0 +1,20 @@
+CREATE VIEW [dbo].ViewPanelUserAssignment AS
+SELECT [PanelUserAssignmentId]
+      ,[SessionPanelId]
+      ,[UserId]
+      ,[ClientParticipantTypeId]
+      ,[ClientRoleId]
+      ,[LegacyParticipantId]
+      ,[NotificationDateSent]
+	  ,[RestrictedAssignedFlag]
+      ,[ParticipationMethodId]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+      ,[DeletedFlag]
+      ,[DeletedBy]
+      ,[DeletedDate]
+  FROM [dbo].[PanelUserAssignment]
+WHERE [DeletedFlag] = 0
+

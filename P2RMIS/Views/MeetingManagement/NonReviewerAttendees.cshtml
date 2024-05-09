@@ -1,0 +1,54 @@
+﻿@using Sra.P2rmis.Web.Common
+@model Sra.P2rmis.Web.UI.Models.MeetingManagementViewModel
+
+@{
+    ViewBag.PageTitle = Sra.P2rmis.Web.UI.Models.MMTabsViewModel.Tab2;
+    @Html.Partial("_KendoHeader2016");
+}
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Meeting Management</span>
+</div>
+<!-- Tabs -->
+<div class="mm-fieldSet">
+    <div id="successMessage"></div>
+    <div id="failureMessage"></div>
+    @Html.Partial("_MMTabbedMenu")
+    @Html.Hidden("nonReviewerOnly", true)
+    <!-- Select Filters -->
+    <div class="mm-filterBox">
+        <div class="mm-filterBox_title">Select Filters</div>
+        @*<input type="checkbox" id="endDateCheckbox" style="margin-top: 0px; margin-left: 10px;" />
+        <div class="inline-block">Do not show meetings whose end date has passed.</div>*@
+        <table class="mm-filterBox_table">
+            <tr>
+                <td class="mm-filterBox_table_search"><input placeholder="Last Name, First Name" class="mm-filterBox_table_search_input" id="reviewerSearch" /></td>
+                <td class="mm-filterBox_table_yearSelect">@Html.DropDownList("fiscalYearId", new SelectList(Model.ActiveYears, "fiscalYearId"), "Select Year", new { @id = "fiscalYearId", @class = "mm-filterBox_table_yearSelect_select" })</td>
+                <td class="mm-filterBox_table_meetingSelect"><select class="mm-filterBox_table_meetingSelect_select" id="meetingId" disabled><option value="">Select Meeting</option></select></td>
+                <td class="mm-filterBox_table_programSelect"><select class="mm-filterBox_table_yearSelect_select" id="programYearId" disabled><option value="">Select Program</option></select></td>
+                <td class="mm-filterBox_table_sessionSelect"><select class="mm-filterBox_table_sessionSelect_select" id="sessionId" disabled><option value="">Select Session</option></select></td>
+                <td class="mm-filterBox_table_buttonShell"><button id="btn-find-meetings" class="mm-filterBox_table_buttonShell_buttonPrimary" disabled>Find</button></td>
+                <td class="mm-filterBox_table_buttonShell"><button id="btn-clear-meetings" class="mm-filterBox_table_buttonShell_buttonSecondary" disabled>Clear</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="mm-main_text" id="main-text">
+        Please enter name of the meeting attendee and/or one of the following:<br />
+        1. Fiscal Year and Meeting<br />
+        2. Fiscal Year and Program
+    </div>
+    <!-- Main Body -->
+    <div class="mm-main">
+        <h4 class="mm-main_title" id="result-header">Search Results <div id="recordCount" class="ss-gridHeader_totalCount"><span id="recordCount"></span> )</div>
+    </div>
+    <div class="mm-main_text displayNone" id="noResults"> No matching results Found.</div>
+    <div id="loading"></div>
+    <div id="mm-reviewer-grid" class="mm-main-grid"></div>
+</div>
+<script src="~/Scripts/Custom/MeetingManagement/hotelandTravel.js"></script>

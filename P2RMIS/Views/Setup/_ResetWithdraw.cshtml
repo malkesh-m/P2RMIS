@@ -1,0 +1,24 @@
+﻿<head>
+    <style>
+        .modalWarningCaption {
+            color: black !important;
+            background: #FFFF21 !important;
+        }
+    </style>
+</head>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="p2rmis-disallowed">
+            <div class="container-fluid">
+                <div class="row-fluid p2rmis-disallowed_hidden">
+                    <div id="warningAlert" class="p2rmis-disallowed__error"></div>
+                    <p class="p2rmis-disallowed_p"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.confirmFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+</script>

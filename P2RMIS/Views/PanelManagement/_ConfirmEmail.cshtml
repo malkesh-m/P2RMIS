@@ -1,0 +1,57 @@
+﻿<style type="text/css">
+    #modalAttachments{
+        display: block;
+        width: 700px;
+        word-wrap: break-word;
+    }
+</style>
+<div class="ui-dialog-content modal-standard-font">
+    <div class="row-fluid">
+            <p><div class="field-validation-error"></div></p>
+            <p><span class="boldWeight">Please confirm your message below:</span></p>
+
+            <p><span class="boldWeight">To:</span><span id="modalTo"></span></p>
+
+            <p><span class="boldWeight">CC:</span><span id="modalCc">the CC address go here</span></p>
+
+            <p><span class="boldWeight">BCC: </span><span id="modalBcc"></span></p>
+
+            <p><span class="boldWeight">From: </span><span id="modalFrom"></span></p>
+
+            <p><span class="boldWeight">Subject: </span><span id="modalSubject"></span></p>
+
+            <p>
+                <div class="span12 bordered">
+                    <span class="textHeaderNotBold">Message</span>
+                    <div class="row-fluid" style="margin-bottom: 5px;">
+                        <span id="modalMessage"></span>
+                    </div>
+                </div>
+            </p>
+        <p>&nbsp;</p>
+        <p><span class="boldWeight">Attachments:</span><span id="modalAttachments"></span></p>
+        <div class="row-fluid alignCenter marginTop20">
+            <button id="cancelViewEmail" class="btn btn-primary" type="button">Back</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" id="modalSendEmail" class="btn btn-primary">Send Email</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //
+    // Script to close modal
+    //
+    (function ($) {
+        $('body').on('click', '#cancelViewEmail', function () {
+            $(".field-validation-error").children().not(".file").remove();
+            $('#sendConfirmation').dialog('close');
+        });
+        //
+        // Script to send the email
+        //
+        $('body').on('click', '#modalSendEmail', function (e) {
+            e.preventDefault();
+            $("#pmSendEmail").submit();
+        });
+    }(jQuery))
+</script>

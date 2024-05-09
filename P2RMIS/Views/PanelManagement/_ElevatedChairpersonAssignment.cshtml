@@ -1,0 +1,142 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ReviewerAssignmentViewModel
+@using Sra.P2rmis.Web.Common
+@{
+    var clientExpertiseRatingDropdownList = Model.ClientExpertiseRatingList.FirstOrDefault(r => r.ClientExpertiseRatingId == Model.ClientExpertiseRatingId);
+    var clientAssignmentTypeDropdownList = Model.ClientAssignmentTypeList.FirstOrDefault(r => r.ClientAssignmentTypeId == Model.ClientAssignmentTypeId);
+    var clientExpertiseRatingAbbreviation = clientExpertiseRatingDropdownList == null ? string.Empty : clientExpertiseRatingDropdownList.ClientExpertiseRatingAbbreviation;
+    var clientAssignmentTypeAbbreviation = clientAssignmentTypeDropdownList == null ? string.Empty : clientAssignmentTypeDropdownList.ClientAssignmentTypeAbbreviation;
+}
+<style>
+    .control-label {
+        width: 90px !important;
+    }
+
+    .controls {
+        margin-left: 110px !important;
+    }
+
+    label.radio.inline {
+        padding-top: 5px !important
+    }
+
+    label.error {
+        color: red
+    }
+</style>
+<input type="hidden" id="clientExpertiseNoExpertise" value="@Invariables.ReviewerExpertise.NoExpertise" />
+<input type="hidden" id="clientExpertiseCoiExpertise" value="@Invariables.ReviewerExpertise.CoiExpetise" />
+<input type="hidden" id="clientExpertiseRatingAbbreviation" value="@clientExpertiseRatingAbbreviation" />
+<input type="hidden" id="clientAssignmentTypeAbbreviation" value="@clientAssignmentTypeAbbreviation" />
+<div id="validationSummary"></div>
+<div class="pm-addCoiBox">
+    <div class="pm-addCoiBox_title">Add COI</div>
+    <div class="pm-addCoiBox_legend">
+        <br />
+        <form id="assignmentForm" class="form-horizontal">
+            <input type="hidden" id="clientExpertiseRatingId" name="clientExpertiseRatingId" value="@Model.ClientExpertiseRatingId" />
+            <input type="hidden" id="clientAssignmentTypeId" name="clientAssignmentTypeId" value="@Model.ClientAssignmentTypeId" />
+            <input type="hidden" id="panelUserAssignmentId" name="panelUserAssignmentId" value="@Model.PanelUserAssignmentId" />
+            <input type="hidden" id="panelApplicationId" name="panelApplicationId" value="@Model.PanelApplicationId" />
+            <input type="hidden" id="presentationOrder" name="presentationOrder" value="@Model.PresentationOrder" />
+            <input type="hidden" id="forceUnAssignAction" name="forceUnAssignAction" value="false" />
+            <input type="hidden" id="clientAssignmentChanged" name="clientAssignmentChanged" value="false" />
+            <div class="control-group">
+                <label class="control-label" for="coiStatus">COI:</label>
+                <div class="controls">
+                    <label for="coiStatusTrue" class="radio inline"><input type="radio" id="coiStatusTrue" name="coiStatus" value="true" @(Model.ClientAssignmentTypeId != 0 ? "checked" : string.Empty) /> Yes</label>
+                    <label for="coiStatusFalse" class="radio inline"><input type="radio" id="coiStatusFalse" name="coiStatus" value="false" @(Model.ClientAssignmentTypeId == 0 && Model.ClientExpertiseRatingId == 50 ? "checked" : string.Empty) /> No</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="ClientCoiTypeId">COI Type:</label>
+                <div class="controls">
+                    @Html.DropDownListFor(m => m.ClientCoiTypeId, new SelectList(@Model.ClientCoiList, "ClientCoiTypeId", "CoiTypeDescription"), "Select", new { style = "max-width: 250px", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="Comment">Comment:</label>
+                <div class="controls">
+                    @Html.TextAreaFor(m => m.Comment, new { style = "width: 300px", @disabled = "disabled" })
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+
+        $('#saveDialogChanges').prop("disabled", true);
+        var formElements = $("#ClientCoiTypeId,#Comment,#saveDialogChanges");
+        var clientAssignmentTypeId = $("#clientAssignmentTypeId").val();
+        if (clientAssignmentTypeId != 0) {
+            formElements.removeAttr("disabled");
+        }
+
+        $('#saveDialogChanges').on('click', function () {
+            $("#assignmentForm").submit();
+        });
+
+        $("#assignmentForm").on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                $.ajax({
+                    cache: false,
+                    type: 'GET',
+                    url: '/PanelManagement/SaveAssignment',
+                    data: $("#assignmentForm").serialize(),
+                    contentType: 'application/json',
+                }).done(function (result) {
+                    if (result && typeof result === "boolean") {
+                        if ($.isFunction(UpdateElementDisplay)) {
+                            var panelUserAssignmentId = $("#panelUserAssignmentId").val();
+                            var panelApplicationId = $("#panelApplicationId").val();
+                            var element = $("td.reviewer-assignment").filter("[participant-id='" + panelUserAssignmentId + "']").filter("[panel-app-id='" + panelApplicationId + "']");
+                            var clientAssignmentTypeAbbreviation = $("#clientAssignmentTypeAbbreviation").val();
+                            var clientExpertiseRatingAbbreviation = $("#clientExpertiseRatingAbbreviation").val();
+                            var presentationOrder = $("#presentationOrder").val();
+                            UpdateElementDisplay(element, clientAssignmentTypeAbbreviation, presentationOrder, clientExpertiseRatingAbbreviation);
+                            $('#ModalDialog').dialog('close');
+                        }
+                    }
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError);
+                });
+            }
+        });
+
+        $("input[type='radio']").on("change", function () {
+            $('#saveDialogChanges').removeAttr("disabled");
+            if ($(this).val() == 'true') {
+                $("#ClientCoiTypeId,#Comment").removeAttr("disabled");
+                $("#clientExpertiseRatingAbbreviation").val($("#clientExpertiseCoiExpertise").val());
+                $("#clientExpertiseRatingId").val(49);
+                $("#clientAssignmentTypeAbbreviation").val("COI");
+                $("#clientAssignmentTypeId").val(55);
+            } else {
+                $("#clientExpertiseRatingAbbreviation").val($("#clientExpertiseNoExpertise").val());
+                $("#clientExpertiseRatingId").val(50);
+                $("#clientAssignmentTypeAbbreviation").val("UnAssign");
+                $("#clientAssignmentTypeId").val(0);
+                $("#ClientCoiTypeId option:first").attr("selected", true);
+                $("#Comment").val("");
+                $("#ClientCoiTypeId,#Comment").prop("disabled", true);
+            }
+            $("#clientAssignmentChanged").val("true");
+        });
+
+        $("#assignmentForm").validate({
+            errorLabelContainer: "#validationSummary",
+            wrapper: "p",
+            rules: {
+                ClientCoiTypeId: "required",
+                Comment: "required",
+            },
+            messages: {
+                ClientCoiTypeId: "COI Type is required",
+                Comment: "Comment is required"
+            }
+        });
+    });
+</script>

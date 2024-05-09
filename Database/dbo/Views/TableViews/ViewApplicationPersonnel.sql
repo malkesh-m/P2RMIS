@@ -1,0 +1,25 @@
+CREATE VIEW [dbo].ViewApplicationPersonnel AS
+SELECT [ApplicationPersonnelId]
+      ,[ApplicationId]
+      ,[ClientApplicationPersonnelTypeId]
+      ,[FirstName]
+      ,[LastName]
+      ,[MiddleInitial]
+      ,[OrganizationName]
+      ,[PhoneNumber]
+      ,[EmailAddress]
+      ,[PrimaryFlag]
+      ,[Source]
+	  ,[StateAbbreviation]
+      ,[CreatedBy]
+      ,[CreatedDate]
+      ,[ModifiedBy]
+      ,[ModifiedDate]
+      ,[DeletedFlag]
+      ,[DeletedBy]
+      ,[DeletedDate]
+  FROM [dbo].[ApplicationPersonnel]
+WHERE [DeletedFlag] = 0
+
+GO
+GRANT SELECT ON [ViewApplicationPersonnel] TO [web-p2rmis]

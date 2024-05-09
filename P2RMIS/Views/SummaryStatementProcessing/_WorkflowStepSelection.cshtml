@@ -1,0 +1,82 @@
+﻿@model Sra.P2rmis.Web.ViewModels.SummaryStatementProcessing.WorkflowStepListViewModel
+@using Sra.P2rmis.Web.Common
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+
+<div id="workflowStepSelect" role="dialog" data-workflowId=@Model.WorkflowId>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="margin-bottom:0px">
+                <div class="container-fluid" style='padding:0px;margin:0px'>
+                    <div class="alert-message">
+                        If you select COMPLETE, the Summary Statement will no longer be available for editing.
+                        <br /><br />
+                    </div>
+                    <div class="row-fluid">
+                        <span class="span12 align-center">
+                            <span class="modalFormFieldLabel">Phase </span>
+                            @if (Model.IsClient)
+                            {
+                                <text><span class="modalFormFieldLabel">Phase: </span></text>
+                                <text>@Model.WorkflowStep</text>
+                                <input type="hidden" id="selectedStep" value="@Model.ApplicationWorkflowStepEntityId" />
+                            }
+                            else
+                            {
+                                <text><span class="modalFormFieldLabel">Select phase: </span></text>
+                                @Html.DropDownListFor(m => m.ApplicationWorkflowStepEntityId, new SelectList(Model.WorkflowStepList, "Index", "Value", Model.ApplicationWorkflowStepEntityId), new { @id = "selectedStep", @style = "max-width:25ch" })
+                            }
+                        </span>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //
+        // selectedStep dropdown change event
+        //
+        $("#selectedStep").change(function () { checkPhaseForAlert(); });
+        //
+        // Append the footer
+        //
+        $("#workflowStepSelect .modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSubmitFooter);
+        //
+        // Cancel button
+        //
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        checkPhaseForAlert();
+
+    });
+    function checkPhaseForAlert() {
+        if ($("#selectedStep option:selected").text().indexOf("Complete") != -1) {
+            $(".alert-message").show();
+        } else { $(".alert-message").hide(); }
+    }
+    //
+    // Modal footer button Select
+    //
+    $('#workflowStepSelect div.modal-footer :button').on('click', function (e) {
+        e.preventDefault();
+        var msel = $("#selectedStep");
+        //
+        // Check the workflow in to the selected step
+        //
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '@Url.Action(Routing.SummaryStatementProcessing.CheckInToStep, Routing.P2rmisControllers.SummaryStatementProcessing)',
+            data: { "workflowId": $("#workflowStepSelect").attr("data-workflowId"), "workflowStepId": msel.val() }
+        }).done(function (result) {
+            $("#ModalDialog").dialog("close");
+            // Redirect to assignments page if successful
+            window.location.href = "/SummaryStatementProcessing/Assignments";
+
+        }).fail(function (xhr, ajaxOptions, thrownError) {
+            alert($.defaultFailureMessage);
+        });
+    });
+</script>

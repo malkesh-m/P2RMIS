@@ -1,0 +1,40 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@model Sra.P2rmis.WebModels.SummaryStatement.ApplicationInfoModel
+
+<table id="appView" class="table table-bordered table-striped alignCenter">
+    <tr>
+        <td align="left">
+            <strong>Title:</strong> @Model.theApplicationDetail.ApplicationTitle
+        </td>
+
+        <td rowspan="6" style="vertical-align:middle">
+            @{
+                int x = 1;
+                <p>Documents:</p>
+                    
+                foreach(var item in Model.theApplicationFileInfo)
+                {
+                    <p /><a style="color:black">@(x). </a><a href="/SummaryStatement/ViewApplicationFile/?logNumber=@item.FileInfo.LogNumber&fileSuffix=@item.FileInfo.FileSuffix&folder=@item.FileInfo.Folder" target="_blank">@item.FileInfo.DisplayLabel </a>@*<a style="color:black"> ViewHelpers.FormatFileSize(item.FileSize)</a>*@
+                x++;
+            }
+            }
+        </td>
+    </tr>
+    <tr>
+        <td align="left"><strong>PI:</strong> @ViewHelpers.ConstructNameWithComma(Model.theApplicationDetail.PiFirstName, Model.theApplicationDetail.PiLastName)</td>
+    </tr>
+    <tr>
+        <td align="left"><strong>Organization:</strong> @Model.theApplicationDetail.PiOrganization</td>
+    </tr>
+    <tr>
+        <td align="left"><strong>Topic Area:</strong> @Model.theApplicationDetail.ResearchArea</td>
+    </tr>
+    <tr>
+        <td align="left"><strong>Mechanism:</strong> @Model.theApplicationDetail.MechanismName</td>
+    </tr>
+</table>
+
+
+
+
+

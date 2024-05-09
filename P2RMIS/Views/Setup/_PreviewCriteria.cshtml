@@ -1,0 +1,28 @@
+﻿@model Sra.P2rmis.Web.UI.Models.PreviewCriteriaViewModel
+@using Newtonsoft.Json;
+
+<div class="row-fluid ss-preview-crit">
+    <div id="elementTitle" class="ss-preview-crit_text">Explanation</div>
+    <div id="descriptionArea" class="ss-preview-crit_description"></div>
+    <div class="ss-preview-crit_input-box">
+        <input id="activeCheckbox" type="checkbox" class="ss-preview-crit_input-box_checkbox"/>&nbsp;Abstain from evaluating <span class="abstain-title"></span>.
+    </div>
+    <div class="ss-preview-crit_rating">
+        Rating
+        <select class="ss-preview-crit_rating_select" id="ratingDropdown">
+            <option selected>Select</option>
+        </select>
+        <input id="ratingText" class="score decimal-score" />
+        <span class="score-scale"></span>
+    </div>
+    <div class="ss-preview-crit_limit">
+        Recommended word limit is <span id="limitLocation"></span>
+    </div>
+    <div id="critiqueArea"><iframe class="ss-preview-crit_iframe" src="/Home/RadEditor?height=150" frameborder="0"></iframe></div>
+</div>
+<div class="ss-preview-crit-data" id="previewCriteriaData">@Html.Raw(JsonConvert.SerializeObject(Model.PreviewCriteria))</div>
+<script type="text/javascript">
+    $(function () {
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.wizardCloseFooter);
+    });
+</script>

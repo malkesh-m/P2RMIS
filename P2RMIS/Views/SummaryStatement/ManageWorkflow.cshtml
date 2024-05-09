@@ -1,0 +1,156 @@
+﻿@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.ManageWorkflowViewModel
+@{
+    ViewBag.PageTitle = "Manage Workflow";
+    const string ZeroSearchResults = Sra.P2rmis.Web.Controllers.SummaryStatementController.Constants.ZeroSearchResults;
+}
+
+<p class="formTitle">Summary Statements</p>
+<p id="successMessage" style="display: none; text-align: left; margin-top: 10px;"></p>
+<p id="errorMessage" style="display: none; text-align: left; margin-top: 10px;"></p>
+<div class="row-fluid">
+    <div class="span12" id="mainContent" style="border:thin solid #ddd;padding:20px">
+        @Html.Partial("_TabMenu")
+        @Html.Partial("_SSFilterMenu")
+        @Html.Partial("_ShowHideInstructions")
+        
+        <div id="instructions">
+            <p style="font-size: 10pt;">
+            <p>Use filters on top to find workflows by Award.</p>
+
+            <ul style="list-style-type:disc;">
+                <li>To change the workflow, select a value from the drop down and  click the 'Assign' button.</li>
+                <li>Updating the workflow assignment will update the workflow for applications that have not started.</li>
+                <li>All applications marked as Priority 1 will be automatically assigned the Priority 1 default workflow. Similarly, all applications marked as Priority 2 will be automatically assigned the Priority 2 default workflow.</li>
+                <li>If an application is not marked as a Priority (1 and 2), it will be automatically assigned the No Priority default workflow.</li>
+            </ul>
+        </div>
+        <p style="text-align: right;"><input type="submit" value="Assign" id="submitBtn" /></p>
+        <h5 style="text-align:center">@Model.ProgramAbbreviation @Model.ProgramYear Workflow Assignment</h5>
+        <p style="color: red; text-align: center;"></p>
+            <div>
+                <table id="awardPriorityTable" class="table table-bordered table-striped" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Cycle</th>
+                            <th>Award</th>
+                            <th>@Invariables.Labels.PriorityOneName</th>
+                            <th>@Invariables.Labels.PriorityTwoName</th>
+                            <th>@Invariables.Labels.NoPriorityName</th>
+                        </tr>
+                    </thead>
+                    <tbody id="newRow">                        
+                    </tbody>
+                </table>
+            </div>
+        <div id="instructions" align="right">
+            <p>
+                Use Award Mechanisms and Priorities to guide workflow assignment
+            </p>
+        </div>
+        <div class="formNoResults" id="formNoResults">@ZeroSearchResults</div>
+    </div>
+</div>
+<script type="text/javascript">
+    // On page load, view grid
+    $(document).ready(function () {
+        if ($('select#programList :selected').filter(':contains("Select Program")').length > 0) {
+        } else {
+            $('#Search').click();
+        }
+    });
+
+    (('.input-validation-error').length > 0) ? $('.formNoResults').show() : $('.formNoResults').hide();
+
+    var getOptionsHtml = function (optionList, selectedValue) {
+        var options = $("<select/>");
+        $.each(optionList, function (index, element) {
+            var option = $("<option/>").text(element.Value).val(element.Key);
+            if (element.Key == selectedValue) {
+                option.attr("selected", "selected");
+            }
+            options.append(option);
+        });
+        return $("<td/>").append(options).html();
+    };
+
+    $('#Search').on('click', function () {
+        newSet = [];
+        if (validateSearchInputs()) {
+            $.ajax({
+                url: '/SummaryStatement/ManageWorkflowCall',
+                data: {
+                    programId: $("#programList option:selected").val(), yearId: $('#fyList').val(), cycle: $('#cycleList').val(),
+                }
+            }).done(function (results) {
+                if (results != "") {
+                    var newVar = results.workflows;
+                    $('#newRow').empty();
+                    $.each(newVar, function (e, val) {
+                        var award = val.AwardAbbreviation,
+                            cycle = val.Cycle,
+                            priorityOne = val.PriorityOneWorkflowId,
+                            priorityTwo = val.PriorityTwoWorkflowId,
+                            noPriorities = val.NoPriorityWorkflowId,
+                            award = val.AwardAbbreviation,
+                            mechId = val.MechanismId;
+
+                        var priorityOneHtml = getOptionsHtml(results.workflowOptions, priorityOne);
+                        var priorityTwoHtml = getOptionsHtml(results.workflowOptions, priorityTwo);
+                        var noPrioritiesHtml = getOptionsHtml(results.workflowOptions, noPriorities);
+
+                        $('#newRow').append('<tr><td>' + cycle + '</td><td>' + award + '</td><td>' + priorityOneHtml +
+                            '</td><td>' + priorityTwoHtml + '</td><td>' + noPrioritiesHtml + '</td><td style="display:none">' + mechId + '</tr>');
+                        
+                        var oldSet = { Cycle: cycle, MechanismId: mechId, PriorityOneWorkflowId: priorityOne, PriorityTwoWorkflowId: priorityTwo, NoWorkflowId: noPriorities, AwardAbbreviation: award };
+                        newSet.push(oldSet);
+                    })
+                }
+            });
+        }
+    });
+
+    var newSet = [];
+
+    $('#submitBtn').on('click', function () {
+        var apps = [];
+
+        $.each(newSet, function (e, val) {
+
+            if (e < $('#newRow').find('tr').length) {
+                var rows = $('#newRow').find('tr').eq(e).html();
+                var rowsDirty = rows.indexOf('dirty');
+                var rowsTrue = rowsDirty > 0;
+                if (rowsTrue == true) {
+                    var rows = $('#newRow').find('tr').eq(e);
+                    var priorityOne = rows.find('td:nth-child(3) select:nth-child(1) option:selected').val();
+                    var priorityTwo = rows.find('td:nth-child(4) select:nth-child(1) option:selected').val();
+                    var noPriorities = rows.find('td:nth-child(5) select:nth-child(1) option:selected').val();
+
+                    var newerSet = { Cycle: val.Cycle, MechanismId: val.MechanismId, PriorityOneWorkflowId: priorityOne, PriorityTwoWorkflowId: priorityTwo, NoWorkflowId: noPriorities, AwardAbbreviation: val.award };
+                    apps.push(newerSet)
+                }
+            }
+        })
+        var inputData = { applications: JSON.stringify(apps) };
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/SummaryStatement/SaveWorkflows',
+            data: inputData
+        }).done(function (data) {
+            // Navigate to top and display success message
+            window.scrollTo(0, 0);
+            (apps.length == 1) ? $("#successMessage").html("You have successfully updated 1 workflow.") : $("#successMessage").html("You have successfully updated " + apps.length + " workflows.");
+            $('#Search').click();
+            document.getElementById('successMessage').style.display = "block";
+        })
+    });
+
+    $(document).on('focusout', 'select', function () {
+        $(this).addClass('dirty');
+    })
+</script>
+
+

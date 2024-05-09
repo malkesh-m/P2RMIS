@@ -1,0 +1,47 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ProfileViewModel
+
+<section class="upm-profile-section-sub" role="region" aria-labelledby="email-addresses">
+    <div class="upm-profile-section-sub_main-header" id="email-addresses">Email Addresses</div>
+    <p class="upm-profile-section-sub_container_exp-text">
+        At least one email address is required. Select the radio button to indicate the preferred email address.
+    </p>
+
+    <div class="upm-profile-section-sub_container-sub">
+        <!-- Institution Address -->
+        <div class="upm-profile-section-sub_field">
+            @if (Model.InstitutionEmailAddress != null)
+            {
+                var emailInstitutionPrefStatus = Model.InstitutionEmailAddress.Primary ? Model.PreferredText : Model.SecondaryText;
+
+                <label for="InstitutionEmailAddress_Address" class="upm-profile-section-sub_field">Institution <span class="hidden-text">Email Address</span></label>
+                @Html.TextBoxFor(m => m.InstitutionEmailAddress.Address, new { @class = "upm-profile-section-sub_field_input-long", maxlength = "200" })
+                @Html.HiddenFor(m => m.InstitutionEmailAddress.Address)
+                @Html.HiddenFor(m => m.InstitutionEmailAddress.EmailAddressTypeId)
+                @Html.HiddenFor(m => m.InstitutionEmailAddress.EmailId)
+                @Html.HiddenFor(m => m.InstitutionEmailAddress.Primary)
+
+                @Html.RadioButton("userPrefEmailAddress", Model.InstitutionEmailAddress.Primary, Model.InstitutionEmailAddress.Primary,
+                    new { @class = "emailType" })
+                <label for="InstitutionEmailAddress_Primary" class="prefEmailTag upm-profile-section-sub_field" data-label="side-label">@emailInstitutionPrefStatus <span class="hidden-text">Email Address</span></label>
+            }
+        </div>
+        <!-- Personal Address -->
+        <div class="upm-profile-section-sub_field">
+            @if (Model.PersonalEmailAddress != null)
+            {
+                var emailPersonalPrefStatus = (bool)Model.PersonalEmailAddress.Primary ? Model.PreferredText : Model.SecondaryText;
+
+                <label for="PersonalEmailAddress_Address" class="upm-profile-section-sub_field">Personal <span class="hidden-text">Email Address</span></label>
+                @Html.TextBoxFor(m => m.PersonalEmailAddress.Address, new { @class = "upm-profile-section-sub_field_input-long", maxlength = "200" })
+                @Html.HiddenFor(m => Model.PersonalEmailAddress.Address)
+                @Html.HiddenFor(m => Model.PersonalEmailAddress.EmailAddressTypeId)
+                @Html.HiddenFor(m => Model.PersonalEmailAddress.EmailId)
+                @Html.HiddenFor(m => Model.PersonalEmailAddress.Primary)
+
+                @Html.RadioButton("userPrefEmailAddress", Model.PersonalEmailAddress.Primary, Model.PersonalEmailAddress.Primary,
+                    new { @class = "emailType" })
+                <label for="PersonalEmailAddress_Primary" class="prefEmailTag upm-profile-section-sub_field" data-label="side-label">@emailPersonalPrefStatus <span class="hidden-text">Email Address</span></label>
+            }
+        </div>
+    </div>
+</section>

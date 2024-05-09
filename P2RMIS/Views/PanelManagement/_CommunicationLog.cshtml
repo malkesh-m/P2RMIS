@@ -1,0 +1,178 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ReviewerCommunicationLogViewModel
+@using Sra.P2rmis.Web.Common
+
+<style>
+    .clFieldset {
+        margin: 10px;
+        font-size: 12px;
+        height: 100%;
+    }
+
+    .clFieldsetCol {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .clFormFieldLabel {
+        font-weight: bold;
+        font-size: 12px;
+        padding: 0px 5px 0px 5px;
+    }
+
+    textarea {
+        width: 93%;
+    }
+
+    .clDescrCell {
+        font-size: 12px;
+    }
+
+    .methodTextAreaContainer {
+        height: 150px;
+    }
+
+    .logContainer {
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    #CommunicationLogSave {
+        font-size: 12px;
+    }
+</style>
+
+<div id="CommunicationLogSave" tabindex="-1" role="dialog" data-userId="@Model.UserId">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="padding:30px;margin:0px !important">
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span12 bordered clFieldset ">
+                            <span class="textHeaderNotBold">Preferred</span>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="clFirst span4 alignCenter" ><span class="clFormFieldLabel">Phone:  </span><span id="clPhone">@Model.PhoneNumber</span></span>
+                                    <span class="clSecond span4 alignCenter"><span class="clFormFieldLabel">Fax:  </span><span id="clFax">@Model.FaxNumber</span></span>
+                                    <span class="clThird alignCenter clFieldsetCol"><span class="clFormFieldLabel">Email:  </span><span id="clEmail" title="@Model.EmailAddress">@Model.EmailAddress</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <span class="span6 redMessage" id="messageContainer"></span>
+                        <span class="span6 align-right">(500 character limit)</span>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <span class="clFormFieldLabel">Method:</span>
+                            <span class="padding-left-10">
+                                @Html.DropDownListFor(m => m.MethodId, new SelectList(Model.Methods, "Index", "Value", Model.MethodId), "Select", new { id = "methodSelect" })
+                            </span>
+                        </div>
+                        <div class="span8 right-align methodTextAreaContainer">
+                            <textarea id="methodTextArea" maxlength="500" disabled></textarea>
+                        </div>
+                    </div>
+                    @{
+                        if (Model.Logs.Count > 0)
+                        {
+                            <div class="logContainer">
+                                @foreach (var log in Model.Logs)
+                                {
+                                    <div class="row-fluid log-row" data-logId="@log.LogId">
+                                        <span class="span8">
+                                            @if (log.IsWritable)
+                                            {
+                                                <textarea maxlength="500" class="log-comment">@log.Comment</textarea>
+                                            }
+                                            else
+                                            {
+                                                <textarea class="log-comment" readonly>@log.Comment</textarea>
+                                            }
+                                        </span>
+                                        <div class="span4">
+                                            <table>
+                                                <tr>
+                                                    <td class="clFormFieldLabel">
+                                                        <span>Initiator:</span>
+                                                    </td>
+                                                    <td class="clDescrCell">
+                                                        @log.Initiator
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="clFormFieldLabel">
+                                                        <span>Method:</span>
+                                                    </td>
+                                                    <td class="clDescrCell" data-methodId="@log.MethodId">
+                                                        @log.Method
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="clFormFieldLabel">
+                                                        <span>Date:</span>
+                                                    </td>
+                                                    <td class="clDescrCell">
+                                                        @log.LogDate
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var mta = $("#methodTextArea");
+        var msel = $("#methodSelect");
+        var msg = $("#messageContainer");
+        msel.change(function () {
+            if ($(this).find(":selected").index() == 0) {
+                mta.attr('disabled', 'disabled');
+            } else { mta.removeAttr('disabled'); }
+        });
+        mta.focus(function () { $(this).attr('rows', 6) }).blur(function () { $(this).attr('rows', 4) });
+        $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelSaveFooter);
+        $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+        $('#saveDialogChanges').on('click', function (e) {
+            e.preventDefault();
+            msg.empty();
+            if (msel.find(':selected').index() == 0 && $(".log-comment").length === 0) {
+                msg.html("A method selection is required.");
+            }
+            else if (msel.find(':selected').index() != 0 && mta.val() == "") {
+                msg.html("Please enter a comment.");
+            }
+            else {
+                var logs = [];
+                if (msel.val() != "" && $.trim(mta.val()) != "") {
+                    var logToAdd = { LogId: 0, MethodId: msel.val(), Comment: $.trim(mta.val()) };
+                    logs.push(logToAdd);
+                }
+                $(".log-row").each(function () {
+                    var logToEdit = { LogId: $(this).attr("data-logId"), MethodId: $(this).find("[data-methodId]").attr("data-methodId"), Comment: $(this).find(".log-comment").val() };
+                    logs.push(logToEdit);
+                });
+
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '@Url.Action(Routing.PanelManagement.SaveCommunicationLogs, Routing.P2rmisControllers.PanelManagement)',
+                    data: { "userId": $("#CommunicationLogSave").attr("data-userId"), "logs": logs }
+                }).done(function (result) {
+                    $("#ModalDialog").dialog("close");
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                    alert($.defaultFailureMessage);
+                });
+            };
+        });
+    })
+</script>

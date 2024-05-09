@@ -1,0 +1,639 @@
+﻿@model Sra.P2rmis.Web.UI.Models.ReportViewModel
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+
+<h3>Reporting</h3>
+<br />
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:25%">
+                        <div class="well well-small" style="font-weight: bold;">Reports</div>
+                        <div>
+                            @using (Html.BeginForm("Index", "Report", FormMethod.Post, new { @id = "reportSearchForm", @name = "reportSearchForm" }))
+                            {
+                                <input type="text" class="input-large search-query" name="reportSearch" id="reportSearch" placeholder="Search Reports" data-provide="typeahead" autocomplete="off" />
+                                <input type="hidden" name="reportGroupId" id="reportGroupId" value="0" />
+                                <input type="hidden" name="reportId" id="reportId" />
+                            }
+                        </div>
+                        <div class="accordion" id="reportGroups">
+                            @foreach (var item in Model.ReportMenu)
+                            {
+                                string activeReportGroup = "";
+                                if (item.Id == Model.SelectedReportGroupId)
+                                {
+                                    activeReportGroup = "in";
+                                }
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#reportGroups" href="#@item.Id">@item.Name</a>
+                                        <div id="@item.Id" class="accordion-body collapse @activeReportGroup">
+                                            <div class="accordion-inner">
+                                                <ul class="nav nav-pills nav-stacked" style="margin-bottom: 0px;">
+                                                    @foreach (var subItem in item.Tree)
+                                                    {
+                                                        string activeReport = "";
+                                                        string reportLink = "/Report/Index/?reportId=" + subItem.Id;
+                                                        if (subItem.Id == Model.SelectedReportId)
+                                                        {
+                                                            activeReport = "active";
+                                                        }
+                                                        <li class="@activeReport"><a href="@reportLink">@subItem.Name</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        @Html.Hidden("showProgram", Model.ShowProgram)
+                        @Html.Hidden("showYear", Model.ShowYear)
+                        @Html.Hidden("isProgramMultiSelect", Model.IsProgramMultiSelect)
+                        @Html.Hidden("isYearMultiSelect", Model.IsYearMultiSelect)
+                        @Html.Hidden("isMeetingTypeMultiSelect", Model.IsMeetingTypeMultiSelect)
+                        @Html.Hidden("isMeetingMultiSelect", Model.IsMeetingMultiSelect)
+                        @Html.Hidden("isPanelMultiSelect", Model.IsPanelMultiSelect)
+                        @Html.Hidden("isCycleMultiSelect", Model.IsCycleMultiSelect)
+                        @if (Model.SelectedReportId == 0)
+                        {
+                            <p>Please select a report to run.</p>
+                        }
+                        else if (Model.SelectedReportParamGroupId == (int)ReportParameterGroup.MeetingReportGroupId)
+                        {
+                            <h4>@Model.SelectedReport</h4>
+                            <p>@Model.SelectedReportDesc</p>
+                            <br />
+                            using (Html.BeginForm("RunReport", "Report", FormMethod.Post, new { @id = "ReportForm", @name = "ReportForm", @target = "_blank" }))
+                            {
+                                @Html.HiddenFor(m => m.SelectedReportGroupId, new { @id = "reportGroupId", Name = "reportGroupId" })
+                                @Html.HiddenFor(r => r.SelectedReportId, new { @id = "reportId", Name = "reportId" })
+                                <div class="@Model.DisplayYearParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayYearRequiredClass">*</span> Year:</div>
+                                    <div class="span7">
+                                        @Html.ListBoxFor(m => m.SelectedFys, new MultiSelectList(@Model.FiscalYears, @Model.SessionFyList), new { @style = "width:100%;", @id = "fyList", Name = "fyList" })
+                                    </div>
+                                </div>
+                                <div class="@Model.DisplayMeetingTypeParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayMeetingTypeRequiredClass">*</span> Meeting Type:</div>
+                                    <div class="span7">
+                                        @if (Model.RetainParams == true)
+                                        {
+                                                @Html.ListBoxFor(m => m.SelectedMeetingTypes, new MultiSelectList(@Model.MeetingType, "MeetingTypeId", "MeetingTypeName", @Model.SessionMeetingTypeList), new { @style = "width: 100%;", @id = "meetingTypeListfyList", Name = "meetingTypeList" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedMeetingTypes, new MultiSelectList(Enumerable.Empty<SelectListItem>()), new { @style = "width: 100%;", @id = "meetingTypeList", Name = "meetingTypeList", @disabled = "disabled" })
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="@Model.DisplayMeetingParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayMeetingRequiredClass">*</span> Meetings:</div>
+                                    <div class="span7">
+                                        @if (Model.RetainParams == true)
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedMeetings, new MultiSelectList(@Model.Meetings, "ClientMeetingId", "MeetingDescription", @Model.SessionMeetingList), new { @style = "width: 100%;", @id = "meetingList", Name = "meetingList" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedMeetings, new MultiSelectList(Enumerable.Empty<SelectListItem>()), new { @style = "width: 100%;", @id = "meetingList", Name = "meetingList", @disabled = "disabled" })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <br />
+                                        <label class="checkbox">
+                                            @Html.EditorFor(m => m.RetainParams, new { @name = "retainParams", @id = "retainParams" }) Retain Parameters
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row-fluid margin-top10">
+                                    <div style="text-align: right;">
+                                        <input type="button" name="cancel" id="cancelMeeting" value="Reset" class="alignLeft" />
+                                        @if (Model.RetainParams)
+                                        {
+                                            <input type="submit" class="btn btn-primary" style="display: block; margin: 0px auto;" name="runReport" id="runReport" value="Run Report" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="btn btn-primary" style="display: block; margin: 0px auto;" name="runReport" id="runReport" value="Run Report" disabled />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <br />
+                                        <span class="required">* Denotes required</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <h4>@Model.SelectedReport</h4>
+                            <p>@Model.SelectedReportDesc</p>
+                            <br />
+                            using (Html.BeginForm("RunReport", "Report", FormMethod.Post, new { @id = "ReportForm", @name = "ReportForm", @target = "_blank" }))
+                            {
+                                @Html.HiddenFor(m => m.SelectedReportGroupId, new { @id = "reportGroupId", Name = "reportGroupId" })
+                                @Html.HiddenFor(r => r.SelectedReportId, new { @id = "reportId", Name = "reportId" })
+                                <div class="@Model.DisplayProgramParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayProgramRequiredClass">*</span> Program:</div>
+                                    <div class="span7">
+                                        @Html.ListBoxFor(m => m.SelectedPrograms, new MultiSelectList(@Model.Programs, "ClientProgramId", "ProgramAbbreviation", @Model.SessionProgramList), new { @style = "width:100%;", @id = "programList", Name = "programList" })
+                                    </div>
+                                </div>
+                                <div class="@Model.DisplayYearParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayYearRequiredClass">*</span> Year:</div>
+                                    <div class="span7">
+                                        @if (Model.RetainParams == true)
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedFys, new MultiSelectList(@Model.FiscalYears, @Model.SessionFyList), new { @style = "width: 100%;", @id = "fyList", Name = "fyList" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedFys, new MultiSelectList(Enumerable.Empty<SelectListItem>()), new { @style = "width: 100%;", @id = "fyList", Name = "fyList", @disabled = "disabled" })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="@Model.DisplayPanelParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayPanelRequiredClass">*</span> Panel:</div>
+                                    <div class="span7">
+                                        @if (Model.RetainParams == true)
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedPanels, new MultiSelectList(@Model.Panels, "SessionPanelId", "PanelAbbreviation", @Model.SessionPanelList), new { @style = "width: 100%;", @id = "panelList", Name = "panelList" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedPanels, new MultiSelectList(Enumerable.Empty<SelectListItem>()), new { @style = "width: 100%;", @id = "panelList", Name = "panelList", @disabled = "disabled" })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="@Model.DisplayCycleParamClass">
+                                    <div class="span2 offset1"><span class="required @Model.DisplayCycleRequiredClass">*</span> Cycle:</div>
+                                    <div class="span7">
+                                        @if (Model.RetainParams == true)
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedCycles, new MultiSelectList(@Model.Cycles, @Model.SessionCycleList), new { @style = "width: 100%;", @id = "cycleList", Name = "cycleList" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ListBoxFor(m => m.SelectedCycles, new MultiSelectList(Enumerable.Empty<SelectListItem>()), new { @style = "width: 100%;", @id = "cycleList", Name = "cycleList", @disabled = "disabled" })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <br />
+                                        <label class="checkbox">
+                                            @Html.EditorFor(m => m.RetainParams, new { @name = "retainParams", @id = "retainParams" }) Retain Parameters
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row-fluid margin-top10">
+                                    <div style="text-align: right;">
+                                        <input type="button" name="cancel" id="cancel" value="Reset" class="alignLeft" />
+                                        @if (Model.RetainParams)
+                                        {
+                                            <input type="submit" class="btn btn-primary" style="display: block; margin: 0px auto;" name="runReport" id="runReport" value="Run Report" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="btn btn-primary" style="display: block; margin: 0px auto;" name="runReport" id="runReport" value="Run Report" disabled />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <br />
+                                        <span class="required">* Denotes required</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="canViewProgramLevel" value="@Model.CanViewProgramLevel.ToString()" />
+<script type="text/javascript">
+        var repMasterHotelAndTravel = 74;
+        var typeOnsiteMeeting = 1
+
+        $.extend({
+            getUrlVars: function () {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            },
+            getUrlVar: function (name) {
+                return $.getUrlVars()[name];
+            }
+        });
+        var reportId = $.getUrlVar('reportId');
+        isRequired = $("#DisplayRequiredClass").val();
+
+        jQuery.ajaxSettings.traditional = true;
+        var showProgram = $('#showProgram').val();
+        var showYear = $('#showYear').val();
+        var isProgramMultiSelect = $('#isProgramMultiSelect').val();
+        var isYearMultiSelect = $('#isYearMultiSelect').val();
+        var isMeetingTypeMultiSelect = $('#isMeetingTypeMultiSelect').val();
+        var isMeetingMultiSelect = $('#isMeetingMultiSelect').val();
+        var isPanelMultiSelect = $('#isPanelMultiSelect').val();
+        var isCycleMultiSelect = $('#isCycleMultiSelect').val();
+
+        if (isProgramMultiSelect == "False") {
+            $('#programList').removeAttr('multiple');
+        }
+        if (isYearMultiSelect == "False") {
+            $('#fyList').removeAttr('multiple');
+        }
+        if (isMeetingTypeMultiSelect == "False") {
+            $('#meetingTypeList').removeAttr('multiple');
+        }
+        if (isMeetingMultiSelect == "False") {
+            $('#meetingList').removeAttr('multiple');
+        }
+        if (isPanelMultiSelect == "False") {
+            $('#panelList').removeAttr('multiple');
+        }
+        if (isCycleMultiSelect == "False") {
+            $('#cycleList').removeAttr('multiple');
+        }
+
+        
+
+        //For reports with single select parameters, fill FY, Panel and cycle when page is loaded first time on click of a report link
+        if (isProgramMultiSelect == "False") {
+            var selectedPrograms = $('#programList').val() || [];
+            $('#fyList').removeAttr('disabled');
+
+            $.getJSON('@Url.Action("GetFiscalYears")', { programIds: selectedPrograms }, function (fiscalYears) {
+                var fiscalYearsSelect = $('#fyList');
+                fiscalYearsSelect.empty();
+                $.each(fiscalYears, function (index, fiscalYear) {
+                    fiscalYearsSelect.append(
+                        $('<option/>')
+                            .attr('value', fiscalYear)
+                            .text(fiscalYear)
+                    );
+                });
+                SetParameterDefaultValue();
+            });
+
+        }
+
+        //Set dropdown parameter default values if single select is on
+        function SetParameterDefaultValue() {
+            // if the fiscal year list is not null
+            if ($("#fyList").val() != null) {
+                // enable the panel list form field
+                $('#panelList').removeAttr('disabled');
+                // enable the cycle list form field
+                $('#cycleList').removeAttr('disabled');
+
+
+                // enable the report to be run
+                if ($.toBoolean($("#canViewProgramLevel").val()) || $(".hide #panelList").length > 0) {
+                    $('#runReport').removeAttr('disabled');
+                } else {
+                    $('#runReport').attr('disabled', 'disabled');
+                }
+            }
+            // set the selected fiscal years to the value of the fiscal year list
+            var selectedFys = $("#fyList").val() || [];
+            // set the selected programs to the value of the program list form field
+            var selectedPrograms = $('#programList').val() || [];
+
+            $.getJSON('@Url.Action("GetPanels")', { programIds: selectedPrograms, fiscalYears: selectedFys }, function (panels) {
+                var panelsSelect = $('#panelList');
+                panelsSelect.empty();
+
+                if (isRequired == "hide") {
+                    panelsSelect.append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text('')
+                    );
+                }
+                $.each(panels, function (index, panel) {
+                    if (panel.PanelAbbreviation != null) {
+                        panelsSelect.append(
+                            $('<option/>')
+                                .attr('value', panel.SessionPanelId)
+                                .text(panel.PanelAbbreviation + '  (' + panel.ProgramAbbreviation + " - " + panel.Year + ')')
+                        );
+                    }
+                });
+            });
+
+            $.getJSON('@Url.Action("GetCycles")', { programIds: selectedPrograms, fiscalYears: selectedFys }, function (cycles) {
+                var cyclesSelect = $('#cycleList');
+                cyclesSelect.empty();
+
+                if (isRequired == "hide") {
+                    cyclesSelect.append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text('')
+                    );
+                }
+
+                $.each(cycles, function (index, cycle) {
+                    cyclesSelect.append(
+                        $('<option/>')
+                            .attr('value', cycle)
+                            .text(cycle)
+                    );
+                });
+            });
+        }
+
+
+    // function calls actions when fiscal year changes
+    $(function() {
+
+        $('#fyList').change(function () {
+            if ($(this).val() != null) {
+                $('#meetingTypeList').removeAttr('disabled')
+            }
+            // set/reset panel ist to empty
+            $('#meetingList').empty();
+            // disable the panel list since no values are present
+            $('#meetingList').attr('disabled', 'disabled');
+            var selectedFiscalYear = $('#fyList').val();
+            $.getJSON('@Url.Action("GetMeetingType")', { fiscalYear: selectedFiscalYear }, function (meetingTypes) {
+                var meetingTypesSelect = $('#meetingTypeList');
+                meetingTypesSelect.empty();
+                $.each(meetingTypes, function (index, meetingType) {
+                    meetingTypesSelect.append(
+                        $('<option/>')
+                            .attr('value', meetingType.MeetingTypeId)
+                            .text(meetingType.MeetingTypeName)
+                    );
+                    if (reportId == repMasterHotelAndTravel && meetingType.MeetingTypeId == typeOnsiteMeeting) {
+                        return false;
+                    }
+                });
+                // if meeting type list is not null then set default value for Meeting Type ID 1 (Onsite Meeting)
+                if (meetingTypesSelect.has('option').length > 0) {
+                    meetingTypesSelect.val('1');
+                    meetingTypesSelect.change();
+                }
+            });
+
+        });
+    });
+    //function call action when meeting type changes
+    $(function() {
+        $('#meetingTypeList').change(function () {
+            if ($(this).val() != null) {
+                $('#meetingList').removeAttr('disabled')
+            }
+            var selectedMeetingTypes = $(this).val() || [];
+            var selectedFiscalYear = $('#fyList').val();
+            $.getJSON('@Url.Action("GetMeetingsByMeetingType")', { meetingTypeIds: selectedMeetingTypes, fiscalYear: selectedFiscalYear }, function (meetings) {
+                var meetingSelect = $('#meetingList');
+                meetingSelect.empty();
+                $.each(meetings, function (index, meeting) {
+                    meetingSelect.append(
+                        $('<option/>')
+                            .attr('value', meeting.ClientMeetingId)
+                            .text(meeting.MeetingDescription )
+                    );
+                });
+            });
+
+        });
+    });
+    // function calls actions when program list value changes
+        $(function () {
+            // on change of the program list
+            $('#programList').change(function () {
+                // if the program list value is not blank
+                if ($(this).val() != null) {
+                    // enable the fiscal year list for the user to choose values from
+                    $('#fyList').removeAttr('disabled');
+                }
+                // set/reset panel ist to empty
+                $('#panelList').empty();
+                // disable the panel list since no values are present
+                $('#panelList').attr('disabled', 'disabled');
+                // set/reset cycle list to empty
+                $('#cycleList').empty();
+                // disable the cycle list since no values are present
+                $('#cycleList').attr('disabled', 'disabled');
+                // disable the run report button
+                $('#runReport').attr('disabled', 'disabled');
+                // set the selected programs to the value of the program list form field
+                var selectedPrograms = $(this).val() || [];
+                // method to get the list of fiscal years for the selected programs
+                // <param>selected programs</param>
+                // <returns>list of fiscal years for that selected programs</return>
+                $.getJSON('@Url.Action("GetFiscalYears")', { programIds: selectedPrograms }, function (fiscalYears) {
+                    var fiscalYearsSelect = $('#fyList');
+                    fiscalYearsSelect.empty();
+                    $.each(fiscalYears, function (index, fiscalYear) {
+                        fiscalYearsSelect.append(
+                            $('<option/>')
+                                .attr('value', fiscalYear)
+                                .text(fiscalYear)
+                        );
+                    });
+
+
+                    //For reports with single select parameters, fill Panel and cycle on change of program
+                    if (isYearMultiSelect == "False") {
+                        SetParameterDefaultValue();
+                    }
+                });
+            });
+
+
+
+            // function calls actions when fiscal year list value changes
+            $('#fyList').change(function () {
+
+                // if the fiscal year list is not null
+                if ($(this).val() != null) {
+                    // enable the panel list form field
+                    $('#panelList').removeAttr('disabled');
+                    // enable the cycle list form field
+                    $('#cycleList').removeAttr('disabled');
+                    // enable the report to be run
+                    if ($.toBoolean($("#canViewProgramLevel").val()) || $(".hide #panelList").length > 0) {
+                        $('#runReport').removeAttr('disabled');
+                    } else {
+                        $('#runReport').attr('disabled', 'disabled');
+                    }
+                }
+                // set the selected fiscal years to the value of the fiscal year list
+                var selectedFys = $(this).val() || [];
+                // set the selected programs to the value of the program list form field
+                var selectedPrograms = $('#programList').val() || [];
+                // set the selected meeting to the value of the meeting type list form field
+                selectedMeetingTypes = $('meetingTypeList').val() || [];
+                // method to get the list of panels for those selected fiscal years and selected programs
+                // <param>selected programs</param>
+                // <param>selected fiscal years</param>
+                // <returns>list of panels</returns>
+                $.getJSON('@Url.Action("GetPanels")', { programIds: selectedPrograms, fiscalYears: selectedFys }, function (panels) {
+                    var panelsSelect = $('#panelList');
+                    panelsSelect.empty();
+                    if (isRequired == "hide") {
+                        panelsSelect.append(
+                            $('<option/>')
+                                .attr('value', '')
+                                .text('')
+                        );
+                    }
+
+                    $.each(panels, function (index, panel) {
+                        if (panel.PanelAbbreviation != null) {
+                            panelsSelect.append(
+                                $('<option/>')
+                                    .attr('value', panel.SessionPanelId)
+                                    .text(panel.PanelAbbreviation + '  (' + panel.ProgramAbbreviation + " - " + panel.Year + ')')
+                            );
+                        }
+                    });
+                });
+                // method to get the list of cycles for those selected fiscal years and selected programs
+                // <param>selected programs</param>
+                // <param>selected fiscal years</param>
+                // <returns>list of cycles</returns>
+                $.getJSON('@Url.Action("GetCycles")', { programIds: selectedPrograms, fiscalYears: selectedFys }, function (cycles) {
+                    var cyclesSelect = $('#cycleList');
+                    cyclesSelect.empty();
+                    if (isRequired == "hide") {
+                        cyclesSelect.append(
+                            $('<option/>')
+                                .attr('value', '')
+                                .text('')
+                        );
+                    }
+                    $.each(cycles, function (index, cycle) {
+                        cyclesSelect.append(
+                            $('<option/>')
+                                .attr('value', cycle)
+                                .text(cycle)
+                        );
+                    });
+                });
+            });
+
+            // function calls actions when panel list value changes
+            $("#panelList").change(function () {
+                $('#runReport').removeAttr('disabled');
+            });
+
+            //mfunctionality for the user to reset the form
+            $('#cancel').click(function () {
+                $('#programList').val('');
+                $('#fyList').empty();
+                $('#fyList').attr('disabled', 'disabled');
+                $('#panelList').empty();
+                $('#panelList').attr('disabled', 'disabled');
+                $('#cycleList').empty();
+                $('#cycleList').attr('disabled', 'disabled');
+                $('#runReport').attr('disabled', 'disabled');
+                $('.check-box').removeAttr('checked');
+                $('.check-box').val('false');
+
+                $.post("/Report/ResetParams"), function () {
+
+                }
+            });
+
+            //mfunctionality for the user to reset meeting the form
+            $('#cancelMeeting').click(function () {
+                $('#fyList').val('');
+                $('#meetingTypeList').empty();
+                $('#meetingTypeList').attr('disabled', 'disabled');
+                $('#meetingList').empty();
+                $('#meetingList').attr('disabled', 'disabled');
+                $('#runReport').attr('disabled', 'disabled');
+                $('.check-box').removeAttr('checked');
+                $('.check-box').val('false');
+
+                $.post("/Report/ResetMeetingParams"), function () {
+
+                }
+            });
+
+            // if at any point the program list or the fiscal year have no selected values we will disable the run report button
+            if ($("#programList").val() == "" || ($("#fyList").val() == "")) {
+                $("#runReport").attr("disabled", "disabled");
+            }
+
+            if (showProgram == "False" && showYear == "True") {
+               $('#fyList').removeAttr('disabled');
+
+               $.getJSON('@Url.Action("GetAllProgramFiscalYears")', function (fiscalYears) {
+                    var fiscalYearsSelect = $('#fyList');
+                    fiscalYearsSelect.empty();
+                    $.each(fiscalYears, function (index, fiscalYear) {
+                        fiscalYearsSelect.append(
+                            $('<option/>')
+                                .attr('value', fiscalYear)
+                                .text(fiscalYear)
+                        );
+                    });
+                    SetParameterDefaultValue();
+                });
+            }
+    });
+
+
+</script>
+@*-----THIS IS A SCRIPT FOR THE TYPEAHEAD FOR THE SEARCH FOR REPORT FUNCTIONALITY---*@
+<script>
+    $(document).ready(function () {
+        $("#reportSearch").typeahead({
+            minLength: 2,
+            items: 8,
+            source: function (query, process) {
+                var reports = [];
+                map = {};
+                var input = $("#reportSearch").val();
+
+                // This is going to make an HTTP post request to the controller
+                return $.post('/Report/GetReportNames', { query: query }, function (data) {
+
+                    // Loop through and push to the array
+                    $.each(data, function (i, report) {
+                        map[report.ReportBreadcrumb] = report;
+                        reports.push(report.ReportBreadcrumb);
+                    });
+
+                    // Process the details
+                    process(reports);
+                });
+            },
+            updater: function (item) {
+                var selectedId = map[item].ReportId;
+                // Set the hidden variable to our selected id
+                $('#reportId').val(selectedId);
+                // Submits form on selection
+                $('#reportSearchForm').submit();
+                return item;
+            }
+        });
+    });
+</script>
+
+

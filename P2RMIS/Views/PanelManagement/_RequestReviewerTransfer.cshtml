@@ -1,0 +1,86 @@
+﻿@model Sra.P2rmis.Web.ViewModels.PanelManagement.RequestTransferViewModel
+<style type="text/css">
+    #destinationPanels {
+        width: 100%;
+        margin-top: 10px;
+    }
+</style>
+<div id="requestTransferView">
+    <div>
+        <strong>Transfer application <span id="transferAppId"></span> from <span id="modalfiscalYear"></span> <span id="modalprogramAbbreviation"></span> - <span id="modalpanelAbbreviation"></span> to:</strong>
+    </div>
+    <select id="destinationPanels" value="Select Destination Panel">
+        <option selected disabled value="0">Select Destination Panel</option>
+    </select>
+</div>
+
+@*script for ajax calls to request reviewer transfer*@
+<script type="text/javascript">
+    var fyYear = sessionStorage.getItem('fyPanel');
+    var panelTransfer = sessionStorage.getItem('paPanel');
+    var panelName = sessionStorage.getItem('pnPanel');
+    $('#transferAppId').text(panelName);
+    $('#modalfiscalYear').text(fyYear);
+    $('#modalprogramAbbreviation').text(panelTransfer);
+
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.savePanelFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click(); });
+    
+    $(document).on('change', '#destinationPanels', function () {
+        var valueDestiny = $('#destionationPanels option:selected').val();
+        if (valueDestiny != 0) {
+            $('button#saveTransferChanges').attr('disabled', false);
+        }
+    })
+    $('body').off('click', '#saveTransferChanges').on('click', '#submitDialog', function (e) {
+        e.preventDefault();
+        //
+        // Get the parameters to pass
+        //
+        var errorMsg = "Sorry, there was a problem processing your request.";
+        var sourcePanelId = $("#SessionPanelId").val();
+        var sourcePanelName = $("#SessionPanelName").val();
+        var sourcePanelAbbr = $("#SessionPanelAbbr").val();
+        var reviewerName = $("#targetReviewer option:selected").text();
+        var targetPanelId = $("#targetPanel option:selected").val();
+        var comment = document.getElementById('comment').value;
+        var radioButtonState = $("input[type='radio'][name='requestType']:checked").val();
+        //
+        // Test to ensure the user selected something.
+        //  Always need to select a reviewer
+        //  Only need to select a panel if the request is a transfer
+        //  Comments do not matter.
+        //
+        if ($("#targetReviewer option:selected").val().length == 0) {
+            alert("Please select a reviewer.");
+        } else if ((radioButtonState == 1) & ($("#targetPanel option:selected").val().length == 0)) {
+            alert("Please select a panel to transfer the current panel to.");
+        } else {
+            //
+            //  Tell the controller to request the transfer
+            //
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("RequestReviewerTransferProcess")',
+                data: {
+                    "reviewerName": reviewerName, "sourcePanelId": sourcePanelId, "sourcePanelName": sourcePanelName, "sourcePanelAbbr": sourcePanelAbbr,
+                    "targetPanelId": targetPanelId, "comment": comment, "isRelease": (radioButtonState == 0)
+                }
+            }).success(function (result) {
+                //
+                // Check the status coming back. If it was not success
+                // it was not completed
+                //
+                if (!result.status) {
+                    alert(errorMsg);
+                }
+                $('#ModalDialog').dialog('close');
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                alert(errorMsg);
+                $('#ModalDialog').dialog('close');
+            }).always(function () {
+                $('body').off('click', '#submitDialog');
+            });
+        }
+    });
+</script>

@@ -1,0 +1,65 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers.PanelManagement
+@using Sra.P2rmis.Web.UI.Models
+@model Sra.P2rmis.Web.UI.Models.ManageCritiquesViewModel
+<style type="text/css">
+    #updateCloseDate li strong {
+        font-size: 14px !important;
+        color: black;
+    }
+    #updateCloseDate li span {
+        font-size: 12px !important;
+        color: black;
+    }
+    .k-icon {
+        margin-top: 5px !important;
+    }
+    #datetimepicker1, #datetimepicker2 {
+        font-size: 12px;
+        color: black;
+    }
+    .k-picker-wrap.k-state-default {
+        width: 100%;
+        color: black;
+    }
+</style>
+<!-- Modal for critique deadlines -->
+<div id="ManageCritiquesModal">
+    <p>To modify the Re-Open or Close Date/Time, please use the date/time picker.  Click Update button to save the changes.</p>
+    <ul id="updateCloseDate" class="list-unstyled">
+        <li><strong>Phase: </strong><span id="modalPhaseManageCritique"></span></li>
+        <li><strong>Start Date/Time: </strong><span id="modalStartManageCritique"></span></li>
+        <li><strong>End Date/Time: </strong><span id="modalEndManageCritique"></span></li>
+        <li>
+            <strong>Re-Open Date/Time: </strong>
+            <input id="datetimepicker1" />
+        </li>
+        <li>
+            <strong>Close Date/Time:</strong>
+            <input id="datetimepicker2" />
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // create DateTimePicker from input HTML element
+        $("#datetimepicker1").kendoDateTimePicker({
+            value: new Date(),
+            format: "MM/dd/yyyy  hh:mm tt",
+            parseFormats: ["MM/dd/yyyy", "HH:mm tt"]
+    });
+    });
+
+    $(document).ready(function () {
+        // create DateTimePicker from input HTML element
+        $("#datetimepicker2").kendoDateTimePicker({
+            value: new Date(),
+            format: "MM/dd/yyyy  hh:mm tt",
+            parseFormats: ["MM/dd/yyyy", "HH:mm tt"]
+        });
+    });
+
+    $('.k-icon.k-i-calendar, .k-icon.k-i-clock').text('');
+</script>
+

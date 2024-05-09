@@ -1,0 +1,111 @@
+﻿@using Sra.P2rmis.CrossCuttingServices
+@using Sra.P2rmis.WebModels.ApplicationScoring
+@using Newtonsoft.Json
+@using Sra.P2rmis.Web.Controllers
+@model Sra.P2rmis.Web.UI.Models.MyWorkspaceViewModel
+
+<link href="/Scripts/jquery-custom-modal/css/jquery-custom-modal.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    .k-header {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+    #preAssignmentSection {
+        margin-top: 140px;
+    }
+</style>
+<div id="preAssignmentSection">
+    <h5>Phase: Expertise Selection/COI Declaration</h5>
+    @if (Model.PreAssignmentApplications != null && Model.PreAssignmentApplications.Count > 0)
+    {
+        <div id="preAssignmentGrid"></div>
+    }
+    else
+    {
+        <div class="align-center margin-top45 margin-bottom10" role='alert' aria-atomic='true'>No applications have been assigned to this panel.</div>
+    }
+</div>
+@Html.IncludeVersionedFiles("/Scripts/jquery.ellipsis.min.js")
+<script type="text/javascript">
+    $(function () {
+        // Grid data source
+        var mainDataSource = new kendo.data.DataSource({
+            type: "json",
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.PreAssignmentApplications)),
+            batch: true,
+            pageSize: 20,
+        });
+
+        $("#preAssignmentGrid").kendoGrid({
+            columns: [
+                {
+                    title: "Application", field: "logNumber", width: 80,
+                    attributes: { class: "left-align" }
+                },
+                {
+                    title: "Principal Investigator/Organization", field: "piNameAndOrganization", width: 180, sortable: false,
+                    attributes: { class: "left-align ellipsisCell" }
+                },
+                {
+                    title: "Application Title", field: "title", width: 250, sortable: false,
+                    attributes: { class: "left-align ellipsisCell" }
+                },
+                {
+                    title: "Mechanism", field: "mechanism", width: 80,
+                    attributes: { class: "left-align" }
+                },
+                {
+                    title: "Expertise Level /<br>COI", field: "expertiseLevel", width: 100,
+                    attributes: { class: "center-align" }
+                },
+                {
+                    title: "Action", field: "action", width: 60, sortable: false,
+                    attributes: { class: "center-align valign-middle" },
+                    template: "<a href='javascript;' class='reviewer-assignment' panel-app-id='${panelApplicationId}' participant-id='${panelUserAssignmentId}'>${actionText}</a>"
+                }
+            ],
+            dataSource: mainDataSource,
+            sortable: true,
+            filterable: false,
+            pageable: {
+                input: true,
+                numeric: false,
+                refresh: true,
+                pageSizes: [ 20, 40, 60, "all"],
+                pageSize: 20
+            }
+        });
+
+        // This is where we added the same toolbar thats on the bottom of the grid to the top
+        var grid = $("#preAssignmentGrid").data("kendoGrid");
+        var wrapper = $('<div class="k-pager-wrap pagerTop"/>').insertBefore(grid.element.children(".k-grid-header"));
+        wrapper.kendoPager($.extend({}, grid.options.pageable, { dataSource: grid.dataSource }));
+        grid.element.height("").find(".pagerTop").css("border-width", "0 0 1px 0");
+
+        setTimeout(function () {
+            // First Pager Input
+            var pageTextBox = $('#preAssignmentGrid .pagerTop .k-pager-input input.k-textbox');
+            pageTextBox.attr('id', 'k-textBox');
+            pageTextBox.closest('.k-pager-input').append('<label for="k-textBox" class="sr-only">Page</label>');
+
+            var pageSelectBox = $('#preAssignmentGrid .pagerTop .k-pager-sizes select');
+            pageSelectBox.attr('id', 'k-textSelect');
+            pageSelectBox.closest('.k-widget').append('<label for="k-textSelect" class="sr-only">Items per Page</label>');
+
+            // Second Pager Input
+            var pageTextBox2 = $('#preAssignmentGrid .k-grid-pager .k-pager-input input.k-textbox');
+            pageTextBox2.attr('id', 'k-textBox-two');
+            pageTextBox2.closest('.k-pager-input').append('<label for="k-textBox-two" class="sr-only">Page</label>');
+
+            var pageSelectBox2 = $('#preAssignmentGrid .k-grid-pager .k-pager-sizes select');
+            pageSelectBox2.attr('id', 'k-textSelect-two');
+            pageSelectBox2.closest('.k-widget').append('<label for="k-textSelect-two" class="sr-only">Items per Page</label>');
+        }, 500);
+
+        // Add title attribute to title cell
+        $(".ellipsisCell").each(function () {
+            $(this).text($.trim($(this).text()));
+            $(this).attr('title', $(this).text());
+        });
+    });
+</script>

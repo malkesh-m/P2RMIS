@@ -1,0 +1,79 @@
+﻿@model Sra.P2rmis.Web.UI.Models.FeeScheduleSetupViewModel
+@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.Web.Controllers
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader2016")
+}
+
+<!-- Header -->
+<div class="main-header">
+    <span class="main-header_back-button">
+        <a id="backArrow" class="main-header_back-button_link">
+            <img src="~/Content/img/backarrow_20px_enabled.png" align="middle" border="0"
+                 alt="Go Back to Previous Page" title="Back" class="main-header_img" />
+        </a>
+    </span>
+    <span class="main-header_title">Session Fee Schedules</span>
+</div>
+<ul class="nav nav-tabs margin-top10">
+    <li class="active notActive"><a href="/Setup/FeeScheduleSetup">Client-Fiscal Year Fee Schedule</a></li>
+    <li class="active"><a href="/Setup/SessionFeeSchedule">Session Fee Schedule</a></li>
+</ul>
+<!-- Select Filters -->
+<div class="row-fluid ss-fieldSet">
+    <div class="ss-filterBox">
+        <div class="ss-filterBox_title">Select Filters</div>
+        <div class="ss-filterBox_required">All fields required.</div><span class="ss-filterBox_activeText"><input id="activeFyFilter" class="ss-filterBox_activeText__checkbox" type="checkbox" checked />&nbsp;Active Programs Only</span>
+        <table class="ss-filterBox_session-table">
+            <tr>
+                <td class="ss-filterBox_session-table_clientSelect">@Html.DropDownList("clientId", new SelectList(Model.Clients, "Key", "Value", "clientId"), "Select Client", new { @id = "clientId" })</td>
+                <td class="ss-filterBox_session-table_yearSelect"><select class="ss-filterBox_session-table_yearSelect_select" id="fiscalYearId"><option selected>Select Year</option></select></td>
+                <td class="ss-filterBox_session-table_meetingSelect"><select class="ss-filterBox_session-table_meetingSelect_select" id="meetingId"><option selected>Select Meeting</option></select></td>
+                <td class="ss-filterBox_session-table_sessionSelect"><select class="ss-filterBox_session-table_sessionSelect_select" id="sessionId"><option selected>Select Session</option></select></td>
+                <td class="ss-filterBox_session-table_buttonShell"><button class="ss-filterBox_session-table_buttonShell_buttonPrimary">Find</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="ss-feeBox">
+        <div class="ss-feeBox_title">Fee Schedule Details</div>
+        <table class="ss-feeBox_uploadedBox">
+            <tbody>
+                <tr>
+                    <td class="ss-feeBox_uploadedBox_title"> Uploaded By:</td>
+                    <td class="ss-feeBox_uploadedBox_result" id="uploadedBy"></td>
+                </tr>
+                <tr>
+                    <td class="ss-feeBox_uploadedBox_title"> Upload Date:</td>
+                    <td class="ss-feeBox_uploadedBox_result" id="uploadedDate"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="ss-feeLinksBox">
+        <div class="ss-feeLinksBox_title">Functions</div>
+        <table class="ss-feeLinksBox_uploadedBox">
+            <tbody>
+                <tr>
+                    <td class="ss-feeLinksBox_uploadedBox_title"><button id="uploadFeeSchedule" class="ss-feeLinksBox_uploadedBox_uploadButton"><img src="/Content/img/excel.gif" title="Upload Fee Schedule">&nbsp;Upload Fee Schedule</button></td>
+                </tr>
+                <tr>
+                    <td class="ss-feeLinksBox_uploadedBox_title"><button id="removeFeeSchedule" class="ss-feeLinksBox_uploadedBox_removeButton" disabled><img src="/Content/img/icon_remove_16x16.png" title="Remove Fee Schedule">&nbsp;Remove Fee Schedule</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Grid Header -->
+<div class="ss-gridHeader">
+    <h4 class="ss-gridHeader_title">Session Fee Schedule</h4>
+</div>
+
+<!-- Grid -->
+<div id="ss-grid-session" class="ss-grid-session"></div>
+<div id="gridMessage" class="ss-grid-session_message">No data were found.</div>
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/sessionFeeSetup.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/Setup/feeScheduleUpload.js")

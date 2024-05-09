@@ -1,0 +1,94 @@
+﻿<div>
+    <div id="uploadInstruction" class="padding10">
+        Files must be in PDF format.  The upload will not ADD, but instead REPLACE the existing CV.
+    </div>
+    <input name="fileResume" id="fileResume" type="file"/>
+</div>
+@* Telerik Kendo upload control *@
+<script>
+    $(function () {
+        // Function when the file is selected
+        function onSelect(e) {
+            $.each(e.files, function (index, value) {
+                if (this.extension.toLowerCase() !== ".pdf") {
+                    alert(INVALID_FILE_FORMAT)
+                    e.preventDefault();
+                }
+            });
+            setTimeout(function () {
+                var uploadButton = $("button.k-upload-selected");
+                uploadButton.hide();
+                uploadButton.wrap("<div style='text-align:center;'></div>");
+
+                var uploadButtonNew = $("<button/>").html("Upload").attr("type", "button").attr("class", "btn btn-primary margin-bottom10");
+                uploadButtonNew.on("click", function () {
+                    $("button.k-upload-selected").trigger("click");
+                });
+                var cancelButton = $("<button/>").html("Cancel").attr("type", "button").attr("class", "btn btn-info margin-left25 margin-bottom10");
+                cancelButton.on("click", function () {
+                    $(".ui-dialog-titlebar-close").trigger("click");
+                });
+                uploadButton.parent().append(uploadButtonNew).append(cancelButton);
+            }, 100);
+        }
+        // Function when the file is being uploaded
+        function onUpload(e) {
+            var userInfoId = $("#UserInfoId").val();
+            e.sender.options.async.saveUrl = "SaveResume?userInfoId=" + userInfoId;
+        }
+        // Function when the file is successfully uploaded
+        function onSuccess(e) {
+            // Array with information about the uploaded files
+            if (e.operation === "upload") {
+                if (!e.response.Success) {
+                    var msgs = e.response.Resume.StatusMessages;
+                    if (msgs != null) {
+                        for (var i = 0; i < msgs.length; i++) {
+                            var msg = msgs[i];
+                            alert(msg);
+                        }
+                    } else {
+                        alert("Successfully uploaded but failed to process.");
+                    }
+                } else {
+                    var resume = e.response.Resume;
+                    $(".userCVLink").html(resume.ResumeDisplayName);
+                    var baseUri = "ViewResumeFile";
+                    $(".userCVLink").attr("href", baseUri.concat("?resumeId=", resume.ResumeId, "&fileName=", resume.ResumeDisplayName));
+                    $(".userCV").removeClass("hide");
+                }
+                // Close the dialog
+                $(".ui-dialog-titlebar-close").trigger("click");
+            }
+        }
+        // Create Upload control
+        $("#fileResume").kendoUpload({
+            async: {
+                saveUrl: "SaveResume",
+                autoUpload: false
+            },
+            localization: {
+                select: "Browse"
+            },
+            multiple: false,
+            select: onSelect,
+            upload: onUpload,
+            success: onSuccess
+        });
+        // Change upload button color
+        var reStyleBrowse = function () {
+            var browseButton = $("div.k-upload-button");
+            browseButton.hide();
+
+            var browseButtonNew = $("<button/>").html("Browse").attr("type", "button").attr("class", "btn btn-info custom-upload-browse");
+            browseButtonNew.on("click", function () {
+                $("#fileResume").trigger("click");
+            });
+            browseButton.parent().prepend(browseButtonNew);
+        }
+        reStyleBrowse();
+
+    });
+    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.cancelOkFooter);
+    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+</script>

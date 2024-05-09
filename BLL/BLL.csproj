@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0F653AD2-2585-40E0-A533-31AFE3F5D221}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sra.P2rmis.Bll</RootNamespace>
+    <AssemblyName>Sra.P2rmis.Bll</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\Sra.P2rmis.Bll.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test-Cloud|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Test-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UA-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\UA-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UA-Cloud|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\UA-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Staging-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging-Cloud|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Staging-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod-Cloud|AnyCPU'">
+    <OutputPath>bin\Prod-Cloud\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod-Cloud|x86'">
+    <OutputPath>bin\x86\Prod-Cloud\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Dev-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev-Cloud|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Dev-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test2-Cloud|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test2-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test2-Cloud|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Test2-Cloud\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationManagement\PanelStatus.cs" />
+    <Compile Include="ApplicationScoring\ApplicationBudgetServiceAction.cs" />
+    <Compile Include="ApplicationScoring\ApplicationReviewStatusesServiceAction.cs" />
+    <Compile Include="ApplicationScoring\ApplicationScoringService.cs" />
+    <Compile Include="ApplicationScoring\ApplicationScoringService.Mod.cs" />
+    <Compile Include="ApplicationScoring\ApplicationScoringService.PostAssignment.cs" />
+    <Compile Include="ApplicationScoring\ApplicationScoringService.PreAssignment.cs" />
+    <Compile Include="ApplicationScoring\ApplicationStageStepDiscussionCommentServiceAction.cs" />
+    <Compile Include="ApplicationScoring\ApplicationStageStepDiscussionServiceAction.cs" />
+    <Compile Include="ApplicationScoring\ApplicationWorkflowStepElementcontentServiceAction.cs" />
+    <Compile Include="ApplicationScoring\ApplicationWorkflowStepElementContentServiceActionPostAssignment.cs" />
+    <Compile Include="ApplicationScoring\CritiqueSubmittalException.cs" />
+    <Compile Include="ApplicationScoring\IApplicationScoringService.cs" />
+    <Compile Include="AccessAccountManagement\AccessAccountManagementService.cs" />
+    <Compile Include="AccessAccountManagement\IAccessAccountManagementService.cs" />
+    <Compile Include="AccessAccountManagement\LoginCapability.cs" />
+    <Compile Include="AccessAccountManagement\LoginReasonType.cs" />
+    <Compile Include="AccessAccountManagement\LoginType.cs" />
+    <Compile Include="ApplicationScoring\OnLineScoringCacheService.cs" />
+    <Compile Include="ApplicationScoring\PhaseStateMachine.cs" />
+    <Compile Include="ApplicationScoring\ReviewStatusResult.cs" />
+    <Compile Include="ApplicationScoring\ScorableApplicationCacheService.cs" />
+    <Compile Include="ApplicationScoring\ScoreCacheEntry.cs" />
+    <Compile Include="ApplicationScoring\ScoringException.cs" />
+    <Compile Include="ApplicationScoring\ScoringServiceAction.cs" />
+    <Compile Include="ApplicationScoring\UserApplicationCommentServiceAction.cs" />
+    <Compile Include="BllHelper.cs" />
+    <Compile Include="Builders\Builder.cs" />
+    <Compile Include="Builders\TemplateModelBuilder.cs" />
+    <Compile Include="Builders\TemplateStepModelBuilder.cs" />
+    <Compile Include="ConsumerManagement\ConsumerManagementService.cs" />
+    <Compile Include="Criteria\CriteriaService.FilteredModels.cs" />
+    <Compile Include="ContextManager.cs" />
+    <Compile Include="EntityBuilders\EntityBuilder.cs" />
+    <Compile Include="EntityBuilders\TemplateBuilder.cs" />
+    <Compile Include="EntityBuilders\TemplateStepBuilder.cs" />
+    <Compile Include="EntityMetadata\UserInfoMetadata.cs" />
+    <Compile Include="FileService\FileService.cs" />
+    <Compile Include="FileService\IFileService.cs" />
+    <Compile Include="HotelAndTravel\HotelAndTravelService.cs" />
+    <Compile Include="HotelAndTravel\MeetingRegistrationAttendanceServiceAction.cs" />
+    <Compile Include="HotelAndTravel\MeetingRegistrationHotelServiceAction.cs" />
+    <Compile Include="HotelAndTravel\MeetingRegistrationServiceAction.cs" />
+    <Compile Include="HotelAndTravel\MeetingRegistrationTravelServiceAction.cs" />
+    <Compile Include="ILookupService.cs" />
+    <Compile Include="IManageUsers.cs" />
+    <Compile Include="Interfaces\IUserAccountContainer.cs" />
+    <Compile Include="IServerBase.cs" />
+    <Compile Include="IToSaveObject.cs" />
+    <Compile Include="LibraryService\ILibraryService.cs" />
+    <Compile Include="LibraryService\LibraryService.cs" />
+    <Compile Include="LookupService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mail\AttachmentToSend.cs" />
+    <Compile Include="Mail\IMailService.cs" />
+    <Compile Include="Mail\LetterBuilder.cs" />
+    <Compile Include="Mail\MergeFieldBuilder.cs" />
+    <Compile Include="Mail\MailService.cs" />
+    <Compile Include="ManageUsers.Accounts.cs" />
+    <Compile Include="ApplicationManagementService.cs" />
+    <Compile Include="CriteriaService.cs" />
+    <Compile Include="ICriteriaService.cs" />
+    <Compile Include="IReportService.cs" />
+    <Compile Include="IReportViewerService.cs" />
+    <Compile Include="MeetingManagement\MeetingManagementService.cs" />
+    <Compile Include="ModelBuilders\ApplicationScoring\ApplicationStatusModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ClientManagement\ClientProgramModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ContainerModelBuilderBase.cs" />
+    <Compile Include="ModelBuilders\FileServices\AvailableEmailTemplateModelBuilder.cs" />
+    <Compile Include="ModelBuilders\FileServices\FileModelBuilderBase.cs" />
+    <Compile Include="ModelBuilders\HotelAndTravel\MeetingListModelBuilder.cs" />
+    <Compile Include="ModelBuilders\HotelAndTravel\SessionAttendanceDetailsModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Library\TrainingDocumentModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ModelBuilderBase.cs" />
+    <Compile Include="ModelBuilders\PanelManagement\ViewStaffModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Permissions\SroAssignmentPermissionBuilder.cs" />
+    <Compile Include="ModelBuilders\ReviewerRecruitment\PanelAssignmentModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ReviewerRecruitment\RatingEvaluationModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ReviewerRecruitment\RecruitCommunicationInfoModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ReviewerRecruitment\ViewReviewerModelBuilder.cs" />
+    <Compile Include="ModelBuilders\ReviewerRecruitment\WorklistModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\AddPanelModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\AddSessionModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\AssignProgramFiscalYearModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\AwardMechanismSetupModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\ProgramYearMeetingListBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\ClientYearMeetingListBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\ModifySessionModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\ProgramPayRatesGridModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\SessionAssignProgramFiscalYearBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\SessionSetupMeetingListEntryModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\SessionSetupModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\UnassignProgramModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\EvaluationCriteriaAdditionModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\EvaluationCriteriaHeaderModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\EvaluationCriteriaModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\EvaluationCriteriaModelModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\MeetingSetupModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\PreviewCriteriaLayoutModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\ProgramSetupModelBuilder.cs" />
+    <Compile Include="ModelBuilders\Setup\UploadScoringTemplateModalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\SummaryStatement\ProgramMechanismSummaryStatementModelBuilder.cs" />
+    <Compile Include="ModelBuilders\SummaryStatement\SummaryDocumentFileResultModelBuilder.cs" />
+    <Compile Include="ModelBuilders\SummaryStatement\SummaryStatementModelBuilderBase.cs" />
+    <Compile Include="ModelBuilders\SummaryStatement\SummaryDocumentModelBuilder.cs" />
+    <Compile Include="ModelBuilders\SummaryStatement\SummaryDocumentPreviewModelBuilder.cs" />
+    <Compile Include="ModelBuilders\SummaryStatement\SummaryDocumentRetrievalModelBuilder.cs" />
+    <Compile Include="ModelBuilders\UserRegistrtionStatusModelBuilder.cs" />
+    <Compile Include="Notification\NotificationService.cs" />
+    <Compile Include="OptionService\OptionAction.cs" />
+    <Compile Include="OptionService\OptionInitializeBlock.cs" />
+    <Compile Include="OptionService\OptionFactory.cs" />
+    <Compile Include="OptionService\ResetContract\OptionContractToaster.cs" />
+    <Compile Include="IApplicationManagementService.cs" />
+    <Compile Include="ISessionService.cs" />
+    <Compile Include="ManageSystemTemplates.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManageUsers.cs" />
+    <Compile Include="PanelManagement\ExperienceCounts.cs" />
+    <Compile Include="PanelManagement\IPanelManagementListService.cs" />
+    <Compile Include="PanelManagement\IPanelManagementService.cs" />
+    <Compile Include="PanelManagement\OrderOfReviewCounts.cs" />
+    <Compile Include="PanelManagement\PanelManagementListService.Critiques.cs" />
+    <Compile Include="PanelManagement\PanelManagementListService.cs" />
+    <Compile Include="PanelManagement\PanelManagementService.ApplicationManagement.cs" />
+    <Compile Include="PanelManagement\PanelManagementService.cs" />
+    <Compile Include="PanelManagement\PanelManagementService.Mod.cs" />
+    <Compile Include="PanelManagement\PanelManagementService.ReviewerRecruitment.cs" />
+    <Compile Include="PanelManagement\PanelStageDateUpdateStatus.cs" />
+    <Compile Include="PanelManagement\ReleaseStatus.cs" />
+    <Compile Include="PanelManagement\ReviewerAssignmentStatus.cs" />
+    <Compile Include="PanelManagement\SetOrderOfReviewToSave.cs" />
+    <Compile Include="ProgramRegistration\PanelUserRegistrationDocumentItemServiceAction.cs" />
+    <Compile Include="ProgramRegistration\PanelUserRegistrationDocumentServiceAction.cs" />
+    <Compile Include="ProgramRegistration\PanelUserRegistrationServiceAction.cs" />
+    <Compile Include="ProgramRegistration\ProgramRegistrationService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportService.cs" />
+    <Compile Include="ReportViewerService.cs" />
+    <Compile Include="ModelBuilders\ReviewerRecruitment\ProfileUpdateListModelBuilder.cs" />
+    <Compile Include="ReviewerRecruitment\PanelUserAssignmentServiceAction.cs" />
+    <Compile Include="ReviewerRecruitment\PanelUserPotentialAssignmentServiceAction.cs" />
+    <Compile Include="ReviewerRecruitment\ReviewerRecruitmentService.cs" />
+    <Compile Include="ReviewerRecruitment\ServiceActionHelper.cs" />
+    <Compile Include="ReviewerRecruitment\UserCommunicationLogServiceAction.cs" />
+    <Compile Include="ReviewerRecruitment\UserInfoChangeLogServiceAction.cs" />
+    <Compile Include="ReviewerRecruitment\UserProfileServiceAction.cs" />
+    <Compile Include="Rules\RuleBase.cs" />
+    <Compile Include="Rules\RuleEngine.cs" />
+    <Compile Include="Rules\RuleEngineConstructors.cs" />
+    <Compile Include="Rules\Setup\AwardsCriteriaRule.cs" />
+    <Compile Include="Rules\Setup\AwardWithApplicationRule.cs" />
+    <Compile Include="Rules\Setup\AwardsAssignedToProgram.cs" />
+    <Compile Include="Rules\Setup\AwardWithChildAwardApplicationRule.cs" />
+    <Compile Include="Rules\Setup\AwardWithCriteriaRule.cs" />
+    <Compile Include="Rules\Setup\DeleteAwardCannotHavePreAppRule.cs" />
+    <Compile Include="Rules\Setup\DuplicateAwardRule.cs" />
+    <Compile Include="Rules\Setup\DuplicateMeetingRule.cs" />
+    <Compile Include="Rules\Setup\DuplicatePanelRule.cs" />
+    <Compile Include="Rules\Setup\DuplicateProgramAbbreviationRule.cs" />
+    <Compile Include="Rules\Setup\DuplicateSessionRule.cs" />
+    <Compile Include="Rules\Setup\LastProgramCannotBeDeleted.cs" />
+    <Compile Include="Rules\Setup\PanelWithReviewOrApplicationRule.cs" />
+    <Compile Include="Rules\Setup\ReleasedAssignmentsForAwardsRule.cs" />
+    <Compile Include="Rules\Setup\ReleasedAssignmentsForPanelsRule.cs" />
+    <Compile Include="Rules\Setup\SingleOverallCriterionRule.cs" />
+    <Compile Include="Rules\Setup\UniqueProgramFiscalYearRule.cs" />
+    <Compile Include="Rules\StaleEntityRule.cs" />
+    <Compile Include="Security\PolicyWeekDayHistoryServiceAction.cs" />
+    <Compile Include="Security\PolicyNetworkRangeHistoryServiceAction.cs" />
+    <Compile Include="Security\PolicyRestrictionType.cs" />
+    <Compile Include="Security\PolicyStatus.cs" />
+    <Compile Include="Security\PolicyType.cs" />
+    <Compile Include="Security\PolicyHistoryServiceAction.cs" />
+    <Compile Include="Security\SecurityService.cs" />
+    <Compile Include="ServerBase.cs" />
+    <Compile Include="ServiceAction.cs" />
+    <Compile Include="ServiceModelActionForWebModel.cs" />
+    <Compile Include="SessionService.cs" />
+    <Compile Include="Setup\Actions\ClientAwardTypeServiceAction.cs" />
+    <Compile Include="Setup\Actions\ClientMeetingServiceAction.cs" />
+    <Compile Include="Setup\Actions\EvaluationCriteriaServiceAction.cs" />
+    <Compile Include="Setup\Actions\MechanismTemplateServiceAction.cs" />
+    <Compile Include="Setup\Actions\MeetingSessionServiceAction.cs" />
+    <Compile Include="Setup\Actions\ProgramMechanismServiceAction.cs" />
+    <Compile Include="Setup\Actions\ProgramMeetingServiceAction.cs" />
+    <Compile Include="Setup\Actions\ProgramYearServiceAction.cs" />
+    <Compile Include="Setup\Actions\SessionPanelServiceAction.cs" />
+    <Compile Include="Setup\Blocks\AwardSetupBlock.cs" />
+    <Compile Include="Setup\Blocks\ClientAwardTypeBlock.cs" />
+    <Compile Include="Setup\Blocks\EvaluationCriteriaBlock.cs" />
+    <Compile Include="Setup\Blocks\MechanismTemplateBlock.cs" />
+    <Compile Include="Setup\Blocks\MeetingBlock.cs" />
+    <Compile Include="Setup\Blocks\PanelBlock.cs" />
+    <Compile Include="Setup\Blocks\ProgramMeetingBlock.cs" />
+    <Compile Include="Setup\Blocks\ProgramSetupBlock.cs" />
+    <Compile Include="Setup\Blocks\SessionBlock.cs" />
+    <Compile Include="Setup\Gizmo.cs" />
+    <Compile Include="Setup\PreAwardTypeCreator.cs" />
+    <Compile Include="Setup\ProposalInfoDocImporter.cs" />
+    <Compile Include="Setup\SetupService.DataTransfer.cs" />
+    <Compile Include="Setup\SetupService.EvaluationCriteria.cs" />
+    <Compile Include="Setup\SetupService.cs" />
+    <Compile Include="Setup\SetupService.FeeSchedule.cs" />
+    <Compile Include="Setup\SetupService.Mechanism.cs" />
+    <Compile Include="Setup\SetupService.Meeting.cs" />
+    <Compile Include="Setup\SetupService.ProgramSetup.cs" />
+    <Compile Include="Setup\SetupService.SessionSetup.cs" />
+    <Compile Include="SummaryStatements\Actions\ApplicationWorkflowStepElementContentServiceAction.cs" />
+    <Compile Include="SummaryStatements\Actions\ApplicationWorkflowSummaryStatementServiceAction.cs" />
+    <Compile Include="SummaryStatements\Blocks\ApplicationWorkflowStepElementContentBlock.cs" />
+    <Compile Include="SummaryStatements\Blocks\ApplicationWorkflowSummaryStatementBlock.cs" />
+    <Compile Include="SummaryStatements\ChangeToSaveApplication.cs" />
+    <Compile Include="SummaryStatements\PriorityChangeServiceAction.cs" />
+    <Compile Include="TaskTracking\ITaskTrackingService.cs" />
+    <Compile Include="TaskTracking\TaskTrackingService.cs" />
+    <Compile Include="UserProfileManagement\IReactivateDeactivateResult.cs" />
+    <Compile Include="UserProfileManagement\ISaveResumeResults.cs" />
+    <Compile Include="UserProfileManagement\IUserProfileManagementService.cs" />
+    <Compile Include="UserProfileManagement\ReactivateDeactivateResult.cs" />
+    <Compile Include="UserProfileManagement\SaveResumeResults.cs" />
+    <Compile Include="UserProfileManagement\UserAddressChangeLogRules.cs" />
+    <Compile Include="UserProfileManagement\UserDegreeMajorChangeLogRules.cs" />
+    <Compile Include="UserProfileManagement\UserEmailChangeLogRules.cs" />
+    <Compile Include="UserProfileManagement\UserNameResult.cs" />
+    <Compile Include="UserProfileManagement\UserProfileManagementService.cs" />
+    <Compile Include="UserProfileManagement\UserProfileManagementService.ManageAccount.cs" />
+    <Compile Include="UserProfileManagement\UserProfileManagementService.SaveProfile.cs" />
+    <Compile Include="UserProfileManagement\UserSystemRoleServiceAction.cs" />
+    <Compile Include="UserProfileManagement\UserW9ChangeLogRules.cs" />
+    <Compile Include="Views\ServiceState.cs" />
+    <Compile Include="Workflow\AssignUserToApplication.cs" />
+    <Compile Include="SummaryStatements\AssignWorkflowToSave.cs" />
+    <Compile Include="SummaryStatements\ChangeToSave.cs" />
+    <Compile Include="SummaryStatements\ClientSummaryService.cs" />
+    <Compile Include="SummaryStatements\IClientSummaryService.cs" />
+    <Compile Include="SummaryStatements\ISummaryManagementService.cs" />
+    <Compile Include="SummaryStatements\ISummaryProcessingService.cs" />
+    <Compile Include="SummaryStatements\SummaryManagementService.Assignment.cs" />
+    <Compile Include="SummaryStatements\SummaryManagementService.ApplicationServices.cs" />
+    <Compile Include="SummaryStatements\SummaryManagementService.cs" />
+    <Compile Include="SummaryStatements\SummaryManagementService.SummaryCommentService.cs" />
+    <Compile Include="SummaryStatements\SummaryManagementService.Workflow.cs" />
+    <Compile Include="SummaryStatements\SummaryProcessingService.cs" />
+    <Compile Include="Views\Application.cs" />
+    <Compile Include="Views\ApplicationDetails\ApplicationDetailFact.cs" />
+    <Compile Include="Views\ApplicationDetails\ApplicationDetailsContainer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\ApplicationDetails\CommentLookupTypes.cs" />
+    <Compile Include="Views\ApplicationDetails\ICommentLookupTypes.cs" />
+    <Compile Include="Views\ApplicationDetails\IApplicationDetailFact.cs" />
+    <Compile Include="Views\ApplicationDetails\IApplicationDetailsContainer.cs" />
+    <Compile Include="Views\ApplicationDetails\IUserApplicationCommentFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\IReviewerCommentFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\IReviewerFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\IReviewerLineScore.cs" />
+    <Compile Include="Views\ApplicationDetails\IReviewerScoresFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\ReviewerCommentFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\ReviewerFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\ReviewerLineScore.cs" />
+    <Compile Include="Views\ApplicationDetails\ReviewerScoresFacts.cs" />
+    <Compile Include="Views\ApplicationDetails\UserApplicationCommentFacts.cs" />
+    <Compile Include="Views\ApplicationManagementView.cs" />
+    <Compile Include="Views\Container.cs" />
+    <Compile Include="Views\Criteria\IProgramContainer.cs" />
+    <Compile Include="Views\Criteria\ProgramContainer.cs" />
+    <Compile Include="Views\CritiqueDetails\CritiqueDetailsContainer.cs" />
+    <Compile Include="Views\CritiqueDetails\CritiqueFacts.cs" />
+    <Compile Include="Views\CritiqueDetails\ICritiqueDetailsContainer.cs" />
+    <Compile Include="Views\CritiqueDetails\ICritiqueFacts.cs" />
+    <Compile Include="Views\CritiqueRequiredType.cs" />
+    <Compile Include="Views\Report\IReportFiscalYearContainer.cs" />
+    <Compile Include="Views\Report\IReportFacts.cs" />
+    <Compile Include="Views\Report\ReportFacts.cs" />
+    <Compile Include="Views\Scoreboard\IScoreboardLine.cs" />
+    <Compile Include="Views\Scoreboard\ScoreboardLine.cs" />
+    <Compile Include="Views\SearchResults\ISearchResults.cs" />
+    <Compile Include="Views\SearchResults\SearchResults.cs" />
+    <Compile Include="Views\ServiceHelpers.cs" />
+    <Compile Include="Views\UserAccountContainer.cs" />
+    <Compile Include="Views\ViewPanelDetails\ViewPanelDetails.cs" />
+    <Compile Include="Views\SessionPanelDetails\PanelView.cs" />
+    <Compile Include="Views\SessionPanelDetails\SessionDetailView.cs" />
+    <Compile Include="Views\SessionPanelDetails\SessionView.cs" />
+    <Compile Include="Views\ViewPanelDetails\ViewPanelDetailsView.cs" />
+    <Compile Include="Workflow\ActivityFactory.cs" />
+    <Compile Include="Workflow\AssignUserActivity.cs" />
+    <Compile Include="Workflow\AssignWorkflowStep.cs" />
+    <Compile Include="Workflow\AssignWorkflowStepActivity.cs" />
+    <Compile Include="Workflow\CheckoutActivity.cs" />
+    <Compile Include="Workflow\CheckinActivity.cs" />
+    <Compile Include="Workflow\DeactivateClientReviewCheckinActivity.cs" />
+    <Compile Include="Workflow\IP2rmisActivity.cs" />
+    <Compile Include="Workflow\IWorkflowService.cs" />
+    <Compile Include="Workflow\P2rmisActions.cs" />
+    <Compile Include="Workflow\P2rmisActivity.cs" />
+    <Compile Include="Workflow\ResetToEditWorkflowStepActivity.cs" />
+    <Compile Include="Workflow\SaveActivity.cs" />
+    <Compile Include="Workflow\SubmitActivity.cs" />
+    <Compile Include="Workflow\WorkflowHelper.cs" />
+    <Compile Include="Workflow\WorkflowService.cs" />
+    <Compile Include="Workflow\WorkflowService.Instance.cs" />
+    <Compile Include="Workflow\WorkflowState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrossCuttingServices\CrossCuttingServices.csproj">
+      <Project>{317e285d-26a0-4230-b1d0-1a845be7c658}</Project>
+      <Name>CrossCuttingServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{F179916B-288A-48F5-BCD8-FB713C2B15E7}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebModels\WebModels.csproj">
+      <Project>{f1059e19-b33b-48f6-8afa-ca31caf41cc9}</Project>
+      <Name>WebModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MeetingManagement\Blocks\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

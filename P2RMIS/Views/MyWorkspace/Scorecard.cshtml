@@ -1,0 +1,372 @@
+﻿@using System.Globalization
+@using Microsoft.Ajax.Utilities
+@using Sra.P2rmis.Web.Common
+@using Sra.P2rmis.WebModels.ApplicationScoring
+@using Sra.P2rmis.Web.Controllers
+@using Sra.P2rmis.CrossCuttingServices.MessageServices
+@model Sra.P2rmis.Web.UI.Models.ScorecardViewModel
+
+@section HeaderExtension
+{
+    @Html.Partial("_KendoHeader")
+}
+@{
+    ViewBag.Title = "Scorecard";
+    var scoreCardUrl = "/ManageApplicationScoring/Scoreboard?panelId=" + Model.SessionPanelId;
+    string abstainValue = "A";
+    string warningMessageScoringEnded = MessageService.ScoringClosedWarning();
+}
+
+<!-- These parameters are required for the application comments -->
+<input type="hidden" id="checkoutUserId" value=@Model.UserId />
+<input type="hidden" id="canModifyGeneralComments" value="true" />
+<input type="hidden" id="canViewEditorComments" value="true" />
+<input type="hidden" id="generalCommentMaxCharLimit" value="1200" />
+
+@section SubHeaderExtension
+{
+    <div class="navbar-inner navtoolbar">
+        <div class="scorecard-icon-block" style="padding-left:95%;padding-top:5px;">
+            <span class="icon-holder">
+                @if (Model.CanUserEnterComments)
+                {
+                    <a class="application-comment" data-applicationid="@Model.ApplicationInformation.ApplicationId" data-panelapplicationid="@Model.PanelApplicationId"><img src="~/Content/img/comments.png" border="0" alt="Application Comments" title="Application Comments" /></a>
+                }
+                else
+                {
+                    <img src="~/Content/img/comments.png" border="0" alt="Application Comments" title="Application Comments" class="disabled-image" />
+                }
+            </span>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm(Routing.MyWorkspace.SaveScore, Routing.P2rmisControllers.MyWorkspace, FormMethod.Post, new { @name = "olsSaveScore", @id = "olsSaveScore" }))
+{
+    @Html.HiddenFor(model => model.SessionPanelId)
+    @Html.HiddenFor(model => model.PanelApplicationId)
+    @Html.HiddenFor(model => model.LastPageUrl)
+    @Html.HiddenFor(model => model.UserId)
+    <div class="row-fluid">
+        <br />
+        <div>
+            <span>
+                <a id="backButton" href="@Model.LastPageUrl">
+                    <img src="~/Content/img/backarrow_20px_enabled.png" border="0" alt="Go Back to Previous Page" title="Back" style="width: 25px; height: 30px;" />
+                </a>
+            </span>
+            <span class="title">Score Card for @Model.ApplicationInformation.PanelAbbreviation @Model.ApplicationInformation.LogNumber</span>
+            @*
+                If model state is invalid (such as scoring has ended) an error will display, we don't want to display the warning as well so the error message takes precedence
+            *@
+            @if (ViewData.ModelState.IsValid && !Model.CanUserEditScores)
+            {
+                <span class="warning-message">@warningMessageScoringEnded</span>
+            }
+        </div>
+        <div style="text-align: right; margin-left: 80%; margin-top: -35px;">
+            <span style="display: inline-block;">
+                @Model.UserName<br />
+                <a href="#saveSection">Skip to Save/Cancel</a>
+            </span>
+        </div>
+        <div style="margin-bottom: 20px;">
+            @Html.ValidationSummary(true)
+        </div>
+        <section class="scorecard-main" role="region">
+            <h5 class="save-score-title">Application Details</h5>
+            <div class="save-score-title" id="appDetailsSection" style="margin-left: 150px;">
+                <a id="hideAppDetails" onclick="toggle_visibility('appDetails', 'hideAppDetails');" href="javaScript:void(0);">Hide App Details</a>
+            </div>
+            <div id="appDetails">
+                <div style="padding-top: 10px;">
+                    <span class="span3 inlineBlock"><b>PI: </b>@Model.ApplicationInformation.PiFirstName @Model.ApplicationInformation.PiLastName</span>
+                    <span class="span9 inlineBlock"><b>Org: </b>@Model.ApplicationInformation.PiOrganization</span>
+                </div>
+                <div>
+                    <span class="span12 inlineBlock"><b>Award Mechanism: </b>@Model.ApplicationInformation.AwardMechanism</span>
+                </div>
+                <div>
+                    <span class="span12 inlineBlock"><b>Title: </b>@Model.ApplicationInformation.Title</span>
+                </div>
+            </div>
+        </section>
+        <br /><br />
+        <section class="scorecard-main" role="region">
+            <div style="position: relative;">
+                <h5 class="save-score-title">
+                    Criteria Scores
+                </h5>
+                <label for="abstainScores" class="save-score-title" style="margin-left: 150px;">Abstain from all</label>
+                <input type="checkbox" id="abstainScores" class="save-score-title"  style="margin-left: 255px; margin-top: -10px;"/>
+                <div class="save-score-title" style="margin-left: 350px;">
+                    <a id="hideScoringScales" onclick="toggle_visibility('scoringScales', 'hideScoringScales');" href="javaScript:void(0);">Hide Scales</a>
+                </div>
+                <div class="ols-critique">
+                    <div id="scoringScales">
+                        @foreach (var ovrlScale in Model.OverallScores.Where(x => !x.ScoringLegendName.IsNullOrWhiteSpace()).Take(1))
+                        {
+                            <div>
+                                @ovrlScale.ScoringLegendName:
+                                @foreach (var ovrlScaleItem in ovrlScale.ScoringLegendItems)
+                                {
+                                    @ovrlScaleItem.ItemLabel@Html.Raw("&nbsp;")
+                                    @ovrlScaleItem.HighValue@Html.Raw("-")@ovrlScaleItem.LowValue@Html.Raw("&nbsp;&nbsp;&nbsp;")
+                                }
+                            </div>
+                        }
+                        @foreach (var critScale in Model.CriterionScores.Where(x => !x.ScoringLegendName.IsNullOrWhiteSpace()).Take(1))
+                        {
+                            <div>
+                                @critScale.ScoringLegendName:
+                                @foreach (var critScaleItem in critScale.ScoringLegendItems)
+                                {
+                                    @critScaleItem.ItemLabel@Html.Raw("&nbsp;")
+                                    @critScaleItem.HighValue@Html.Raw("-")@critScaleItem.LowValue@Html.Raw("&nbsp;&nbsp;&nbsp;")
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div>&nbsp;</div>
+                    <div>All fields are required. Enter "A" to abstain from scoring.</div>
+                    @for (var i = 0; i < Model.CriterionScores.Count; i++)
+                    {
+                        var colorClass = (i % 2 == 0) ? "bg-lightgray" : "bg-white";
+                        var criterionId = "CriterionScores_"+ i +"__Score";
+                        <div class="criterion-score score-padding @colorClass">
+                            @if (String.Equals(Model.CriterionScores[i].ScoreType, "Decimal", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <label for="@criterionId" class="sr-only">Score for @Model.CriterionScores[i].ElementName</label>
+                                @Html.TextBoxFor(x => x.CriterionScores[i].Score, Model.CriterionScores[i].AbstainFlag ? abstainValue : Model.CriterionScores[i].Score, new { @style = "width:5ch;", maxlength = "5", @class = "critique-score decimal-score" })
+                            }
+                            else if (String.Equals(Model.CriterionScores[i].ScoreType, "Integer", StringComparison.OrdinalIgnoreCase) && Model.CriterionScores[i].ScoreHighValue > Model.CriterionScores[i].ScoreLowValue)
+                            {
+                                List<SelectListItem> scoreList = new List<SelectListItem>();
+                                for (var n = Model.CriterionScores[i].ScoreLowValue; n <= Model.CriterionScores[i].ScoreHighValue; n++)
+                                {
+                                    scoreList.Add(new SelectListItem { Value = n.ToString("N0"), Text = n.ToString("N0") });
+                                }
+                                scoreList.Add(new SelectListItem { Value = abstainValue, Text = abstainValue });
+                                <label for="@criterionId" class="sr-only">Score for @Model.CriterionScores[i].ElementName</label>
+                                @Html.DropDownListFor(x => x.CriterionScores[i].Score, new SelectList(scoreList, "Value", "Text", Model.CriterionScores[i].AbstainFlag ? abstainValue : Model.CriterionScores[i].Score), "Select", new { @class = "critique-score" })
+                            }
+                            else if (String.Equals(Model.CriterionScores[i].ScoreType, "Integer", StringComparison.OrdinalIgnoreCase))
+                            {
+                                List<SelectListItem> scoreList = new List<SelectListItem>();
+                                for (var n = Model.CriterionScores[i].ScoreLowValue; n >= Model.CriterionScores[i].ScoreHighValue; n--)
+                                {
+                                    scoreList.Add(new SelectListItem { Value = n.ToString("N0"), Text = n.ToString("N0") });
+                                }
+                                scoreList.Add(new SelectListItem { Value = abstainValue, Text = abstainValue });
+                                <label for="@criterionId" class="sr-only">Score for @Model.CriterionScores[i].ElementName</label>
+                                @Html.DropDownListFor(x => x.CriterionScores[i].Score, new SelectList(scoreList, "Value", "Text", Model.CriterionScores[i].AbstainFlag ? abstainValue : Model.CriterionScores[i].Score), "Select", new { @class = "critique-score" })
+                            }
+                            else if (String.Equals(Model.CriterionScores[i].ScoreType, "Adjectival", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var adjectivalList = Model.CriterionScores[i].AdjectivalScoreValues.ToList();
+                                adjectivalList.Add(new AdjectivalScoreValue() { AdjectivalLabel = "Abstain", NumericValue = abstainValue, SortOrder = adjectivalList.Count() + 1 });
+                                <label for="@criterionId" class="sr-only">Score for @Model.CriterionScores[i].ElementName</label>
+                                @Html.DropDownListFor(x => x.CriterionScores[i].Score, new SelectList(adjectivalList, "NumericValue", "AdjectivalLabel", Model.CriterionScores[i].AbstainFlag ? abstainValue : Model.CriterionScores[i].Score), "Select", new { @class = "critique-score" })
+                            }
+                            <span class="element-name">@Model.CriterionScores[i].ElementName</span>
+                            @Html.HiddenFor(x => x.CriterionScores[i].ScoreHighValue)
+                            @Html.HiddenFor(x => x.CriterionScores[i].ScoreLowValue)
+                            @Html.HiddenFor(x => x.CriterionScores[i].ApplicationWorkflowStepElementId)
+                            @Html.ValidationMessageFor(x => x.CriterionScores[i].Score)
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        @*Should only be 1 overall score*@
+        @for (var i = 0; i < Model.OverallScores.Count; i++)
+        {
+            var OverallCriterionId = "OverallScores_"+ i +"__Score";
+            <div class="overall-score" data-scoreType="@Model.OverallScoreType" style="border: solid 1px lightgray; padding: 5px 10px 0 10px; display: inline-block;">
+            @*<b>@Model.OverallScores[i].ElementName</b>*@
+            <label for="@OverallCriterionId" class="displayInline">@Model.OverallScores[i].ElementName</label>
+                @if (String.Equals(Model.OverallScores[i].ScoreType, "Decimal", StringComparison.OrdinalIgnoreCase))
+                {
+                @Html.TextBoxFor(x => x.OverallScores[i].Score, Model.OverallScores[i].AbstainFlag ? abstainValue : Model.OverallScores[i].Score, new { @style = "width:5ch;", maxlength = "5", @class = "decimal-score" })
+                }
+                else if (String.Equals(Model.OverallScores[i].ScoreType, "Integer", StringComparison.OrdinalIgnoreCase) && Model.OverallScores[i].ScoreHighValue > Model.OverallScores[i].ScoreLowValue)
+                {
+                    List<SelectListItem> scoreList = new List<SelectListItem>();
+                    for (var n = Model.OverallScores[i].ScoreLowValue; n <= Model.OverallScores[i].ScoreHighValue; n++)
+                    {
+                    scoreList.Add(new SelectListItem { Value = n.ToString("N0"), Text = n.ToString("N0") });
+                    }
+                scoreList.Add(new SelectListItem { Value = abstainValue, Text = abstainValue });
+                    @Html.DropDownListFor(x => x.OverallScores[i].Score, new SelectList(scoreList, "Value", "Text", Model.OverallScores[i].AbstainFlag ? abstainValue : Model.OverallScores[i].Score), "Select")
+                }
+                else if (String.Equals(Model.OverallScores[i].ScoreType, "Integer", StringComparison.OrdinalIgnoreCase))
+                {
+                    List<SelectListItem> scoreList = new List<SelectListItem>();
+                    for (var n = Model.OverallScores[i].ScoreLowValue; n >= Model.OverallScores[i].ScoreHighValue; n--)
+                    {
+                    scoreList.Add(new SelectListItem { Value = n.ToString("N0"), Text = n.ToString("N0") });
+                    }
+                scoreList.Add(new SelectListItem { Value = abstainValue, Text = abstainValue });
+                    @Html.DropDownListFor(x => x.OverallScores[i].Score, new SelectList(scoreList, "Value", "Text", Model.OverallScores[i].AbstainFlag ? abstainValue : Model.OverallScores[i].Score), "Select")
+                }
+                else if (String.Equals(Model.OverallScores[i].ScoreType, "Adjectival", StringComparison.OrdinalIgnoreCase))
+                {
+                    var adjectivalList = Model.OverallScores[i].AdjectivalScoreValues.ToList();
+                adjectivalList.Add(new AdjectivalScoreValue() { AdjectivalLabel = "Abstain", NumericValue = abstainValue, SortOrder = adjectivalList.Count() + 1 });
+                    @Html.DropDownListFor(x => x.OverallScores[i].Score, new SelectList(adjectivalList, "NumericValue", "AdjectivalLabel", Model.OverallScores[i].AbstainFlag ? abstainValue : Model.OverallScores[i].Score), "Select")
+                }
+                @Html.HiddenFor(x => x.OverallScores[i].ScoreHighValue)
+                @Html.HiddenFor(x => x.OverallScores[i].ScoreLowValue)
+                @Html.HiddenFor(x => x.OverallScores[i].ApplicationWorkflowStepElementId)
+                @Html.ValidationMessageFor(x => x.OverallScores[i].Score)
+            </div>
+        }<br />
+         <div id="saveSection" style="text-align: center;">
+             @if (Model.CanUserEditScores)
+             {
+                 <button id="saveScorecard" class="scorecardButton" type="submit">Save <span class="hidden-text">Scorecard for @Model.ApplicationInformation.PanelAbbreviation @Model.ApplicationInformation.LogNumber</span></button>
+                 <input type="button" class="scorecardButton" style="font-size: 12px;" onclick="location.href='@Model.LastPageUrl'" value="Cancel" />
+             }
+         </div>
+    </div>
+}
+<script type="text/javascript">
+    function toggle_visibility(id, caller) {
+        var e = document.getElementById(id);
+        var c = document.getElementById(caller);
+        if (e.style.display == 'none') {
+            e.style.display = 'block';
+            c.innerHTML = c.innerHTML.replace("Show", "Hide");
+        }
+        else {
+            e.style.display = 'none';
+            c.innerHTML = c.innerHTML.replace("Hide", "Show");
+        }
+    }
+</script>
+@*Script to check dirty form data and warn user before exiting*@
+@Html.IncludeVersionedFiles("/Scripts/Custom/dirtycheck.js")
+<script type="text/javascript">
+    // Open dialog
+    $("#saveScorecard").on("click", function (e) {
+        e.preventDefault();
+        // Copy values
+        // The values could be adjectival or numeric.  Also
+        // the overall could be a different scoring type than the individual
+        // criteria.  Process each type, but the methods determine if it is
+        // necessary.
+        //
+        onPageValidation();
+        var errorVis = $('.input-validation-error').is(':visible');
+        if (errorVis) {
+            return false
+        }
+        var dialogTitle = 'Confirm Scores';
+        var selectSelection = $('.overall-score option:selected').val();
+        if (selectSelection != "") {
+            $.get('/MyWorkspace/ScorecardModal',
+                function (data) {
+                    p2rims.modalFramework.displayModalNoEvent(data, p2rims.modalFramework.customModalSizes.medium, dialogTitle);
+                    $(".modal-footer").append(p2rims.modalFramework.defaultModalFooters.confirmFooter);
+                    $("button[id='saveDialogChanges']").click(function () {
+                        $(".critique-score").removeAttr("disabled");
+                        $("#olsSaveScore").submit();
+                    });
+                    $("a[id='closeModal'], button[id='closeDialogBtn']").click(function () { $('.ui-dialog-titlebar-close').click() });
+                    fnCopyOverallScoreToModal();
+                    fnCopyScoresToModal();
+                });
+        }
+    });
+    //
+    // updates the overall score if it modal
+    //
+    var fnCopyOverallScoreToModal = function () {
+        //
+        // If the overall all score is adjectival, display it.  Otherwise
+        // there is nothing to do.
+        //
+        if ($(".overall-score").attr('data-scoreType') == "@Model.AdjectivalScoreType") {
+            $("#modalOverallScore").text($("#OverallScores_0__Score option:selected").text());
+        } else if ($(".overall-score").attr('data-scoreType') == "@Model.NumericScoreType") {
+            $("#modalOverallScore").text($("#OverallScores_0__Score").val());
+        }
+    };
+    // Validation for the page
+    function onPageValidation(e) {
+        $('.criterion-score, .overall-score').each(function (i, value) {
+            var isSelected = $(this).find('option:selected').val();
+            if (isSelected == "") {
+                $(this).find('select').addClass('input-validation-error');
+                var getLabel = $(this).closest('.criterion-score').find('.element-name').text();
+                $(this).find('.field-validation-valid').attr({ 'role': 'alert', 'tabindex': '-1' }).html("<span class='hidden-text'>" + getLabel +"</span> 'Score' should not be empty.").show().focus();
+            } else {
+                if (typeof isSelected == 'undefined') {
+                    var getInput = $(this).find('.decimal-score');
+                    var getValue = getInput.val();
+                    var getText = $(this).find('span');
+                    if (getValue == "") {
+                        $(getInput).addClass('input-validation-error');
+                        $(getText).addClass('textRed').attr({ 'role': 'alert', 'tabindex': '-1' }).html("<span class='hidden-text'>" + getLabel + "</span> 'Score' should not be empty.").show().focus();
+                    } else {
+                        $(getInput).removeClass('input-validation-error');
+                        $(getText).removeClass('textRed');
+                    }
+                } else {
+                $(this).find('select').removeClass('input-validation-error');
+                $(this).find('.field-validation-valid').hide();
+            }
+            }
+        })
+    }
+    // Copy scores to modal
+    var fnCopyScoresToModal = function () {
+        $("#modalScriterionScoreSection").empty();
+        $(".criterion-score").each(function() {
+            var scoreEntry = $("#modalCriterionScoreTemplate").clone();
+            scoreEntry.removeClass("hide");
+            scoreEntry.removeAttr("id");
+            scoreEntry.find(".modal-element-name").text($(this).find(".element-name").text());
+            if ($(this).find(".critique-score option:selected").val() != "") {
+                scoreEntry.find(".modal-critique-score").text($(this).find(".critique-score option:selected").text());
+            }
+            scoreEntry.attr("class", $(this).attr("class")).removeClass("criterion-score").removeClass("score-padding").addClass("modal-score-padding");
+            $("#modalScriterionScoreSection").append(scoreEntry);
+        });
+    };
+    // Abstain
+    $("#abstainScores").on("change", function () {
+        if ($(this).is(":checked")) {
+            $(".critique-score").val("A").attr("disabled", "disabled");
+        } else {
+            $(".critique-score").val("").removeAttr("disabled");
+        }
+    });
+</script>
+
+<div id="generalCommentsModal">
+    <div id="saveGeneralCommentSection" style="padding: 0 20px">
+        <h5 id="addGeneralCommentTitle">Add an application comment:</h5>
+        <h5 id="editGeneralCommentTitle" class="hide">Edit an application comment:</h5>
+        <input type="hidden" id="generalCommentId" value="" />
+        <textarea id="generalComment" style="width:98%;height:80px;"></textarea>
+    </div>
+    <div id="displayGeneralComments" style="padding: 20px 20px;"></div>
+</div>
+<div id="commentEntryTemplate" class="commentEntry hide">
+    <span class="commentEntryComment"></span><br /><br />
+    <span class="commentEntryAuthor"></span><br />
+    <span class="commentEntryPublishedDate"></span><br />
+    <a class="commentEntryEdit" href="#">Edit</a>
+    <a class="commentEntryDelete" href="#">Delete</a><br />
+    <hr />
+</div>
+<input type="hidden" id="applicationId" />
+<input type="hidden" id="panelApplicationId" />
+<!-- Comment Widget -->
+@Html.IncludeVersionedFiles("/Scripts/datejs/date.js")
+@Html.IncludeVersionedFiles("/Scripts/common/commentwidget.js")
+@Html.IncludeVersionedFiles("/Scripts/Custom/MyWorkspace/ApplicationComments.js")
+<script type="text/javascript">
+    $(".decimal-score").numeric({ decimalPlaces: 1, negative: false });
+</script>
